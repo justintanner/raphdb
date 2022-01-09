@@ -22,4 +22,4 @@ https://github.com/adamzapasnik/prettier-plugin-erb/issues/44
 prettier --write '**/*'
 ```
 
-*Note:* Avoid using `rbprettier` because it does not format `.erb` files
+_Note:_ Avoid using `rbprettier` because it does not format `.erb` files
