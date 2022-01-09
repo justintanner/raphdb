@@ -6,6 +6,7 @@ class Page < ApplicationRecord
   validates_presence_of :title
 
   private
+
   def set_slug
     self.slug = self.title.parameterize.downcase
   end

@@ -1,6 +1,6 @@
 # prettier-ignore
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  # Defines the root path route ("/")
-  # root "articles#index"
+  get '/:slug', to: 'pages#show', constraints: { slug: Page.pluck(:slug) }
+
+  root 'pages#show', slug: 'homepage'
 end
