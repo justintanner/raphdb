@@ -40,13 +40,17 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
 
 # Use Sass to process CSS
-# gem "sassc-rails"
+gem 'sassc-rails'
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem 'image_processing', '~> 1.2'
 
 # Strips attributes of spaces [https://github.com/holli/auto_strip_attributes]
 gem 'auto_strip_attributes'
+
+# Bootstrap 5 [https://github.com/twbs/bootstrap-rubygem]
+# Please manually upgrade bootstrap to avoid breaking the app
+gem 'bootstrap', '5.1.3'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
