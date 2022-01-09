@@ -1,24 +1,25 @@
-# README
+# RaphDB
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+An app for collectors to publish and edit their collectibles
 
-Things you may want to cover:
+## Dev Setup
 
-- Ruby version
+### Prettier Installation
 
-- System dependencies
+```
+npm install -g @prettier/plugin-ruby@1.5.5 prettier@2.2.0 prettier-plugin-erb@0.2.0
+```
 
-- Configuration
+A few bugs are forcing us to peg to the versions specified above:
 
-- Database creation
+https://github.com/adamzapasnik/prettier-plugin-erb/issues/87
 
-- Database initialization
+https://github.com/adamzapasnik/prettier-plugin-erb/issues/44
 
-- How to run the test suite
+### Prettier execution
 
-- Services (job queues, cache servers, search engines, etc.)
+```
+prettier --write '**/*'
+```
 
-- Deployment instructions
-
-- ...
+*Note:* Avoid using `rbprettier` because it does not format `.erb` files
