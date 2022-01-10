@@ -1,16 +1,11 @@
 class Page < ApplicationRecord
+  include Strippable
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
   has_rich_text :body
-
-  auto_strip_attributes :title, squish: true
-  auto_strip_attributes :slug, delete_whitespaces: true
-
-  before_save :set_slug
+  strip_before_validation :title, squish_whitespace: true
+  strip_before_validation :slug, delete_all_whitespace: true
 
   validates_presence_of :title
-
-  private
-
-  def set_slug
-    self.slug ||= self.title.parameterize.downcase
-  end
 end
