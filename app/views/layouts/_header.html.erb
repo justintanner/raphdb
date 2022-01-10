@@ -1,0 +1,33 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom mb-3">
+    <div class="container">
+      <a class="navbar-brand font-serif" href="/">Temporary Title
+        <span class="badge bg-secondary d-inline-block d-sm-none">XS</span>
+        <span class="badge bg-secondary d-none d-sm-inline-block d-md-none">SM</span>
+        <span class="badge bg-secondary d-none d-md-inline-block d-lg-none">MD</span>
+        <span class="badge bg-secondary d-none d-lg-inline-block d-xl-none">LG</span>
+        <span class="badge bg-secondary d-none d-xl-inline-block d-xxl-none">XL</span>
+        <span class="badge bg-secondary d-none d-xxl-inline-block">XXL</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav me-3 font-serif">
+          <% Page.all.each do |page| %>
+            <li class="navbar-item <%= "active" if controller.action_name %>">
+              <%= link_to page.title, "/#{page.slug}", class: 'nav-link' %>
+            </li>
+          <% end %>
+        </ul>
+        <div id="search-box-container">
+          <form class="input-group border rounded bg-light" id="search-box" action="/postcards">
+            <input class="form-control bg-light border-0" name="q" value="" id="search-input" type="text"/>
+            <button class="btn p-0 pe-2" type="submit"><%= render 'svgs/bi-search' %></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

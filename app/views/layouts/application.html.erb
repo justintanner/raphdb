@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html prefix="og: http://ogp.me/ns#" lang="[object Object]" class="h-100">
   <head>
-    <title>Raphdb</title>
+    <title>[object Object]</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', "data-turbo-track": 'reload' %>
     <%= javascript_importmap_tags %>
+    <%= yield :head %>
   </head>
 
-  <body>
+  <body class="d-flex flex-column h-100">
+    <%= render 'layouts/header' %>
     <%= yield %>
   </body>
 </html>

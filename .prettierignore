@@ -8,6 +8,8 @@ Rakefile
 .idea
 .gitignore
 .prettierignore
+schema.rb
+svgs
 *.enc
 *.key
 *.ico
