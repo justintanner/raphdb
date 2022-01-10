@@ -2,7 +2,7 @@ class PagesController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   def show
-    @page = Page.find_by!(slug: params[:slug])
+    @page = Page.friendly.find(params[:slug])
   end
 
   private
