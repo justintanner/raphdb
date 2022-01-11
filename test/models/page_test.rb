@@ -23,6 +23,7 @@ class PageTest < ActiveSupport::TestCase
 
     page.update(title: 'Renamed')
     assert_equal 'renamed', page.friendly_id
+    assert_equal 'renamed', page.slug
   end
 
   test 'keeps a history of old slugs' do

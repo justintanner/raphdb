@@ -11,6 +11,14 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'old slugs should redirect to new slug urls' do
+    page = Page.create(title: 'First')
+    page.update(title: 'Second')
+
+    get '/first'
+    assert_response :moved_permanently
+  end
+
   test 'should display a 404 for pages that are not found' do
     assert_raises(ActionController::RoutingError) { get '/not-found-at-all' }
   end

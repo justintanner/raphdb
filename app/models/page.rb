@@ -4,6 +4,8 @@ class Page < ApplicationRecord
 
   friendly_id :title, use: :history
   strip_before_validation :title, squish_whitespace: true
+
+  # TODO: Need to add versioning to body
   has_rich_text :body
 
   validates_presence_of :title
