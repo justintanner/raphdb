@@ -18,8 +18,8 @@ class PageTest < ActiveSupport::TestCase
   end
 
   test 'changing the title changes the slug' do
-    page = Page.create(title: 'About')
-    assert_equal 'about', page.friendly_id
+    page = Page.create(title: 'First')
+    assert_equal 'first', page.friendly_id
 
     page.update(title: 'Renamed')
     assert_equal 'renamed', page.friendly_id
