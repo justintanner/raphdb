@@ -15,19 +15,4 @@ class PageTest < ActiveSupport::TestCase
     page = Page.create(title: 'About my website', slug: 'about')
     assert_equal 'about', page.slug
   end
-
-  test 'overridden slug gets spaces striped out' do
-    page = Page.create(title: 'About my website', slug: ' ab  out  ')
-    assert_equal 'about', page.slug
-  end
-
-  test 'strips spaces out of titles' do
-    page = Page.create(title: 'My     Page ')
-    assert_equal 'My Page', page.title
-  end
-
-  test 'strips spaces out of slugs' do
-    page = Page.create(title: 'My     Page ')
-    assert_equal 'my-page', page.slug
-  end
 end
