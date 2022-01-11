@@ -1,9 +1,9 @@
 class Page < ApplicationRecord
-  include Strippable
+  include Cleaner
   include FriendlyId
 
+  clean :title, squish: true
   friendly_id :title, use: :history
-  strip_before_validation :title, squish_whitespace: true
 
   # TODO: Need to add versioning to body
   has_rich_text :body

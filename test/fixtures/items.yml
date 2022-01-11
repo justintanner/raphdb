@@ -1,0 +1,4 @@
+one:
+  slug: my-card
+  fields:
+    - item_title: My Card
