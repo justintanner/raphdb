@@ -2,7 +2,7 @@ class Item < ApplicationRecord
   include Cleaner
   include FriendlyId
 
-  clean :item_title, squish: true, inside: :fields
+  clean :fields
   friendly_id :title, use: :history
 
   validate :title_present

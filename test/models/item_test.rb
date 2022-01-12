@@ -53,4 +53,16 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal 'My card', item.title
     assert_equal 'My card', item.fields['item_title']
   end
+
+  test 'should not save fields with empty string values' do
+    item = Item.create(fields: { item_title: 'My card', number: '' })
+
+    assert_not_includes item.fields.keys, 'number'
+  end
+
+  test 'should not save fields with nil values' do
+    item = Item.create(fields: { item_title: 'My card', number: nil })
+
+    assert_not_includes item.fields.keys, 'number'
+  end
 end

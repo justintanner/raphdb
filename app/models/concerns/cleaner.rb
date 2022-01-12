@@ -4,49 +4,33 @@ module Cleaner
   extend ActiveSupport::Concern
 
   class_methods do
-    def clean(field_name, options = {})
-      field_name = field_name.to_s
+    def clean(field_name)
+      base_key = field_name.to_s
+      type = self.columns_hash[base_key].type
 
       before_validation do |record|
-        value = fetch_value(record, field_name, options)
+        if record[base_key].present? && type == :jsonb
+          record[base_key].each do |key, _value|
+            clean_and_set_value(record[base_key], key)
 
-        value = delete_whitespace(value) if options[:delete_whitespace].present?
-        value = squish(value) if options[:squish].present?
-        value.strip! if value.respond_to?(:strip!)
-
-        save_value(record, value, field_name, options)
+            # Don't save blank values to avoid messy jsonb
+            record[base_key].delete(key) if record[base_key][key].blank?
+          end
+        else
+          clean_and_set_value(record, base_key)
+        end
       end
     end
   end
 
   private
 
-  def fetch_value(record, field_name, options)
-    inside = options[:inside]
+  def clean_and_set_value(object, key)
+    value = object[key]
 
-    if inside.present?
-      record.try(inside).try(:[], field_name)
-    else
-      record[field_name]
-    end
-  end
+    value.gsub!(/[[:space:]]+/, ' ') if value.respond_to?(:gsub!)
+    value.strip! if value.respond_to?(:strip!)
 
-  def save_value(record, value, field_name, options)
-    inside = options[:inside]
-
-    if inside.present?
-      record[inside] ||= {}
-      record[inside][field_name] = value
-    else
-      record[field_name] = value
-    end
-  end
-
-  def delete_whitespace(value)
-    value.respond_to?(:gsub!) ? value.gsub(/[[:space:]]+/, '') : value
-  end
-
-  def squish(value)
-    value.respond_to?(:gsub!) ? value.gsub(/[[:space:]]+/, ' ') : value
+    object[key] = value
   end
 end

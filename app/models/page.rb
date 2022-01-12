@@ -2,7 +2,7 @@ class Page < ApplicationRecord
   include Cleaner
   include FriendlyId
 
-  clean :title, squish: true
+  clean :title
   friendly_id :title, use: :history
 
   # TODO: Need to add versioning to body
