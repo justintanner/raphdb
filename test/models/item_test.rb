@@ -36,6 +36,12 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal 'my-card', item.slug
   end
 
+  test 'should change the slug when the title changes' do
+    item = Item.create(fields: { item_title: 'First, 123,  "quoted"' })
+    item.update(fields: { item_title: 'Second, 123, "quoted"' })
+    assert_equal 'second-123-quoted', item.slug
+  end
+
   test 'title trim a squish whitespace' do
     item = Item.create(fields: { item_title: " My \t \t card \n" })
     assert_equal 'My card', item.title

@@ -12,6 +12,13 @@ class Item < ApplicationRecord
     fields.try(:[], 'item_title')
   end
 
+  def should_generate_new_friendly_id?
+    # This may break if friendly id creates a different slug
+    slug != fields.try(:[], 'item_title')&.downcase&.parameterize
+  end
+
+  private
+
   def title_present
     if fields.try(:[], 'item_title').blank?
       errors.add(:fields_item_title, 'Please set an fields[item_title]')
