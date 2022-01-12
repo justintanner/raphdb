@@ -6,10 +6,10 @@ module Cleaner
   class_methods do
     def clean(field_name)
       base_key = field_name.to_s
-      type = self.columns_hash[base_key].type
+      column_type = self.columns_hash[base_key].type
 
       before_validation do |record|
-        if record[base_key].present? && type == :jsonb
+        if record[base_key].present? && column_type == :jsonb
           record[base_key].each do |key, _value|
             clean_and_set_value(record[base_key], key)
 
