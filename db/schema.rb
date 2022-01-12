@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_11_185420) do
+ActiveRecord::Schema.define(version: 2022_01_12_025931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2022_01_11_185420) do
     t.virtual "fields_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, fields)", stored: true
     t.index ["deleted_at"], name: "index_items_on_deleted_at"
     t.index ["fields"], name: "index_items_on_fields", using: :gin
+    t.index ["slug"], name: "index_items_on_slug", unique: true
   end
 
   create_table "pages", force: :cascade do |t|

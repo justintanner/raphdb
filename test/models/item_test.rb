@@ -32,8 +32,8 @@ class ItemTest < ActiveSupport::TestCase
   end
 
   test 'titles generates a slug' do
-    item = Item.create(fields: { item_title: 'My card' })
-    assert_equal 'my-card', item.slug
+    item = Item.create(fields: { item_title: 'A bridge' })
+    assert_equal 'a-bridge', item.slug
   end
 
   test 'should change the slug when the title changes' do
@@ -43,25 +43,19 @@ class ItemTest < ActiveSupport::TestCase
   end
 
   test 'title trim a squish whitespace' do
-    item = Item.create(fields: { item_title: " My \t \t card \n" })
-    assert_equal 'My card', item.title
-    assert_equal 'My card', item.fields['item_title']
-  end
-
-  test 'item_title trim a squish whitespace' do
-    item = Item.create(fields: { item_title: " My \t \t card \n" })
-    assert_equal 'My card', item.title
-    assert_equal 'My card', item.fields['item_title']
+    item = Item.create(fields: { item_title: " lots \t of\t spaces \n" })
+    assert_equal 'lots of spaces', item.title
+    assert_equal 'lots of spaces', item.fields['item_title']
   end
 
   test 'should not save fields with empty string values' do
-    item = Item.create(fields: { item_title: 'My card', number: '' })
+    item = Item.create(fields: { item_title: 'Empty string', number: '' })
 
     assert_not_includes item.fields.keys, 'number'
   end
 
   test 'should not save fields with nil values' do
-    item = Item.create(fields: { item_title: 'My card', number: nil })
+    item = Item.create(fields: { item_title: 'Nil value', number: nil })
 
     assert_not_includes item.fields.keys, 'number'
   end
