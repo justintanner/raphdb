@@ -3,7 +3,7 @@ require 'test_helper'
 class ItemTest < ActiveSupport::TestCase
   test 'should always have a title' do
     item = Item.new
-    assert_not item.save, 'Saved the title without a title'
+    assert_not item.save, 'Saved the item without a title'
   end
 
   test 'should never allow a field with a symbol for a key' do

@@ -2,8 +2,12 @@ class Item < ApplicationRecord
   include Cleaner
   include FriendlyId
 
+  belongs_to :item_set
+
   clean :fields
   friendly_id :title, use: :history
+
+  before_validation :copy_set_title_to_fields
 
   validate :title_present
   validate :no_symbols_in_fields
@@ -19,9 +23,14 @@ class Item < ApplicationRecord
 
   private
 
+  def copy_set_title_to_fields
+    fields['set_title'] = item_set.title if item_set_id_changed? &&
+      item_set.present?
+  end
+
   def title_present
     if fields.try(:[], 'item_title').blank?
-      errors.add(:fields_item_title, 'Please set an fields[item_title]')
+      errors.add(:fields_item_title, 'Please set fields[item_title]')
     end
   end
 
