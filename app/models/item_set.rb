@@ -1,6 +1,7 @@
 class ItemSet < ApplicationRecord
   include Cleaner
   include History
+  include Undeletable
   include FriendlyId
 
   has_many :items

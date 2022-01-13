@@ -62,4 +62,29 @@ class ItemSetTest < ActiveSupport::TestCase
                  item_set.items.last.fields['set_title'],
                  'Item set title was not copied to items'
   end
+
+  test 'should soft delete sets' do
+    item_set = ItemSet.create(title: 'Delete me')
+
+    assert item_set.destroy, 'Failed to destroy item'
+    assert_not item_set.destroyed?, 'Item was hard deleted'
+  end
+
+  test 'should set a deleted_at timestamp when soft deleting' do
+    freeze_time do
+      item_set = ItemSet.create(title: 'Delete me')
+
+      assert item_set.destroy, 'Failed to destroy item'
+      assert_equal item_set.deleted_at,
+                   Time.now,
+                   'Item has the wrong deleted_at'
+    end
+  end
+
+  test 'should not include deleted items when querying items' do
+    item_set = ItemSet.create(title: 'Delete me')
+
+    assert item_set.destroy, 'Failed to destroy item'
+    assert_not_includes ItemSet.all, item_set, 'Found deleted item in all items'
+  end
 end

@@ -1,6 +1,7 @@
 class Item < ApplicationRecord
   include Cleaner
   include History
+  include Undeletable
   include FriendlyId
 
   belongs_to :item_set

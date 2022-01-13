@@ -114,4 +114,45 @@ class ItemTest < ActiveSupport::TestCase
 
     assert_not_includes item.fields.keys, 'number'
   end
+
+  test 'should soft delete items' do
+    item =
+      Item.create(
+        item_set: item_sets(:default),
+        fields: {
+          item_title: 'Delete me'
+        }
+      )
+
+    assert item.destroy, 'Failed to destroy item'
+    assert_not item.destroyed?, 'Item was hard deleted'
+  end
+
+  test 'should set a deleted_at timestamp when soft deleting' do
+    freeze_time do
+      item =
+        Item.create(
+          item_set: item_sets(:default),
+          fields: {
+            item_title: 'Delete me'
+          }
+        )
+
+      assert item.destroy, 'Failed to destroy item'
+      assert_equal item.deleted_at, Time.now, 'Item has the wrong deleted_at'
+    end
+  end
+
+  test 'should not include deleted items when querying items' do
+    item =
+      Item.create(
+        item_set: item_sets(:default),
+        fields: {
+          item_title: 'Delete me'
+        }
+      )
+
+    assert item.destroy, 'Failed to destroy item'
+    assert_not_includes Item.all, item, 'Found deleted item in all items'
+  end
 end
