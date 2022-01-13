@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_12_154546) do
+ActiveRecord::Schema.define(version: 2022_01_13_024336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,8 @@ ActiveRecord::Schema.define(version: 2022_01_12_154546) do
     t.string "slug"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "history", default: {"h"=>[]}
+    t.index ["history"], name: "index_item_sets_on_history", using: :gin
     t.index ["title"], name: "index_item_sets_on_title", unique: true
   end
 
@@ -80,8 +82,10 @@ ActiveRecord::Schema.define(version: 2022_01_12_154546) do
     t.datetime "updated_at", precision: 6, null: false
     t.virtual "fields_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, fields)", stored: true
     t.integer "item_set_id"
+    t.jsonb "history", default: {"h"=>[]}
     t.index ["deleted_at"], name: "index_items_on_deleted_at"
     t.index ["fields"], name: "index_items_on_fields", using: :gin
+    t.index ["history"], name: "index_items_on_history", using: :gin
     t.index ["slug"], name: "index_items_on_slug", unique: true
   end
 

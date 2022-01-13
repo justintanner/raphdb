@@ -1,3 +1,3 @@
-one:
-  title: One set to rule them all
-  slug: one-set-to-rule-them-all
+default:
+  title: Default
+  slug: default

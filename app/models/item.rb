@@ -1,10 +1,12 @@
 class Item < ApplicationRecord
   include Cleaner
+  include History
   include FriendlyId
 
   belongs_to :item_set
 
   clean :fields
+  track_history :fields, :item_set_id
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_fields
@@ -24,8 +26,9 @@ class Item < ApplicationRecord
   private
 
   def copy_set_title_to_fields
-    fields['set_title'] = item_set.title if item_set_id_changed? &&
-      item_set.present?
+    if item_set_id_changed? && item_set.present?
+      fields['set_title'] = item_set.title
+    end
   end
 
   def title_present

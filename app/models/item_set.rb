@@ -1,10 +1,12 @@
 class ItemSet < ApplicationRecord
   include Cleaner
+  include History
   include FriendlyId
 
   has_many :items
 
   clean :title
+  track_history :title
   friendly_id :title, use: :history
 
   before_save :copy_title_to_items
