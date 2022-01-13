@@ -16,11 +16,11 @@ module Cleaner
 
   def clean_field(record, base_key, column_type)
     if column_type == :jsonb && record[base_key].present?
-      record[base_key].each do |key, _value|
+      record[base_key].each do |key, value|
         clean_and_set_value(record[base_key], key)
 
-        # Don't save blank values to avoid messy jsonb
-        record[base_key].delete(key) if record[base_key][key].blank?
+        # Deleting empty keys so that our jsonb column doesn't get cluttered up with empty values.
+        record[base_key].delete(key) if value.blank?
       end
     else
       clean_and_set_value(record, base_key)
@@ -30,6 +30,7 @@ module Cleaner
   def clean_and_set_value(object, key)
     value = object[key]
 
+    # Squish and clean whitespace.
     value.gsub!(/[[:space:]]+/, ' ') if value.respond_to?(:gsub!)
     value.strip! if value.respond_to?(:strip!)
 
