@@ -1,5 +1,6 @@
 class Page < ApplicationRecord
   include Cleaner
+  include Undeletable
   include FriendlyId
 
   clean :title

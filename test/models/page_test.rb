@@ -33,4 +33,27 @@ class PageTest < ActiveSupport::TestCase
 
     assert_equal FriendlyId::Slug.pluck(:slug).sort, %w[1 2 3]
   end
+
+  test 'should soft delete pages' do
+    page = Page.create(title: 'Delete me')
+
+    assert page.destroy, 'Failed to destroy page'
+    assert_not page.destroyed?, 'Page was hard deleted'
+  end
+
+  test 'should set a deleted_at timestamp when soft deleting' do
+    freeze_time do
+      page = Page.create(title: 'Delete me')
+
+      assert page.destroy, 'Failed to destroy page'
+      assert_equal page.deleted_at, Time.now, 'Page has the wrong deleted_at'
+    end
+  end
+
+  test 'should not include deleted items when querying items' do
+    page = Page.create(title: 'Delete me')
+
+    assert page.destroy, 'Failed to destroy item'
+    assert_not_includes Page.all, page, 'Found deleted page in all pages'
+  end
 end
