@@ -7,7 +7,7 @@ class ItemHistoryTest < ActiveSupport::TestCase
         Item.create(fields: { item_title: 'A' }, item_set: item_sets(:default))
       assert item.valid?, 'Item was not valid'
 
-      expected_changes = [
+      expected_history = [
         {
           ts: Time.now.to_i,
           user_id: nil, # TODO: Set the current user.
@@ -34,7 +34,7 @@ class ItemHistoryTest < ActiveSupport::TestCase
         }
       ]
 
-      assert_equal expected_changes, item.changes, 'History was not tracked'
+      assert_equal expected_history, item.history, 'History was not tracked'
     end
   end
 
@@ -48,7 +48,7 @@ class ItemHistoryTest < ActiveSupport::TestCase
 
     item_title_changes =
       item
-        .changes
+        .history
         .flat_map { |entry| entry[:changes] }
         .select { |change| change[:inner_attribute] == 'item_title' }
 

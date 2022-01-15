@@ -8,9 +8,8 @@ module History
       return if attributes.blank?
 
       column_types =
-        attributes.map do |attribute|
-          [attribute, self.type_for_attribute(attribute).type]
-        end.to_h
+        attributes.map { |attr| [attr, self.type_for_attribute(attr).type] }
+          .to_h
 
       before_save do |record|
         TrackHistory.save(
@@ -22,7 +21,7 @@ module History
     end
   end
 
-  def changes
+  def history
     DisplayHistory.all(record: self)
   end
 end
@@ -35,12 +34,12 @@ module DisplayHistory
       {
         ts: entry['ts'],
         user_id: entry['u_id'],
-        changes: change_from_to(entry: entry, prev_values: prev_values)
+        changes: changes_from_to(entry: entry, prev_values: prev_values)
       }
     end
   end
 
-  def self.change_from_to(entry:, prev_values:)
+  def self.changes_from_to(entry:, prev_values:)
     entry['c'].map do |change|
       prev_value_key = "#{change['k']}_#{change['k2']}"
 
@@ -58,7 +57,7 @@ module DisplayHistory
   end
 
   def self.entries_asc(record:)
-    record.history['h'].sort_by { |entry| entry['ts'] }
+    record.changelog['h'].sort_by { |entry| entry['ts'] }
   end
 end
 
@@ -68,8 +67,8 @@ module TrackHistory
       return
     end
 
-    record.history ||= { 'h': [] }
-    record.history['h'] <<
+    record.changelog ||= { 'h': [] }
+    record.changelog['h'] <<
       entry(record: record, attributes: attributes, column_types: column_types)
   end
 

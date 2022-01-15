@@ -6,7 +6,7 @@ class ItemSetHistoryTest < ActiveSupport::TestCase
       item_set = ItemSet.create(title: 'A')
       assert item_set.valid?, 'ItemSet was not valid'
 
-      expected_changes = [
+      expected_history = [
         {
           ts: Time.now.to_i,
           user_id: nil, # TODO: Set the current user.
@@ -16,7 +16,7 @@ class ItemSetHistoryTest < ActiveSupport::TestCase
         }
       ]
 
-      assert_equal expected_changes, item_set.changes, 'History was not created'
+      assert_equal expected_history, item_set.history, 'History was not created'
     end
   end
 end
