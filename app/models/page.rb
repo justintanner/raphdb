@@ -1,12 +1,13 @@
 class Page < ApplicationRecord
   include Cleaner
+  include History
   include Undeletable
   include FriendlyId
 
   clean :title
+  track_history :title, :body
   friendly_id :title, use: :history
 
-  # TODO: Need to add versioning to body
   has_rich_text :body
 
   validates_presence_of :title

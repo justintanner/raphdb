@@ -63,9 +63,7 @@ end
 
 module TrackHistory
   def self.save(record:, attributes:, column_types:)
-    unless attributes.any? { |attribute| record.send("#{attribute}_changed?") }
-      return
-    end
+    return unless attributes.any? { |attr| record_changed?(record, attr) }
 
     record.changelog ||= { 'h': [] }
     record.changelog['h'] <<
@@ -80,7 +78,7 @@ module TrackHistory
 
     entry[:c] =
       attributes
-        .select { |attribute| record.send("#{attribute}_changed?") }
+        .select { |attr| record_changed?(record, attr) }
         .map do |attribute|
           changes(
             attribute: attribute,
@@ -97,16 +95,16 @@ module TrackHistory
     changes = []
 
     if column_types[attribute] == :jsonb
-      was = record.send("#{attribute}_was")
+      was, _new = record.changes
 
-      record[attribute].each do |inner_attr, new_value|
-        return unless new_value != was.try(:[], inner_attr)
+      record[attribute].each do |inner_attr, value|
+        return unless value != was.try(:[], inner_attr)
 
-        changes <<
-          change(attr: attribute, inner_attr: inner_attr, value: new_value)
+        changes << change(attr: attribute, inner_attr: inner_attr, value: value)
       end
     else
-      changes << change(attr: attribute, value: record[attribute])
+      changes <<
+        change(attr: attribute, value: current_value(record, attribute))
     end
 
     changes.compact
@@ -118,5 +116,22 @@ module TrackHistory
     change[:k2] = inner_attr if inner_attr
 
     change
+  end
+
+  def self.current_value(record, attribute)
+    if record.send(attribute).is_a?(ActionText::RichText)
+      record.send(attribute).to_plain_text
+    else
+      record[attribute]
+    end
+  end
+
+  def self.record_changed?(record, attribute)
+    if record.send(attribute).respond_to?(:changed?)
+      # Detect changes in active text fields
+      record.send(attribute).changed?
+    else
+      record.send("#{attribute}_changed?")
+    end
   end
 end

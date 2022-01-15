@@ -52,6 +52,8 @@ class ItemHistoryTest < ActiveSupport::TestCase
         .flat_map { |entry| entry[:changes] }
         .select { |change| change[:inner_attribute] == 'item_title' }
 
+    assert_not_empty item_title_changes, 'No body changes found'
+
     assert_equal 'A',
                  item_title_changes.first[:to],
                  'First change was not tracked'

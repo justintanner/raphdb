@@ -56,4 +56,27 @@ class PageTest < ActiveSupport::TestCase
     assert page.destroy, 'Failed to destroy item'
     assert_not_includes Page.all, page, 'Found deleted page in all pages'
   end
+
+  test 'should keep a history of changes' do
+    page = Page.create(title: 'Title', body: 'A')
+    assert page.valid?, 'Failed to create page'
+
+    page.update(title: 'Title', body: 'B')
+
+    page_body_changes =
+      page
+        .history
+        .flat_map { |entry| entry[:changes] }
+        .select { |change| change[:attribute] == 'body' }
+
+    assert_not_empty page_body_changes, 'No changes found'
+
+    assert_equal 'A',
+                 page_body_changes.first[:to],
+                 'First change was not tracked'
+
+    assert_equal 'B',
+                 page_body_changes.second[:to],
+                 'Second change was not tracked'
+  end
 end
