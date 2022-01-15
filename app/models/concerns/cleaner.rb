@@ -4,36 +4,38 @@ module Cleaner
   extend ActiveSupport::Concern
 
   class_methods do
-    def clean(field_name)
-      base_key = field_name.to_s
-      column_type = self.type_for_attribute(base_key).type
+    def clean(attribute)
+      return if attribute.blank?
 
-      before_validation { |record| clean_field(record, base_key, column_type) }
+      column_type = self.type_for_attribute(attribute).type
+
+      before_validation do |record|
+        Clean.attribute(record, attribute.to_s, column_type)
+      end
     end
   end
+end
 
-  private
-
-  def clean_field(record, base_key, column_type)
-    if column_type == :jsonb && record[base_key].present?
-      record[base_key].each do |key, value|
-        clean_and_set_value(record[base_key], key)
+module Clean
+  def self.attribute(record, attribute, column_type)
+    if column_type == :jsonb && record[attribute].present?
+      record[attribute].each do |sub_attr, value|
+        squish_and_strip(record[attribute], sub_attr)
 
         # Deleting empty keys so that our jsonb column doesn't get cluttered up with empty values.
-        record[base_key].delete(key) if value.blank?
+        record[attribute].delete(sub_attr) if value.blank?
       end
     else
-      clean_and_set_value(record, base_key)
+      squish_and_strip(record, attribute)
     end
   end
 
-  def clean_and_set_value(object, key)
-    value = object[key]
+  def self.squish_and_strip(object, attribute)
+    value = object[attribute]
 
-    # Squish and clean whitespace.
     value.gsub!(/[[:space:]]+/, ' ') if value.respond_to?(:gsub!)
     value.strip! if value.respond_to?(:strip!)
 
-    object[key] = value
+    object[attribute] = value
   end
 end
