@@ -5,73 +5,118 @@ module History
 
   class_methods do
     def track_history(*attributes)
+      return if attributes.blank?
+
+      column_types =
+        attributes.map do |attribute|
+          [attribute, self.type_for_attribute(attribute).type]
+        end.to_h
+
       before_save do |record|
-        save_history(record: record, attributes: attributes)
+        TrackHistory.save(
+          record: record,
+          attributes: attributes,
+          column_types: column_types
+        )
       end
     end
   end
 
-  private
+  def changes
+    DisplayHistory.all(record: self)
+  end
+end
 
-  def save_history(record:, attributes:)
+module DisplayHistory
+  def self.all(record:)
+    prev_values = {}
+
+    entries_asc(record: record).map do |entry|
+      {
+        ts: entry['ts'],
+        user_id: entry['u_id'],
+        changes: change_from_to(entry: entry, prev_values: prev_values)
+      }
+    end
+  end
+
+  def self.change_from_to(entry:, prev_values:)
+    entry['c'].map do |change|
+      prev_value_key = "#{change['k']}_#{change['k2']}"
+
+      from_to = {
+        attribute: change['k'],
+        inner_attribute: change['k2'],
+        from: prev_values[prev_value_key],
+        to: change['v']
+      }
+
+      prev_values[prev_value_key] = change['v']
+
+      from_to
+    end
+  end
+
+  def self.entries_asc(record:)
+    record.history['h'].sort_by { |entry| entry['ts'] }
+  end
+end
+
+module TrackHistory
+  def self.save(record:, attributes:, column_types:)
     unless attributes.any? { |attribute| record.send("#{attribute}_changed?") }
       return
     end
 
     record.history ||= { 'h': [] }
-    record.history['h'] << history_entry(record: record, attributes: attributes)
+    record.history['h'] <<
+      entry(record: record, attributes: attributes, column_types: column_types)
   end
 
-  def history_entry(record:, attributes:)
+  def self.entry(record:, attributes:, column_types:)
     entry = {
       ts: Time.now.to_i,
-      user_id: nil # TODO: Get current user
+      u_id: nil # TODO: Get current user
     }
 
     entry[:c] =
       attributes
         .select { |attribute| record.send("#{attribute}_changed?") }
         .map do |attribute|
-          history_changes(attribute: attribute, record: record)
+          changes(
+            attribute: attribute,
+            record: record,
+            column_types: column_types
+          )
         end
         .flatten
 
     entry.deep_stringify_keys
   end
 
-  def history_changes(attribute:, record:)
+  def self.changes(attribute:, record:, column_types:)
     changes = []
 
-    if self.type_for_attribute(attribute).type == :jsonb
+    if column_types[attribute] == :jsonb
       was = record.send("#{attribute}_was")
 
       record[attribute].each do |inner_attr, new_value|
         return unless new_value != was.try(:[], inner_attr)
 
         changes <<
-          history_change(
-            attr: attribute,
-            inner_attr: inner_attr,
-            from: was.try(:[], inner_attr),
-            to: new_value
-          )
+          change(attr: attribute, inner_attr: inner_attr, value: new_value)
       end
     else
-      changes <<
-        history_change(
-          attr: attribute,
-          from: record.send("#{attribute}_was"),
-          to: record[attribute]
-        )
+      changes << change(attr: attribute, value: record[attribute])
     end
 
     changes.compact
   end
 
-  def history_change(attr:, from:, to:, inner_attr: nil)
-    change = { attr: attr, from: from, to: to }
+  def self.change(attr:, inner_attr: nil, value:)
+    change = { k: attr, v: value }
 
-    change[:inner_attr] = inner_attr if inner_attr
+    change[:k2] = inner_attr if inner_attr
 
     change
   end
