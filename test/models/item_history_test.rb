@@ -64,4 +64,19 @@ class ItemHistoryTest < ActiveSupport::TestCase
                  item_title_changes.third[:to],
                  'Third change was not tracked'
   end
+
+  test 'rails timestamps should match history timestamps' do
+    item = Item.new(fields: { item_title: 'A' }, item_set: item_sets(:default))
+    assert item.save!, 'Item was not saved'
+
+    assert_equal item.created_at.to_time.to_i, item.history.first[:ts].to_i,
+          'created_at does not match history timestamp'
+
+    item.update(fields: { item_title: 'B' })
+
+    assert_equal item.updated_at.to_time.to_i, item.history.second[:ts].to_i,
+                'updated_at does not match history timestamp'
+  end
 end
+
+

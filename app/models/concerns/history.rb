@@ -11,7 +11,15 @@ module History
         attributes.map { |attr| [attr, self.type_for_attribute(attr).type] }
           .to_h
 
-      before_save do |record|
+      before_create do |record|
+        TrackHistory.save(
+          record: record,
+          attributes: attributes,
+          column_types: column_types
+        )
+      end
+
+      before_update do |record|
         TrackHistory.save(
           record: record,
           attributes: attributes,
@@ -72,7 +80,7 @@ module TrackHistory
 
   def self.entry(record:, attributes:, column_types:)
     entry = {
-      ts: Time.now.to_i,
+      ts: record.updated_at.to_time.to_i,
       u_id: nil # TODO: Get current user
     }
 
@@ -120,6 +128,7 @@ module TrackHistory
 
   def self.current_value(record, attribute)
     if record.send(attribute).is_a?(ActionText::RichText)
+      # TODO: Won't this lose the formatting?
       record.send(attribute).to_plain_text
     else
       record[attribute]
