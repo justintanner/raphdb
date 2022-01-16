@@ -79,4 +79,18 @@ class PageTest < ActiveSupport::TestCase
                  page_body_changes.second[:to],
                  'Second change was not tracked'
   end
+
+  test 'page history is stored in html' do
+    page = Page.create(title: 'Title', body: '<p>Paragraph</p>')
+    assert page.valid?, 'Failed to create page'
+
+    expected_body =
+      page.history.first[:changes].find do |change|
+        change[:attribute] == 'body'
+      end[
+        :to
+      ]
+
+    assert_equal '<p>Paragraph</p>', expected_body, 'Body is not stored in html'
+  end
 end

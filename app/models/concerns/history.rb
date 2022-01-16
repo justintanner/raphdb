@@ -128,8 +128,7 @@ module TrackHistory
 
   def self.current_value(record, attribute)
     if record.send(attribute).is_a?(ActionText::RichText)
-      # TODO: Won't this lose the formatting?
-      record.send(attribute).to_plain_text
+      record.send(attribute).to_trix_html
     else
       record[attribute]
     end
