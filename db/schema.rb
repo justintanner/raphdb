@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_16_235712) do
+ActiveRecord::Schema.define(version: 2022_01_17_172245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,9 +78,9 @@ ActiveRecord::Schema.define(version: 2022_01_16_235712) do
     t.string "slug"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "changelog", default: {"h"=>[]}
+    t.jsonb "log", default: {"h"=>[]}
     t.datetime "deleted_at", precision: 6
-    t.index ["changelog"], name: "index_item_sets_on_changelog", using: :gin
+    t.index ["log"], name: "index_item_sets_on_log", using: :gin
     t.index ["title"], name: "index_item_sets_on_title", unique: true
   end
 
@@ -92,10 +92,10 @@ ActiveRecord::Schema.define(version: 2022_01_16_235712) do
     t.datetime "updated_at", precision: 6, null: false
     t.virtual "fields_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, fields)", stored: true
     t.integer "item_set_id"
-    t.jsonb "changelog", default: {"h"=>[]}
-    t.index ["changelog"], name: "index_items_on_changelog", using: :gin
+    t.jsonb "log", default: {"h"=>[]}
     t.index ["deleted_at"], name: "index_items_on_deleted_at"
     t.index ["fields"], name: "index_items_on_fields", using: :gin
+    t.index ["log"], name: "index_items_on_log", using: :gin
     t.index ["slug"], name: "index_items_on_slug", unique: true
   end
 
@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 2022_01_16_235712) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug"
     t.datetime "deleted_at", precision: 6
-    t.jsonb "changelog"
+    t.jsonb "log"
     t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 

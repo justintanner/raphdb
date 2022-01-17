@@ -48,6 +48,8 @@ module History
 end
 
 module DisplayHistory
+  LOG_COLUMN = 'log'
+
   def self.all(record)
     prev_values = {}
 
@@ -92,23 +94,25 @@ module DisplayHistory
   end
 
   def self.entries_asc(record)
-    record.changelog['h'].sort_by { |entry| entry['ts'] }
+    record[LOG_COLUMN]['h'].sort_by { |entry| entry['ts'] }
   end
 end
 
 module TrackHistory
+  LOG_COLUMN = 'log'
+
   def self.save_changes(record:, attributes:, column_types:)
     return unless attributes.any? { |attr| record_changed?(record, attr) }
 
-    record.changelog ||= { 'h': [] }
-    record.changelog['h'] << change_entry(record, attributes, column_types)
+    record[LOG_COLUMN] ||= { 'h': [] }
+    record[LOG_COLUMN]['h'] << change_entry(record, attributes, column_types)
   end
 
   def self.save_image_changes(record:, image:, deleted: false)
     return unless image.present?
 
-    record.changelog ||= { 'h': [] }
-    record.changelog['h'] << image_upload_entry(image, deleted)
+    record[LOG_COLUMN] ||= { 'h': [] }
+    record[LOG_COLUMN]['h'] << image_upload_entry(image, deleted)
   end
 
   def self.image_upload_entry(image, deleted)
