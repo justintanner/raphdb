@@ -1,11 +1,6 @@
 require 'test_helper'
 
 class ImageTest < ActiveSupport::TestCase
-  parallelize_setup do |i|
-    ActiveStorage::Blob.service.root =
-      "#{ActiveStorage::Blob.service.root}-#{i}"
-  end
-
   def after_teardown
     super
     FileUtils.rm_rf(ActiveStorage::Blob.service.root)
