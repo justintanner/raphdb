@@ -5,6 +5,7 @@ class ItemSet < ApplicationRecord
   include FriendlyId
 
   has_many :items
+  has_many :images
 
   clean :title
   track_history :title

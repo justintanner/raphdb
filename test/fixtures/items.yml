@@ -1,4 +1,8 @@
 one:
-  slug: my-card
+  slug: one-card
   fields:
-    - item_title: My Card
+    - item_title: One Card
+two:
+  slug: two-card
+  fields:
+    - item_title: Two Card
