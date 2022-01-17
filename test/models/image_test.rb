@@ -6,10 +6,6 @@ class ImageTest < ActiveSupport::TestCase
     FileUtils.rm_rf(ActiveStorage::Blob.service.root)
   end
 
-  def open_fixture(filename)
-    File.open(Rails.root.join('test', 'fixtures', 'files', filename))
-  end
-
   test 'should not save without an item or item_set' do
     image = Image.new
     assert_not image.save, 'Saved without an item or item_set'

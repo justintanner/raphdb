@@ -140,6 +140,7 @@ class ItemTest < ActiveSupport::TestCase
 
       assert item.destroy, 'Failed to destroy item'
       assert_equal item.deleted_at, Time.now, 'Item has the wrong deleted_at'
+      assert item.persisted?, 'Item was hard deleted'
     end
   end
 

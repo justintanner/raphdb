@@ -19,4 +19,28 @@ class ItemSetHistoryTest < ActiveSupport::TestCase
       assert_equal expected_history, item_set.history, 'History was not created'
     end
   end
+
+  test 'should track image uploads' do
+    # Don't need to actually attach to test versioning of an Image record.
+    item_set = ItemSet.create!(title: 'A')
+    image = Image.create!(item_set: item_set)
+
+    expected_entry = { id: image.id }
+
+    assert_equal expected_entry,
+                 item_set.history.second[:image_uploaded],
+                 'Image upload was not tracked'
+  end
+
+  test 'should track image deletions' do
+    item_set = ItemSet.create!(title: 'A')
+    image = Image.create!(item_set: item_set)
+    image.destroy
+
+    expected_entry = { id: image.id }
+
+    assert_equal expected_entry,
+                 item_set.history.last[:image_deleted],
+                 'Image upload was not tracked'
+  end
 end

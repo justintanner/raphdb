@@ -4,15 +4,16 @@ module History
   extend ActiveSupport::Concern
 
   class_methods do
+    def column_type_lookup(attributes)
+      attributes.map { |attr| [attr, type_for_attribute(attr).type] }.to_h
+    end
+
     def track_history(*attributes)
       return if attributes.blank?
-
-      column_types =
-        attributes.map { |attr| [attr, self.type_for_attribute(attr).type] }
-          .to_h
+      column_types = column_type_lookup(attributes)
 
       before_create do |record|
-        TrackHistory.save(
+        TrackHistory.save_changes(
           record: record,
           attributes: attributes,
           column_types: column_types
@@ -20,7 +21,7 @@ module History
       end
 
       before_update do |record|
-        TrackHistory.save(
+        TrackHistory.save_changes(
           record: record,
           attributes: attributes,
           column_types: column_types
@@ -29,26 +30,52 @@ module History
     end
   end
 
+  def log_image_upload(image)
+    return if image.blank?
+
+    TrackHistory.save_image_changes(record: self, image: image)
+  end
+
+  def log_image_deletion(image)
+    return if image.blank?
+
+    TrackHistory.save_image_changes(record: self, image: image, deleted: true)
+  end
+
   def history
-    DisplayHistory.all(record: self)
+    DisplayHistory.all(self)
   end
 end
 
 module DisplayHistory
-  def self.all(record:)
+  def self.all(record)
     prev_values = {}
 
-    entries_asc(record: record).map do |entry|
-      {
-        ts: entry['ts'],
-        user_id: entry['u_id'],
-        changes: changes_from_to(entry: entry, prev_values: prev_values)
-      }
+    entries_asc(record).map do |log_entry|
+      display_entry(log_entry, prev_values)
     end
   end
 
-  def self.changes_from_to(entry:, prev_values:)
-    entry['c'].map do |change|
+  def self.display_entry(log_entry, prev_values)
+    entry = { ts: log_entry['ts'], user_id: log_entry['u_id'] }
+
+    if log_entry.has_key?('c')
+      entry[:changes] = changes_from_to(log_entry, prev_values)
+    end
+
+    if log_entry.has_key?('ui')
+      entry[:image_uploaded] = log_entry['ui'].symbolize_keys
+    end
+
+    if log_entry.has_key?('di')
+      entry[:image_deleted] = log_entry['di'].symbolize_keys
+    end
+
+    entry
+  end
+
+  def self.changes_from_to(log_entry, prev_values)
+    log_entry['c'].map do |change|
       prev_value_key = "#{change['k']}_#{change['k2']}"
 
       from_to = {
@@ -64,42 +91,60 @@ module DisplayHistory
     end
   end
 
-  def self.entries_asc(record:)
+  def self.entries_asc(record)
     record.changelog['h'].sort_by { |entry| entry['ts'] }
   end
 end
 
 module TrackHistory
-  def self.save(record:, attributes:, column_types:)
+  def self.save_changes(record:, attributes:, column_types:)
     return unless attributes.any? { |attr| record_changed?(record, attr) }
 
     record.changelog ||= { 'h': [] }
-    record.changelog['h'] <<
-      entry(record: record, attributes: attributes, column_types: column_types)
+    record.changelog['h'] << change_entry(record, attributes, column_types)
   end
 
-  def self.entry(record:, attributes:, column_types:)
+  def self.save_image_changes(record:, image:, deleted: false)
+    return unless image.present?
+
+    record.changelog ||= { 'h': [] }
+    record.changelog['h'] << image_upload_entry(image, deleted)
+  end
+
+  def self.image_upload_entry(image, deleted)
+    entry = {
+      ts: image.updated_at.to_time.to_i,
+      u_id: nil # TODO: Get current user
+    }
+
+    if deleted
+      entry[:di] = { id: image.id }
+    else
+      entry[:ui] = { id: image.id }
+    end
+
+    entry.deep_stringify_keys
+  end
+
+  def self.change_entry(record, attributes, column_types)
     entry = {
       ts: record.updated_at.to_time.to_i,
       u_id: nil # TODO: Get current user
     }
 
-    entry[:c] =
-      attributes
-        .select { |attr| record_changed?(record, attr) }
-        .map do |attribute|
-          changes(
-            attribute: attribute,
-            record: record,
-            column_types: column_types
-          )
-        end
-        .flatten
+    entry[:c] = record_changes(record, attributes, column_types)
 
     entry.deep_stringify_keys
   end
 
-  def self.changes(attribute:, record:, column_types:)
+  def self.record_changes(record, attributes, column_types)
+    attributes
+      .select { |attr| record_changed?(record, attr) }
+      .map { |attr| field_changes(record, attr, column_types) }
+      .flatten
+  end
+
+  def self.field_changes(record, attribute, column_types)
     changes = []
 
     if column_types[attribute] == :jsonb
@@ -138,7 +183,7 @@ module TrackHistory
     if record.send(attribute).respond_to?(:changed?)
       # Detect changes in active text fields
       record.send(attribute).changed?
-    else
+    elsif record.respond_to?("#{attribute}_changed?")
       record.send("#{attribute}_changed?")
     end
   end

@@ -6,11 +6,12 @@ class Item < ApplicationRecord
 
   belongs_to :item_set
   has_many :images
+
   # TODO: Add scope if images relationship starts doing n+1 queries.
   # https://gist.github.com/georgeclaghorn/9baf3b9f1796eed5a983d35825b7f86c
 
   clean :fields
-  track_history :fields, :item_set_id
+  track_history :fields, :item_set_id, :images
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_fields

@@ -79,4 +79,30 @@ class ItemHistoryTest < ActiveSupport::TestCase
                  item.history.second[:ts].to_i,
                  'updated_at does not match history timestamp'
   end
+
+  test 'should track image uploads' do
+    # Don't need to actually attach to test versioning of an Image record.
+    item =
+      Item.create!(fields: { item_title: 'A' }, item_set: item_sets(:default))
+    image = Image.create!(item: item)
+
+    expected_entry = { id: image.id }
+
+    assert_equal expected_entry,
+                 item.history.second[:image_uploaded],
+                 'Image upload was not tracked'
+  end
+
+  test 'should track image deletions' do
+    item =
+      Item.create!(fields: { item_title: 'A' }, item_set: item_sets(:default))
+    image = Image.create!(item: item)
+    image.destroy
+
+    expected_entry = { id: image.id }
+
+    assert_equal expected_entry,
+                 item.history.last[:image_deleted],
+                 'Image upload was not tracked'
+  end
 end

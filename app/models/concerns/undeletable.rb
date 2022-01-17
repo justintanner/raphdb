@@ -6,6 +6,8 @@ module Undeletable
   included { default_scope { where(deleted_at: nil) } }
 
   def destroy
-    update(deleted_at: Time.now)
+    run_callbacks :destroy do
+      update(deleted_at: Time.now)
+    end
   end
 end
