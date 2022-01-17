@@ -5,7 +5,19 @@ class Image < ApplicationRecord
   belongs_to :item, optional: true
   belongs_to :item_set, optional: true
 
-  has_one_attached :file
+  has_one_attached :file do |attachable|
+    attachable.variant :micro, resize_to_limit: [30, 30], format: :jpeg
+    attachable.variant :micro_retina, resize_to_limit: [60, 60], format: :jpeg
+    attachable.variant :thumb, resize_to_limit: [100, 100], format: :jpeg
+    attachable.variant :thumb_retina, resize_to_limit: [200, 200], format: :jpeg
+    attachable.variant :mid, resize_to_limit: [250, 250], format: :jpeg
+    attachable.variant :mid_retina, resize_to_limit: [500, 500], format: :jpeg
+    attachable.variant :large, resize_to_limit: [745, 700], format: :jpeg
+    attachable.variant :large_retina,
+                       resize_to_limit: [1490, 1400],
+                       format: :jpeg
+  end
+
   delegate_missing_to :file
 
   after_create :log_image_created

@@ -3,12 +3,13 @@ class Item < ApplicationRecord
   include History
   include Undeletable
   include FriendlyId
+  include Search
 
   belongs_to :item_set
-  has_many :images
 
   # TODO: Add scope if images relationship starts doing n+1 queries.
   # https://gist.github.com/georgeclaghorn/9baf3b9f1796eed5a983d35825b7f86c
+  has_many :images
 
   clean :fields
   track_history :fields, :item_set_id, :images
@@ -18,6 +19,10 @@ class Item < ApplicationRecord
 
   validate :title_present
   validate :no_symbols_in_fields
+
+  def default_sort_order
+    'fields->>item'
+  end
 
   def title
     fields.try(:[], 'item_title')
