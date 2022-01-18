@@ -7,7 +7,7 @@ module Cleaner
     def clean(attribute)
       return if attribute.blank?
 
-      column_type = self.type_for_attribute(attribute).type
+      column_type = self.type_for_attribute(attribute.to_sym).type
 
       before_validation do |record|
         Clean.attribute(record, attribute, column_type)
@@ -22,22 +22,19 @@ module Clean
 
     if column_type == :jsonb && record[attr].present?
       record[attr].each do |inner_attr, value|
-        squish_and_strip(object: record[attr], attribute: inner_attr)
-
-        # Deleting empty keys so that our jsonb column doesn't get cluttered up with empty values.
-        record[attr].delete(inner_attr) if value.blank?
+        if value.blank?
+          # Deleting empty keys so that our jsonb column doesn't get cluttered up with empty values.
+          record[attr].delete(inner_attr) if value.blank?
+        else
+          record[attr][inner_attr] = squish_and_strip(record[attr][inner_attr])
+        end
       end
     else
-      squish_and_strip(object: record, attribute: attr)
+      record[attr] = squish_and_strip(record[attr])
     end
   end
 
-  def self.squish_and_strip(object:, attribute:)
-    value = object[attribute]
-
-    value.gsub!(/[[:space:]]+/, ' ') if value.respond_to?(:gsub!)
-    value.strip! if value.respond_to?(:strip!)
-
-    object[attribute] = value
+  def self.squish_and_strip(value)
+    value.is_a?(String) ? value.gsub(/[[:space:]]+/, ' ').strip : value
   end
 end

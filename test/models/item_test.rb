@@ -30,99 +30,52 @@ class ItemTest < ActiveSupport::TestCase
   end
 
   test 'should be able to create field with symbols as keys, but they get converted to strings' do
-    item =
-      Item.create(
-        item_set: item_sets(:default),
-        fields: {
-          item_title: 'Key converted to string',
-          number: 123
-        }
-      )
+    item = item_create!({ item_title: 'Key converted to string', number: 123 })
 
     assert item.fields.keys.all? { |key| key.is_a?(String) },
            'Fields keys are not all strings'
   end
 
-  test 'should save fields[item_title] in both fields and title' do
-    item =
-      Item.create(
-        fields: {
-          item_title: 'Apple'
-        },
-        item_set: item_sets(:default)
-      )
+  test 'should pull a title from the fields' do
+    item = item_create!({ item_title: 'Apple', number: 123 })
+
     assert_equal 'Apple', item.title
   end
 
   test 'titles generates a slug' do
-    item =
-      Item.create(
-        fields: {
-          item_title: 'A bridge'
-        },
-        item_set: item_sets(:default)
-      )
+    item = item_create!({ item_title: 'A bridge' })
+
     assert_equal 'a-bridge', item.slug
   end
 
   test 'should change the slug when the title changes' do
-    item =
-      Item.create(
-        fields: {
-          item_title: 'First, 123,  "quoted"'
-        },
-        item_set: item_sets(:default)
-      )
+    item = item_create!({ item_title: 'First, 123, "quoted"' })
     item.update(fields: { item_title: 'Second, 123, "quoted"' })
+
     assert_equal 'second-123-quoted', item.slug
   end
 
   test 'title trim a squish whitespace' do
-    item =
-      Item.create(
-        fields: {
-          item_title: " lots \t of\t spaces \n"
-        },
-        item_set: item_sets(:default)
-      )
+    item = item_create!({ item_title: " lots \t of\t spaces \n" })
+
     assert_equal 'lots of spaces', item.title
     assert_equal 'lots of spaces', item.fields['item_title']
   end
 
   test 'should not save fields with empty string values' do
-    item =
-      Item.create(
-        fields: {
-          item_title: 'Empty string',
-          number: ''
-        },
-        item_set: item_sets(:default)
-      )
+    item = item_create!({ item_title: 'number is empty', number: '' })
 
     assert_not_includes item.fields.keys, 'number'
   end
 
   test 'should not save fields with nil values' do
-    item =
-      Item.create(
-        fields: {
-          item_title: 'Nil value',
-          number: nil
-        },
-        item_set: item_sets(:default)
-      )
+    item = item_create!({ item_title: 'number is nil', number: nil })
 
     assert_not_includes item.fields.keys, 'number'
   end
 
   test 'should soft delete items' do
-    item =
-      Item.create(
-        item_set: item_sets(:default),
-        fields: {
-          item_title: 'Delete me'
-        }
-      )
+    item = item_create!({ item_title: 'Delete me' })
 
     assert item.destroy, 'Failed to destroy item'
     assert_not item.destroyed?, 'Item was hard deleted'
@@ -130,28 +83,16 @@ class ItemTest < ActiveSupport::TestCase
 
   test 'should set a deleted_at timestamp when soft deleting' do
     freeze_time do
-      item =
-        Item.create(
-          item_set: item_sets(:default),
-          fields: {
-            item_title: 'Delete me'
-          }
-        )
-
+      item = item_create!({ item_title: 'Delete me' })
       assert item.destroy, 'Failed to destroy item'
+
       assert_equal item.deleted_at, Time.now, 'Item has the wrong deleted_at'
       assert item.persisted?, 'Item was hard deleted'
     end
   end
 
   test 'should not include deleted items when querying items' do
-    item =
-      Item.create(
-        item_set: item_sets(:default),
-        fields: {
-          item_title: 'Delete me'
-        }
-      )
+    item = item_create!({ item_title: 'Delete me' })
 
     assert item.destroy, 'Failed to destroy item'
     assert_not_includes Item.all, item, 'Found deleted item in all items'

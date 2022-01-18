@@ -2,6 +2,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
 require 'helpers/open_fixture_helper'
+require 'helpers/item_create_helper'
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
@@ -13,4 +14,5 @@ class ActiveSupport::TestCase
   fixtures :all
 
   include OpenFixtureHelper
+  include ItemCreateHelper
 end

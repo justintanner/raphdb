@@ -3,8 +3,7 @@ require 'test_helper'
 class ItemHistoryTest < ActiveSupport::TestCase
   test 'should track a history changes to the item' do
     freeze_time do
-      item =
-        Item.create(fields: { item_title: 'A' }, item_set: item_sets(:default))
+      item = item_create!({ item_title: 'A' })
       assert item.valid?, 'Item was not valid'
 
       expected_history = [
@@ -39,8 +38,7 @@ class ItemHistoryTest < ActiveSupport::TestCase
   end
 
   test 'should return multiple changes in the order they changed' do
-    item =
-      Item.create(fields: { item_title: 'A' }, item_set: item_sets(:default))
+    item = item_create!({ item_title: 'A' })
     assert item.valid?, 'Item was not valid'
 
     item.update(fields: { item_title: 'B' })
@@ -66,7 +64,8 @@ class ItemHistoryTest < ActiveSupport::TestCase
   end
 
   test 'rails timestamps should match history timestamps' do
-    item = Item.new(fields: { item_title: 'A' }, item_set: item_sets(:default))
+    item = item_create!({ item_title: 'A' })
+
     assert item.save!, 'Item was not saved'
 
     assert_equal item.created_at.to_time.to_i,
@@ -82,8 +81,7 @@ class ItemHistoryTest < ActiveSupport::TestCase
 
   test 'should track image uploads' do
     # Don't need to actually attach to test versioning of an Image record.
-    item =
-      Item.create!(fields: { item_title: 'A' }, item_set: item_sets(:default))
+    item = item_create!({ item_title: 'A' })
     image = Image.create!(item: item)
 
     expected_entry = { id: image.id }
@@ -94,8 +92,7 @@ class ItemHistoryTest < ActiveSupport::TestCase
   end
 
   test 'should track image deletions' do
-    item =
-      Item.create!(fields: { item_title: 'A' }, item_set: item_sets(:default))
+    item = item_create!({ item_title: 'A' })
     image = Image.create!(item: item)
     image.destroy
 

@@ -21,6 +21,7 @@ module SearchProcessor
     klass
       .includes(:item_set, :images)
       .where("fields_tsvector_col @@ to_tsquery('english', ?)", tsquery(query))
+      .order(Arel.sql(klass.default_sort_order))
       .offset(offset(options[:page], options[:per_page]))
       .limit(limit(options[:per_page]))
   end

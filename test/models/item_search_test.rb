@@ -2,27 +2,29 @@ require 'test_helper'
 
 class ItemSearchTest < ActiveSupport::TestCase
   test 'should match a keyword in the item' do
-    item =
-      Item.create!(
-        fields: {
-          item_title: 'apple'
-        },
-        item_set: item_sets(:default)
-      )
+    item = item_create!({ item_title: 'apple' })
     results = Item.search('apple')
 
     assert_equal item, results.first, 'Item was not found'
   end
 
   test 'should ignore whitespace' do
-    item =
-      Item.create!(
-        fields: {
-          item_title: 'apple'
-        },
-        item_set: item_sets(:default)
-      )
+    item = item_create!({ item_title: 'apple' })
     results = Item.search(" \n\t apple \t\n")
+
+    assert_equal item, results.first, 'Item was not found'
+  end
+
+  test 'should ignore case in data' do
+    item = item_create!({ item_title: 'APPLE' })
+    results = Item.search('apple')
+
+    assert_equal item, results.first, 'Item was not found'
+  end
+
+  test 'should ignore case in query' do
+    item = item_create!({ item_title: 'apple' })
+    results = Item.search('APPLE')
 
     assert_equal item, results.first, 'Item was not found'
   end
@@ -42,20 +44,8 @@ class ItemSearchTest < ActiveSupport::TestCase
   end
 
   test 'should match a keyword in two items' do
-    first_item =
-      Item.create!(
-        fields: {
-          item_title: 'apple'
-        },
-        item_set: item_sets(:default)
-      )
-    second_item =
-      Item.create!(
-        fields: {
-          item_title: 'banana'
-        },
-        item_set: item_sets(:default)
-      )
+    first_item = item_create!({ item_title: 'apple' })
+    second_item = item_create!({ item_title: 'banana' })
     results = Item.search('apple banana')
 
     assert_includes results.to_a, first_item, 'First item was not matched'
@@ -63,57 +53,29 @@ class ItemSearchTest < ActiveSupport::TestCase
   end
 
   test 'should match two keywords in a single item' do
-    item =
-      Item.create!(
-        fields: {
-          item_title: 'apple banana'
-        },
-        item_set: item_sets(:default)
-      )
+    item = item_create!({ item_title: 'apple banana' })
     results = Item.search('apple banana')
 
     assert_equal item, results.first, 'Item was not found'
   end
 
   test 'should match two keywords in a single item spread over multiple fields' do
-    item =
-      Item.create!(
-        fields: {
-          item_title: 'apple',
-          fruit: 'banana'
-        },
-        item_set: item_sets(:default)
-      )
+    item = item_create!({ item_title: 'apple', fruit: 'banana' })
     results = Item.search('apple banana')
 
     assert_equal item, results.first, 'Item was not found'
   end
 
   test 'should match numbers' do
-    skip 'TODO: restrict fields values to strings only, or make this work'
-    item =
-      Item.create!(
-        fields: {
-          item_title: 'apple',
-          number: 5001
-        },
-        item_set: item_sets(:default)
-      )
+    skip 'TODO: Add searchable number fields to fields'
+    item = item_create!({ item_title: 'apple banana', number: 5001 })
     results = Item.search('5001')
 
     assert_equal item, results.first, 'Item was not found'
   end
 
   test 'should default to limiting results to 100' do
-    101.times do |n|
-      Item.create!(
-        fields: {
-          item_title: n.to_s,
-          fruit: 'apple'
-        },
-        item_set: item_sets(:default)
-      )
-    end
+    101.times { |n| item_create!({ item_title: n.to_s, fruit: 'apple' }) }
 
     results = Item.search('apple')
 
@@ -121,43 +83,42 @@ class ItemSearchTest < ActiveSupport::TestCase
   end
 
   test 'should return results by page' do
-    100.times do |n|
-      Item.create!(
-        fields: {
-          item_title: n.to_s,
-          fruit: 'apple'
-        },
-        item_set: item_sets(:default)
-      )
-    end
+    100.times { |n| item_create!({ item_title: n.to_s, fruit: 'apple' }) }
 
-    last_item =
-      Item.create!(
-        fields: {
-          item_title: 'zzzlast',
-          fruit: 'apple'
-        },
-        item_set: item_sets(:default)
-      )
-
+    last_item = item_create!({ item_title: 'zlast', fruit: 'apple' })
     results = Item.search('apple', page: 2)
 
     assert_equal results.first, last_item, 'Last item on page 2 was not found'
   end
 
   test 'should limit results with per_page' do
-    20.times do |n|
-      Item.create!(
-        fields: {
-          item_title: n.to_s,
-          fruit: 'apple'
-        },
-        item_set: item_sets(:default)
-      )
-    end
+    20.times { |n| item_create!({ item_title: n.to_s, fruit: 'apple' }) }
 
     results = Item.search('apple', per_page: 10)
 
     assert_equal 10, results.count, 'Wrong number of results'
+  end
+
+  # TODO: Update this to use the default sort order in the Views model.
+  test 'should sort by the default sort order' do
+    9.downto(1) { |n| item_create!({ item_title: n.to_s + ' apple(s)' }) }
+
+    results = Item.search('apple')
+
+    assert_equal results.first.fields['item_title'],
+                 '1 apple(s)',
+                 'Wrong first item'
+    assert_equal results.last.fields['item_title'],
+                 '9 apple(s)',
+                 'Wrong last item'
+  end
+
+  test 'should sort by numeric values' do
+    9.downto(1) { |n| item_create!({ item_title: 'apple', number: n }) }
+
+    results = Item.search('apple')
+
+    assert_equal results.first.fields['number'], 1, 'Wrong first item'
+    assert_equal results.last.fields['number'], 9, 'Wrong last item'
   end
 end

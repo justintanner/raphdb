@@ -94,13 +94,11 @@ class PageTest < ActiveSupport::TestCase
     page = Page.create(title: 'Title', body: '<p>Paragraph</p>')
     assert page.valid?, 'Failed to create page'
 
-    expected_body =
+    body_change =
       page.history.first[:changes].find do |change|
         change[:attribute] == 'body'
-      end[
-        :to
-      ]
-
-    assert_equal '<p>Paragraph</p>', expected_body, 'Body is not stored in html'
+      end
+    expected_to = body_change[:to]
+    assert_equal '<p>Paragraph</p>', expected_to, 'Body is not stored in html'
   end
 end
