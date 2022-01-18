@@ -1,0 +1,14 @@
+item_title:
+  title: Title
+  key: item_title
+  column_type: Single line text
+  permanent: true
+  publish: true
+  same_across_set: false
+number:
+  title: Number
+  key: number
+  column_type: Number
+  permanent: false
+  publish: true
+  same_across_set: false

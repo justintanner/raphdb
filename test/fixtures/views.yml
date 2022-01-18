@@ -1,0 +1,3 @@
+default:
+  title: Default Sort
+  default: true

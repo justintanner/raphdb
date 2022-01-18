@@ -19,7 +19,7 @@ class Image < ApplicationRecord
   end
 
   delegate_missing_to :file
-
+  position_grouped_by :item_id, :item_set_id
   after_create :log_image_created
   after_destroy :log_image_destroyed
 
