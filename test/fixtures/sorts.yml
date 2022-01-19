@@ -1,1 +1,26 @@
-# TODO: Add default sort after adding default views and fields
+default_set_title_asc:
+  view: default
+  direction: asc
+  position: 1
+  field: set_title (Field)
+default_prefix_asc:
+  view: default
+  direction: asc
+  position: 2
+  field: prefix (Field)
+default_number_asc:
+  view: default
+  direction: asc
+  position: 3
+  field: number (Field)
+default_in_set_asc:
+  view: default
+  direction: asc
+  position: 4
+  field: in_set (Field)
+default_item_title_asc:
+  view: default
+  direction: asc
+  position: 5
+  field: item_title (Field)
+

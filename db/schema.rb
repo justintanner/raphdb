@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_18_200146) do
+ActiveRecord::Schema.define(version: 2022_01_19_184616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,10 +134,10 @@ ActiveRecord::Schema.define(version: 2022_01_18_200146) do
   create_table "views", force: :cascade do |t|
     t.string "title"
     t.boolean "default", default: false
-    t.string "fields_position"
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "field_ids_positioned", array: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

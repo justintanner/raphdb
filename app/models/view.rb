@@ -1,5 +1,6 @@
 class View < ApplicationRecord
   include Undeletable
+  has_many :sorts
 
   validates :title, presence: true
 

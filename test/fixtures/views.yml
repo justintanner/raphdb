@@ -1,3 +1,10 @@
 default:
-  title: Default Sort
+  title: Set Title
   default: true
+  field_ids_positioned:
+    - <%= Field.find(ActiveRecord::FixtureSet.identify(:set_title)).id %>
+    - <%= Field.find(ActiveRecord::FixtureSet.identify(:prefix)).id %>
+    - <%= Field.find(ActiveRecord::FixtureSet.identify(:number)).id %>
+    - <%= Field.find(ActiveRecord::FixtureSet.identify(:in_set)).id %>
+    - <%= Field.find(ActiveRecord::FixtureSet.identify(:item_title)).id %>
+

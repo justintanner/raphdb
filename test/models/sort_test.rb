@@ -23,7 +23,7 @@ class SortTest < ActiveSupport::TestCase
     first_sort = Sort.create(view: view, field: fields(:number), position: 1)
     third_sort = Sort.create(view: view, field: fields(:number), position: 3)
 
-    sorts = Sort.all
+    sorts = view.sorts
     assert_equal sorts.first, first_sort, 'first_sort is not first'
     assert_equal sorts.second, second_sort, 'second_sort is not second'
     assert_equal sorts.third, third_sort, 'third_sort is not third'
