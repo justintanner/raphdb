@@ -12,14 +12,14 @@ class ImageTest < ActiveSupport::TestCase
   end
 
   test 'should be able to manually attach an file' do
-    image = Image.create!(item: items(:one))
+    image = Image.create!(item: items(:football))
     image.attach(io: open_fixture('horizontal.jpg'), filename: 'horizontal.jpg')
 
     assert image.file.attached?, 'File not attached'
   end
 
   test 'should be able to attach multiple images' do
-    item = items(:one)
+    item = items(:football)
 
     horizontal = Image.create!(item: item)
     horizontal.attach(
@@ -35,7 +35,7 @@ class ImageTest < ActiveSupport::TestCase
   end
 
   test 'should be able to iterate all images using the active storage helper with_attached_file' do
-    item = items(:one)
+    item = items(:football)
 
     horizontal = Image.create!(item: item)
     horizontal.attach(

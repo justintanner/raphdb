@@ -1,0 +1,60 @@
+football_front:
+  item: football
+  position: 1
+football_back1:
+  item: football
+  position: 2
+football_back2:
+  item: football
+  position: 3
+fox_hunting_front:
+  item: fox_hunting (Item)
+  position: 1
+fox_hunting_back1:
+  item: fox_hunting (Item)
+  position: 2
+fox_hunting_back2:
+  item: fox_hunting (Item)
+  position: 3
+golf_front:
+  item: golf (Item)
+  position: 1
+golf_back1:
+  item: golf (Item)
+  position: 2
+golf_back2:
+  item: golf (Item)
+  position: 3
+golf_back3:
+  item: golf (Item)
+  position: 4
+hammer_throwing_front:
+  item: hammer_throwing (Item)
+  position: 1
+hammer_throwing_back1:
+  item: hammer_throwing (Item)
+  position: 2
+hammer_throwing_back2:
+  item: hammer_throwing (Item)
+  position: 3
+polo_front:
+  item: polo (Item)
+  position: 1
+polo_back1:
+  item: polo (Item)
+  position: 2
+polo_back2:
+  item: polo (Item)
+  position: 3
+polo_back3:
+  item: polo (Item)
+  position: 4
+tennis_front:
+  item: tennis (Item)
+  position: 1
+tennis_back1:
+  item: tennis (Item)
+  position: 2
+tennis_back2:
+  item: tennis (Item)
+  position: 3

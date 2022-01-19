@@ -2,32 +2,33 @@ require 'test_helper'
 
 class ImagePositionableTest < ActiveSupport::TestCase
   test 'should have a default position of 1' do
-    image = Image.create!(item: items(:one))
+    image = Image.create!(item: items(:single))
     assert_equal image.position, 1, 'Position is not 1'
   end
 
   test 'should automatically position in the next spot' do
-    first_image = Image.create!(item: items(:one))
-    second_image = Image.create!(item: items(:one))
+    first_image = Image.create!(item: items(:single))
+    second_image = Image.create!(item: items(:single))
 
     assert_equal first_image.position, 1, 'First item image position is not 1'
     assert_equal second_image.position, 2, 'Second item image position is not 2'
   end
 
   test 'should sort by position' do
-    third_image = Image.create!(item: items(:one), position: 3)
-    first_image = Image.create!(item: items(:one), position: 1)
-    second_image = Image.create!(item: items(:one), position: 2)
+    item = items(:single)
+    third_image = Image.create!(item: item, position: 3)
+    first_image = Image.create!(item: item, position: 1)
+    second_image = Image.create!(item: item, position: 2)
 
-    assert_equal Image.all,
+    assert_equal item.images,
                  [first_image, second_image, third_image],
                  'Images are not sorted by position'
   end
 
   test 'moving first to second should re-position items' do
-    first_image = Image.create!(item: items(:one), position: 1)
-    second_image = Image.create!(item: items(:one), position: 2)
-    third_image = Image.create!(item: items(:one), position: 3)
+    first_image = Image.create!(item: items(:single), position: 1)
+    second_image = Image.create!(item: items(:single), position: 2)
+    third_image = Image.create!(item: items(:single), position: 3)
 
     first_image.move_to(2)
 
@@ -45,9 +46,9 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test 'moving third to first should re-position items' do
-    first_image = Image.create!(item: items(:one), position: 1)
-    second_image = Image.create!(item: items(:one), position: 2)
-    third_image = Image.create!(item: items(:one), position: 3)
+    first_image = Image.create!(item: items(:single), position: 1)
+    second_image = Image.create!(item: items(:single), position: 2)
+    third_image = Image.create!(item: items(:single), position: 3)
 
     third_image.move_to(1)
 
@@ -67,11 +68,11 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test 'positioning should not bleed into other items' do
-    one_first = Image.create!(item: items(:one))
-    one_second = Image.create!(item: items(:one))
+    one_first = Image.create!(item: items(:single))
+    one_second = Image.create!(item: items(:single))
 
-    two_first = Image.create!(item: items(:two))
-    two_second = Image.create!(item: items(:two))
+    two_first = Image.create!(item: items(:tennis))
+    two_second = Image.create!(item: items(:tennis))
 
     assert_equal one_first.position, 1, 'First item image position is not 1'
     assert_equal one_second.position, 2, 'Second item image position is not 2'
@@ -81,13 +82,13 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test 'moving items should should not bleed into other items' do
-    one_first = Image.create!(item: items(:one), position: 1)
-    one_second = Image.create!(item: items(:one), position: 2)
+    one_first = Image.create!(item: items(:single), position: 1)
+    one_second = Image.create!(item: items(:single), position: 2)
 
-    two_first = Image.create!(item: items(:two), position: 1)
-    two_second = Image.create!(item: items(:two), position: 2)
-    two_third = Image.create!(item: items(:two), position: 3)
-    two_fourth = Image.create!(item: items(:two), position: 4)
+    two_first = Image.create!(item: items(:tennis), position: 1)
+    two_second = Image.create!(item: items(:tennis), position: 2)
+    two_third = Image.create!(item: items(:tennis), position: 3)
+    two_fourth = Image.create!(item: items(:tennis), position: 4)
 
     two_fourth.move_to(1)
 
@@ -107,9 +108,9 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test 'should be able to position images for item_sets as well' do
-    first_image = Image.create!(item_set: item_sets(:default))
-    second_image = Image.create!(item_set: item_sets(:default))
-    third_image = Image.create!(item_set: item_sets(:default))
+    first_image = Image.create!(item_set: item_sets(:orphan), position: 1)
+    second_image = Image.create!(item_set: item_sets(:orphan), position: 2)
+    third_image = Image.create!(item_set: item_sets(:orphan), position: 3)
 
     third_image.move_to(2)
 

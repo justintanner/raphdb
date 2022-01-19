@@ -16,3 +16,7 @@ class ActiveSupport::TestCase
   include OpenFixtureHelper
   include ItemCreateHelper
 end
+
+Minitest.after_run do
+  FileUtils.rm_rf(ActiveStorage::Blob.services.fetch(:test_fixtures).root)
+end

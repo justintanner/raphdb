@@ -1,3 +1,9 @@
-default:
-  title: Default
-  slug: default
+orphan:
+  title: Orphaned Items
+  slug: orphaned-items
+single_set:
+  title: Empty Set
+  slug: empty-set
+early_days_of_sport:
+  title: EARLY DAYS OF SPORT
+  slug: early-days-of-sport

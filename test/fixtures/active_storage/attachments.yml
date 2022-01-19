@@ -1,0 +1,80 @@
+football_front_attachment:
+  name: file
+  record: football_front (Image)
+  blob: football_front_blob
+football_back1_attachment:
+  name: file
+  record: football_back1 (Image)
+  blob: football_back1_blob
+football_back2_attachment:
+  name: file
+  record: football_back2 (Image)
+  blob: football_back2_blob
+fox_hunting_front_attachment:
+  name: file
+  record: fox_hunting_front (Image)
+  blob: fox_hunting_front_blob
+fox_hunting_back1_attachment:
+  name: file
+  record: fox_hunting_back1 (Image)
+  blob: fox_hunting_back1_blob
+fox_hunting_back2_attachment:
+  name: file
+  record: fox_hunting_back2 (Image)
+  blob: fox_hunting_back2_blob
+golf_front_attachment:
+  name: file
+  record: golf_front (Image)
+  blob: golf_front_blob
+golf_back1_attachment:
+  name: file
+  record: golf_back1 (Image)
+  blob: golf_back1_blob
+golf_back2_attachment:
+  name: file
+  record: golf_back2 (Image)
+  blob: golf_back2_blob
+golf_back3_attachment:
+  name: file
+  record: golf_back3 (Image)
+  blob: golf_back3_blob
+hammer_throwing_front_attachment:
+  name: file
+  record: hammer_throwing_front (Image)
+  blob: hammer_throwing_front_blob
+hammer_throwing_back1_attachment:
+  name: file
+  record: hammer_throwing_back1 (Image)
+  blob: hammer_throwing_back1_blob
+hammer_throw_back2_attachment:
+  name: file
+  record: hammer_throw_back2 (Image)
+  blob: hammer_throwing_back2_blob
+polo_front_attachment:
+  name: file
+  record: polo_front (Image)
+  blob: polo_front_blob
+polo_back1_attachment:
+  name: file
+  record: polo_back1 (Image)
+  blob: polo_back1_blob
+polo_back2_attachment:
+  name: file
+  record: polo_back2 (Image)
+  blob: polo_back2_blob
+polo_back3_attachment:
+  name: file
+  record: polo_back3 (Image)
+  blob: polo_back3_blob
+tennis_front_attachment:
+  name: file
+  record: tennis_front (Image)
+  blob: tennis_front_blob
+tennis_back1_attachment:
+  name: file
+  record: tennis_back1 (Image)
+  blob: tennis_back1_blob
+tennis_back2_attachment:
+  name: file
+  record: tennis_back2 (Image)
+  blob: tennis_back2_blob

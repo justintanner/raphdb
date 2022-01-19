@@ -12,14 +12,15 @@ module Positionable
 
   class_methods do
     def position_grouped_by(*cols)
-      @@position_group_cols = cols.to_a
+      self.class_variable_set(:@@position_group_cols, cols.to_a)
     end
   end
 
   def position_group_where
-    raise 'position_grouped_by is not set' if @@position_group_cols.blank?
+    position_group_cols = self.class.class_variable_get(:@@position_group_cols)
+    raise 'position_grouped_by is not set' if position_group_cols.blank?
 
-    @@position_group_cols
+    position_group_cols
       .select { |col| self.send(col).present? }
       .map { |col| "#{col} = #{self.send(col)}" }
       .join(' AND ')
@@ -30,7 +31,10 @@ module Positionable
   end
 
   def move_to(position_arg)
-    raise 'position_grouped_by is not set' if @@position_group_cols.blank?
+    if self.class.class_variable_get(:@@position_group_cols).blank?
+      raise 'position_grouped_by is not set'
+    end
+
     return if self.item.nil? && self.item_set.nil?
 
     new_position = [[position_arg, 1].max, self.next_position].min

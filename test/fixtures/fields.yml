@@ -1,14 +1,81 @@
+set_title:
+  title: Set Title
+  key: set_title
+  column_type: Single line text
+  permanent: true
+  same_across_set: true
+set_comment:
+  title: Set Comment
+  key: set_comment
+  column_type: Long text
+  same_across_set: true
+sold_as:
+  title: Sold As
+  key: sold_as
+  column_type: Single line text
+  same_across_set: true
+first_use:
+  title: First Use
+  key: first_use
+  column_type: Date
+  same_across_set: true
+where_sold:
+  title: Where Sold
+  key: where_sold
+  column_type: Single line text
+  same_across_set: true
 item_title:
-  title: Title
+  title: Item Title
   key: item_title
   column_type: Single line text
   permanent: true
-  publish: true
   same_across_set: false
+prefix:
+  title: Prefix
+  key: prefix
+  column_type: Single line text
+  item_identifier: true
 number:
   title: Number
   key: number
   column_type: Number
-  permanent: false
-  publish: true
-  same_across_set: false
+  item_identifier: true
+in_set:
+  title: In set
+  key: in_set
+  column_type: Single line text
+  item_identifier: true
+orientation:
+  title: Oritentation
+  key: orientation
+  column_type: Single select
+in_ref_collection:
+  title: In ref collection
+  key: in_ref_collection
+  column_type: Checkbox
+  publish: false
+item_comment:
+  title: Title
+  key: item_title
+  column_type: Long text
+places:
+  title: Places
+  key: places
+  column_type: Multiple select
+artist:
+  title: Aritst
+  key: aritst
+  column_type: Single select
+estimate_in_usd:
+  title: Estimate in USD
+  key: estimate_in_usd
+  column_type: Currency
+tags:
+  title: Tags
+  key: tags
+  column_type: Multiple select
+featured:
+  title: Featured
+  key: featured
+  column_type: Checkbox
+  publish: false

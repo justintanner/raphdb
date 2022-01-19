@@ -35,7 +35,7 @@ class ItemSearchTest < ActiveSupport::TestCase
         fields: {
           item_title: 'apple'
         },
-        item_set: item_sets(:default),
+        item_set: item_sets(:orphan),
         deleted_at: Time.now
       )
     results = Item.search('apple')

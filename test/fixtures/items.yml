@@ -1,8 +1,111 @@
-one:
-  slug: one-card
+single:
+  item_set: single_set (ItemSet)
   fields:
-    - item_title: One Card
-two:
-  slug: two-card
+    item_tile: Only item in this set, no images
+football:
+  item_set: early_days_of_sport
   fields:
-    - item_title: Two Card
+    item_title: ANCIENT FOOTBALL IN THE 14TH CENTURY
+    number: 9293
+    in_ref_collection: true
+    featured: true
+    orientation: Horizontal
+    estimate_in_usd: $15.00
+    set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
+    sold_as: set of 6 cards
+    where_sold: Great Britain
+    tags:
+      - Advertising
+      - Football
+      - Men
+fox_hunting:
+  item_set: early_days_of_sport
+  fields:
+    number: 9293
+    in_ref_collection: true
+    featured: true
+    orientation: Horizontal
+    estimate_in_usd: $15.00
+    item_title: FOX HUNTING IN THE 14TH CENTURY
+    set_title: EARLY DAYS OF SPORT
+    set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
+    sold_as: set of 6 cards
+    where_sold: Great Britain
+    tags:
+      - Advertising
+      - Fox Hunting
+      - Horses
+      - Men
+      - Ladies
+hammer_throwing:
+  item_set: early_days_of_sport
+  fields:
+    number: 9293
+    in_ref_collection: true
+    featured: true
+    orientation: Vertical
+    estimate_in_usd: $12.00
+    item_title: HENRY VIII THROWING THE HAMMER
+    set_title: EARLY DAYS OF SPORT
+    set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
+    sold_as: set of 6 cards
+    where_sold: Great Britain
+    tags:
+      - Hammer Throwing
+      - King
+      - People
+golf:
+  item_set: early_days_of_sport
+  fields:
+    number: 9293
+    in_ref_collection: true
+    featured: true
+    orientation: Horizontal
+    estimate_in_usd: $25.00
+    item_title: MARY QUEEN OF SCOTS PLAYING GOLF
+    set_title: EARLY DAYS OF SPORT
+    set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
+    sold_as: set of 6 cards
+    where_sold: Great Britain
+    tags:
+      - Advertising
+      - Golf Clubs
+      - Golfers
+      - People
+      - Queen
+polo:
+  item_set: early_days_of_sport
+  fields:
+    number: 9293
+    in_ref_collection: true
+    featured: true
+    orientation: Horizontal
+    estimate_in_usd: $15.00
+    item_title: POLO IN 600 B.C.
+    set_title: EARLY DAYS OF SPORT
+    set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
+    sold_as: set of 6 cards
+    where_sold: Great Britain
+    tags:
+      - Advertising
+      - Horses
+      - Men
+      - Polo
+tennis:
+  item_set: early_days_of_sport
+  fields:
+    number: 9293
+    in_ref_collection: true
+    featured: true
+    orientation: Horizontal
+    estimate_in_usd: $15.00
+    item_title: TENNIS IN THE TIME OF HENRY VII
+    set_title: EARLY DAYS OF SPORT
+    set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
+    sold_as: set of 6 cards
+    where_sold: Great Britain
+    tags:
+      - Advertising
+      - King
+      - Men
+      - Tennis

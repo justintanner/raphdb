@@ -4,6 +4,7 @@ bin
 public
 Gemfile.lock
 Rakefile
+fixtures
 .keep
 .idea
 .gitignore

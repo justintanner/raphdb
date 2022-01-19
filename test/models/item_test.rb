@@ -7,7 +7,7 @@ class ItemTest < ActiveSupport::TestCase
         fields: {
           item_title: 'Valid Item'
         },
-        item_set: item_sets(:default)
+        item_set: item_sets(:orphan)
       )
     assert item.valid?, 'Valid item did not save'
   end

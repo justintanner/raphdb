@@ -21,13 +21,13 @@ class ItemHistoryTest < ActiveSupport::TestCase
               attribute: 'fields',
               inner_attribute: 'set_title',
               from: nil,
-              to: item_sets(:default).title
+              to: item_sets(:orphan).title
             },
             {
               attribute: 'item_set_id',
               inner_attribute: nil,
               from: nil,
-              to: item_sets(:default).id
+              to: item_sets(:orphan).id
             }
           ]
         }
