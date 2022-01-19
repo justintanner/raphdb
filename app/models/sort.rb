@@ -10,6 +10,10 @@ class Sort < ApplicationRecord
   before_validation :set_default_direction
   validate :direction_is_allowable
 
+  def to_sql
+    "fields->'#{field.key}' #{direction.upcase}"
+  end
+
   private
 
   def set_default_direction

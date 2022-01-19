@@ -24,16 +24,6 @@ class Item < ApplicationRecord
     fields.try(:[], 'item_title')
   end
 
-  # TODO: This functionality will be handled by a Views model.
-  def self.default_sort_order
-    "fields->'set_title' ASC, item_set_id ASC, fields->'prefix' ASC, fields->'number' ASC, fields->'in_set' ASC, fields->'item_title' ASC"
-  end
-
-  # TODO: This functionality will be handled by a Fields model.
-  def self.id_fields
-    %w[prefix number in_set]
-  end
-
   def should_generate_new_friendly_id?
     # This may break if friendly id creates a different slug
     slug != fields.try(:[], 'item_title')&.downcase&.parameterize

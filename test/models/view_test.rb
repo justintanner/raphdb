@@ -30,4 +30,20 @@ class ViewTest < ActiveSupport::TestCase
     assert_not reverse_view.default,
                'Reversed still has a default status of true'
   end
+
+  test 'should be able to access the default view with a class method' do
+    default_view = View.default
+    assert_equal default_view, views(:default)
+  end
+
+  test 'should generate a sql compatible sort order' do
+    default_view = views(:default)
+
+    expected_sql =
+      "fields->'set_title' ASC, fields->'prefix' ASC, fields->'number' ASC, fields->'in_set' ASC, fields->'item_title' ASC"
+
+    assert_equal expected_sql,
+                 default_view.sql_sort_order,
+                 'SQL sort order is not correct'
+  end
 end

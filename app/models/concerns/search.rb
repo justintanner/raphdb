@@ -18,10 +18,10 @@ module SearchProcessor
   def self.query(query, klass, options)
     return if query.blank?
 
-    klass
-      .includes(:item_set, :images)
-      .where("fields_tsvector_col @@ to_tsquery('english', ?)", tsquery(query))
-      .order(Arel.sql(klass.default_sort_order))
+    klass.includes(:item_set, :images).where(
+        "fields_tsvector_col @@ to_tsquery('english', ?)",
+        tsquery(query)
+      ).order(Arel.sql(View.default.sql_sort_order)) # TODO: Add a new option accept a view or order as an option.
       .offset(offset(options[:page], options[:per_page]))
       .limit(limit(options[:per_page]))
   end

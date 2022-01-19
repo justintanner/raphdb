@@ -99,7 +99,6 @@ class ItemSearchTest < ActiveSupport::TestCase
     assert_equal 10, results.count, 'Wrong number of results'
   end
 
-  # TODO: Update this to use the default sort order in the Views model.
   test 'should sort by the default sort order' do
     9.downto(1) { |n| item_create!({ item_title: n.to_s + ' apple(s)' }) }
 
@@ -121,4 +120,6 @@ class ItemSearchTest < ActiveSupport::TestCase
     assert_equal results.first.fields['number'], 1, 'Wrong first item'
     assert_equal results.last.fields['number'], 9, 'Wrong last item'
   end
+
+  # TODO: Using fields.item_identifier save additional text to help the search.
 end

@@ -28,4 +28,17 @@ class SortTest < ActiveSupport::TestCase
     assert_equal sorts.second, second_sort, 'second_sort is not second'
     assert_equal sorts.third, third_sort, 'third_sort is not third'
   end
+
+  test 'should be exportable to sql' do
+    sort =
+      Sort.create(
+        view: views(:default),
+        field: fields(:number),
+        direction: 'asc'
+      )
+
+    assert_equal sort.to_sql,
+                 "fields->'number' ASC",
+                 'Sort was not exported to SQL'
+  end
 end
