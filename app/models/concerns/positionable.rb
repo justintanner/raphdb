@@ -35,8 +35,6 @@ module Positionable
       raise 'position_grouped_by is not set'
     end
 
-    return if self.item.nil? && self.item_set.nil?
-
     new_position = [[position_arg, 1].max, self.next_position].min
     current_position = self.position
 

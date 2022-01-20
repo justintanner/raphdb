@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_20_135234) do
+ActiveRecord::Schema.define(version: 2022_01_20_191124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,6 +158,17 @@ ActiveRecord::Schema.define(version: 2022_01_20_135234) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "view_fields", force: :cascade do |t|
+    t.integer "view_id"
+    t.integer "field_id"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["field_id"], name: "index_view_fields_on_field_id"
+    t.index ["position"], name: "index_view_fields_on_position"
+    t.index ["view_id"], name: "index_view_fields_on_view_id"
   end
 
   create_table "views", force: :cascade do |t|

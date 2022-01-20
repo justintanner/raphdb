@@ -111,14 +111,16 @@ module TrackHistory
     return unless attributes.any? { |attr| record_changed?(record, attr) }
 
     record[HistorySettings.log_column] ||= { 'h': [] }
-    record[HistorySettings.log_column]['h'] << change_entry(record, attributes, column_types)
+    record[HistorySettings.log_column]['h'] <<
+      change_entry(record, attributes, column_types)
   end
 
   def self.save_image_changes(record:, image:, deleted: false)
     return unless image.present?
 
     record[HistorySettings.log_column] ||= { 'h': [] }
-    record[HistorySettings.log_column]['h'] << image_upload_entry(image, deleted)
+    record[HistorySettings.log_column]['h'] <<
+      image_upload_entry(image, deleted)
   end
 
   def self.image_upload_entry(image, deleted)

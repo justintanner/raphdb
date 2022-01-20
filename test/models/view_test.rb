@@ -46,4 +46,36 @@ class ViewTest < ActiveSupport::TestCase
                  default_view.sql_sort_order,
                  'SQL sort order is not correct'
   end
+
+  test 'should return its fields in order' do
+    view = View.create!(title: 'Three fields')
+
+    third_field =
+      Field.create!(
+        title: 'third',
+        key: 'third',
+        column_type: Field::TYPES[:single_line_text]
+      )
+
+    second_field =
+      Field.create!(
+        title: 'second',
+        key: 'second',
+        column_type: Field::TYPES[:number]
+      )
+
+    first_field =
+      Field.create!(
+        title: 'first',
+        key: 'first',
+        column_type: Field::TYPES[:date]
+      )
+
+    view.fields = [first_field, second_field, third_field]
+
+    view.reload
+
+    assert_equal first_field, view.fields.first, 'First field is not first'
+    assert_equal third_field, view.fields.last, 'Third field is not last'
+  end
 end
