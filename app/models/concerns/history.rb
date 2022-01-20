@@ -47,9 +47,17 @@ module History
   end
 end
 
-module DisplayHistory
-  LOG_COLUMN = 'log'
+module HistorySettings
+  class << self
+    def log_column
+      'log'
+    end
 
+    attr_accessor :whodunnit
+  end
+end
+
+module DisplayHistory
   def self.all(record)
     prev_values = {}
 
@@ -94,31 +102,29 @@ module DisplayHistory
   end
 
   def self.entries_asc(record)
-    record[LOG_COLUMN]['h'].sort_by { |entry| entry['ts'] }
+    record[HistorySettings.log_column]['h'].sort_by { |entry| entry['ts'] }
   end
 end
 
 module TrackHistory
-  LOG_COLUMN = 'log'
-
   def self.save_changes(record:, attributes:, column_types:)
     return unless attributes.any? { |attr| record_changed?(record, attr) }
 
-    record[LOG_COLUMN] ||= { 'h': [] }
-    record[LOG_COLUMN]['h'] << change_entry(record, attributes, column_types)
+    record[HistorySettings.log_column] ||= { 'h': [] }
+    record[HistorySettings.log_column]['h'] << change_entry(record, attributes, column_types)
   end
 
   def self.save_image_changes(record:, image:, deleted: false)
     return unless image.present?
 
-    record[LOG_COLUMN] ||= { 'h': [] }
-    record[LOG_COLUMN]['h'] << image_upload_entry(image, deleted)
+    record[HistorySettings.log_column] ||= { 'h': [] }
+    record[HistorySettings.log_column]['h'] << image_upload_entry(image, deleted)
   end
 
   def self.image_upload_entry(image, deleted)
     entry = {
       ts: image.updated_at.to_time.to_i,
-      u_id: nil # TODO: Get current user
+      u_id: HistorySettings.whodunnit
     }
 
     if deleted
@@ -133,7 +139,7 @@ module TrackHistory
   def self.change_entry(record, attributes, column_types)
     entry = {
       ts: record.updated_at.to_time.to_i,
-      u_id: nil # TODO: Get current user
+      u_id: HistorySettings.whodunnit
     }
 
     entry[:c] = record_changes(record, attributes, column_types)
