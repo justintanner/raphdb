@@ -52,6 +52,15 @@ gem 'bootstrap', '5.1.3'
 # Generates slugs for urls and other helpers [https://github.com/norman/friendly_id]
 gem 'friendly_id'
 
+# Authentication and authorization [https://github.com/heartcombo/devise]
+gem 'devise'
+
+# Omniauth support for devise [https://github.com/omniauth/omniauth]
+gem 'omniauth'
+
+# Inviting users to sign up [https://github.com/scambra/devise_invitable]
+gem 'devise_invitable'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mingw x64_mingw]

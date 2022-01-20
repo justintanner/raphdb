@@ -7,7 +7,7 @@ class View < ApplicationRecord
   before_save :only_one_default
 
   def sql_sort_order
-    sorts.map { |sort| sort.to_sql }.join(', ')
+    sorts.map(&:to_sql).join(', ')
   end
 
   def self.default
