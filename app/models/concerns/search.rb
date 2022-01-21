@@ -39,6 +39,10 @@ module SearchProcessor
   end
 
   def self.tsquery(query)
-    query.gsub(/[[:space:]]+/, ' ').strip.gsub(/[[:space:]]/, '|')
+    if query.is_a?(String)
+      query.gsub(/[[:space:]]+/, ' ').strip.gsub(/[[:space:]]/, '|')
+    else
+      ''
+    end
   end
 end
