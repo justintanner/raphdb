@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_20_200415) do
+ActiveRecord::Schema.define(version: 2022_01_21_212313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,6 +112,15 @@ ActiveRecord::Schema.define(version: 2022_01_20_200415) do
     t.index ["slug"], name: "index_items_on_slug", unique: true
   end
 
+  create_table "multiple_selects", force: :cascade do |t|
+    t.bigint "field_id"
+    t.string "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["field_id", "title"], name: "index_multiple_selects_on_field_id_and_title", unique: true
+    t.index ["field_id"], name: "index_multiple_selects_on_field_id"
+  end
+
   create_table "pages", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
@@ -120,6 +129,15 @@ ActiveRecord::Schema.define(version: 2022_01_20_200415) do
     t.datetime "deleted_at", precision: 6
     t.jsonb "log"
     t.index ["slug"], name: "index_pages_on_slug", unique: true
+  end
+
+  create_table "single_selects", force: :cascade do |t|
+    t.bigint "field_id"
+    t.string "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["field_id", "title"], name: "index_single_selects_on_field_id_and_title", unique: true
+    t.index ["field_id"], name: "index_single_selects_on_field_id"
   end
 
   create_table "sorts", force: :cascade do |t|

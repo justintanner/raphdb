@@ -1,0 +1,6 @@
+orientation_horizontal:
+ field: orientation
+ title: Horizontal
+orientation_vertical:
+ field: orientation
+ title: Vertical

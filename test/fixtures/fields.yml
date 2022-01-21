@@ -65,7 +65,7 @@ places:
 artist:
   title: Aritst
   key: aritst
-  column_type: Single select
+  column_type: Single line text
 estimate_in_usd:
   title: Estimate in USD
   key: estimate_in_usd
