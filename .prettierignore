@@ -5,7 +5,7 @@ public
 Gemfile.lock
 Rakefile
 fixtures
-db/migrations
+db/migrate
 .keep
 .idea
 .gitignore

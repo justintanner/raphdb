@@ -13,6 +13,13 @@ class ViewTest < ActiveSupport::TestCase
     assert_not view.destroyed?, 'View was hard deleted'
   end
 
+  test 'should associate all fields by default' do
+    view = View.create!(title: 'Test View')
+    assert_equal view.fields.count,
+                 Field.all.count,
+                 'View did not associate all fields'
+  end
+
   test 'there can be only one default' do
     default_view = views(:default)
     reverse_view = View.create!(title: 'Reverse', default: true)
@@ -48,13 +55,13 @@ class ViewTest < ActiveSupport::TestCase
   end
 
   test 'should return its fields in order' do
-    view = View.create!(title: 'Three fields')
+    view = View.create!(title: 'Three fields', skip_associate_all_fields: true)
 
-    third_field =
+    first_field =
       Field.create!(
-        title: 'third',
-        key: 'third',
-        column_type: Field::TYPES[:single_line_text]
+        title: 'first',
+        key: 'first',
+        column_type: Field::TYPES[:date]
       )
 
     second_field =
@@ -64,18 +71,46 @@ class ViewTest < ActiveSupport::TestCase
         column_type: Field::TYPES[:number]
       )
 
-    first_field =
+    third_field =
       Field.create!(
-        title: 'first',
-        key: 'first',
-        column_type: Field::TYPES[:date]
+        title: 'third',
+        key: 'third',
+        column_type: Field::TYPES[:single_line_text]
       )
-
-    view.fields = [first_field, second_field, third_field]
 
     view.reload
 
     assert_equal first_field, view.fields.first, 'First field is not first'
+    assert_equal second_field, view.fields.second, 'Second field is not second'
     assert_equal third_field, view.fields.last, 'Third field is not last'
+  end
+
+  test 'deleting a view should NOT delete any view_fields' do
+    view = View.create!(title: 'One field', skip_associate_all_fields: true)
+    field =
+      Field.create!(
+        title: 'item_title',
+        column_type: Field::TYPES[:single_line_text]
+      )
+
+    view.destroy
+
+    assert_not_equal ViewField.where(view: view, field: field).count,
+                     0,
+                     'ViewField must have been destroyed'
+  end
+
+  test 'should not get deleted fields' do
+    view = View.create!(title: 'One field', skip_associate_all_fields: true)
+    field =
+      Field.create!(
+        title: 'deleted',
+        column_type: Field::TYPES[:single_line_text],
+        deleted_at: Time.now
+      )
+
+    view.reload
+
+    assert_equal view.fields.count, 0, 'Deleted field was returned'
   end
 end

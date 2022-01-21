@@ -58,4 +58,30 @@ class FieldTest < ActiveSupport::TestCase
     field = Field.new(title: 'A', column_type: 'invalid')
     assert_not field.save, 'Saved the field with an invalid column_type'
   end
+
+  test 'deleting a field should not touch any view_fields' do
+    view = View.create!(title: 'One field')
+    field =
+      Field.create!(
+        title: 'item_title',
+        column_type: Field::TYPES[:single_line_text]
+      )
+
+    assert_no_changes ViewField.where(view: view, field: field).count do
+      field.destroy
+    end
+  end
+
+  test 'should add a new field to all existing views' do
+    view = View.create!(title: 'One field')
+    field =
+      Field.create!(
+        title: 'item_title',
+        column_type: Field::TYPES[:single_line_text]
+      )
+
+    view.reload
+
+    assert_includes view.fields, field, 'Field was not added to the view'
+  end
 end

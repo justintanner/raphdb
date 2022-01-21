@@ -6,11 +6,10 @@ class View < ApplicationRecord
 
   validates :title, presence: true
 
-  before_save :only_one_default
+  attr_accessor :skip_associate_all_fields
 
-  def add_field(field)
-    self.fields << field
-  end
+  before_save :only_one_default
+  before_create :associate_all_fields
 
   def move_field_to(field, position)
     view_fields.find_by(field: field).move_to(position)
@@ -25,6 +24,11 @@ class View < ApplicationRecord
   end
 
   private
+
+  def associate_all_fields
+    return if skip_associate_all_fields
+    self.fields = Field.all
+  end
 
   def only_one_default
     if self.default_changed? && self.default == true

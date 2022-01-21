@@ -5,7 +5,7 @@ class Sort < ApplicationRecord
 
   DIRECTIONS = %w[asc desc]
 
-  position_grouped_by :view_id
+  position_by :view_id
 
   before_validation :set_default_direction
   validate :direction_is_allowable

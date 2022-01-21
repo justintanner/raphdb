@@ -2,13 +2,13 @@ require 'test_helper'
 
 class ViewFieldTest < ActiveSupport::TestCase
   test 'can change the order of fields' do
-    view = View.create!(title: 'Three fields')
+    view = View.create!(title: 'Three fields', skip_associate_all_fields: true)
 
-    third_field =
+    first_field =
       Field.create!(
-        title: 'third',
-        key: 'third',
-        column_type: Field::TYPES[:single_line_text]
+        title: 'first',
+        key: 'first',
+        column_type: Field::TYPES[:date]
       )
 
     second_field =
@@ -18,16 +18,12 @@ class ViewFieldTest < ActiveSupport::TestCase
         column_type: Field::TYPES[:number]
       )
 
-    first_field =
+    third_field =
       Field.create!(
-        title: 'first',
-        key: 'first',
-        column_type: Field::TYPES[:date]
+        title: 'third',
+        key: 'third',
+        column_type: Field::TYPES[:single_line_text]
       )
-
-    view.add_field(first_field)
-    view.add_field(second_field)
-    view.add_field(third_field)
 
     view.reload
 

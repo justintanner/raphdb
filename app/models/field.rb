@@ -2,6 +2,8 @@ class Field < ApplicationRecord
   include Undeletable
   include Cleaner
 
+  has_many :view_fields
+
   TYPES = {
     single_line_text: 'Single line text',
     long_text: 'Long text',
@@ -15,13 +17,24 @@ class Field < ApplicationRecord
   }
 
   clean :title
+
+  attr_accessor :skip_add_to_all_views
+
   before_save :create_key
+  after_create :add_to_all_views
 
   validates :title, presence: true
   validates :column_type, presence: true
   validate :column_type_allowable
 
   private
+
+  def add_to_all_views
+    return if skip_add_to_all_views
+    View.all.map do |view|
+      ViewField.find_or_create_by!(view: view, field: self)
+    end
+  end
 
   def create_key
     self.key ||= title.parameterize(separator: '_')

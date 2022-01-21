@@ -5,27 +5,31 @@ class Image < ApplicationRecord
   belongs_to :item, optional: true
   belongs_to :item_set, optional: true
 
+  SIZES = {
+    micro: [30, 30],
+    micro_retina: [60, 60],
+    thumb: [100, 100],
+    thumb_retina: [200, 200],
+    mid: [250, 250],
+    mid_retina: [500, 500],
+    large: [745, 700],
+    large_retina: [1490, 1400]
+  }
+
   has_one_attached :file do |attachable|
-    attachable.variant :micro, resize_to_limit: [30, 30], format: :jpeg
-    attachable.variant :micro_retina, resize_to_limit: [60, 60], format: :jpeg
-    attachable.variant :thumb, resize_to_limit: [100, 100], format: :jpeg
-    attachable.variant :thumb_retina, resize_to_limit: [200, 200], format: :jpeg
-    attachable.variant :mid, resize_to_limit: [250, 250], format: :jpeg
-    attachable.variant :mid_retina, resize_to_limit: [500, 500], format: :jpeg
-    attachable.variant :large, resize_to_limit: [745, 700], format: :jpeg
-    attachable.variant :large_retina,
-                       resize_to_limit: [1490, 1400],
-                       format: :jpeg
+    SIZES.each do |name, size|
+      attachable.variant name, resize_to_limit: size, format: :jpeg
+    end
   end
 
   delegate_missing_to :file
-  position_grouped_by :item_id, :item_set_id
+  position_by :item_id, :item_set_id
   after_create :log_image_created
   after_destroy :log_image_destroyed
 
-  validate :belongs_to_item_or_item_set
+  validate :item_or_set_present
 
-  def belongs_to_item_or_item_set
+  def item_or_set_present
     if item.blank? && item_set.blank?
       errors.add(:fields_item_title, 'Please associate an item or item set')
     end
