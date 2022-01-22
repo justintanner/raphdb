@@ -27,6 +27,14 @@ class Field < ApplicationRecord
   validates :column_type, presence: true
   validate :column_type_allowable
 
+  def self.numeric
+    where(column_type: TYPES[:number])
+  end
+
+  def self.item_identifiers
+    where(item_identifier: true)
+  end
+
   private
 
   def add_to_all_views

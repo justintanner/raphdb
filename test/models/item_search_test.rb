@@ -67,9 +67,16 @@ class ItemSearchTest < ActiveSupport::TestCase
   end
 
   test 'should match numbers' do
-    skip 'TODO: Add searchable number fields to fields'
     item = item_create!({ item_title: 'apple banana', number: 5001 })
     results = Item.search('5001')
+
+    assert_equal item, results.first, 'Item was not found'
+  end
+
+  test 'should match a combinations of special item_identifier fields, such as prefix+number' do
+    item =
+      item_create!({ item_title: 'apple banana', prefix: 'A', number: 5001 })
+    results = Item.search('A5001')
 
     assert_equal item, results.first, 'Item was not found'
   end

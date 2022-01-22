@@ -16,6 +16,7 @@ class Item < ApplicationRecord
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_data
+  before_save :improve_data_searchability
 
   validate :title_present
   validate :no_symbols_in_data
@@ -34,6 +35,32 @@ class Item < ApplicationRecord
   end
 
   private
+
+  def improve_data_searchability
+    if data_changed?
+      data['searchable'] =
+        number_fields_to_s + ' ' + item_identifier_sequential_combinations
+    end
+  end
+
+  # TODO: Yikes, this depends on the order of the fields in the database!
+  def item_identifier_sequential_combinations
+    Field
+      .item_identifiers
+      .select { |field| data.has_key?(field.key) }
+      .map { |field| data[field.key].to_s }
+      .each_cons(2)
+      .map(&:join)
+      .join(' ')
+  end
+
+  def number_fields_to_s
+    Field
+      .numeric
+      .select { |field| data.has_key?(field.key) }
+      .map { |field| data[field.key].to_s }
+      .join(' ')
+  end
 
   def copy_set_title_to_data
     if item_set_id_changed? && item_set.present?

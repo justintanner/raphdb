@@ -53,6 +53,10 @@ module HistorySettings
       'log'
     end
 
+    def columns_to_ignore
+      ['searchable']
+    end
+
     attr_accessor :whodunnit
   end
 end
@@ -163,7 +167,8 @@ module TrackHistory
       was, _new = record.changes
 
       record[attribute].each do |inner_attr, value|
-        return unless value != was.try(:[], inner_attr)
+        next if HistorySettings.columns_to_ignore.include?(inner_attr)
+        next if value == was.try(:[], inner_attr)
 
         changes << change(attr: attribute, inner_attr: inner_attr, value: value)
       end
