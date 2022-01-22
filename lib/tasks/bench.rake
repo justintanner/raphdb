@@ -9,7 +9,7 @@ namespace :bench do
         item_set = ItemSet.create!(title: 'Bench Set')
         n.times.map do |index|
           Item.create!(
-            fields: {
+            data: {
               item_title: "Bench Item #{index}"
             },
             item_set: item_set
@@ -40,13 +40,13 @@ namespace :bench do
         item_set = ItemSet.create!(title: 'Bench Set')
         item =
           Item.create!(
-            fields: {
+            data: {
               item_title: 'Bench Item',
               number: 0
             },
             item_set: item_set
           )
-        n.times.map { |index| item.update(fields: { number: index }) }
+        n.times.map { |index| item.update(data: { number: index }) }
       end
 
     cleanup_lambda =
@@ -72,7 +72,7 @@ namespace :bench do
         item_set = ItemSet.create!(title: 'Bench Set')
         item =
           Item.create!(
-            fields: {
+            data: {
               item_title: 'Bench Item Apple'
             },
             item_set: item_set

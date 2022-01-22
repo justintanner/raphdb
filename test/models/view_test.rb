@@ -47,7 +47,7 @@ class ViewTest < ActiveSupport::TestCase
     default_view = views(:default)
 
     expected_sql =
-      "fields->'set_title' ASC, fields->'prefix' ASC, fields->'number' ASC, fields->'in_set' ASC, fields->'item_title' ASC"
+      "data->'set_title' ASC, data->'prefix' ASC, data->'number' ASC, data->'in_set' ASC, data->'item_title' ASC"
 
     assert_equal expected_sql,
                  default_view.sql_sort_order,

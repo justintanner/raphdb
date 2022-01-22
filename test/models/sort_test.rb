@@ -38,7 +38,7 @@ class SortTest < ActiveSupport::TestCase
       )
 
     assert_equal sort.to_sql,
-                 "fields->'number' ASC",
+                 "data->'number' ASC",
                  'Sort was not exported to SQL'
   end
 end

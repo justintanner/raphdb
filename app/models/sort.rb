@@ -11,7 +11,7 @@ class Sort < ApplicationRecord
   validate :direction_is_allowable
 
   def to_sql
-    "fields->'#{field.key}' #{direction.upcase}"
+    "data->'#{field.key}' #{direction.upcase}"
   end
 
   private

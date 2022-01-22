@@ -30,36 +30,36 @@ class ItemSetTest < ActiveSupport::TestCase
 
   test 'can have multiple items' do
     item_set = ItemSet.create(title: 'Multiple Items')
-    Item.create(fields: { item_title: 'First Item' }, item_set: item_set)
-    item_set.items << Item.create(fields: { item_title: 'Second Item' })
+    Item.create(data: { item_title: 'First Item' }, item_set: item_set)
+    item_set.items << Item.create(data: { item_title: 'Second Item' })
 
     assert_equal 2, item_set.items.count, 'Items were not added correctly'
   end
 
   test 'items should have a copy of the sets title' do
     item_set = ItemSet.create(title: 'Two Items')
-    Item.create(fields: { item_title: 'First Item' }, item_set: item_set)
-    item_set.items << Item.create(fields: { item_title: 'Second Item' })
+    Item.create(data: { item_title: 'First Item' }, item_set: item_set)
+    item_set.items << Item.create(data: { item_title: 'Second Item' })
 
     assert_equal 'Two Items',
-                 item_set.items.first.fields['set_title'],
+                 item_set.items.first.data['set_title'],
                  'Item set title was not copied to items'
     assert_equal 'Two Items',
-                 item_set.items.last.fields['set_title'],
+                 item_set.items.last.data['set_title'],
                  'Item set title was not copied to items'
   end
 
   test 'updating a set title is reflected in all items' do
     item_set = ItemSet.create(title: 'Two Items')
-    Item.create(fields: { item_title: 'First Item' }, item_set: item_set)
-    item_set.items << Item.create(fields: { item_title: 'Second Item' })
+    Item.create(data: { item_title: 'First Item' }, item_set: item_set)
+    item_set.items << Item.create(data: { item_title: 'Second Item' })
 
     item_set.update(title: 'New Title')
     assert_equal 'New Title',
-                 item_set.items.first.fields['set_title'],
+                 item_set.items.first.data['set_title'],
                  'Item set title was not copied to items'
     assert_equal 'New Title',
-                 item_set.items.last.fields['set_title'],
+                 item_set.items.last.data['set_title'],
                  'Item set title was not copied to items'
   end
 

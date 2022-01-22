@@ -4,7 +4,7 @@ class ItemTest < ActiveSupport::TestCase
   test 'should save an item with a title and an item_set' do
     item =
       Item.create(
-        fields: {
+        data: {
           item_title: 'Valid Item'
         },
         item_set: item_sets(:orphan)
@@ -18,25 +18,25 @@ class ItemTest < ActiveSupport::TestCase
   end
 
   test 'should always have a set' do
-    item = Item.create(fields: { item_title: 'No set' })
+    item = Item.create(data: { item_title: 'No set' })
     assert_not item.save, 'Saved the item without a set'
   end
 
   test 'should never allow a field with a symbol for a key' do
     item = Item.new
-    item.fields = {}
-    item.fields[:item_title] = 'Bad key'
-    assert_not item.save, 'Saved fields with a symbol as a key'
+    item.data = {}
+    item.data[:item_title] = 'Bad key'
+    assert_not item.save, 'Saved data with a symbol as a key'
   end
 
   test 'should be able to create field with symbols as keys, but they get converted to strings' do
     item = item_create!({ item_title: 'Key converted to string', number: 123 })
 
-    assert item.fields.keys.all? { |key| key.is_a?(String) },
-           'Fields keys are not all strings'
+    assert item.data.keys.all? { |key| key.is_a?(String) },
+           'data keys are not all strings'
   end
 
-  test 'should pull a title from the fields' do
+  test 'should pull a title from the data' do
     item = item_create!({ item_title: 'Apple', number: 123 })
 
     assert_equal 'Apple', item.title
@@ -50,7 +50,7 @@ class ItemTest < ActiveSupport::TestCase
 
   test 'should change the slug when the title changes' do
     item = item_create!({ item_title: 'First, 123, "quoted"' })
-    item.update(fields: { item_title: 'Second, 123, "quoted"' })
+    item.update(data: { item_title: 'Second, 123, "quoted"' })
 
     assert_equal 'second-123-quoted', item.slug
   end
@@ -59,19 +59,19 @@ class ItemTest < ActiveSupport::TestCase
     item = item_create!({ item_title: " lots \t of\t spaces \n" })
 
     assert_equal 'lots of spaces', item.title
-    assert_equal 'lots of spaces', item.fields['item_title']
+    assert_equal 'lots of spaces', item.data['item_title']
   end
 
-  test 'should not save fields with empty string values' do
+  test 'should not save data with empty string values' do
     item = item_create!({ item_title: 'number is empty', number: '' })
 
-    assert_not_includes item.fields.keys, 'number'
+    assert_not_includes item.data.keys, 'number'
   end
 
-  test 'should not save fields with nil values' do
+  test 'should not save data with nil values' do
     item = item_create!({ item_title: 'number is nil', number: nil })
 
-    assert_not_includes item.fields.keys, 'number'
+    assert_not_includes item.data.keys, 'number'
   end
 
   test 'should soft delete items' do

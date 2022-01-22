@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_21_212313) do
+ActiveRecord::Schema.define(version: 2022_01_22_163849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,15 +99,15 @@ ActiveRecord::Schema.define(version: 2022_01_21_212313) do
 
   create_table "items", force: :cascade do |t|
     t.string "slug"
-    t.jsonb "fields"
+    t.jsonb "data"
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.virtual "fields_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, fields)", stored: true
+    t.virtual "data_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, data)", stored: true
     t.integer "item_set_id"
     t.jsonb "log", default: {"h"=>[]}
+    t.index ["data"], name: "index_items_on_data", using: :gin
     t.index ["deleted_at"], name: "index_items_on_deleted_at"
-    t.index ["fields"], name: "index_items_on_fields", using: :gin
     t.index ["log"], name: "index_items_on_log", using: :gin
     t.index ["slug"], name: "index_items_on_slug", unique: true
   end

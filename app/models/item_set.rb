@@ -19,12 +19,12 @@ class ItemSet < ApplicationRecord
     title_changed?
   end
 
-  # This allows the set title to be searchable by using the items.fields index.
+  # This allows the set title to be searchable by using the items.data index.
   def copy_title_to_items
     if title_changed?
       items.each do |item|
-        item.fields ||= {}
-        item.fields['set_title'] = title
+        item.data ||= {}
+        item.data['set_title'] = title
         item.save!
       end
     end

@@ -12,13 +12,13 @@ class ItemHistoryTest < ActiveSupport::TestCase
           user_id: nil, # TODO: Set the current user.
           changes: [
             {
-              attribute: 'fields',
+              attribute: 'data',
               inner_attribute: 'item_title',
               from: nil,
               to: 'A'
             },
             {
-              attribute: 'fields',
+              attribute: 'data',
               inner_attribute: 'set_title',
               from: nil,
               to: item_sets(:orphan).title
@@ -41,8 +41,8 @@ class ItemHistoryTest < ActiveSupport::TestCase
     item = item_create!({ item_title: 'A' })
     assert item.valid?, 'Item was not valid'
 
-    item.update(fields: { item_title: 'B' })
-    item.update(fields: { item_title: 'C' })
+    item.update(data: { item_title: 'B' })
+    item.update(data: { item_title: 'C' })
 
     item_title_changes =
       item
@@ -72,7 +72,7 @@ class ItemHistoryTest < ActiveSupport::TestCase
                  item.history.first[:ts].to_i,
                  'created_at does not match history timestamp'
 
-    item.update(fields: { item_title: 'B' })
+    item.update(data: { item_title: 'B' })
 
     assert_equal item.updated_at.to_time.to_i,
                  item.history.second[:ts].to_i,

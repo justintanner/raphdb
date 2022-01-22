@@ -32,7 +32,7 @@ class ItemSearchTest < ActiveSupport::TestCase
   test 'should ignore deleted items' do
     item =
       Item.create!(
-        fields: {
+        data: {
           item_title: 'apple'
         },
         item_set: item_sets(:orphan),
@@ -59,7 +59,7 @@ class ItemSearchTest < ActiveSupport::TestCase
     assert_equal item, results.first, 'Item was not found'
   end
 
-  test 'should match two keywords in a single item spread over multiple fields' do
+  test 'should match two keywords in a single item spread over multiple data fields' do
     item = item_create!({ item_title: 'apple', fruit: 'banana' })
     results = Item.search('apple banana')
 
@@ -104,10 +104,10 @@ class ItemSearchTest < ActiveSupport::TestCase
 
     results = Item.search('apple')
 
-    assert_equal results.first.fields['item_title'],
+    assert_equal results.first.data['item_title'],
                  '1 apple(s)',
                  'Wrong first item'
-    assert_equal results.last.fields['item_title'],
+    assert_equal results.last.data['item_title'],
                  '9 apple(s)',
                  'Wrong last item'
   end
@@ -117,9 +117,9 @@ class ItemSearchTest < ActiveSupport::TestCase
 
     results = Item.search('apple')
 
-    assert_equal results.first.fields['number'], 1, 'Wrong first item'
-    assert_equal results.last.fields['number'], 9, 'Wrong last item'
+    assert_equal results.first.data['number'], 1, 'Wrong first item'
+    assert_equal results.last.data['number'], 9, 'Wrong last item'
   end
 
-  # TODO: Using fields.item_identifier save additional text to help the search.
+  # TODO: Using item_identifier save additional text to help the search.
 end

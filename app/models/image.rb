@@ -31,7 +31,10 @@ class Image < ApplicationRecord
 
   def item_or_set_present
     if item.blank? && item_set.blank?
-      errors.add(:fields_item_title, 'Please associate an item or item set')
+      errors.add(
+        :item_id_or_item_set_id,
+        'Please associate an item or item set'
+      )
     end
   end
 

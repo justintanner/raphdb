@@ -1,10 +1,10 @@
 single:
   item_set: single_set (ItemSet)
-  fields:
+  data:
     item_tile: Only item in this set, no images
 football:
   item_set: early_days_of_sport
-  fields:
+  data:
     item_title: ANCIENT FOOTBALL IN THE 14TH CENTURY
     number: 9293
     in_ref_collection: true
@@ -20,7 +20,7 @@ football:
       - Men
 fox_hunting:
   item_set: early_days_of_sport
-  fields:
+  data:
     number: 9293
     in_ref_collection: true
     featured: true
@@ -39,7 +39,7 @@ fox_hunting:
       - Ladies
 hammer_throwing:
   item_set: early_days_of_sport
-  fields:
+  data:
     number: 9293
     in_ref_collection: true
     featured: true
@@ -56,7 +56,7 @@ hammer_throwing:
       - People
 golf:
   item_set: early_days_of_sport
-  fields:
+  data:
     number: 9293
     in_ref_collection: true
     featured: true
@@ -75,7 +75,7 @@ golf:
       - Queen
 polo:
   item_set: early_days_of_sport
-  fields:
+  data:
     number: 9293
     in_ref_collection: true
     featured: true
@@ -93,7 +93,7 @@ polo:
       - Polo
 tennis:
   item_set: early_days_of_sport
-  fields:
+  data:
     number: 9293
     in_ref_collection: true
     featured: true

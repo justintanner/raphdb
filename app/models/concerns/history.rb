@@ -193,7 +193,7 @@ module TrackHistory
 
   def self.record_changed?(record, attribute)
     if record.send(attribute).respond_to?(:changed?)
-      # Detect changes in active text fields
+      # Detect changes in ActiveText attributes.
       record.send(attribute).changed?
     elsif record.respond_to?("#{attribute}_changed?")
       record.send("#{attribute}_changed?")
