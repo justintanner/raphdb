@@ -25,8 +25,12 @@ class Item < ApplicationRecord
   end
 
   def should_generate_new_friendly_id?
-    # This may break if friendly id creates a different slug
-    slug != fields.try(:[], 'item_title')&.downcase&.parameterize
+    if changes.has_key?('fields')
+      original_title = changes['fields'].first.try(:[], 'item_title')
+      new_title = changes['fields'].second.try(:[], 'item_title')
+
+      original_title != new_title
+    end
   end
 
   private

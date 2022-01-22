@@ -11,16 +11,17 @@ module Positionable
   end
 
   class_methods do
-    def position_by(*cols)
-      self.class_variable_set(:@@position_by_cols, cols.to_a)
+    def position_within(*cols)
+      self.class_variable_set(:@@position_within_cols, cols.to_a)
     end
   end
 
   def position_group_where
-    position_by_cols = self.class.class_variable_get(:@@position_by_cols)
-    raise 'position_by is not set' if position_by_cols.blank?
+    position_within_cols =
+      self.class.class_variable_get(:@@position_within_cols)
+    raise 'position_within is not set' if position_within_cols.blank?
 
-    position_by_cols
+    position_within_cols
       .select { |col| self.send(col).present? }
       .map { |col| "#{col} = #{self.send(col)}" }
       .join(' AND ')
@@ -31,8 +32,8 @@ module Positionable
   end
 
   def move_to(position_arg)
-    if self.class.class_variable_get(:@@position_by_cols).blank?
-      raise 'position_by is not set'
+    if self.class.class_variable_get(:@@position_within_cols).blank?
+      raise 'position_within is not set'
     end
 
     new_position = [[position_arg, 1].max, self.next_position].min

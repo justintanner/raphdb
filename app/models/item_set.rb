@@ -19,7 +19,7 @@ class ItemSet < ApplicationRecord
     title_changed?
   end
 
-  # This allows Searching items without including the ItemSet.
+  # This allows the set title to be searchable by using the items.fields index.
   def copy_title_to_items
     if title_changed?
       items.each do |item|
