@@ -8,7 +8,7 @@ module History
       attributes.map { |attr| [attr, type_for_attribute(attr).type] }.to_h
     end
 
-    def track_history(*attributes)
+    def track_changes(*attributes)
       return if attributes.blank?
       column_types = column_type_lookup(attributes)
 

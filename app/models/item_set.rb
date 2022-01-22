@@ -8,7 +8,7 @@ class ItemSet < ApplicationRecord
   has_many :images
 
   clean :title
-  track_history :title
+  track_changes :title
   friendly_id :title, use: :history
 
   before_save :copy_title_to_items

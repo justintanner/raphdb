@@ -12,7 +12,7 @@ class Item < ApplicationRecord
   has_many :images
 
   clean :data
-  track_history :data, :item_set_id, :images
+  track_changes :data, :item_set_id, :images
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_data

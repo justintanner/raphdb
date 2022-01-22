@@ -5,7 +5,7 @@ class Page < ApplicationRecord
   include FriendlyId
 
   clean :title
-  track_history :title, :body
+  track_changes :title, :body
   friendly_id :title, use: :history
 
   has_rich_text :body
