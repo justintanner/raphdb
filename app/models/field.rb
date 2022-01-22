@@ -6,6 +6,8 @@ class Field < ApplicationRecord
   belongs_to :prefix_field, optional: true, class_name: 'Field'
   belongs_to :suffix_field, optional: true, class_name: 'Field'
 
+  RESERVED_KEYS = %w[extra_searchable_tokens]
+
   TYPES = {
     single_line_text: 'Single line text',
     long_text: 'Long text',
@@ -27,6 +29,7 @@ class Field < ApplicationRecord
 
   validates :title, presence: true
   validates :column_type, presence: true
+  validates :key, exclusion: { in: RESERVED_KEYS }
   validate :column_type_allowable
 
   def self.numeric

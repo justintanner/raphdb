@@ -11,6 +11,16 @@ class FieldTest < ActiveSupport::TestCase
     assert_not field.save, 'Saved the field without a title'
   end
 
+  test 'should not save with a reserved field key' do
+    field =
+      Field.new(
+        title: 'Apple',
+        key: Field::RESERVED_KEYS.first,
+        column_type: Field::TYPES[:date]
+      )
+    assert_not field.save, 'Saved the field with a reserved field key'
+  end
+
   test 'should soft delete' do
     field =
       Field.create!(

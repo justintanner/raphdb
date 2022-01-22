@@ -54,7 +54,7 @@ module HistorySettings
     end
 
     def columns_to_ignore
-      ['searchable']
+      Field::RESERVED_KEYS
     end
 
     attr_accessor :whodunnit

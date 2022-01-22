@@ -37,8 +37,9 @@ class Item < ApplicationRecord
   private
 
   def improve_data_searchability
+    # This key is mirrored in Field::RESERVED_KEYS
     if data_changed?
-      data['searchable'] =
+      data['extra_searchable_tokens'] =
         number_fields_as_strings
           .concat(prefix_combinations)
           .concat(suffix_combinations)
