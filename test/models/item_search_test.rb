@@ -73,10 +73,16 @@ class ItemSearchTest < ActiveSupport::TestCase
     assert_equal item, results.first, 'Item was not found'
   end
 
-  test 'should match a combinations of special item_identifier fields, such as prefix+number' do
-    item =
-      item_create!({ item_title: 'apple banana', prefix: 'A', number: 5001 })
+  test 'should find fields with prefixes without spaces' do
+    item = item_create!({ item_title: 'cherry', prefix: 'A', number: 5001 })
     results = Item.search('A5001')
+
+    assert_equal item, results.first, 'Item was not found'
+  end
+
+  test 'should find fields with suffixes without spaces' do
+    item = item_create!({ item_title: 'cherry', number: 5001, in_set: 'Z' })
+    results = Item.search('5001Z')
 
     assert_equal item, results.first, 'Item was not found'
   end

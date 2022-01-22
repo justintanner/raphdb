@@ -3,7 +3,19 @@
 Page.create!(title: 'Homepage', body: '<p>Welcome to Justin\'s Lilywhites!</p>')
 
 fields_yaml = YAML.load_file(Rails.root.join('test', 'fixtures', 'fields.yml'))
-fields = fields_yaml.map { |field_yaml| Field.create!(field_yaml.second) }
+fields =
+  fields_yaml.map do |yaml|
+    Field.create!(
+      yaml.second.with_indifferent_access.except(:prefix_field, :suffix_field)
+    )
+  end
+
+Field
+  .find_by(key: 'number')
+  .update(
+    prefix_field_id: Field.find_by(key: 'prefix').id,
+    suffix_field_id: Field.find_by(key: 'in_set').id
+  )
 
 puts "Seeded #{Field.count} fields from the fixtures"
 

@@ -3,6 +3,8 @@ class Field < ApplicationRecord
   include Cleaner
 
   has_many :view_fields
+  belongs_to :prefix_field, optional: true, class_name: 'Field'
+  belongs_to :suffix_field, optional: true, class_name: 'Field'
 
   TYPES = {
     single_line_text: 'Single line text',
@@ -31,8 +33,12 @@ class Field < ApplicationRecord
     where(column_type: TYPES[:number])
   end
 
-  def self.item_identifiers
-    where(item_identifier: true)
+  def self.with_prefixes
+    where.not(prefix_field_id: nil)
+  end
+
+  def self.with_suffixes
+    where.not(suffix_field_id: nil)
   end
 
   private

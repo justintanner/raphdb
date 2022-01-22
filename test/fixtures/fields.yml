@@ -40,6 +40,8 @@ number:
   key: number
   column_type: Number
   item_identifier: true
+  prefix_field: prefix
+  suffix_field: in_set
 in_set:
   title: In set
   key: in_set

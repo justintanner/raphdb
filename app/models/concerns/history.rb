@@ -73,15 +73,15 @@ module DisplayHistory
   def self.display_entry(log_entry, prev_values)
     entry = { ts: log_entry['ts'], user_id: log_entry['u_id'] }
 
-    if log_entry.has_key?('c')
+    if log_entry.key?('c')
       entry[:changes] = changes_from_to(log_entry, prev_values)
     end
 
-    if log_entry.has_key?('ui')
+    if log_entry.key?('ui')
       entry[:image_uploaded] = log_entry['ui'].symbolize_keys
     end
 
-    if log_entry.has_key?('di')
+    if log_entry.key?('di')
       entry[:image_deleted] = log_entry['di'].symbolize_keys
     end
 

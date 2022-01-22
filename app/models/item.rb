@@ -26,7 +26,7 @@ class Item < ApplicationRecord
   end
 
   def should_generate_new_friendly_id?
-    if changes.has_key?('data')
+    if changes.key?('data')
       original_title = changes['data'].first.try(:[], 'item_title')
       new_title = changes['data'].second.try(:[], 'item_title')
 
@@ -39,27 +39,36 @@ class Item < ApplicationRecord
   def improve_data_searchability
     if data_changed?
       data['searchable'] =
-        number_fields_to_s + ' ' + item_identifier_sequential_combinations
+        number_fields_as_strings
+          .concat(prefix_combinations)
+          .concat(suffix_combinations)
+          .join(' ')
     end
   end
 
-  # TODO: Yikes, this depends on the order of the fields in the database!
-  def item_identifier_sequential_combinations
-    Field
-      .item_identifiers
-      .select { |field| data.has_key?(field.key) }
-      .map { |field| data[field.key].to_s }
-      .each_cons(2)
-      .map(&:join)
-      .join(' ')
-  end
-
-  def number_fields_to_s
+  def number_fields_as_strings
     Field
       .numeric
-      .select { |field| data.has_key?(field.key) }
+      .select { |field| data.key?(field.key) }
       .map { |field| data[field.key].to_s }
-      .join(' ')
+  end
+
+  def prefix_combinations
+    Field
+      .with_prefixes
+      .select do |field|
+        data.key?(field.key) && data.key?(field.prefix_field.key)
+      end
+      .map { |field| data[field.prefix_field.key].to_s + data[field.key].to_s }
+  end
+
+  def suffix_combinations
+    Field
+      .with_suffixes
+      .select do |field|
+        data.key?(field.key) && data.key?(field.suffix_field.key)
+      end
+      .map { |field| data[field.key].to_s + data[field.suffix_field.key].to_s }
   end
 
   def copy_set_title_to_data
