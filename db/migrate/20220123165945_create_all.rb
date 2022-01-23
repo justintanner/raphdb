@@ -1,4 +1,5 @@
 class CreateAll < ActiveRecord::Migration[7.0]
+  # This migration is a concatenation of all previous migrations, but with better indexes and foreign keys.
   def change
     create_table :friendly_id_slugs do |t|
       t.string :slug, null: false
