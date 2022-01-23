@@ -21,7 +21,7 @@ module SearchProcessor
     remaining_query, advanced_options = extract_advanced(remaining_query)
 
     klass
-      .includes(:item_set, :images)
+      .includes(:images)
       .where(tsvector_where(remaining_query))
       .where(advanced_where(advanced_options))
       .order(order_by)
@@ -51,7 +51,7 @@ module SearchProcessor
   end
 
   def self.equals(key, value)
-    ApplicationRecord.sanitize_sql_array(['(data->>? = ?)', key, value])
+    ApplicationRecord.sanitize_sql_array(['(data->>? LIKE ?)', key, "%#{value}%"])
   end
 
   def self.between(key, from, to)

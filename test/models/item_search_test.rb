@@ -145,19 +145,20 @@ class ItemSearchTest < ActiveSupport::TestCase
     assert_equal results.last.data['number'], 5, 'Wrong last item'
   end
 
-  test 'should be able to search by exact match' do
-    item = item_create!({ item_title: 'cherry-banana' })
+  test 'should be able to search limit to one field' do
+    match_item = item_create!({ item_title: 'cherry-banana', number: 2 })
+    dont_match_item = item_create!({ item_title: 'A', fruit: 'cherry-banana', number: 1 })
 
     results = Item.search('item_title: "cherry-banana"')
 
-    assert_equal results.first, item, 'Item was not found'
+    assert_includes results, match_item, 'Item was not found'
+    assert_not_includes results, dont_match_item, 'Item was not found'
   end
 
   test 'should be able to match by two advanced criteria at once' do
-    items =
-      1
-        .upto(5)
-        .map { |n| item_create!({ item_title: 'cherry-banana', number: n }) }
+    items = 1.upto(5).map do |n|
+      item_create!({ item_title: 'cherry-banana', number: n })
+    end
 
     results = Item.search('item_title: "cherry-banana" number: 1-5')
 
@@ -169,6 +170,14 @@ class ItemSearchTest < ActiveSupport::TestCase
     item = item_create!({ item_title: 'apple', number: 9001 })
 
     results = Item.search('number: 9001')
+
+    assert_equal results.first, item, 'Item was not found'
+  end
+
+  test 'should be able to partially match within a specific field' do
+    item = item_create!({ item_title: 'apple-banana-cherry' })
+
+    results = Item.search('item_title: "banana"')
 
     assert_equal results.first, item, 'Item was not found'
   end
