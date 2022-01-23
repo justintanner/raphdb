@@ -32,6 +32,10 @@ class Field < ApplicationRecord
   validates :key, exclusion: { in: RESERVED_KEYS }
   validate :column_type_allowable
 
+  def self.keys
+    pluck(:key)
+  end
+
   def self.numeric
     where(column_type: TYPES[:number])
   end

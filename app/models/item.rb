@@ -16,7 +16,7 @@ class Item < ApplicationRecord
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_data
-  before_save :improve_data_searchability
+  before_save :generate_extra_searchable_tokens
 
   validate :title_present
   validate :no_symbols_in_data
@@ -36,9 +36,9 @@ class Item < ApplicationRecord
 
   private
 
-  def improve_data_searchability
-    # This key is mirrored in Field::RESERVED_KEYS
+  def generate_extra_searchable_tokens
     if data_changed?
+      # This key is mirrored in Field::RESERVED_KEYS
       data['extra_searchable_tokens'] =
         number_fields_as_strings
           .concat(prefix_combinations)

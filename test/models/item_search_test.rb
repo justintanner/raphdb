@@ -134,5 +134,14 @@ class ItemSearchTest < ActiveSupport::TestCase
     assert_equal results.last.data['number'], 9, 'Wrong last item'
   end
 
-  # TODO: Using item_identifier save additional text to help the search.
+  test 'should be able to search by number ranges' do
+    1.upto(5) { |n| item_create!({ item_title: 'apple', number: n }) }
+    6.upto(11) { |n| item_create!({ item_title: 'apple', number: n }) }
+
+    results = Item.search('apple number: 1-5')
+
+    assert_equal results.count, 5, 'Wrong number of results'
+    assert_equal results.first.data['number'], 1, 'Wrong first item'
+    assert_equal results.last.data['number'], 5, 'Wrong last item'
+  end
 end
