@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_22_201331) do
+ActiveRecord::Schema.define(version: 2022_01_23_165945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,11 +61,14 @@ ActiveRecord::Schema.define(version: 2022_01_22_201331) do
     t.boolean "publish", default: true
     t.boolean "same_across_set", default: false
     t.boolean "item_identifier", default: false
+    t.bigint "prefix_field_id"
+    t.bigint "suffix_field_id"
+    t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.datetime "deleted_at", precision: 6
-    t.integer "prefix_field_id"
-    t.integer "suffix_field_id"
+    t.index ["deleted_at"], name: "index_fields_on_deleted_at"
+    t.index ["prefix_field_id"], name: "index_fields_on_prefix_field_id"
+    t.index ["suffix_field_id"], name: "index_fields_on_suffix_field_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -80,42 +83,48 @@ ActiveRecord::Schema.define(version: 2022_01_22_201331) do
   end
 
   create_table "images", force: :cascade do |t|
-    t.integer "item_id"
+    t.bigint "item_id"
+    t.bigint "item_set_id"
+    t.integer "position"
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "position"
-    t.integer "item_set_id"
+    t.index ["deleted_at"], name: "index_images_on_deleted_at"
+    t.index ["item_id"], name: "index_images_on_item_id"
+    t.index ["item_set_id"], name: "index_images_on_item_set_id"
   end
 
   create_table "item_sets", force: :cascade do |t|
     t.string "title"
     t.string "slug"
+    t.jsonb "log"
+    t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "log", default: {"h"=>[]}
-    t.datetime "deleted_at", precision: 6
-    t.index ["log"], name: "index_item_sets_on_log", using: :gin
+    t.index ["deleted_at"], name: "index_item_sets_on_deleted_at"
+    t.index ["log"], name: "index_item_sets_on_log"
     t.index ["title"], name: "index_item_sets_on_title", unique: true
   end
 
   create_table "items", force: :cascade do |t|
+    t.bigint "item_set_id", null: false
     t.string "slug"
     t.jsonb "data"
+    t.jsonb "log"
+    t.virtual "data_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, data)", stored: true
+    t.virtual "virtual", type: :tsvector, as: "to_tsvector('english'::regconfig, data)", stored: true
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.virtual "data_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, data)", stored: true
-    t.integer "item_set_id"
-    t.jsonb "log", default: {"h"=>[]}
-    t.index ["data"], name: "index_items_on_data", using: :gin
+    t.index ["data"], name: "index_items_on_data"
     t.index ["deleted_at"], name: "index_items_on_deleted_at"
-    t.index ["log"], name: "index_items_on_log", using: :gin
+    t.index ["item_set_id"], name: "index_items_on_item_set_id"
+    t.index ["log"], name: "index_items_on_log"
     t.index ["slug"], name: "index_items_on_slug", unique: true
   end
 
   create_table "multiple_selects", force: :cascade do |t|
-    t.bigint "field_id"
+    t.bigint "field_id", null: false
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -125,16 +134,18 @@ ActiveRecord::Schema.define(version: 2022_01_22_201331) do
 
   create_table "pages", force: :cascade do |t|
     t.string "title"
+    t.string "slug"
+    t.jsonb "log"
+    t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "slug"
-    t.datetime "deleted_at", precision: 6
-    t.jsonb "log"
+    t.index ["deleted_at"], name: "index_pages_on_deleted_at"
+    t.index ["log"], name: "index_pages_on_log"
     t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
   create_table "single_selects", force: :cascade do |t|
-    t.bigint "field_id"
+    t.bigint "field_id", null: false
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -143,12 +154,14 @@ ActiveRecord::Schema.define(version: 2022_01_22_201331) do
   end
 
   create_table "sorts", force: :cascade do |t|
-    t.integer "view_id"
+    t.bigint "view_id", null: false
+    t.bigint "field_id", null: false
     t.string "direction"
     t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "field_id"
+    t.index ["field_id"], name: "index_sorts_on_field_id"
+    t.index ["view_id"], name: "index_sorts_on_view_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -181,13 +194,12 @@ ActiveRecord::Schema.define(version: 2022_01_22_201331) do
   end
 
   create_table "view_fields", force: :cascade do |t|
-    t.integer "view_id"
-    t.integer "field_id"
+    t.bigint "view_id", null: false
+    t.bigint "field_id", null: false
     t.integer "position"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.index ["field_id"], name: "index_view_fields_on_field_id"
     t.index ["position"], name: "index_view_fields_on_position"
+    t.index ["view_id", "field_id"], name: "index_view_fields_on_view_id_and_field_id", unique: true
     t.index ["view_id"], name: "index_view_fields_on_view_id"
   end
 
@@ -197,8 +209,20 @@ ActiveRecord::Schema.define(version: 2022_01_22_201331) do
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["deleted_at"], name: "index_views_on_deleted_at"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "fields", "fields", column: "prefix_field_id"
+  add_foreign_key "fields", "fields", column: "suffix_field_id"
+  add_foreign_key "images", "item_sets"
+  add_foreign_key "images", "items"
+  add_foreign_key "items", "item_sets"
+  add_foreign_key "multiple_selects", "fields"
+  add_foreign_key "single_selects", "fields"
+  add_foreign_key "sorts", "fields"
+  add_foreign_key "sorts", "views"
+  add_foreign_key "view_fields", "fields"
+  add_foreign_key "view_fields", "views"
 end

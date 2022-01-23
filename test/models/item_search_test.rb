@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ItemSechTest < ActiveSupport::TestCase
+class ItemSearchTest < ActiveSupport::TestCase
   test 'should match a keyword in the item' do
     item = item_create!({ item_title: 'apple' })
     results = Item.search('apple')

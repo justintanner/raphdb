@@ -68,17 +68,19 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test 'positioning should not bleed into other items' do
-    one_first = Image.create!(item: items(:single))
-    one_second = Image.create!(item: items(:single))
+    apple_item = item_create!(item_title: 'Apple')
+    first_apple_image = Image.create!(item: apple_item)
+    second_apple_image = Image.create!(item: apple_item)
 
-    two_first = Image.create!(item: items(:tennis))
-    two_second = Image.create!(item: items(:tennis))
+    banana_item = item_create!(item_title: 'Banana')
+    first_banana_image = Image.create!(item: banana_item)
+    second_banana_image = Image.create!(item: banana_item)
 
-    assert_equal one_first.position, 1, 'First item image position is not 1'
-    assert_equal one_second.position, 2, 'Second item image position is not 2'
+    assert_equal first_apple_image.position, 1, 'First item image position is not 1'
+    assert_equal second_apple_image.position, 2, 'Second item image position is not 2'
 
-    assert_equal two_first.position, 1, 'First item image position is not 1'
-    assert_equal two_second.position, 2, 'Second item image position is not 2'
+    assert_equal first_banana_image.position, 1, 'First item image position is not 1'
+    assert_equal second_banana_image.position, 2, 'Second item image position is not 2'
   end
 
   test 'moving items should should not bleed into other items' do

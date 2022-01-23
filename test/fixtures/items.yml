@@ -1,5 +1,5 @@
 single:
-  item_set: single_set (ItemSet)
+  item_set: empty_set
   data:
     item_tile: Only item in this set, no images
 football:

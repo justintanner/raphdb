@@ -1,26 +1,27 @@
 default_set_title_asc:
   view: default
+  field: set_title
   direction: asc
   position: 1
-  field: set_title
 default_prefix_asc:
   view: default
+  field: prefix
   direction: asc
   position: 2
-  field: prefix
 default_number_asc:
   view: default
+  field: number
   direction: asc
   position: 3
-  field: number
 default_in_set_asc:
   view: default
+  field: in_set
   direction: asc
   position: 4
-  field: in_set
 default_item_title_asc:
   view: default
+  field: item_title
   direction: asc
   position: 5
-  field: item_title
+
 
