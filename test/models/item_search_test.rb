@@ -144,4 +144,32 @@ class ItemSearchTest < ActiveSupport::TestCase
     assert_equal results.first.data['number'], 1, 'Wrong first item'
     assert_equal results.last.data['number'], 5, 'Wrong last item'
   end
+
+  test 'should be able to search by exact match' do
+    item = item_create!({ item_title: 'cherry-banana' })
+
+    results = Item.search('item_title: "cherry-banana"')
+
+    assert_equal results.first, item, 'Item was not found'
+  end
+
+  test 'should be able to match by two advanced criteria at once' do
+    items =
+      1
+        .upto(5)
+        .map { |n| item_create!({ item_title: 'cherry-banana', number: n }) }
+
+    results = Item.search('item_title: "cherry-banana" number: 1-5')
+
+    assert_equal results.first, items.first, 'First item was not found'
+    assert_equal results.last, items.last, 'Last item was not found'
+  end
+
+  test 'should be able to exact match an integer' do
+    item = item_create!({ item_title: 'apple', number: 9001 })
+
+    results = Item.search('number: 9001')
+
+    assert_equal results.first, item, 'Item was not found'
+  end
 end
