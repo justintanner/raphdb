@@ -1,6 +1,33 @@
-england_linconshire:
-  field: places
-  title: England - Lincolnshire
-england_somersetshire:
-  field: places
-  title: England - Somersetshire
+advertising:
+  field: tags
+  title: Advertising
+football:
+  field: tags
+  title: Football
+men:
+  field: tags
+  title: Men
+ladies:
+  field: tags
+  title: Ladies
+fox_hunting:
+  field: tags
+  title: Fox Hunting
+horses:
+  field: tags
+  title: Horses
+hammer_throwing:
+  field: tags
+  title: Hammer Throwing
+golf:
+  field: tags
+  title: Golf
+queen:
+  field: tags
+  title: Queen
+king:
+  field: tags
+  title: King
+polo:
+  field: tags
+  title: Polo

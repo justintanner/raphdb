@@ -1,5 +1,5 @@
 class Item < ApplicationRecord
-  include Cleaner
+  include CleanAndFormat
   include History
   include Undeletable
   include FriendlyId
@@ -20,6 +20,14 @@ class Item < ApplicationRecord
 
   validate :title_present
   validate :no_symbols_in_data
+
+  def display_data
+    Field
+      .all
+      .map { |field| [field.key, field.display_format(data[field.key])] }
+      .to_h
+      .with_indifferent_access
+  end
 
   def title
     data.try(:[], 'item_title')

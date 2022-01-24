@@ -1,6 +1,6 @@
 class Field < ApplicationRecord
   include Undeletable
-  include Cleaner
+  include CleanAndFormat
 
   has_many :view_fields
   belongs_to :prefix_field, optional: true, class_name: 'Field'
@@ -31,6 +31,30 @@ class Field < ApplicationRecord
   validates :column_type, presence: true
   validates :key, exclusion: { in: RESERVED_KEYS }
   validate :column_type_allowable
+
+  def display_format(value)
+    return if value.blank?
+
+    if column_type == TYPES[:date]
+      Date.strptime(value, '%Y%m%d').strftime('%d/%m/%Y')
+    elsif column_type == TYPES[:currency]
+      value.gsub('-', '.').gsub('_', '')
+    else
+      value
+    end
+  end
+
+  def storage_format(value)
+    return if value.blank?
+
+    if column_type == TYPES[:date]
+      Date.parse(value).strftime('%Y%m%d')
+    elsif column_type == TYPES[:currency]
+      "_#{value.gsub('.', '-')}_"
+    else
+      value
+    end
+  end
 
   def self.keys
     pluck(:key)

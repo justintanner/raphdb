@@ -1,5 +1,5 @@
 class Page < ApplicationRecord
-  include Cleaner
+  include CleanAndFormat
   include History
   include Undeletable
   include FriendlyId

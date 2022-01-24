@@ -97,4 +97,31 @@ class ItemTest < ActiveSupport::TestCase
     assert item.destroy, 'Failed to destroy item'
     assert_not_includes Item.all, item, 'Found deleted item in all items'
   end
+
+  test 'should save date fields to item in a non-searchable format' do
+    # See fields(:first_use) for details on the the Date field.
+    item = item_create!(item_title: 'Apple', first_use: Date.new(1904, 1, 30))
+
+    assert_equal '19040130', item.data['first_use']
+    assert_equal '30/01/1904', item.display_data['first_use']
+  end
+
+  test 'should save string date fields in a non-searchable format' do
+    # See fields(:first_use) for details on the the Date field.
+    item = item_create!(item_title: 'Apple', first_use: '1904-01-30')
+    results = Item.search('1904-')
+    assert_not_includes results, item, 'Found item with date'
+    assert_equal '19040130', item.data['first_use']
+    assert_equal '30/01/1904', item.display_data['first_use']
+  end
+
+  test 'should save money in a non-searchable format' do
+    # See fields(:estimate_in_usd) for details on the the Currency field.
+    item = item_create!(item_title: 'Apple', estimate_in_usd: '125.01')
+
+    results = Item.search('125.01')
+    assert_not_includes results, item, 'Found item with money'
+    assert_equal '_125-01_', item.data['estimate_in_usd']
+    assert_equal '125.01', item.display_data['estimate_in_usd']
+  end
 end

@@ -51,7 +51,9 @@ module SearchProcessor
   end
 
   def self.equals(key, value)
-    ApplicationRecord.sanitize_sql_array(['(data->>? LIKE ?)', key, "%#{value}%"])
+    ApplicationRecord.sanitize_sql_array(
+      ['(data->>? LIKE ?)', key, "%#{value}%"]
+    )
   end
 
   def self.between(key, from, to)
@@ -109,10 +111,7 @@ module SearchProcessor
   end
 
   def self.pre_clean(query)
-    query
-      .gsub(/[~`!@#$%^&(){};<,.>?\/|+=]/, ' ')
-      .gsub(/[[:space:]]+/, ' ')
-      .strip
+    query.gsub(/[~`!@#%^&(){};<,>?\/|+=]/, ' ').gsub(/[[:space:]]+/, ' ').strip
   end
 
   def self.postgres_query_string(query)

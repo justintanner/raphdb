@@ -17,6 +17,7 @@ sold_as:
 first_use:
   title: First Use
   key: first_use
+  date_format: "%m/%d/%Y"
   column_type: Date
   same_across_set: true
 where_sold:
@@ -57,8 +58,8 @@ in_ref_collection:
   column_type: Checkbox
   publish: false
 item_comment:
-  title: Title
-  key: item_title
+  title: Item Comment
+  key: item_comment
   column_type: Long text
 places:
   title: Places

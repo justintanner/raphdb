@@ -1,5 +1,5 @@
 class ItemSet < ApplicationRecord
-  include Cleaner
+  include CleanAndFormat
   include History
   include Undeletable
   include FriendlyId
@@ -13,7 +13,7 @@ class ItemSet < ApplicationRecord
 
   before_save :copy_title_to_items
 
-  validates :title, presence: true, uniqueness: true
+  validates :title, presence: true
 
   def should_generate_new_friendly_id?
     title_changed?

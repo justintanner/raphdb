@@ -31,5 +31,32 @@ end
 
 puts "Seeded #{Sort.count} sorts from the fixtures"
 
-# TODO: Load items from json file
-ItemSet.create!(title: 'Default')
+File.open(Rails.root.join('tmp', 'db.json')) do |file|
+  db_json = JSON.load(file)
+  db_json.sort_by! { |row| [row['set_id'].to_i, row['id'].to_i] }
+
+  db_json.each do |row|
+    id = row['id'].to_i
+    set_id = row['set_id'].to_i
+    set_title = row['set_title'].strip
+    row.delete('id')
+    row.delete('set_id')
+    row.delete('set_title')
+
+    item_set = ItemSet.find_by(id: set_id)
+    if item_set.blank?
+      item_set = ItemSet.new(title: set_title)
+      item_set.id = set_id
+      item_set.save!
+    end
+
+    item = Item.new(data: row, item_set: item_set)
+    item.id = id
+    item.save!
+
+    print '.'
+  end
+end
+
+puts "Seeded #{Item.count} items from db.json"
+puts "Seeded #{ItemSet.count} items from db.json"

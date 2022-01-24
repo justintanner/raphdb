@@ -60,7 +60,7 @@ class ItemSearchTest < ActiveSupport::TestCase
   end
 
   test 'should match two keywords in a single item spread over multiple data fields' do
-    item = item_create!({ item_title: 'apple', fruit: 'banana' })
+    item = item_create!({ item_title: 'apple', item_comment: 'banana' })
     results = Item.search('apple banana')
 
     assert_equal item, results.first, 'Item was not found'
@@ -88,7 +88,9 @@ class ItemSearchTest < ActiveSupport::TestCase
   end
 
   test 'should default to limiting results to 100' do
-    101.times { |n| item_create!({ item_title: n.to_s, fruit: 'apple' }) }
+    101.times do |n|
+      item_create!({ item_title: n.to_s, item_comment: 'apple' })
+    end
 
     results = Item.search('apple')
 
@@ -96,16 +98,18 @@ class ItemSearchTest < ActiveSupport::TestCase
   end
 
   test 'should return results by page' do
-    100.times { |n| item_create!({ item_title: n.to_s, fruit: 'apple' }) }
+    100.times do |n|
+      item_create!({ item_title: n.to_s, item_comment: 'apple' })
+    end
 
-    last_item = item_create!({ item_title: 'zlast', fruit: 'apple' })
+    last_item = item_create!({ item_title: 'zlast', item_comment: 'apple' })
     results = Item.search('apple', page: 2)
 
     assert_equal results.first, last_item, 'Last item on page 2 was not found'
   end
 
   test 'should limit results with per_page' do
-    20.times { |n| item_create!({ item_title: n.to_s, fruit: 'apple' }) }
+    20.times { |n| item_create!({ item_title: n.to_s, item_comment: 'apple' }) }
 
     results = Item.search('apple', per_page: 10)
 
@@ -147,7 +151,10 @@ class ItemSearchTest < ActiveSupport::TestCase
 
   test 'should be able to search limit to one field' do
     match_item = item_create!({ item_title: 'cherry-banana', number: 2 })
-    dont_match_item = item_create!({ item_title: 'A', fruit: 'cherry-banana', number: 1 })
+    dont_match_item =
+      item_create!(
+        { item_title: 'A', item_comment: 'cherry-banana', number: 1 }
+      )
 
     results = Item.search('item_title: "cherry-banana"')
 
@@ -156,9 +163,10 @@ class ItemSearchTest < ActiveSupport::TestCase
   end
 
   test 'should be able to match by two advanced criteria at once' do
-    items = 1.upto(5).map do |n|
-      item_create!({ item_title: 'cherry-banana', number: n })
-    end
+    items =
+      1
+        .upto(5)
+        .map { |n| item_create!({ item_title: 'cherry-banana', number: n }) }
 
     results = Item.search('item_title: "cherry-banana" number: 1-5')
 

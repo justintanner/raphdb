@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_23_165945) do
+ActiveRecord::Schema.define(version: 2022_01_24_205211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2022_01_23_165945) do
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "date_format"
     t.index ["deleted_at"], name: "index_fields_on_deleted_at"
     t.index ["prefix_field_id"], name: "index_fields_on_prefix_field_id"
     t.index ["suffix_field_id"], name: "index_fields_on_suffix_field_id"
@@ -103,7 +104,6 @@ ActiveRecord::Schema.define(version: 2022_01_23_165945) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["deleted_at"], name: "index_item_sets_on_deleted_at"
     t.index ["log"], name: "index_item_sets_on_log"
-    t.index ["title"], name: "index_item_sets_on_title", unique: true
   end
 
   create_table "items", force: :cascade do |t|
@@ -112,7 +112,6 @@ ActiveRecord::Schema.define(version: 2022_01_23_165945) do
     t.jsonb "data"
     t.jsonb "log"
     t.virtual "data_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, data)", stored: true
-    t.virtual "virtual", type: :tsvector, as: "to_tsvector('english'::regconfig, data)", stored: true
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

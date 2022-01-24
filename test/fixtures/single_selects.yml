@@ -1,6 +1,6 @@
-orientation_horizontal:
+horizontal:
  field: orientation
  title: Horizontal
-orientation_vertical:
+vertical:
  field: orientation
  title: Vertical

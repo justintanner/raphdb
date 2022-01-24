@@ -67,25 +67,9 @@ namespace :bench do
   task item_search: :environment do
     return unless Rails.env.development?
 
-    measure_lambda =
-      lambda do |n|
-        item_set = ItemSet.create!(title: 'Bench Set')
-        item =
-          Item.create!(
-            data: {
-              item_title: 'Bench Item Apple'
-            },
-            item_set: item_set
-          )
-        n.times.map { Item.search('apple') }
-      end
+    measure_lambda = lambda { |n| n.times.map { Item.search('apple') } }
 
-    cleanup_lambda =
-      lambda do |_n|
-        item_set = ItemSet.find_by(title: 'Bench Set')
-        item_set.items.each { |item| item.destroy_fully! }
-        item_set.destroy_fully!
-      end
+    cleanup_lambda = lambda { |_n| puts 'Nothing to clean up' }
 
     Bench.measure_and_profile(
       'Item searching',

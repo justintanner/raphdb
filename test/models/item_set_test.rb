@@ -6,12 +6,6 @@ class ItemSetTest < ActiveSupport::TestCase
     assert_not item_set.save, 'Saved the set without a title'
   end
 
-  test 'should have a unique title' do
-    item_set = ItemSet.create(title: 'My Set')
-    item_set2 = ItemSet.new(title: 'My Set')
-    assert_not item_set2.save, 'Saved the set with a duplicate title'
-  end
-
   test 'should remove extra whitespace from title' do
     item_set = ItemSet.create(title: "  My \t Set  ")
     assert_equal 'My Set', item_set.title, 'Title was not trimmed'

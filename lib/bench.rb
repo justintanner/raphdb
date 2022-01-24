@@ -19,8 +19,8 @@ module Bench
 
     time = Benchmark.measure { measure_lambda.(n) }
 
-    cleanup_lambda.(n)
-
     puts "#{name} #{n} times took #{time.real} seconds."
+
+    cleanup_lambda.(n)
   end
 end

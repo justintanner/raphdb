@@ -1,5 +1,5 @@
 class MultipleSelect < ApplicationRecord
-  include Cleaner
+  include CleanAndFormat
   belongs_to :field
 
   clean :title
