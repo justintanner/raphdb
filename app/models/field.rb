@@ -37,8 +37,6 @@ class Field < ApplicationRecord
 
     if column_type == TYPES[:date]
       Date.strptime(value, '%Y%m%d').strftime('%d/%m/%Y')
-    elsif column_type == TYPES[:currency]
-      value.gsub('-', '.').gsub('_', '')
     else
       value
     end
@@ -47,13 +45,7 @@ class Field < ApplicationRecord
   def storage_format(value)
     return if value.blank?
 
-    if column_type == TYPES[:date]
-      Date.parse(value).strftime('%Y%m%d')
-    elsif column_type == TYPES[:currency]
-      "_#{value.gsub('.', '-')}_"
-    else
-      value
-    end
+    column_type == TYPES[:date] ? Date.parse(value).strftime('%Y%m%d') : value
   end
 
   def self.keys

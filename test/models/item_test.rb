@@ -114,14 +114,4 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal '19040130', item.data['first_use']
     assert_equal '30/01/1904', item.display_data['first_use']
   end
-
-  test 'should save money in a non-searchable format' do
-    # See fields(:estimate_in_usd) for details on the the Currency field.
-    item = item_create!(item_title: 'Apple', estimate_in_usd: '125.01')
-
-    results = Item.search('125.01')
-    assert_not_includes results, item, 'Found item with money'
-    assert_equal '_125-01_', item.data['estimate_in_usd']
-    assert_equal '125.01', item.display_data['estimate_in_usd']
-  end
 end

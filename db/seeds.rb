@@ -43,6 +43,16 @@ File.open(Rails.root.join('tmp', 'db.json')) do |file|
     row.delete('set_id')
     row.delete('set_title')
 
+    if row.key?('estimated_value')
+      row['estimate_in_usd'] = row['estimated_value']
+      row.delete('estimated_value')
+    end
+
+    if row.key?('first_postal_usage')
+      row['first_use'] = row['first_postal_usage']
+      row.delete('first_postal_usage')
+    end
+
     item_set = ItemSet.find_by(id: set_id)
     if item_set.blank?
       item_set = ItemSet.new(title: set_title)
