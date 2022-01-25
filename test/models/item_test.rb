@@ -36,6 +36,42 @@ class ItemTest < ActiveSupport::TestCase
            'data keys are not all strings'
   end
 
+  test 'all single selects should already be in the database' do
+    item = Item.new(item_set: item_sets(:empty_set))
+    item.data = { item_title: 'Apple', orientation: 'Not in Database' }
+
+    assert_not item.save,
+               'Saved an item with a single select that is not in the database'
+  end
+
+  test 'should accept a single select that is in the database' do
+    item = Item.new(item_set: item_sets(:empty_set))
+    item.data = {
+      item_title: 'Apple',
+      orientation: single_selects(:horizontal).title
+    }
+
+    assert item.save, 'Failed to save a valid single select'
+  end
+
+  test 'multiple select titles should be in the database' do
+    item = Item.new(item_set: item_sets(:empty_set))
+    item.data = { item_title: 'Apple', tags: ['Not in the database'] }
+
+    assert_not item.save,
+               'Saved an item with a multiple select that is not in the database'
+  end
+
+  test 'should be able to save a multiple selects already in the database' do
+    item = Item.new(item_set: item_sets(:empty_set))
+    item.data = {
+      item_title: 'Apple',
+      tags: [multiple_selects(:football).title, multiple_selects(:polo).title]
+    }
+
+    assert item.save, 'Failed to save a valid multiple select'
+  end
+
   test 'should pull a title from the data' do
     item = item_create!({ item_title: 'Apple', number: 123 })
 

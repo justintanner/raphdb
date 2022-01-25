@@ -1,6 +1,5 @@
 require 'active_support/concern'
 
-# TODO: What should search do about quotations?
 module Search
   extend ActiveSupport::Concern
 

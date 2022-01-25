@@ -6,4 +6,9 @@ class MultipleSelect < ApplicationRecord
 
   # Forces the title+field to be unique.
   validates :title, uniqueness: { scope: :field }
+
+  def self.all_exist?(field:, titles:)
+    unique_titles = titles.uniq
+    where(field: field, title: unique_titles).count == unique_titles.count
+  end
 end

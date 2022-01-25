@@ -20,6 +20,8 @@ class Item < ApplicationRecord
 
   validate :title_present
   validate :no_symbols_in_data
+  validate :single_selects_exist
+  validate :multiple_selects_exist
 
   def display_data
     Field
@@ -34,15 +36,16 @@ class Item < ApplicationRecord
   end
 
   def should_generate_new_friendly_id?
-    if changes.key?('data')
-      original_title = changes['data'].first.try(:[], 'item_title')
-      new_title = changes['data'].second.try(:[], 'item_title')
-
-      original_title != new_title
-    end
+    data_key_changed?('item_title')
   end
 
   private
+
+  def data_key_changed?(key)
+    return unless data_changed?
+
+    changes['data'].first.try(:[], key) != changes['data'].second.try(:[], key)
+  end
 
   def generate_extra_searchable_tokens
     if data_changed?
@@ -95,6 +98,30 @@ class Item < ApplicationRecord
   def no_symbols_in_data
     if data.present? && data.keys.any? { |key| key.class == Symbol }
       errors.add(:data, 'No symbols allowed in data')
+    end
+  end
+
+  def single_selects_exist
+    Field.single_selects.each do |field|
+      if data_key_changed?(field.key) &&
+           !SingleSelect.exists?(field: field, title: data[field.key])
+        errors.add(
+          "data_#{field.key}".to_sym,
+          "could not find single select #{field.key} in the database"
+        )
+      end
+    end
+  end
+
+  def multiple_selects_exist
+    Field.multiple_selects.each do |field|
+      if data_key_changed?(field.key) &&
+           !MultipleSelect.all_exist?(field: field, titles: data[field.key])
+        errors.add(
+          "data_#{field.key}".to_sym,
+          "could not find multiple select #{field.key} in the database"
+        )
+      end
     end
   end
 end

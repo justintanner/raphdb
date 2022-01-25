@@ -60,6 +60,14 @@ class Field < ApplicationRecord
     pluck(:key)
   end
 
+  def self.single_selects
+    where(column_type: TYPES[:single_select])
+  end
+
+  def self.multiple_selects
+    where(column_type: TYPES[:multiple_select])
+  end
+
   def self.numeric
     where(column_type: TYPES[:number])
   end
