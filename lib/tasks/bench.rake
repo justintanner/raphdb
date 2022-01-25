@@ -6,7 +6,7 @@ namespace :bench do
 
     measure_lambda =
       lambda do |n|
-        item_set = ItemSet.create!(title: 'Bench Set')
+        item_set = ItemSet.find_or_create_by!(title: 'Bench Set')
         n.times.map do |index|
           Item.create!(
             data: {
@@ -19,9 +19,11 @@ namespace :bench do
 
     cleanup_lambda =
       lambda do |_n|
-        item_set = ItemSet.find_by(title: 'Bench Set')
-        item_set.items.each { |item| item.destroy_fully! }
-        item_set.destroy_fully!
+        item_set = ItemSet.find_or_create_by!(title: 'Bench Set')
+        if item_set.present?
+          item_set.items.each { |item| item.destroy_fully! }
+          item_set.destroy_fully!
+        end
       end
 
     Bench.measure_and_profile(
@@ -37,7 +39,7 @@ namespace :bench do
 
     measure_lambda =
       lambda do |n|
-        item_set = ItemSet.create!(title: 'Bench Set')
+        item_set = ItemSet.find_or_create_by!(title: 'Bench Set')
         item =
           Item.create!(
             data: {
@@ -51,7 +53,7 @@ namespace :bench do
 
     cleanup_lambda =
       lambda do |_n|
-        item_set = ItemSet.find_by(title: 'Bench Set')
+        item_set = ItemSet.find_or_create_by!(title: 'Bench Set')
         item_set.items.each { |item| item.destroy_fully! }
         item_set.destroy_fully!
       end

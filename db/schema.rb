@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_24_205211) do
+ActiveRecord::Schema.define(version: 2022_01_25_013727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -111,10 +111,10 @@ ActiveRecord::Schema.define(version: 2022_01_24_205211) do
     t.string "slug"
     t.jsonb "data"
     t.jsonb "log"
-    t.virtual "data_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, data)", stored: true
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.virtual "data_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, (regexp_replace((data)::text, '([^a-z0-9]+)'::text, ' \\1 '::text, 'gi'::text))::jsonb)", stored: true
     t.index ["data"], name: "index_items_on_data"
     t.index ["deleted_at"], name: "index_items_on_deleted_at"
     t.index ["item_set_id"], name: "index_items_on_item_set_id"

@@ -69,9 +69,9 @@ artist:
   title: Artist
   key: artist
   column_type: Single line text
-estimate_in_usd:
+estimated_value:
   title: Estimate in USD
-  key: estimate_in_usd
+  key: estimated_value
   column_type: Currency
 tags:
   title: Tags

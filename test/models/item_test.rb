@@ -114,4 +114,21 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal '19040130', item.data['first_use']
     assert_equal '30/01/1904', item.display_data['first_use']
   end
+
+  test 'should save currency fields in a non-searchable format' do
+    # See fields(:estimated_value) for details on the the Currency field.
+    item = item_create!(item_title: 'Apple', estimated_value: '125.67')
+    results = Item.search('123 67')
+    assert_not_includes results, item, 'Found item with currency'
+    assert_equal 'M125P67', item.data['estimated_value']
+    assert_equal '125.67', item.display_data['estimated_value']
+  end
+
+  test 'should save currency fields with a comma in a non-searchable format' do
+    item = item_create!(item_title: 'Apple', estimated_value: '125,67')
+    results = Item.search('123 67')
+    assert_not_includes results, item, 'Found item with currency'
+    assert_equal 'M125C67', item.data['estimated_value']
+    assert_equal '125,67', item.display_data['estimated_value']
+  end
 end

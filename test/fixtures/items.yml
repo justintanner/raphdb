@@ -10,7 +10,7 @@ football:
     in_ref_collection: true
     featured: true
     orientation: Horizontal
-    estimate_in_usd: $15.00
+    estimated_value: $15.00
     set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
     sold_as: set of 6 cards
     where_sold: Great Britain
@@ -25,7 +25,7 @@ fox_hunting:
     in_ref_collection: true
     featured: true
     orientation: Horizontal
-    estimate_in_usd: $15.00
+    estimated_value: $15.00
     item_title: FOX HUNTING IN THE 14TH CENTURY
     set_title: EARLY DAYS OF SPORT
     set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
@@ -44,7 +44,7 @@ hammer_throwing:
     in_ref_collection: true
     featured: true
     orientation: Vertical
-    estimate_in_usd: $12.00
+    estimated_value: $12.00
     item_title: HENRY VIII THROWING THE HAMMER
     set_title: EARLY DAYS OF SPORT
     set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
@@ -61,7 +61,7 @@ golf:
     in_ref_collection: true
     featured: true
     orientation: Horizontal
-    estimate_in_usd: $25.00
+    estimated_value: $25.00
     item_title: MARY QUEEN OF SCOTS PLAYING GOLF
     set_title: EARLY DAYS OF SPORT
     set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
@@ -79,7 +79,7 @@ polo:
     in_ref_collection: true
     featured: true
     orientation: Horizontal
-    estimate_in_usd: $15.00
+    estimated_value: $15.00
     item_title: POLO IN 600 B.C.
     set_title: EARLY DAYS OF SPORT
     set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
@@ -97,7 +97,7 @@ tennis:
     in_ref_collection: true
     featured: true
     orientation: Horizontal
-    estimate_in_usd: $15.00
+    estimated_value: $15.00
     item_title: TENNIS IN THE TIME OF HENRY VII
     set_title: EARLY DAYS OF SPORT
     set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
