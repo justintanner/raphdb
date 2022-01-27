@@ -63,19 +63,21 @@ end
 
 module DisplayHistory
   def self.all(record)
-    prev_values = {}
+    display_entries =
+      entries_asc(record).map { |log_entry| display_entry(log_entry) }
 
-    entries_asc(record).map do |log_entry|
-      display_entry(log_entry, prev_values)
-    end
+    # Return newest changes to oldest
+    display_entries.sort_by { |entry| entry[:v] }.reverse
   end
 
-  def self.display_entry(log_entry, prev_values)
-    entry = { ts: log_entry['ts'], user_id: log_entry['u_id'] }
+  def self.display_entry(log_entry)
+    entry = {
+      v: log_entry['v'],
+      ts: log_entry['ts'],
+      user_id: log_entry['u_id']
+    }
 
-    if log_entry.key?('c')
-      entry[:changes] = changes_from_to(log_entry, prev_values)
-    end
+    entry[:changes] = changes_from_to(log_entry) if log_entry.key?('c')
 
     if log_entry.key?('ui')
       entry[:image_uploaded] = log_entry['ui'].symbolize_keys
@@ -88,31 +90,25 @@ module DisplayHistory
     entry
   end
 
-  def self.changes_from_to(log_entry, prev_values)
+  def self.changes_from_to(log_entry)
     log_entry['c'].map do |change|
-      prev_value_key = "#{change['k']}_#{change['k2']}"
-
-      from_to = {
+      {
         attribute: change['k'],
         inner_attribute: change['k2'],
-        from: prev_values[prev_value_key],
-        to: change['v']
+        from: change['from'],
+        to: change['to']
       }
-
-      prev_values[prev_value_key] = change['v']
-
-      from_to
     end
   end
 
   def self.entries_asc(record)
-    record[HistorySettings.log_column]['h'].sort_by { |entry| entry['ts'] }
+    record[HistorySettings.log_column]['h'].sort_by { |entry| entry['v'] }
   end
 end
 
 module TrackHistory
   def self.save_changes(record:, attributes:, column_types:)
-    return unless attributes.any? { |attr| record_changed?(record, attr) }
+    return unless attributes.any? { |attr| changed?(record, attr) }
 
     record[HistorySettings.log_column] ||= { 'h': [] }
     record[HistorySettings.log_column]['h'] <<
@@ -124,11 +120,12 @@ module TrackHistory
 
     record[HistorySettings.log_column] ||= { 'h': [] }
     record[HistorySettings.log_column]['h'] <<
-      image_upload_entry(image, deleted)
+      image_upload_entry(record, image, deleted)
   end
 
-  def self.image_upload_entry(image, deleted)
+  def self.image_upload_entry(record, image, deleted)
     entry = {
+      v: set_version_number(record),
       ts: image.updated_at.to_time.to_i,
       u_id: HistorySettings.whodunnit
     }
@@ -144,6 +141,7 @@ module TrackHistory
 
   def self.change_entry(record, attributes, column_types)
     entry = {
+      v: set_version_number(record),
       ts: record.updated_at.to_time.to_i,
       u_id: HistorySettings.whodunnit
     }
@@ -155,33 +153,42 @@ module TrackHistory
 
   def self.record_changes(record, attributes, column_types)
     attributes
-      .select { |attr| record_changed?(record, attr) }
+      .select { |attr| changed?(record, attr) }
       .map { |attr| field_changes(record, attr, column_types) }
       .flatten
   end
 
   def self.field_changes(record, attribute, column_types)
     changes = []
+    from = record.try(:changes).try(:[], attribute).try(:first)
 
-    if column_types[attribute] == :jsonb
-      was, _new = record.changes
-
-      record[attribute].each do |inner_attr, value|
+    if column_types[attribute] == :jsonb && record.changes.key?(attribute)
+      record[attribute].each do |inner_attr, inner_value|
         next if HistorySettings.columns_to_ignore.include?(inner_attr)
-        next if value == was.try(:[], inner_attr)
+        inner_from = from.try(:[], inner_attr)
 
-        changes << change(attr: attribute, inner_attr: inner_attr, value: value)
+        changes <<
+          change(
+            attr: attribute,
+            inner_attr: inner_attr,
+            from: inner_from,
+            to: inner_value
+          )
       end
     else
       changes <<
-        change(attr: attribute, value: current_value(record, attribute))
+        change(
+          attr: attribute,
+          from: from,
+          to: current_value(record, attribute)
+        )
     end
 
     changes.compact
   end
 
-  def self.change(attr:, inner_attr: nil, value:)
-    change = { k: attr, v: value }
+  def self.change(attr:, inner_attr: nil, from:, to:)
+    change = { k: attr, from: from, to: to }
 
     change[:k2] = inner_attr if inner_attr
 
@@ -196,12 +203,20 @@ module TrackHistory
     end
   end
 
-  def self.record_changed?(record, attribute)
+  def self.changed?(record, attribute)
     if record.send(attribute).respond_to?(:changed?)
       # Detect changes in ActiveText attributes.
       record.send(attribute).changed?
     elsif record.respond_to?("#{attribute}_changed?")
       record.send("#{attribute}_changed?")
     end
+  end
+
+  def self.set_version_number(record)
+    log = record[HistorySettings.log_column]
+
+    return 1 if log.blank? || log['h'].blank?
+
+    log['h'].map { |entry| entry['v'].to_i }.max + 1
   end
 end

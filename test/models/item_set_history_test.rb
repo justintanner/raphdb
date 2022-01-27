@@ -8,6 +8,7 @@ class ItemSetHistoryTest < ActiveSupport::TestCase
 
       expected_history = [
         {
+          v: 1,
           ts: Time.now.to_i,
           user_id: nil, # TODO: Set the current user.
           changes: [
@@ -21,14 +22,13 @@ class ItemSetHistoryTest < ActiveSupport::TestCase
   end
 
   test 'should track image uploads' do
-    # Don't need to actually attach to test versioning of an Image record.
     item_set = ItemSet.create!(title: 'A')
     image = Image.create!(item_set: item_set)
 
     expected_entry = { id: image.id }
 
     assert_equal expected_entry,
-                 item_set.history.second[:image_uploaded],
+                 item_set.history.first[:image_uploaded],
                  'Image upload was not tracked'
   end
 
@@ -40,7 +40,7 @@ class ItemSetHistoryTest < ActiveSupport::TestCase
     expected_entry = { id: image.id }
 
     assert_equal expected_entry,
-                 item_set.history.last[:image_deleted],
+                 item_set.history.first[:image_deleted],
                  'Image upload was not tracked'
   end
 end

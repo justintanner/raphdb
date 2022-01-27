@@ -4,10 +4,10 @@ class ItemHistoryTest < ActiveSupport::TestCase
   test 'should track a history changes to the item' do
     freeze_time do
       item = item_create!({ item_title: 'A' })
-      assert item.valid?, 'Item was not valid'
 
       expected_history = [
         {
+          v: 1,
           ts: Time.now.to_i,
           user_id: nil, # TODO: Set the current user.
           changes: [
@@ -37,6 +37,15 @@ class ItemHistoryTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should return history newest to oldest' do
+    item = item_create!({ item_title: 'A' })
+    item.data['item_title'] = 'B'
+    item.save!
+
+    assert item.history.first[:v] > item.history.last[:v],
+           'History was not returned newest to oldest'
+  end
+
   test 'should return multiple changes in the order they changed' do
     item = item_create!({ item_title: 'A' })
     assert item.valid?, 'Item was not valid'
@@ -52,15 +61,15 @@ class ItemHistoryTest < ActiveSupport::TestCase
 
     assert_not_empty item_title_changes, 'No body changes found'
 
-    assert_equal 'A',
+    assert_equal 'C',
                  item_title_changes.first[:to],
-                 'First change was not tracked'
+                 'Third change was not tracked'
     assert_equal 'B',
                  item_title_changes.second[:to],
                  'Second change was not tracked'
-    assert_equal 'C',
+    assert_equal 'A',
                  item_title_changes.third[:to],
-                 'Third change was not tracked'
+                 'first change was not tracked'
   end
 
   test 'rails timestamps should match history timestamps' do
@@ -87,7 +96,7 @@ class ItemHistoryTest < ActiveSupport::TestCase
     expected_entry = { id: image.id }
 
     assert_equal expected_entry,
-                 item.history.second[:image_uploaded],
+                 item.history.first[:image_uploaded],
                  'Image upload was not tracked'
   end
 
@@ -99,7 +108,34 @@ class ItemHistoryTest < ActiveSupport::TestCase
     expected_entry = { id: image.id }
 
     assert_equal expected_entry,
-                 item.history.last[:image_deleted],
+                 item.history.first[:image_deleted],
                  'Image upload was not tracked'
+  end
+
+  test 'should track multiple selects' do
+    item =
+      item_create!(
+        { item_title: 'A', tags: multiple_selects(:golf, :queen).map(&:title) }
+      )
+    item.data['tags'] = multiple_selects(:golf, :queen, :king).map(&:title)
+    item.save!
+
+    expected_changes = [
+      {
+        attribute: 'data',
+        inner_attribute: 'tags',
+        from: multiple_selects(:golf, :queen).map(&:title),
+        to: multiple_selects(:golf, :queen, :king).map(&:title)
+      }
+    ]
+
+    tag_changes =
+      item.history.first[:changes].select do |change|
+        change[:inner_attribute] == 'tags'
+      end
+
+    assert_equal expected_changes,
+                 tag_changes,
+                 'Tags were not tracked correctly'
   end
 end

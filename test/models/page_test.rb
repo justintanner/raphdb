@@ -81,13 +81,13 @@ class PageTest < ActiveSupport::TestCase
 
     assert_not_empty page_body_changes, 'No changes found'
 
-    assert_equal 'A',
-                 page_body_changes.first[:to],
-                 'First change was not tracked'
-
     assert_equal 'B',
-                 page_body_changes.second[:to],
+                 page_body_changes.first[:to],
                  'Second change was not tracked'
+
+    assert_equal 'A',
+                 page_body_changes.second[:to],
+                 'First change was not tracked'
   end
 
   test 'page history is stored in html' do
