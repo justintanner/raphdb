@@ -1,6 +1,6 @@
 class Item < ApplicationRecord
   include CleanAndFormat
-  include History
+  include Loggable
   include Undeletable
   include FriendlyId
   include Search
@@ -12,7 +12,7 @@ class Item < ApplicationRecord
   has_many :images
 
   clean :data
-  track_changes only: %i[data item_set_id images]
+  log_changes only: %i[data item_set_id images]
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_data

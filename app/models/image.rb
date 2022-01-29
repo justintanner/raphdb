@@ -1,6 +1,6 @@
 class Image < ApplicationRecord
   include Undeletable
-  include History
+  include Loggable
   include Positionable
 
   belongs_to :item, optional: true
@@ -24,9 +24,9 @@ class Image < ApplicationRecord
   end
 
   delegate_missing_to :file
-  track_changes only: %i[created_at deleted_at],
-                on: %i[create destroy],
-                associated: :item_or_item_set
+  log_changes only: %i[created_at deleted_at],
+              on: %i[create destroy],
+              associated: :item_or_item_set
   position_within :item_id, :item_set_id
 
   validate :item_or_set_present

@@ -1,4 +1,4 @@
-class Version < ApplicationRecord
+class Log < ApplicationRecord
   has_one :user
   belongs_to :model, polymorphic: true
 
@@ -6,7 +6,7 @@ class Version < ApplicationRecord
   # Example: Image.unscoped { version.associated }
   belongs_to :associated, polymorphic: true, optional: true
 
-  before_create :set_data, :set_version_number
+  before_create :set_entry, :set_version_number
 
   attr_accessor :model_changes, :columns_to_version
 
@@ -18,36 +18,32 @@ class Version < ApplicationRecord
 
   private
 
-  def column_types
-    model
-      .class
-      .column_names
-      .map { |name| [name, type_for_attribute(name).type] }
-      .to_h
+  def column_type(name)
+    model.type_for_attribute(name).type
   end
 
-  def set_data
-    self.data = generate_data
+  def set_entry
+    self.entry = generate_entry
   end
 
   def safe_model_changes
     model_changes || {}
   end
 
-  def safe_columns_to_version
+  def safe_columns
     columns_to_version || []
   end
 
-  def generate_data
+  def generate_entry
     field_changes = {}
 
-    safe_columns_to_version.each do |field_name|
+    safe_columns.each do |field_name|
       next unless safe_model_changes.has_key?(field_name)
 
       outer_name = field_name.to_s
       from_to = safe_model_changes[field_name]
 
-      if column_types[outer_name] == :jsonb
+      if column_type(outer_name) == :jsonb
         model[field_name].each do |inner_name, inner_to|
           next if self.class.jsonb_columns_to_ignore.include?(inner_name)
           inner_from = from_to.first.try(:[], inner_name)

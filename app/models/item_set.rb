@@ -1,6 +1,6 @@
 class ItemSet < ApplicationRecord
   include CleanAndFormat
-  include History
+  include Loggable
   include Undeletable
   include FriendlyId
 
@@ -8,7 +8,7 @@ class ItemSet < ApplicationRecord
   has_many :images
 
   clean :title
-  track_changes only: [:title]
+  log_changes only: [:title]
   friendly_id :title, use: :history
 
   before_save :copy_title_to_items

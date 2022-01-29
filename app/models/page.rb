@@ -1,11 +1,11 @@
 class Page < ApplicationRecord
   include CleanAndFormat
-  include History
+  include Loggable
   include Undeletable
   include FriendlyId
 
   clean :title
-  track_changes only: %i[title body]
+  log_changes only: %i[title body]
   friendly_id :title, use: :history
 
   has_rich_text :body

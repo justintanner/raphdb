@@ -1,23 +1,30 @@
 require 'test_helper'
 
-class VersionTest < ActiveSupport::TestCase
+class LogTest < ActiveSupport::TestCase
   test 'should generate changes when an item is created' do
-    item = item_create!({ item_title: 'First title' }, item_sets(:empty_set))
+    item =
+      Item.new(
+        data: {
+          item_title: 'First title'
+        },
+        item_set: item_sets(:empty_set)
+      )
 
-    version =
-      Version.create!(
+    log =
+      Log.create!(
         model: item,
-        model_changes: item.previous_changes,
+        model_changes: item.changes,
         columns_to_version: [:data],
         action: 'create'
       )
-    expected_data = {
+
+    expected_entry = {
       'data.item_title' => [nil, 'First title'],
       'data.set_title' => [nil, item_sets(:empty_set).title]
     }
 
-    assert_equal expected_data,
-                 version.data,
+    assert_equal expected_entry,
+                 log.entry,
                  'Did not generate the expected changes'
   end
 
@@ -26,17 +33,18 @@ class VersionTest < ActiveSupport::TestCase
 
     item.data['item_title'] = 'Second title'
 
-    version =
-      Version.create!(
+    log =
+      Log.create!(
         model: item,
         model_changes: item.changes,
         columns_to_version: [:data],
         action: 'update'
       )
-    expected_data = { 'data.item_title' => ['First title', 'Second title'] }
 
-    assert_equal expected_data,
-                 version.data,
+    expected_entry = { 'data.item_title' => ['First title', 'Second title'] }
+
+    assert_equal expected_entry,
+                 log.entry,
                  'Did not generate the expected changes'
   end
 
@@ -44,8 +52,8 @@ class VersionTest < ActiveSupport::TestCase
     item = item_create!(item_title: 'First title')
     image = Image.create!(item: item)
 
-    first_version =
-      Version.create!(
+    first_log =
+      Log.create!(
         model: item,
         model_changes: image.previous_changes,
         associated: image,
@@ -54,8 +62,8 @@ class VersionTest < ActiveSupport::TestCase
       )
 
     assert_equal image,
-                 first_version.associated,
-                 'Did not associate the version with the image'
+                 first_log.associated,
+                 'Did not associate the log with the image'
   end
 
   test 'should track changes destroy actions associated models' do
@@ -63,8 +71,8 @@ class VersionTest < ActiveSupport::TestCase
     image = Image.create!(item: item)
     item.destroy
 
-    first_version =
-      Version.create!(
+    first_log =
+      Log.create!(
         model: item,
         model_changes: image.previous_changes,
         associated: image,
@@ -73,7 +81,7 @@ class VersionTest < ActiveSupport::TestCase
       )
 
     assert_equal image,
-                 first_version.associated,
-                 'Did not associate the version with the image'
+                 first_log.associated,
+                 'Did not associate the log with the image'
   end
 end

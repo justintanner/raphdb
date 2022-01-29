@@ -36,7 +36,7 @@ class PageTest < ActiveSupport::TestCase
     assert_equal 'renamed', page.slug
   end
 
-  test 'keeps a history of old slugs' do
+  test 'keeps a log of old slugs' do
     page = Page.create(title: '1')
     page.update(title: '2')
     page.update(title: '3')
@@ -67,16 +67,16 @@ class PageTest < ActiveSupport::TestCase
     assert_not_includes Page.all, page, 'Found deleted page in all pages'
   end
 
-  test 'should keep a history of changes' do
+  test 'should keep a log of changes' do
     page = Page.create!(title: 'Title', body: '<p>A</p>')
     page.update(body: '<p>B</p>')
 
-    assert_equal page.versions.count, 2, 'Wrong number of versions'
+    assert_equal page.logs.count, 2, 'Wrong number of versions'
 
-    expected_data = { 'body' => %w[<p>A</p> <p>B</p>] }
+    expected_entry = { 'body' => %w[<p>A</p> <p>B</p>] }
 
-    assert_equal expected_data,
-                 page.versions.first.data,
+    assert_equal expected_entry,
+                 page.logs.first.entry,
                  'Changes were not tracked'
   end
 end

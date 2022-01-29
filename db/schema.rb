@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_28_173702) do
+ActiveRecord::Schema.define(version: 2022_01_29_163722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,7 +110,6 @@ ActiveRecord::Schema.define(version: 2022_01_28_173702) do
     t.bigint "item_set_id", null: false
     t.string "slug"
     t.jsonb "data"
-    t.jsonb "log"
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -118,8 +117,24 @@ ActiveRecord::Schema.define(version: 2022_01_28_173702) do
     t.index ["data"], name: "index_items_on_data"
     t.index ["deleted_at"], name: "index_items_on_deleted_at"
     t.index ["item_set_id"], name: "index_items_on_item_set_id"
-    t.index ["log"], name: "index_items_on_log"
     t.index ["slug"], name: "index_items_on_slug", unique: true
+  end
+
+  create_table "logs", force: :cascade do |t|
+    t.bigint "model_id"
+    t.string "model_type"
+    t.bigint "associated_id"
+    t.string "associated_type"
+    t.bigint "user_id"
+    t.string "action"
+    t.jsonb "entry"
+    t.integer "version", default: 0
+    t.datetime "created_at", precision: 6
+    t.index ["associated_type", "associated_id"], name: "index_logs_on_associated_type_and_associated_id"
+    t.index ["created_at"], name: "index_logs_on_created_at"
+    t.index ["entry"], name: "index_logs_on_entry", using: :gin
+    t.index ["model_type", "model_id", "version"], name: "index_logs_on_model_type_and_model_id_and_version"
+    t.index ["user_id"], name: "index_logs_on_user_id"
   end
 
   create_table "multiple_selects", force: :cascade do |t|
@@ -134,12 +149,10 @@ ActiveRecord::Schema.define(version: 2022_01_28_173702) do
   create_table "pages", force: :cascade do |t|
     t.string "title"
     t.string "slug"
-    t.jsonb "log"
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["deleted_at"], name: "index_pages_on_deleted_at"
-    t.index ["log"], name: "index_pages_on_log"
     t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
@@ -190,23 +203,6 @@ ActiveRecord::Schema.define(version: 2022_01_28_173702) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  end
-
-  create_table "versions", force: :cascade do |t|
-    t.bigint "model_id"
-    t.string "model_type"
-    t.bigint "associated_id"
-    t.string "associated_type"
-    t.bigint "user_id"
-    t.string "action"
-    t.jsonb "data"
-    t.integer "version", default: 0
-    t.datetime "created_at", precision: 6
-    t.index ["associated_type", "associated_id"], name: "index_versions_on_associated_type_and_associated_id"
-    t.index ["created_at"], name: "index_versions_on_created_at"
-    t.index ["data"], name: "index_versions_on_data", using: :gin
-    t.index ["model_type", "model_id", "version"], name: "index_versions_on_model_type_and_model_id_and_version"
-    t.index ["user_id"], name: "index_versions_on_user_id"
   end
 
   create_table "view_fields", force: :cascade do |t|

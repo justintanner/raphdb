@@ -6,6 +6,6 @@ class ApplicationController < ActionController::Base
 
   def save_current_user
     return unless defined?(current_user)
-    HistoryStore.user_id = current_user.try(:id) || current_user
+    LoggableStore.user_id = current_user.try(:id) || current_user
   end
 end
