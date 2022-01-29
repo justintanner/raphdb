@@ -1,5 +1,6 @@
 class Image < ApplicationRecord
   include Undeletable
+  include History
   include Positionable
 
   belongs_to :item, optional: true
@@ -23,32 +24,23 @@ class Image < ApplicationRecord
   end
 
   delegate_missing_to :file
+  track_changes only: %i[created_at deleted_at],
+                on: %i[create destroy],
+                associated: :item_or_item_set
   position_within :item_id, :item_set_id
-  after_create :log_image_created
-  after_destroy :log_image_destroyed
 
   validate :item_or_set_present
-
-  def item_or_set_present
-    if item.blank? && item_set.blank?
-      errors.add(
-        :item_id_or_item_set_id,
-        'Please associate an item or item set'
-      )
-    end
-  end
 
   def item_or_item_set
     item || item_set
   end
 
-  private
-
-  def log_image_created
-    item_or_item_set.log_image_upload(self)
-  end
-
-  def log_image_destroyed
-    item_or_item_set.log_image_deletion(self)
+  def item_or_set_present
+    if item_or_item_set.blank?
+      errors.add(
+        :item_id_or_item_set_id,
+        'Please associate an item or item set'
+      )
+    end
   end
 end

@@ -68,37 +68,15 @@ class PageTest < ActiveSupport::TestCase
   end
 
   test 'should keep a history of changes' do
-    page = Page.create(title: 'Title', body: 'A')
-    assert page.valid?, 'Failed to create page'
+    page = Page.create!(title: 'Title', body: '<p>A</p>')
+    page.update(body: '<p>B</p>')
 
-    page.update(title: 'Title', body: 'B')
+    assert_equal page.versions.count, 2, 'Wrong number of versions'
 
-    page_body_changes =
-      page
-        .history
-        .flat_map { |entry| entry[:changes] }
-        .select { |change| change[:attribute] == 'body' }
+    expected_data = { 'body' => %w[<p>A</p> <p>B</p>] }
 
-    assert_not_empty page_body_changes, 'No changes found'
-
-    assert_equal 'B',
-                 page_body_changes.first[:to],
-                 'Second change was not tracked'
-
-    assert_equal 'A',
-                 page_body_changes.second[:to],
-                 'First change was not tracked'
-  end
-
-  test 'page history is stored in html' do
-    page = Page.create(title: 'Title', body: '<p>Paragraph</p>')
-    assert page.valid?, 'Failed to create page'
-
-    body_change =
-      page.history.first[:changes].find do |change|
-        change[:attribute] == 'body'
-      end
-    expected_to = body_change[:to]
-    assert_equal '<p>Paragraph</p>', expected_to, 'Body is not stored in html'
+    assert_equal expected_data,
+                 page.versions.first.data,
+                 'Changes were not tracked'
   end
 end
