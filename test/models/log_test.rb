@@ -46,8 +46,8 @@ class LogTest < ActiveSupport::TestCase
     first_log =
       Log.create!(
         model: item,
-        loggable_changes: image.previous_changes,
         associated: image,
+        loggable_changes: image.previous_changes,
         action: 'create'
       )
 
@@ -64,8 +64,8 @@ class LogTest < ActiveSupport::TestCase
     first_log =
       Log.create!(
         model: item,
-        loggable_changes: image.previous_changes,
         associated: image,
+        loggable_changes: image.previous_changes,
         action: 'destroy'
       )
 

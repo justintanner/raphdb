@@ -34,11 +34,9 @@ class ItemSetLoggableTest < ActiveSupport::TestCase
 
     latest_log = item_set.logs.first
 
-    associated_image = Image.unscoped { latest_log.associated }
-
     assert_equal 'destroy', latest_log.action, 'Action was not set'
     assert_equal item_set, latest_log.model, 'Model was not set'
-    assert_equal image, latest_log.associated, 'Associated was not set'
+    assert_equal image, latest_log.unscoped_associated, 'Associated was not set'
     assert_equal 3, latest_log.version, 'Version number was not 3'
   end
 end

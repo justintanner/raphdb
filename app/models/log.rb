@@ -2,8 +2,7 @@ class Log < ApplicationRecord
   has_one :user
   belongs_to :model, polymorphic: true
 
-  # Warning when fetching the associated model with destroyed Undeletable models, use class.unscoped.
-  # Example: Image.unscoped { version.associated }
+  # This relationship will not return soft deleted records (Undeletable), please use unscoped_associated for destroyed records.
   belongs_to :associated, polymorphic: true, optional: true
 
   before_create :set_entry, :set_version_number
@@ -12,15 +11,11 @@ class Log < ApplicationRecord
 
   validates :model, presence: true
 
-  def self.jsonb_columns_to_ignore
-    Field::RESERVED_KEYS
+  def unscoped_associated
+    associated_type.constantize.unscoped { associated }
   end
 
   private
-
-  def column_type(name)
-    model.type_for_attribute(name).type
-  end
 
   def set_entry
     self.entry = generate_entry
@@ -55,5 +50,13 @@ class Log < ApplicationRecord
   def set_version_number
     max = self.class.where(model: self.model).maximum(:version) || 0
     self.version = max + 1
+  end
+
+  def self.jsonb_columns_to_ignore
+    Field::RESERVED_KEYS
+  end
+
+  def column_type(name)
+    model.type_for_attribute(name).type
   end
 end

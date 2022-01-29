@@ -42,8 +42,9 @@ class ItemLoggableTest < ActiveSupport::TestCase
     image = Image.create!(item: item)
     image.destroy
 
-    associated_image = Image.unscoped { item.logs.first.associated }
-    assert_equal image, associated_image, 'Image destruction was not tracked'
+    assert_equal image,
+                 item.logs.first.unscoped_associated,
+                 'Image destruction was not tracked'
   end
 
   test 'should track multiple selects' do
