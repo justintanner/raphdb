@@ -8,7 +8,7 @@ class Log < ApplicationRecord
 
   before_create :set_entry, :set_version_number
 
-  attr_accessor :model_changes, :columns_to_version
+  attr_accessor :loggable_changes
 
   validates :model, presence: true
 
@@ -26,22 +26,15 @@ class Log < ApplicationRecord
     self.entry = generate_entry
   end
 
-  def safe_model_changes
-    model_changes || {}
-  end
-
-  def safe_columns
-    columns_to_version || []
+  def safe_loggable_changes
+    loggable_changes || {}
   end
 
   def generate_entry
     field_changes = {}
 
-    safe_columns.each do |field_name|
-      next unless safe_model_changes.has_key?(field_name)
-
+    safe_loggable_changes.each do |field_name, from_to|
       outer_name = field_name.to_s
-      from_to = safe_model_changes[field_name]
 
       if column_type(outer_name) == :jsonb
         model[field_name].each do |inner_name, inner_to|

@@ -21,8 +21,7 @@ module Loggable
           Log.create!(
             model: associated.nil? ? record : record.send(associated),
             associated: associated.nil? ? nil : record,
-            model_changes: record.model_changes('create', attributes),
-            columns_to_version: attributes,
+            loggable_changes: record.filtered_changes('create', attributes),
             action: 'create'
           )
         end
@@ -33,8 +32,7 @@ module Loggable
           Log.create!(
             model: associated.nil? ? record : record.send(associated),
             associated: associated.nil? ? nil : record,
-            model_changes: record.model_changes('update', attributes),
-            columns_to_version: attributes,
+            loggable_changes: record.filtered_changes('update', attributes),
             action: 'update'
           )
         end
@@ -45,8 +43,7 @@ module Loggable
           Log.create!(
             model: associated.nil? ? record : record.send(associated),
             associated: associated.nil? ? nil : record,
-            model_changes: record.model_changes('destroy', attributes),
-            columns_to_version: attributes,
+            loggable_changes: record.filtered_changes('destroy', attributes),
             action: 'destroy'
           )
         end
@@ -54,15 +51,17 @@ module Loggable
     end
   end
 
-  def model_changes(action, attributes)
+  def filtered_changes(action, attributes)
     base_changes = action == 'create' ? self.previous_changes : self.changes
+
+    filtered = base_changes.extract!(*attributes)
 
     attributes.each do |name|
       if self.send(name).is_a?(ActionText::RichText)
-        base_changes[name] = self.send(name).changes[name]
+        filtered[name] = self.send(name).changes[name]
       end
     end
 
-    base_changes
+    filtered
   end
 end

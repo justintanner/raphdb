@@ -11,16 +11,12 @@ class LogTest < ActiveSupport::TestCase
       )
 
     log =
-      Log.create!(
-        model: item,
-        model_changes: item.changes,
-        columns_to_version: [:data],
-        action: 'create'
-      )
+      Log.create!(model: item, loggable_changes: item.changes, action: 'create')
 
     expected_entry = {
       'data.item_title' => [nil, 'First title'],
-      'data.set_title' => [nil, item_sets(:empty_set).title]
+      'data.set_title' => [nil, item_sets(:empty_set).title],
+      'item_set_id' => [nil, item_sets(:empty_set).id]
     }
 
     assert_equal expected_entry,
@@ -34,12 +30,7 @@ class LogTest < ActiveSupport::TestCase
     item.data['item_title'] = 'Second title'
 
     log =
-      Log.create!(
-        model: item,
-        model_changes: item.changes,
-        columns_to_version: [:data],
-        action: 'update'
-      )
+      Log.create!(model: item, loggable_changes: item.changes, action: 'update')
 
     expected_entry = { 'data.item_title' => ['First title', 'Second title'] }
 
@@ -55,9 +46,8 @@ class LogTest < ActiveSupport::TestCase
     first_log =
       Log.create!(
         model: item,
-        model_changes: image.previous_changes,
+        loggable_changes: image.previous_changes,
         associated: image,
-        columns_to_version: [],
         action: 'create'
       )
 
@@ -74,9 +64,8 @@ class LogTest < ActiveSupport::TestCase
     first_log =
       Log.create!(
         model: item,
-        model_changes: image.previous_changes,
+        loggable_changes: image.previous_changes,
         associated: image,
-        columns_to_version: [],
         action: 'destroy'
       )
 
