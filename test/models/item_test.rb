@@ -167,4 +167,18 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal 'M125C67', item.data['estimated_value']
     assert_equal '125,67', item.display_data['estimated_value']
   end
+
+  test 'should not save currency symbols' do
+    item = item_create!(item_title: 'Apple', estimated_value: '$125.67')
+
+    assert_equal 'M125P67', item.data['estimated_value']
+    assert_equal '125.67', item.display_data['estimated_value']
+  end
+
+  test 'should handle money without cents' do
+    item = item_create!(item_title: 'First title', estimated_value: '$1,000')
+
+    assert_equal 'M1C000', item.data['estimated_value']
+    assert_equal '1,000', item.display_data['estimated_value']
+  end
 end

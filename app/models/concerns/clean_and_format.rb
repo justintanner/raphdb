@@ -44,7 +44,9 @@ module Clean
   def self.format(key, value)
     field = Field.find_by(key: key)
 
-    raise "Tried to format with an unknown field, key:#{key}" if field.blank?
+    if field.blank?
+      raise "Tried to clean and format an unknown field: data.#{key}"
+    end
 
     field.storage_format(value)
   end

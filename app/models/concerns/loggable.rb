@@ -10,14 +10,22 @@ end
 module Loggable
   extend ActiveSupport::Concern
 
-  included { has_many :logs, -> { order(created_at: :desc) }, as: :model }
+  included do
+    has_many :logs, -> { order(version: :desc, created_at: :desc) }, as: :model
+  end
 
   class_methods do
-    def log_changes(only: [], on: %i[create update destroy], associated: nil)
+    def log_changes(
+      only: [],
+      on: %i[create update destroy],
+      associated: nil,
+      skip_when: nil
+    )
       attributes = only.empty? ? column_names : only
 
       if on.include?(:create)
         after_create do |record|
+          return if skip_when.is_a?(Proc) && skip_when.call(record)
           Log.create!(
             model: associated.nil? ? record : record.send(associated),
             associated: associated.nil? ? nil : record,
@@ -29,6 +37,7 @@ module Loggable
 
       if on.include?(:update)
         before_update do |record|
+          return if skip_when.is_a?(Proc) && skip_when.call(record)
           Log.create!(
             model: associated.nil? ? record : record.send(associated),
             associated: associated.nil? ? nil : record,
@@ -40,6 +49,7 @@ module Loggable
 
       if on.include?(:destroy)
         after_destroy do |record|
+          return if skip_when.is_a?(Proc) && skip_when.call(record)
           Log.create!(
             model: associated.nil? ? record : record.send(associated),
             associated: associated.nil? ? nil : record,

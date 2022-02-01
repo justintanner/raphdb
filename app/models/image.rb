@@ -23,10 +23,13 @@ class Image < ApplicationRecord
     end
   end
 
+  attr_accessor :importing
+
   delegate_missing_to :file
-  log_changes only: %i[created_at deleted_at],
+  log_changes only: %i[deleted_at],
               on: %i[create destroy],
-              associated: :item_or_item_set
+              associated: :item_or_item_set,
+              skip_when: lambda { |image| image.importing }
   position_within :item_id, :item_set_id
 
   validate :item_or_set_present

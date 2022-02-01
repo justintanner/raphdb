@@ -11,8 +11,11 @@ class Item < ApplicationRecord
   # https://gist.github.com/georgeclaghorn/9baf3b9f1796eed5a983d35825b7f86c
   has_many :images
 
+  attr_accessor :importing
+
   clean :data
-  log_changes only: %i[data item_set_id images]
+  log_changes only: %i[data item_set_id images],
+              skip_when: lambda { |item| item.importing }
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_data

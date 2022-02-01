@@ -7,8 +7,11 @@ class ItemSet < ApplicationRecord
   has_many :items
   has_many :images
 
+  attr_accessor :importing
+
   clean :title
-  log_changes only: [:title]
+  log_changes only: [:title],
+              skip_when: lambda { |item_set| item_set.importing }
   friendly_id :title, use: :history
 
   before_save :copy_title_to_items

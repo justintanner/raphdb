@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 2022_01_29_163722) do
     t.bigint "item_set_id", null: false
     t.string "slug"
     t.jsonb "data"
+    t.virtual "virtual", type: :tsvector, as: "to_tsvector('english'::regconfig, data)", stored: true
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

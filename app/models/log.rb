@@ -1,15 +1,15 @@
 class Log < ApplicationRecord
   has_one :user
-  belongs_to :model, polymorphic: true
+  belongs_to :model, polymorphic: true, optional: true
 
   # This relationship will not return soft deleted records (Undeletable), please use unscoped_associated for destroyed records.
   belongs_to :associated, polymorphic: true, optional: true
 
   before_create :set_entry, :set_version_number
 
-  attr_accessor :loggable_changes
+  attr_accessor :loggable_changes, :importing
 
-  validates :model, presence: true
+  validates :model, presence: true, unless: -> { true }
 
   def unscoped_associated
     associated_type.constantize.unscoped { associated }
@@ -18,6 +18,7 @@ class Log < ApplicationRecord
   private
 
   def set_entry
+    return if importing
     self.entry = generate_entry
   end
 
@@ -48,6 +49,7 @@ class Log < ApplicationRecord
   end
 
   def set_version_number
+    return if importing
     max = self.class.where(model: self.model).maximum(:version) || 0
     self.version = max + 1
   end

@@ -61,7 +61,7 @@ class LogTest < ActiveSupport::TestCase
     image = Image.create!(item: item)
     item.destroy
 
-    first_log =
+    log =
       Log.create!(
         model: item,
         associated: image,
@@ -70,7 +70,15 @@ class LogTest < ActiveSupport::TestCase
       )
 
     assert_equal image,
-                 first_log.associated,
+                 log.unscoped_associated,
                  'Did not associate the log with the image'
+  end
+
+  test 'importing should skip validations and setting entry data' do
+    entry = { 'directly' => 'injected' }
+    log = Log.create!(entry: entry, version: 99, importing: true)
+
+    assert log.valid?, 'Log was not valid'
+    assert_equal entry, log.entry, 'Log entry was not set'
   end
 end

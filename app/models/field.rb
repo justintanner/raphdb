@@ -50,7 +50,7 @@ class Field < ApplicationRecord
     if column_type == TYPES[:date]
       Date.parse(value).strftime('%Y%m%d')
     elsif column_type == TYPES[:currency]
-      'M' + value.gsub('.', 'P').gsub(',', 'C')
+      'M' + value.gsub('.', 'P').gsub(',', 'C').gsub('$', '')
     else
       value
     end
