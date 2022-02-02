@@ -10,9 +10,7 @@ end
 module Loggable
   extend ActiveSupport::Concern
 
-  included do
-    has_many :logs, -> { order(version: :desc, created_at: :desc) }, as: :model
-  end
+  included { has_many :logs, -> { newest_to_oldest }, as: :model }
 
   class_methods do
     def log_changes(

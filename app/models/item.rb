@@ -42,6 +42,10 @@ class Item < ApplicationRecord
     data_key_changed?('item_title')
   end
 
+  def logs_match_current_data?
+    Log.data_from_logs(self) == self.data
+  end
+
   private
 
   def data_key_changed?(key)

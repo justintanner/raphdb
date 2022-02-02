@@ -70,9 +70,10 @@ artist:
   key: artist
   column_type: Single line text
 estimated_value:
-  title: Estimate in USD
+  title: Estimated value
   key: estimated_value
   column_type: Currency
+  currency_iso_code: USD
 tags:
   title: Tags
   key: tags

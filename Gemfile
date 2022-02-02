@@ -61,6 +61,12 @@ gem 'omniauth'
 # Inviting users to sign up [https://github.com/scambra/devise_invitable]
 gem 'devise_invitable'
 
+# Currency formatting [https://github.com/RubyMoney/money]
+gem 'money'
+
+# Currency parsing [https://github.com/RubyMoney/monetize]
+gem 'monetize'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mingw x64_mingw]

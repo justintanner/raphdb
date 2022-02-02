@@ -11,14 +11,31 @@ class Log < ApplicationRecord
 
   validates :model, presence: true, unless: lambda { |log| log.importing }
 
+  scope :newest_to_oldest, -> { order(version: :desc, created_at: :desc) }
+
   def unscoped_associated
     associated_type.constantize.unscoped { associated }
+  end
+
+  def self.data_from_logs(model)
+    data = {}
+
+    where(model: model)
+      .newest_to_oldest
+      .each do |log|
+        log.entry.each do |key, values|
+          data[key.split('.').last] = values.second
+        end
+      end
+
+    data
   end
 
   private
 
   def set_entry
     return if importing
+
     self.entry = generate_entry
   end
 
@@ -50,6 +67,7 @@ class Log < ApplicationRecord
 
   def set_version_number
     return if importing
+
     max = self.class.where(model: self.model).maximum(:version) || 0
     self.version = max + 1
   end

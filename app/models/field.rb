@@ -31,6 +31,7 @@ class Field < ApplicationRecord
   validates :column_type, presence: true
   validates :key, exclusion: { in: RESERVED_KEYS }
   validate :column_type_allowable
+  validate :currency_has_iso_code
 
   def display_format(value)
     return if value.blank?
@@ -38,7 +39,7 @@ class Field < ApplicationRecord
     if column_type == TYPES[:date]
       Date.strptime(value, '%Y%m%d').strftime('%d/%m/%Y')
     elsif column_type == TYPES[:currency]
-      value.gsub('P', '.').gsub('C', ',').gsub('M', '')
+      decode_currency(value)
     else
       value
     end
@@ -50,10 +51,26 @@ class Field < ApplicationRecord
     if column_type == TYPES[:date]
       Date.parse(value).strftime('%Y%m%d')
     elsif column_type == TYPES[:currency]
-      'M' + value.gsub('.', 'P').gsub(',', 'C').gsub('$', '')
+      encode_currency(value)
     else
       value
     end
+  end
+
+  def encode_currency(value)
+    return if value.blank?
+
+    money = Monetize.parse("#{currency_iso_code} #{value}")
+
+    "$$$#{money.cents}$$$"
+  end
+
+  def decode_currency(value)
+    return if value.blank?
+
+    money = Money.from_cents(value.gsub('$$$', '').to_d, self.currency_iso_code)
+
+    money.format
   end
 
   def self.keys
@@ -96,6 +113,12 @@ class Field < ApplicationRecord
   def column_type_allowable
     unless TYPES.values.include?(self.column_type)
       errors.add(:column_type, 'must be one of the allowable types')
+    end
+  end
+
+  def currency_has_iso_code
+    if self.column_type == TYPES[:currency] && self.currency_iso_code.blank?
+      errors.add(:currency_iso_code, 'must be set if column type is currency')
     end
   end
 end
