@@ -7,7 +7,7 @@ football:
   data:
     item_title: ANCIENT FOOTBALL IN THE 14TH CENTURY
     number: 9293
-    in_ref_collection: true
+    in_reference_collection: true
     featured: true
     orientation: Horizontal
     estimated_value: $15.00
@@ -22,7 +22,7 @@ fox_hunting:
   item_set: early_days_of_sport
   data:
     number: 9293
-    in_ref_collection: true
+    in_reference_collection: true
     featured: true
     orientation: Horizontal
     estimated_value: $15.00
@@ -41,7 +41,7 @@ hammer_throwing:
   item_set: early_days_of_sport
   data:
     number: 9293
-    in_ref_collection: true
+    in_reference_collection: true
     featured: true
     orientation: Vertical
     estimated_value: $12.00
@@ -58,7 +58,7 @@ golf:
   item_set: early_days_of_sport
   data:
     number: 9293
-    in_ref_collection: true
+    in_reference_collection: true
     featured: true
     orientation: Horizontal
     estimated_value: $25.00
@@ -76,7 +76,7 @@ polo:
   item_set: early_days_of_sport
   data:
     number: 9293
-    in_ref_collection: true
+    in_reference_collection: true
     featured: true
     orientation: Horizontal
     estimated_value: $15.00
@@ -94,7 +94,7 @@ tennis:
   item_set: early_days_of_sport
   data:
     number: 9293
-    in_ref_collection: true
+    in_reference_collection: true
     featured: true
     orientation: Horizontal
     estimated_value: $15.00

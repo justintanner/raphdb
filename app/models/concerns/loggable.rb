@@ -25,37 +25,40 @@ module Loggable
 
       if on.include?(:create)
         after_create do |record|
-          return if skip_when.is_a?(Proc) && skip_when.call(record)
-          Log.create!(
-            model: associated.nil? ? record : record.send(associated),
-            associated: associated.nil? ? nil : record,
-            loggable_changes: record.filtered_changes('create', attributes),
-            action: 'create'
-          )
+          unless skip_when.is_a?(Proc) && skip_when.call(record)
+            Log.create!(
+              model: associated.nil? ? record : record.send(associated),
+              associated: associated.nil? ? nil : record,
+              loggable_changes: record.filtered_changes('create', attributes),
+              action: 'create'
+            )
+          end
         end
       end
 
       if on.include?(:update)
         before_update do |record|
-          return if skip_when.is_a?(Proc) && skip_when.call(record)
-          Log.create!(
-            model: associated.nil? ? record : record.send(associated),
-            associated: associated.nil? ? nil : record,
-            loggable_changes: record.filtered_changes('update', attributes),
-            action: 'update'
-          )
+          unless skip_when.is_a?(Proc) && skip_when.call(record)
+            Log.create!(
+              model: associated.nil? ? record : record.send(associated),
+              associated: associated.nil? ? nil : record,
+              loggable_changes: record.filtered_changes('update', attributes),
+              action: 'update'
+            )
+          end
         end
       end
 
       if on.include?(:destroy)
         after_destroy do |record|
-          return if skip_when.is_a?(Proc) && skip_when.call(record)
-          Log.create!(
-            model: associated.nil? ? record : record.send(associated),
-            associated: associated.nil? ? nil : record,
-            loggable_changes: record.filtered_changes('destroy', attributes),
-            action: 'destroy'
-          )
+          unless skip_when.is_a?(Proc) && skip_when.call(record)
+            Log.create!(
+              model: associated.nil? ? record : record.send(associated),
+              associated: associated.nil? ? nil : record,
+              loggable_changes: record.filtered_changes('destroy', attributes),
+              action: 'destroy'
+            )
+          end
         end
       end
     end

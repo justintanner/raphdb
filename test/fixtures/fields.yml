@@ -52,9 +52,9 @@ orientation:
   title: Oritentation
   key: orientation
   column_type: Single select
-in_ref_collection:
+in_reference_collection:
   title: In ref collection
-  key: in_ref_collection
+  key: in_reference_collection
   column_type: Checkbox
   publish: false
 item_comment:
