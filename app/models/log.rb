@@ -9,7 +9,7 @@ class Log < ApplicationRecord
 
   attr_accessor :loggable_changes, :importing
 
-  validates :model, presence: true, unless: -> { true }
+  validates :model, presence: true, unless: lambda { |log| log.importing }
 
   def unscoped_associated
     associated_type.constantize.unscoped { associated }
