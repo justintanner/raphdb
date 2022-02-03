@@ -34,7 +34,7 @@ class Field < ApplicationRecord
   validate :currency_has_iso_code
 
   def display_format(value)
-    return if value.blank?
+    return if value.nil?
 
     if column_type == TYPES[:date]
       Date.strptime(value, '%Y%m%d').strftime('%d/%m/%Y')
@@ -46,7 +46,7 @@ class Field < ApplicationRecord
   end
 
   def storage_format(value)
-    return if value.blank?
+    return if value.nil?
 
     if column_type == TYPES[:date]
       Date.parse(value).strftime('%Y%m%d')

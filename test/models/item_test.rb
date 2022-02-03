@@ -98,18 +98,6 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal 'lots of spaces', item.data['item_title']
   end
 
-  test 'should not save data with empty string values' do
-    item = item_create!({ item_title: 'number is empty', number: '' })
-
-    assert_not_includes item.data.keys, 'number'
-  end
-
-  test 'should not save data with nil values' do
-    item = item_create!({ item_title: 'number is nil', number: nil })
-
-    assert_not_includes item.data.keys, 'number'
-  end
-
   test 'should soft delete items' do
     item = item_create!({ item_title: 'Delete me' })
 

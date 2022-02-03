@@ -43,7 +43,13 @@ class Item < ApplicationRecord
   end
 
   def logs_match_current_data?
-    Log.data_from_logs(self) == self.data
+    log_data_diff == {}
+  end
+
+  def log_data_diff
+    data
+      .except(*Field::RESERVED_KEYS)
+      .diff(Log.rebuild_data_from_logs(self))
   end
 
   private

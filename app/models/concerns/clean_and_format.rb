@@ -22,13 +22,9 @@ module Clean
 
     if column_type == :jsonb && record[attr].present?
       record[attr].each do |inner_attr, value|
-        if value.blank?
-          # Deleting empty keys so that our jsonb column doesn't get cluttered up with empty values.
-          record[attr].delete(inner_attr) if value.blank?
-        else
-          record[attr][inner_attr] =
-            clean_and_format(inner_attr, record[attr][inner_attr])
-        end
+        next if Field::RESERVED_KEYS.include?(inner_attr)
+
+        record[attr][inner_attr] = clean_and_format(inner_attr, value)
       end
     else
       record[attr] = squish_and_strip(record[attr])

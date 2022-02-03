@@ -17,15 +17,16 @@ class Log < ApplicationRecord
     associated_type.constantize.unscoped { associated }
   end
 
-  def self.data_from_logs(model)
+  def self.rebuild_data_from_logs(model)
     data = {}
 
     where(model: model)
       .newest_to_oldest
       .each do |log|
-        log.entry.each do |key, values|
-          data[key.split('.').last] = values.second
-        end
+        log
+          .entry
+          .select { |k, _v| k.starts_with?('data.') }
+          .each { |k, v| data[k.split('.').last] = v.second }
       end
 
     data
