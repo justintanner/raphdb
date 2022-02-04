@@ -23,8 +23,7 @@ class Item < ApplicationRecord
 
   validate :title_present
   validate :no_symbols_in_data
-  validate :single_selects_exist
-  validate :multiple_selects_exist
+  validate :data_values_valid
 
   def display_data
     Field
@@ -47,9 +46,7 @@ class Item < ApplicationRecord
   end
 
   def log_data_diff
-    data
-      .except(*Field::RESERVED_KEYS)
-      .diff(Log.rebuild_data_from_logs(self))
+    data.except(*Field::RESERVED_KEYS).diff(Log.rebuild_data_from_logs(self))
   end
 
   private
@@ -114,26 +111,11 @@ class Item < ApplicationRecord
     end
   end
 
-  def single_selects_exist
-    Field.single_selects.each do |field|
+  def data_values_valid
+    Field.all.each do |field|
       if data_key_changed?(field.key) &&
-           !SingleSelect.exists?(field: field, title: data[field.key])
-        errors.add(
-          "data_#{field.key}".to_sym,
-          "could not find single select #{field.key} in the database"
-        )
-      end
-    end
-  end
-
-  def multiple_selects_exist
-    Field.multiple_selects.each do |field|
-      if data_key_changed?(field.key) &&
-           !MultipleSelect.all_exist?(field: field, titles: data[field.key])
-        errors.add(
-          "data_#{field.key}".to_sym,
-          "could not find multiple select #{field.key} in the database"
-        )
+           !field.value_valid?(self.display_data[field.key])
+        errors.add("data_#{field.key}".to_sym, 'invalid')
       end
     end
   end

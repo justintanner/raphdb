@@ -12,6 +12,7 @@ class Log < ApplicationRecord
   validates :model, presence: true, unless: lambda { |log| log.importing }
 
   scope :newest_to_oldest, -> { order(version: :desc, created_at: :desc) }
+  scope :oldest_to_newest, -> { order(version: :asc, created_at: :asc) }
 
   def unscoped_associated
     associated_type.constantize.unscoped { associated }
@@ -21,7 +22,7 @@ class Log < ApplicationRecord
     data = {}
 
     where(model: model)
-      .newest_to_oldest
+      .oldest_to_newest
       .each do |log|
         log
           .entry

@@ -41,6 +41,7 @@ number:
   key: number
   column_type: Number
   item_identifier: true
+  number_format: Integer (2)
   prefix_field: prefix
   suffix_field: in_set
 in_set:

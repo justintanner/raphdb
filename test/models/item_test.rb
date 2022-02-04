@@ -145,6 +145,6 @@ class ItemTest < ActiveSupport::TestCase
     results = Item.search('123 67')
     assert_not_includes results, item, 'Found item with currency'
     assert_equal '$$$12567$$$', item.data['estimated_value']
-    assert_equal '$125.67', item.display_data['estimated_value']
+    assert_equal 125.67, item.display_data['estimated_value']
   end
 end

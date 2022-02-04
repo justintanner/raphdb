@@ -8,6 +8,8 @@ class Field < ApplicationRecord
 
   RESERVED_KEYS = %w[extra_searchable_tokens]
 
+  NUMBER_FORMATS = { integer: 'Integer (2)', decimal: 'Decimal(1.0)' }
+
   TYPES = {
     single_line_text: 'Single line text',
     long_text: 'Long text',
@@ -57,6 +59,45 @@ class Field < ApplicationRecord
     end
   end
 
+  def value_valid?(value)
+    return true if value.nil?
+
+    case (self.column_type)
+    when TYPES[:checkbox]
+      value.is_a?(TrueClass) || value.is_a?(FalseClass) || value == 'true' ||
+        value == 'false'
+    when TYPES[:multiple_select]
+      value.is_a?(Array) &&
+        MultipleSelect.all_exist?(field: self, titles: value)
+    when TYPES[:single_select]
+      SingleSelect.exists?(field: self, title: value)
+    when TYPES[:date]
+      begin
+        Date.parse(value)
+      rescue StandardError
+        nil
+      end
+    when TYPES[:currency]
+      begin
+        Float(value)
+      rescue StandardError
+        nil
+      end
+    when TYPES[:number]
+      if self.number_format == NUMBER_FORMATS[:integer]
+        value.to_i.to_s == value.to_s
+      else
+        begin
+          Float(value)
+        rescue StandardError
+          nil
+        end
+      end
+    else
+      true
+    end
+  end
+
   def encode_currency(value)
     return if value.blank?
 
@@ -70,7 +111,7 @@ class Field < ApplicationRecord
 
     money = Money.from_cents(value.gsub('$$$', '').to_d, self.currency_iso_code)
 
-    money.format
+    money.amount
   end
 
   def self.keys

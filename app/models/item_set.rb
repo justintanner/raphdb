@@ -24,6 +24,8 @@ class ItemSet < ApplicationRecord
 
   # This allows the set title to be searchable by using the items.data index.
   def copy_title_to_items
+    return if importing
+
     if title_changed?
       items.each do |item|
         item.data ||= {}
