@@ -103,13 +103,13 @@ class Field < ApplicationRecord
 
     money = Monetize.parse("#{currency_iso_code} #{value}")
 
-    "$$$#{money.cents}$$$"
+    "MMM#{money.cents}MMM"
   end
 
   def decode_currency(value)
     return if value.blank?
 
-    money = Money.from_cents(value.gsub('$$$', '').to_d, self.currency_iso_code)
+    money = Money.from_cents(value.gsub('M', '').to_d, self.currency_iso_code)
 
     money.amount
   end

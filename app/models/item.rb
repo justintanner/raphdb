@@ -42,11 +42,23 @@ class Item < ApplicationRecord
   end
 
   def logs_match_current_data?
-    log_data_diff == {}
+    data_log_diff == {}
   end
 
-  def log_data_diff
-    data.except(*Field::RESERVED_KEYS).diff(Log.rebuild_data_from_logs(self))
+  def data_log_diff
+    a =
+      self
+        .data
+        .except(*Field::RESERVED_KEYS)
+        .reject { |_k, v| v.nil? || v == false }
+
+    b = Log.rebuild_data_from_logs(self).reject { |_k, v| v.nil? || v == false }
+
+    a.diff(b)
+  end
+
+  def self.with_mismatching_data_to_logs
+    all.select { |item| !item.logs_match_current_data? }
   end
 
   private

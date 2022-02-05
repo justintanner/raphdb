@@ -142,9 +142,14 @@ class ItemTest < ActiveSupport::TestCase
   test 'should save currency fields in a non-searchable format' do
     # See fields(:estimated_value) for details on the the Currency field.
     item = item_create!(item_title: 'Apple', estimated_value: '125.67')
-    results = Item.search('123 67')
+
+    results = Item.search('12567')
     assert_not_includes results, item, 'Found item with currency'
-    assert_equal '$$$12567$$$', item.data['estimated_value']
+
+    results = Item.search('125')
+    assert_not_includes results, item, 'Found item with currency'
+
+    assert_equal 'MMM12567MMM', item.data['estimated_value']
     assert_equal 125.67, item.display_data['estimated_value']
   end
 end

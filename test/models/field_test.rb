@@ -111,7 +111,7 @@ class FieldTest < ActiveSupport::TestCase
 
     encoded = estimated_value.encode_currency('$123.45')
 
-    assert_equal '$$$12345$$$', encoded, 'The encoded value was not correct'
+    assert_equal 'MMM12345MMM', encoded, 'The encoded value was not correct'
   end
 
   test 'should encode money starting with commas' do
@@ -119,7 +119,7 @@ class FieldTest < ActiveSupport::TestCase
 
     encoded = estimated_value.encode_currency('$9,001')
 
-    assert_equal '$$$900100$$$', encoded, 'The encoded value was not correct'
+    assert_equal 'MMM900100MMM', encoded, 'The encoded value was not correct'
   end
 
   test 'should encode euro formatted currencies' do
@@ -133,7 +133,7 @@ class FieldTest < ActiveSupport::TestCase
 
     encoded = euro_field.encode_currency('€123,45')
 
-    assert_equal '$$$12345$$$', encoded, 'The encoded value was not correct'
+    assert_equal 'MMM12345MMM', encoded, 'The encoded value was not correct'
   end
 
   test 'should tolerate poorly formatted currencies' do
@@ -141,6 +141,6 @@ class FieldTest < ActiveSupport::TestCase
 
     encoded = estimated_value.encode_currency('1.2.3.45')
 
-    assert_equal '$$$120$$$', encoded, 'The encoded value was not correct'
+    assert_equal 'MMM120MMM', encoded, 'The encoded value was not correct'
   end
 end
