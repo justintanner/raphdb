@@ -1,6 +1,7 @@
 class Item < ApplicationRecord
   include CleanAndFormat
   include Loggable
+  include LogStats
   include Undeletable
   include FriendlyId
   include Search
@@ -39,29 +40,6 @@ class Item < ApplicationRecord
 
   def should_generate_new_friendly_id?
     data_key_changed?('item_title')
-  end
-
-  def logs_match_current_data?
-    data_log_diff == {}
-  end
-
-  def data_log_diff
-    a =
-      self
-        .data
-        .except(*Field::RESERVED_KEYS)
-        .reject { |_k, v| v.nil? || v == false || v == [] }
-
-    b =
-      Log
-        .rebuild_data_from_logs(self)
-        .reject { |_k, v| v.nil? || v == false || v == [] }
-
-    a.diff(b)
-  end
-
-  def self.with_mismatching_data_to_logs
-    all.select { |item| !item.logs_match_current_data? }
   end
 
   private
