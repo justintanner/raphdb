@@ -68,7 +68,8 @@ module JsonImport
           position: row[:position],
           deleted_at: row[:deleted_at],
           updated_at: row[:updated_at],
-          created_at: row[:created_at]
+          created_at: row[:created_at],
+          importing: true
         )
 
       image.item = item if item.present?

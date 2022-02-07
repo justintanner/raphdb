@@ -50,9 +50,12 @@ class Item < ApplicationRecord
       self
         .data
         .except(*Field::RESERVED_KEYS)
-        .reject { |_k, v| v.nil? || v == false }
+        .reject { |_k, v| v.nil? || v == false || v == [] }
 
-    b = Log.rebuild_data_from_logs(self).reject { |_k, v| v.nil? || v == false }
+    b =
+      Log
+        .rebuild_data_from_logs(self)
+        .reject { |_k, v| v.nil? || v == false || v == [] }
 
     a.diff(b)
   end
