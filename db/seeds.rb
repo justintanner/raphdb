@@ -1,7 +1,12 @@
 require 'fixture_import'
 require 'json_import'
 
-Page.create!(title: 'Homepage', body: '<p>Welcome to Justin\'s Lilywhites!</p>')
+Page.create!(title: 'Homepage', body: '<p>Welcome!</p>')
+User.create!(
+  email: 'testing@raphdb.com',
+  password: 'testing',
+  password_confirmation: 'testing'
+)
 
 FixtureImport.views
 puts "Seeded #{View.count} views from the fixtures"
@@ -30,3 +35,8 @@ puts "Seeded #{Image.count} images from lilywhite-images.json"
 
 JsonImport.logs
 puts "Seeded #{Log.count} logs from lilywhite-logs.json"
+
+# After JSON importing all primary keys will be off because of injecting ids.
+ActiveRecord::Base.connection.tables.each do |t|
+  ActiveRecord::Base.connection.reset_pk_sequence!(t)
+end

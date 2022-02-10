@@ -15,6 +15,7 @@ class ActiveSupport::TestCase
 
   include OpenFixtureHelper
   include ItemCreateHelper
+  include Devise::Test::IntegrationHelpers
 end
 
 Minitest.after_run do

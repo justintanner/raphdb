@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#" lang="[object Object]" class="h-100">
+<html lang="en" class="h-100">
   <head>
-    <title>[object Object]</title>
+    <title><%= yield :title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,8 +11,8 @@
     <%= yield :head %>
   </head>
 
-  <body class="d-flex flex-column h-100">
-    <%= render 'layouts/header' %>
+  <body class="d-flex flex-column h-100 <%= yield :body_class %>">
+    <%= render 'layouts/app_header' %>
     <%= yield %>
   </body>
 </html>

@@ -29,8 +29,14 @@ module LogStats
   end
 
   def total_log_images
-    created = logs.count { |log| log.associated_type == 'Image' && log.action == 'create' }
-    destroyed = logs.count { |log| log.associated_type == 'Image' && log.action == 'destroy' }
+    created =
+      logs.count do |log|
+        log.associated_type == 'Image' && log.action == 'create'
+      end
+    destroyed =
+      logs.count do |log|
+        log.associated_type == 'Image' && log.action == 'destroy'
+      end
 
     created - destroyed
   end

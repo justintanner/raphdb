@@ -4,8 +4,11 @@ class User < ApplicationRecord
          :recoverable,
          :rememberable,
          :validatable,
-         :confirmable,
          :trackable,
          :omniauthable,
          :invitable
+
+  def remember_me
+    true
+  end
 end

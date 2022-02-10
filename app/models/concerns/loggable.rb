@@ -1,12 +1,5 @@
 require 'active_support/concern'
 
-# Controller action should set this, so that the log can be associated with the current_user.
-module LoggableStore
-  class << self
-    attr_accessor :user_id
-  end
-end
-
 module Loggable
   extend ActiveSupport::Concern
 
