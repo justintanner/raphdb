@@ -12,7 +12,7 @@
 </head>
 
 <body class="d-flex flex-column h-100 <%= yield :body_class %>">
-<%= render 'layouts/editor_sidebar' unless yield(:no_sidebar) %>
+<%= render 'layouts/editor_sidebar' unless content_for?(:no_sidebar) %>
 <%= yield %>
 </body>
 </html>
