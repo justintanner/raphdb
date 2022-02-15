@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Compares two hashes and returns a hash of the differences.
 class Hash
   def diff(compare_to)
     reject { |k, v| compare_to[k] == v }

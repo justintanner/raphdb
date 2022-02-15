@@ -4,7 +4,8 @@ class Log < ApplicationRecord
   has_one :user
   belongs_to :model, polymorphic: true, optional: true
 
-  # This relationship will not return soft deleted records (Undeletable), please use unscoped_associated for destroyed records.
+  # This relationship will not return soft deleted records (Undeletable),
+  # please use unscoped_associated for destroyed records.
   belongs_to :associated, polymorphic: true, optional: true
 
   before_create :set_entry, :set_version_number
@@ -33,6 +34,10 @@ class Log < ApplicationRecord
       end
 
     data
+  end
+
+  def self.jsonb_columns_to_ignore
+    Field::RESERVED_KEYS
   end
 
   private
@@ -75,10 +80,6 @@ class Log < ApplicationRecord
 
     max = self.class.where(model: model).maximum(:version) || 0
     self.version = max + 1
-  end
-
-  def self.jsonb_columns_to_ignore
-    Field::RESERVED_KEYS
   end
 
   def column_type(name)

@@ -159,8 +159,8 @@ class Field < ApplicationRecord
   end
 
   def currency_has_iso_code
-    if column_type == TYPES[:currency] && currency_iso_code.blank?
-      errors.add(:currency_iso_code, 'must be set if column type is currency')
-    end
+    return unless column_type == TYPES[:currency] && currency_iso_code.blank?
+
+    errors.add(:currency_iso_code, 'must be set if column type is currency')
   end
 end

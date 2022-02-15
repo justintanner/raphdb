@@ -2,6 +2,42 @@ Layout/ExtraSpacing:
   Enabled: true
   AllowForAlignment: false
 
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - test/**/*.rb
+    - config/**/*.rb
+
+# Metrics/MethodLength:
+#   Enabled: true
+#   Max: 32
+
+Layout/LineLength:
+  Enabled: true
+  Exclude:
+    - test/**/*.rb
+
+Style/Documentation:
+  Enabled: true
+  Exclude:
+    - test/**/*.rb
+    - app/models/**/*.rb
+    - app/controllers/**/*.rb
+    - app/helpers/**/*.rb
+    - config/**/*.rb
+
+ClassLength:
+  Enabled: true
+  Exclude:
+    - test/**/*.rb
+
 AllCops:
   Exclude:
+    - config/initializers/devise.rb
+    - db/migrate/**/*.rb
+    - db/schema.rb
     - 'bin/**/*'
+    - lib/bench.rb
+    - lib/tasks/bench.rake
+    - lib/json_import.rb
+    - lib/fixture_import.rb

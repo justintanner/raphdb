@@ -84,6 +84,9 @@ group :development do
   # Code formatting [https://github.com/rubocop/rubocop]
   gem 'rubocop', require: false
 
+  # Profile [https://ruby-prof.github.io/]
+  gem 'ruby-prof'
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 end

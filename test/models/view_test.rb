@@ -104,12 +104,12 @@ class ViewTest < ActiveSupport::TestCase
 
   test 'should not get deleted fields' do
     view = View.create!(title: 'One field', skip_associate_all_fields: true)
-    field =
-      Field.create!(
-        title: 'deleted',
-        column_type: Field::TYPES[:single_line_text],
-        deleted_at: Time.now
-      )
+
+    Field.create!(
+      title: 'deleted',
+      column_type: Field::TYPES[:single_line_text],
+      deleted_at: Time.now
+    )
 
     view.reload
 

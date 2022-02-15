@@ -53,14 +53,13 @@ class Item < ApplicationRecord
   end
 
   def generate_extra_searchable_tokens
-    if data_changed?
-      # This key is mirrored in Field::RESERVED_KEYS
-      data['extra_searchable_tokens'] =
-        number_fields_as_strings
-        .concat(prefix_combinations)
-        .concat(suffix_combinations)
-        .join(' ')
-    end
+    return unless data_changed?
+
+    # This key is mirrored in Field::RESERVED_KEYS
+    data['extra_searchable_tokens'] = number_fields_as_strings
+                                      .concat(prefix_combinations)
+                                      .concat(suffix_combinations)
+                                      .join(' ')
   end
 
   def number_fields_as_strings
@@ -73,18 +72,14 @@ class Item < ApplicationRecord
   def prefix_combinations
     Field
       .with_prefixes
-      .select do |field|
-        data.key?(field.key) && data.key?(field.prefix_field.key)
-      end
+      .select { |field| data.key?(field.key) && data.key?(field.prefix_field.key) }
       .map { |field| data[field.prefix_field.key].to_s + data[field.key].to_s }
   end
 
   def suffix_combinations
     Field
       .with_suffixes
-      .select do |field|
-        data.key?(field.key) && data.key?(field.suffix_field.key)
-      end
+      .select { |field| data.key?(field.key) && data.key?(field.suffix_field.key) }
       .map { |field| data[field.key].to_s + data[field.suffix_field.key].to_s }
   end
 
@@ -97,15 +92,14 @@ class Item < ApplicationRecord
   end
 
   def no_symbols_in_data
-    if data.present? && data.keys.any? { |key| key.instance_of?(Symbol) }
-      errors.add(:data, 'No symbols allowed in data')
-    end
+    return unless data.present? && data.keys.any? { |key| key.instance_of?(Symbol) }
+
+    errors.add(:data, 'No symbols allowed in data')
   end
 
   def data_values_valid
     Field.all.each do |field|
-      if data_key_changed?(field.key) &&
-         !field.value_valid?(display_data[field.key])
+      if data_key_changed?(field.key) && !field.value_valid?(display_data[field.key])
         errors.add("data_#{field.key}".to_sym, 'invalid')
       end
     end

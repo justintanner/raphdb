@@ -17,12 +17,12 @@ module LogStats
 
   def data_log_diff
     a = data
-      .except(*Field::RESERVED_KEYS)
-      .reject { |_k, v| v.nil? || v == false || v == [] }
+        .except(*Field::RESERVED_KEYS)
+        .reject { |_k, v| v.nil? || v == false || v == [] }
 
     b = Log
-      .rebuild_data_from_logs(self)
-      .reject { |_k, v| v.nil? || v == false || v == [] }
+        .rebuild_data_from_logs(self)
+        .reject { |_k, v| v.nil? || v == false || v == [] }
 
     a.diff(b)
   end

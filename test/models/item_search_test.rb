@@ -32,14 +32,13 @@ class ItemSearchTest < ActiveSupport::TestCase
   end
 
   test 'should ignore deleted items' do
-    item =
-      Item.create!(
-        data: {
-          item_title: 'apple'
-        },
-        item_set: item_sets(:orphan),
-        deleted_at: Time.now
-      )
+    Item.create!(
+      data: {
+        item_title: 'apple'
+      },
+      item_set: item_sets(:orphan),
+      deleted_at: Time.now
+    )
     results = Item.search('apple')
 
     assert_empty results, 'Results were not empty'
