@@ -12,8 +12,7 @@ class ItemSet < ApplicationRecord
   attr_accessor :importing
 
   clean :title
-  log_changes only: [:title],
-              skip_when: ->(item_set) { item_set.importing }
+  log_changes only: [:title], skip_when: ->(item_set) { item_set.importing }
   friendly_id :title, use: :history
 
   before_save :copy_title_to_items
@@ -31,7 +30,7 @@ class ItemSet < ApplicationRecord
 
     items.each do |item|
       item.data ||= {}
-      item.data['set_title'] = title
+      item.data["set_title"] = title
       item.save!
     end
   end

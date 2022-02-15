@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'active_support/concern'
+require "active_support/concern"
 
 module Undeletable
   extend ActiveSupport::Concern
@@ -30,7 +30,7 @@ module Undeletable
     destroy ||
       raise(
         ActiveRecord::RecordNotDestroyed.new(
-          'Failed to destroy the record',
+          "Failed to destroy the record",
           self
         )
       )

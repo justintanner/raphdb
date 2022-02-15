@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-ENV['RAILS_ENV'] ||= 'test'
-require_relative '../config/environment'
-require 'rails/test_help'
-require 'helpers/open_fixture_helper'
-require 'helpers/item_create_helper'
+ENV["RAILS_ENV"] ||= "test"
+require_relative "../config/environment"
+require "rails/test_help"
+require "helpers/open_fixture_helper"
+require "helpers/item_create_helper"
 
 module ActiveSupport
   class TestCase

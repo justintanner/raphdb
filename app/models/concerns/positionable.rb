@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'active_support/concern'
+require "active_support/concern"
 
 module Positionable
   extend ActiveSupport::Concern
@@ -19,12 +19,12 @@ module Positionable
 
   def position_group_where
     position_within_cols = self.class.class_variable_get(:@@position_within_cols)
-    raise 'position_within is not set' if position_within_cols.blank?
+    raise "position_within is not set" if position_within_cols.blank?
 
     position_within_cols
       .select { |col| send(col).present? }
       .map { |col| "#{col} = #{send(col)}" }
-      .join(' AND ')
+      .join(" AND ")
   end
 
   def next_position
@@ -32,7 +32,7 @@ module Positionable
   end
 
   def move_to(position_arg)
-    raise 'position_within is not set' if self.class.class_variable_get(:@@position_within_cols).blank?
+    raise "position_within is not set" if self.class.class_variable_get(:@@position_within_cols).blank?
 
     new_position = [[position_arg, 1].max, next_position].min
     current_position = self.position

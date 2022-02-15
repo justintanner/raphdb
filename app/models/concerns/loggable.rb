@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'active_support/concern'
+require "active_support/concern"
 
 module Loggable
   extend ActiveSupport::Concern
@@ -11,7 +11,6 @@ module Loggable
     def log_changes(only: [], on: %i[create update destroy], associated: nil, skip_when: nil)
       attributes = only.empty? ? column_names : only
 
-      # rubocop:disable Style/GuardClause
       if on.include?(:create)
         after_create do |record|
           log_create!(associated, attributes, record, skip_when)
@@ -34,7 +33,7 @@ module Loggable
   end
 
   def filtered_changes(action, attributes)
-    base_changes = action == 'create' ? previous_changes : changes
+    base_changes = action == "create" ? previous_changes : changes
 
     filtered = base_changes.extract!(*attributes)
 
@@ -53,8 +52,8 @@ module Loggable
     Log.create!(
       model: associated.nil? ? record : record.send(associated),
       associated: associated.nil? ? nil : record,
-      loggable_changes: record.filtered_changes('create', attributes),
-      action: 'create'
+      loggable_changes: record.filtered_changes("create", attributes),
+      action: "create"
     )
   end
 
@@ -64,8 +63,8 @@ module Loggable
     Log.create!(
       model: associated.nil? ? record : record.send(associated),
       associated: associated.nil? ? nil : record,
-      loggable_changes: record.filtered_changes('update', attributes),
-      action: 'update'
+      loggable_changes: record.filtered_changes("update", attributes),
+      action: "update"
     )
   end
 
@@ -75,8 +74,8 @@ module Loggable
     Log.create!(
       model: associated.nil? ? record : record.send(associated),
       associated: associated.nil? ? nil : record,
-      loggable_changes: record.filtered_changes('destroy', attributes),
-      action: 'destroy'
+      loggable_changes: record.filtered_changes("destroy", attributes),
+      action: "destroy"
     )
   end
 end

@@ -12,24 +12,24 @@ class CreateAll < ActiveRecord::Migration[7.0]
     end
     add_index :friendly_id_slugs, %i[sluggable_type sluggable_id]
     add_index :friendly_id_slugs,
-              %i[slug sluggable_type],
-              length: {
-                slug: 140,
-                sluggable_type: 50
-              }
+      %i[slug sluggable_type],
+      length: {
+        slug: 140,
+        sluggable_type: 50
+      }
     add_index :friendly_id_slugs,
-              %i[slug sluggable_type scope],
-              length: {
-                slug: 70,
-                sluggable_type: 50,
-                scope: 70
-              },
-              unique: true
+      %i[slug sluggable_type scope],
+      length: {
+        slug: 70,
+        sluggable_type: 50,
+        scope: 70
+      },
+      unique: true
 
     create_table :users do |t|
       ## Database authenticatable
-      t.string :email, null: false, default: ''
-      t.string :encrypted_password, null: false, default: ''
+      t.string :email, null: false, default: ""
+      t.string :encrypted_password, null: false, default: ""
 
       ## Recoverable
       t.string :reset_password_token
@@ -88,14 +88,14 @@ class CreateAll < ActiveRecord::Migration[7.0]
       t.boolean :publish, default: true
       t.boolean :same_across_set, default: false
       t.boolean :item_identifier, default: false
-      t.references :prefix_field, null: true, foreign_key: { to_table: 'fields' }
-      t.references :suffix_field, null: true, foreign_key: { to_table: 'fields' }
+      t.references :prefix_field, null: true, foreign_key: {to_table: "fields"}
+      t.references :suffix_field, null: true, foreign_key: {to_table: "fields"}
       t.datetime :deleted_at, index: true
       t.timestamps
     end
 
     create_table :item_sets do |t|
-      t.string :title, index: { unique: true }
+      t.string :title, index: {unique: true}
       t.string :slug
       t.jsonb :log, index: :gin
       t.datetime :deleted_at, index: true
@@ -104,7 +104,7 @@ class CreateAll < ActiveRecord::Migration[7.0]
 
     create_table :items do |t|
       t.references :item_set, null: false, foreign_key: true
-      t.string :slug, index: { unique: true }
+      t.string :slug, index: {unique: true}
       t.jsonb :data, index: :gin
       t.jsonb :log, index: :gin
       t.virtual :data_tsvector_col, :virtual, type: :tsvector, as: "to_tsvector('english', data)", stored: true
@@ -130,7 +130,7 @@ class CreateAll < ActiveRecord::Migration[7.0]
 
     create_table :pages do |t|
       t.string :title
-      t.string :slug, index: { unique: true }
+      t.string :slug, index: {unique: true}
       t.jsonb :log, index: :gin
       t.datetime :deleted_at, index: true
       t.timestamps

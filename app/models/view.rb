@@ -18,7 +18,7 @@ class View < ApplicationRecord
   end
 
   def sql_sort_order
-    sorts.map(&:to_sql).join(', ')
+    sorts.map(&:to_sql).join(", ")
   end
 
   def self.default

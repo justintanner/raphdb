@@ -29,9 +29,9 @@ class Image < ApplicationRecord
 
   delegate_missing_to :file
   log_changes only: %i[deleted_at],
-              on: %i[create destroy],
-              associated: :item_or_item_set,
-              skip_when: ->(image) { image.importing }
+    on: %i[create destroy],
+    associated: :item_or_item_set,
+    skip_when: ->(image) { image.importing }
   position_within :item_id, :item_set_id
 
   validate :item_or_set_present
@@ -43,6 +43,6 @@ class Image < ApplicationRecord
   def item_or_set_present
     return unless item_or_item_set.blank?
 
-    errors.add(:item_id_or_item_set_id, 'Please associate an item or item set')
+    errors.add(:item_id_or_item_set_id, "Please associate an item or item set")
   end
 end

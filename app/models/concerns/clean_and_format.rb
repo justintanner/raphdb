@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'active_support/concern'
+require "active_support/concern"
 
 module CleanAndFormat
   extend ActiveSupport::Concern
@@ -48,6 +48,6 @@ module Clean
   end
 
   def self.squish_and_strip(value)
-    value.is_a?(String) ? value.gsub(/[[:space:]]+/, ' ').strip : value
+    value.is_a?(String) ? value.gsub(/[[:space:]]+/, " ").strip : value
   end
 end

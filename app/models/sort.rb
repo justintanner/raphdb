@@ -19,7 +19,7 @@ class Sort < ApplicationRecord
   private
 
   def set_default_direction
-    self.direction ||= 'asc'
+    self.direction ||= "asc"
   end
 
   def direction_is_allowable

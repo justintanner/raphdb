@@ -2,6 +2,7 @@
 
 module Editor
   class DashboardController < EditorController
-    def index; end
+    def index
+    end
   end
 end

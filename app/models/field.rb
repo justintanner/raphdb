@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'safe'
+require "safe"
 
 class Field < ApplicationRecord
   include Undeletable
@@ -8,23 +8,23 @@ class Field < ApplicationRecord
   include ValueEncoding
 
   has_many :view_fields
-  belongs_to :prefix_field, optional: true, class_name: 'Field'
-  belongs_to :suffix_field, optional: true, class_name: 'Field'
+  belongs_to :prefix_field, optional: true, class_name: "Field"
+  belongs_to :suffix_field, optional: true, class_name: "Field"
 
   RESERVED_KEYS = %w[extra_searchable_tokens].freeze
 
-  NUMBER_FORMATS = { integer: 'Integer (2)', decimal: 'Decimal(1.0)' }.freeze
+  NUMBER_FORMATS = {integer: "Integer (2)", decimal: "Decimal(1.0)"}.freeze
 
   TYPES = {
-    single_line_text: 'Single line text',
-    long_text: 'Long text',
-    checkbox: 'Checkbox',
-    multiple_select: 'Multiple select',
-    single_select: 'Single select',
-    number: 'Number',
-    currency: 'Currency',
-    date: 'Date',
-    images: 'Images'
+    single_line_text: "Single line text",
+    long_text: "Long text",
+    checkbox: "Checkbox",
+    multiple_select: "Multiple select",
+    single_select: "Single select",
+    number: "Number",
+    currency: "Currency",
+    date: "Date",
+    images: "Images"
   }.freeze
 
   clean :title
@@ -36,7 +36,7 @@ class Field < ApplicationRecord
 
   validates :title, presence: true
   validates :column_type, presence: true
-  validates :key, exclusion: { in: RESERVED_KEYS }
+  validates :key, exclusion: {in: RESERVED_KEYS}
   validate :column_type_allowable
   validate :currency_has_iso_code
 
@@ -104,7 +104,7 @@ class Field < ApplicationRecord
   end
 
   def checkbox_value_valid?(value)
-    value.is_a?(TrueClass) || value.is_a?(FalseClass) || value == 'true' || value == 'false'
+    value.is_a?(TrueClass) || value.is_a?(FalseClass) || value == "true" || value == "false"
   end
 
   def add_to_all_views
@@ -116,16 +116,16 @@ class Field < ApplicationRecord
   end
 
   def create_key
-    self.key ||= title.parameterize(separator: '_')
+    self.key ||= title.parameterize(separator: "_")
   end
 
   def column_type_allowable
-    errors.add(:column_type, 'must be one of the allowable types') unless TYPES.values.include?(column_type)
+    errors.add(:column_type, "must be one of the allowable types") unless TYPES.values.include?(column_type)
   end
 
   def currency_has_iso_code
     return unless column_type == TYPES[:currency] && currency_iso_code.blank?
 
-    errors.add(:currency_iso_code, 'must be set if column type is currency')
+    errors.add(:currency_iso_code, "must be set if column type is currency")
   end
 end

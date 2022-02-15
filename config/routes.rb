@@ -2,14 +2,14 @@
 
 # prettier-ignore
 Rails.application.routes.draw do
-  devise_for :users, path: 'editor'
+  devise_for :users, path: "editor"
 
   namespace :editor do
-    root to: 'dashboard#index'
+    root to: "dashboard#index"
     resources :dashboard, only: [:index]
   end
 
-  get '/:slug', to: 'pages#show'
+  get "/:slug", to: "pages#show"
 
-  root 'pages#show', slug: 'homepage'
+  root "pages#show", slug: "homepage"
 end

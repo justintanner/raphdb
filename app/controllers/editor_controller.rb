@@ -2,7 +2,7 @@
 
 class EditorController < ActionController::Base
   before_action :authenticate_user!, :set_current_user
-  layout 'editor'
+  layout "editor"
 
   private
 

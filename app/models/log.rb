@@ -29,8 +29,8 @@ class Log < ApplicationRecord
       .each do |log|
         log
           .entry
-          .select { |k, _v| k.starts_with?('data.') }
-          .each { |k, v| data[k.split('.').last] = v.second }
+          .select { |k, _v| k.starts_with?("data.") }
+          .each { |k, v| data[k.split(".").last] = v.second }
       end
 
     data

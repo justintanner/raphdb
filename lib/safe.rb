@@ -3,11 +3,15 @@
 # Utility methods for getting safe values from user input without exceptions.
 module Safe
   def self.date(value)
-    Date.parse(value) rescue nil
+    Date.parse(value)
+  rescue
+    nil
   end
 
   def self.float(value)
-    Float(value) rescue nil
+    Float(value)
+  rescue
+    nil
   end
 
   def self.integer(value)

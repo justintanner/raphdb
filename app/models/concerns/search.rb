@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'active_support/concern'
+require "active_support/concern"
 
 module Search
   extend ActiveSupport::Concern
@@ -40,55 +40,54 @@ module SearchProcessor
     advanced_options
       .filter_map do |hash|
         case hash[:op]
-        when 'range'
+        when "range"
           between(hash[:key], hash[:from], hash[:to])
-        when 'equals'
+        when "equals"
           equals(hash[:key], hash[:value])
         end
       end
-      .join(' AND ')
+      .join(" AND ")
   end
 
   def self.equals(key, value)
     ApplicationRecord.sanitize_sql_array(
-      ['(data->>? LIKE ?)', key, "%#{value}%"]
+      ["(data->>? LIKE ?)", key, "%#{value}%"]
     )
   end
 
   def self.between(key, from, to)
     ApplicationRecord.sanitize_sql_array(
-      ['((data->?)::int BETWEEN ? AND ?)', key, from, to]
+      ["((data->?)::int BETWEEN ? AND ?)", key, from, to]
     )
   end
 
   # TODO: Remove this method and replace with filters model.
-  # rubocop:disable Metrics/AbcSize
   def self.extract_advanced(query)
     remaining_query = query.dup
-    numeric_keys = Field.numeric.keys.join('|')
+    numeric_keys = Field.numeric.keys.join("|")
     number_range_regex = /(#{numeric_keys}):\s*([0-9]+-[0-9]+)/i
 
     advanced_options =
       remaining_query
-      .scan(number_range_regex)
-      .map do |key, value|
-        from, to = value.split('-')
-        { op: 'range', key: key, from: from.to_i, to: to.to_i }
+        .scan(number_range_regex)
+        .map do |key, value|
+        from, to = value.split("-")
+        {op: "range", key: key, from: from.to_i, to: to.to_i}
       end
 
-    remaining_query.gsub!(number_range_regex, '')
+    remaining_query.gsub!(number_range_regex, "")
     remaining_query.strip!
 
-    all_keys = Field.keys.join('|')
+    all_keys = Field.keys.join("|")
     quoted_advanced_regex = /(#{all_keys}):\s*"*([^"]+)"*/i
     advanced_options +=
       remaining_query
-      .scan(quoted_advanced_regex)
-      .map do |key, value|
-        { op: 'equals', key: key, value: value.gsub(/["']/, '') }
+        .scan(quoted_advanced_regex)
+        .map do |key, value|
+        {op: "equals", key: key, value: value.gsub(/["']/, "")}
       end
 
-    remaining_query.gsub!(quoted_advanced_regex, '')
+    remaining_query.gsub!(quoted_advanced_regex, "")
     remaining_query.strip!
 
     [remaining_query, advanced_options]
@@ -113,10 +112,10 @@ module SearchProcessor
   end
 
   def self.pre_clean(query)
-    query.gsub(%r{[~`!@#%^&(){};<,>?/|+=]}, ' ').gsub(/[[:space:]]+/, ' ').strip
+    query.gsub(%r{[~`!@#%^&(){};<,>?/|+=]}, " ").gsub(/[[:space:]]+/, " ").strip
   end
 
   def self.postgres_query_string(query)
-    query.gsub(/[[:space:]]/, '|')
+    query.gsub(/[[:space:]]/, "|")
   end
 end

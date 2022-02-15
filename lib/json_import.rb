@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module JsonImport
-  def self.sets(filename = 'lilywhite-sets.json')
+  def self.sets(filename = "lilywhite-sets.json")
     each_row(filename) do |row|
       item_set =
         ItemSet.new(
@@ -17,7 +17,7 @@ module JsonImport
     end
   end
 
-  def self.items(filename = 'lilywhite-items.json')
+  def self.items(filename = "lilywhite-items.json")
     skipped_item_count = 0
 
     each_row(filename) do |row|
@@ -44,7 +44,7 @@ module JsonImport
     puts "Skipped #{skipped_item_count} items, because they didn't have an item_set." if skipped_item_count.positive?
   end
 
-  def self.images(filename = 'lilywhite-images.json')
+  def self.images(filename = "lilywhite-images.json")
     skipped_image_count = 0
 
     each_row(filename) do |row|
@@ -80,7 +80,7 @@ module JsonImport
     end
   end
 
-  def self.places_and_tags(filename = 'lilywhite-items.json')
+  def self.places_and_tags(filename = "lilywhite-items.json")
     places = []
     tags = []
 
@@ -89,7 +89,7 @@ module JsonImport
       tags += row[:data][:tags] if row[:data][:tags].present?
     end
 
-    places_field = Field.find_by(key: 'places')
+    places_field = Field.find_by(key: "places")
     places.uniq!
     places.compact_blank!
 
@@ -97,14 +97,14 @@ module JsonImport
       MultipleSelect.create!(title: place, field: places_field)
     end
 
-    tags_field = Field.find_by(key: 'tags')
+    tags_field = Field.find_by(key: "tags")
     tags.uniq!
     tags.compact_blank!
 
     tags.each { |tag| MultipleSelect.create!(title: tag, field: tags_field) }
   end
 
-  def self.logs(filename = 'lilywhite-logs.json')
+  def self.logs(filename = "lilywhite-logs.json")
     each_row(filename) do |row|
       cleaned_entry = {}
 
@@ -113,7 +113,7 @@ module JsonImport
           if %w[item_set_id deleted_at].include?(key)
             cleaned_entry[key] = values
           else
-            sub_key = key.include?('.') ? key.split('.').last : key
+            sub_key = key.include?(".") ? key.split(".").last : key
 
             cleaned_entry[key] = [
               Clean.clean_and_format(sub_key, values.first),
@@ -139,11 +139,11 @@ module JsonImport
   end
 
   def self.each_row(filename, &block)
-    File.open(Rails.root.join('tmp', filename)) do |file|
+    File.open(Rails.root.join("tmp", filename)) do |file|
       json = JSON.parse(file)
 
       json.each do |row|
-        print '.'
+        print "."
         block.call(row.with_indifferent_access)
       end
       print "\n"

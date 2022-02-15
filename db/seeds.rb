@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'fixture_import'
-require 'json_import'
+require "fixture_import"
+require "json_import"
 
-Page.create!(title: 'Homepage', body: '<p>Welcome!</p>')
+Page.create!(title: "Homepage", body: "<p>Welcome!</p>")
 User.create!(
-  email: 'testing@raphdb.com',
-  password: 'testing',
-  password_confirmation: 'testing'
+  email: "testing@raphdb.com",
+  password: "testing",
+  password_confirmation: "testing"
 )
 
 FixtureImport.views
@@ -26,8 +26,8 @@ JsonImport.sets
 puts "Seeded #{ItemSet.count} sets from lilywhite-sets.json"
 
 JsonImport.places_and_tags
-puts "Seeded #{MultipleSelect.where(field: Field.find_by(key: 'places')).count} places from lilywhite-items.json"
-puts "Seeded #{MultipleSelect.where(field: Field.find_by(key: 'tags')).count} tags from lilywhite-items.json"
+puts "Seeded #{MultipleSelect.where(field: Field.find_by(key: "places")).count} places from lilywhite-items.json"
+puts "Seeded #{MultipleSelect.where(field: Field.find_by(key: "tags")).count} tags from lilywhite-items.json"
 
 JsonImport.items
 puts "Seeded #{Item.count} items from lilywhite-sets.json"

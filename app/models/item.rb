@@ -17,8 +17,7 @@ class Item < ApplicationRecord
   attr_accessor :importing
 
   clean :data
-  log_changes only: %i[data item_set_id images],
-              skip_when: ->(item) { item.importing }
+  log_changes only: %i[data item_set_id images], skip_when: ->(item) { item.importing }
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_data
@@ -37,11 +36,11 @@ class Item < ApplicationRecord
   end
 
   def title
-    data.try(:[], 'item_title')
+    data.try(:[], "item_title")
   end
 
   def should_generate_new_friendly_id?
-    data_key_changed?('item_title')
+    data_key_changed?("item_title")
   end
 
   private
@@ -49,17 +48,17 @@ class Item < ApplicationRecord
   def data_key_changed?(key)
     return unless data_changed?
 
-    changes['data'].first.try(:[], key) != changes['data'].second.try(:[], key)
+    changes["data"].first.try(:[], key) != changes["data"].second.try(:[], key)
   end
 
   def generate_extra_searchable_tokens
     return unless data_changed?
 
     # This key is mirrored in Field::RESERVED_KEYS
-    data['extra_searchable_tokens'] = number_fields_as_strings
-                                      .concat(prefix_combinations)
-                                      .concat(suffix_combinations)
-                                      .join(' ')
+    data["extra_searchable_tokens"] = number_fields_as_strings
+      .concat(prefix_combinations)
+      .concat(suffix_combinations)
+      .join(" ")
   end
 
   def number_fields_as_strings
@@ -88,23 +87,23 @@ class Item < ApplicationRecord
   end
 
   def copy_set_title_to_data
-    data['set_title'] = item_set.title if item_set_id_changed? && item_set.present?
+    data["set_title"] = item_set.title if item_set_id_changed? && item_set.present?
   end
 
   def title_present
-    errors.add(:data_item_title, 'Please set data[item_title]') if data.try(:[], 'item_title').blank?
+    errors.add(:data_item_title, "Please set data[item_title]") if data.try(:[], "item_title").blank?
   end
 
   def no_symbols_in_data
     return unless data.present? && data.keys.any? { |key| key.instance_of?(Symbol) }
 
-    errors.add(:data, 'No symbols allowed in data')
+    errors.add(:data, "No symbols allowed in data")
   end
 
   def data_values_valid
     Field.all.each do |field|
       if data_key_changed?(field.key) && !field.value_valid?(display_data[field.key])
-        errors.add("data_#{field.key}".to_sym, 'invalid')
+        errors.add("data_#{field.key}".to_sym, "invalid")
       end
     end
   end
