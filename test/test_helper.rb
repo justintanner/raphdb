@@ -8,9 +8,8 @@ require 'helpers/item_create_helper'
 
 module ActiveSupport
   class TestCase
-    # Run tests in parallel with specified workers
-
-    # Turned off for now because of errors running tests in parallel.
+    # NOTE: this M1 mac setting helped "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+    # Turned off parallel tests for now because of errors related to active storage.
     # parallelize(workers: :number_of_processors)
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
