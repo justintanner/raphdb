@@ -18,8 +18,7 @@ module Positionable
   end
 
   def position_group_where
-    position_within_cols =
-      self.class.class_variable_get(:@@position_within_cols)
+    position_within_cols = self.class.class_variable_get(:@@position_within_cols)
     raise 'position_within is not set' if position_within_cols.blank?
 
     position_within_cols
@@ -41,25 +40,33 @@ module Positionable
     return if new_position == current_position
 
     if current_position.nil? || new_position > current_position
-      self.class.execute_sql(
-        "
-      UPDATE #{self.class.table_name}
-      SET position = position - 1
-      WHERE #{position_group_where} AND position > ? AND position <= ?",
-        current_position,
-        new_position
-      )
+      move_position_up(current_position, new_position)
     elsif new_position < current_position
-      self.class.execute_sql(
-        "
-      UPDATE #{self.class.table_name}
-      SET position = position + 1
-      WHERE #{position_group_where} AND position >= ? AND position < ?",
-        new_position,
-        current_position
-      )
+      move_position_down(current_position, new_position)
     end
 
     update(position: new_position)
+  end
+
+  private
+
+  def move_position_down(current_position, new_position)
+    self.class.execute_sql(
+      "UPDATE #{self.class.table_name}
+      SET position = position + 1
+      WHERE #{position_group_where} AND position >= ? AND position < ?",
+      new_position,
+      current_position
+    )
+  end
+
+  def move_position_up(current_position, new_position)
+    self.class.execute_sql(
+      "UPDATE #{self.class.table_name}
+      SET position = position - 1
+      WHERE #{position_group_where} AND position > ? AND position <= ?",
+      current_position,
+      new_position
+    )
   end
 end

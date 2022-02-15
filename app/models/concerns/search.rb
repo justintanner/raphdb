@@ -93,6 +93,7 @@ module SearchProcessor
 
     [remaining_query, advanced_options]
   end
+  # rubocop:enable Metrics/AbcSize
 
   def self.order_by
     # TODO: Add a new option accept a view or order as an option.

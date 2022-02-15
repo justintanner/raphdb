@@ -5,6 +5,7 @@ require 'safe'
 class Field < ApplicationRecord
   include Undeletable
   include CleanAndFormat
+  include ValueEncoding
 
   has_many :view_fields
   belongs_to :prefix_field, optional: true, class_name: 'Field'
@@ -26,15 +27,6 @@ class Field < ApplicationRecord
     images: 'Images'
   }.freeze
 
-  VALIDATORS = {
-    checkbox: ->(v) { v.is_a?(TrueClass) || v.is_a?(FalseClass) || v == 'true' || v == 'false' },
-    multiple_select: ->(v) { v.is_a?(Array) && MultipleSelect.all_exist?(field: self, titles: v) },
-    single_select: ->(v) { SingleSelect.exists?(field: self, title: v) },
-    date: ->(v) { SafeValue.date(v) },
-    currency: ->(v) { SafeValue.float(v) },
-    number: ->(v) { number_format == NUMBER_FORMATS[:integer] ? SafeValue.integer(v) : SafeValue.float(v) }
-  }.freeze
-
   clean :title
 
   attr_accessor :skip_add_to_all_views
@@ -53,60 +45,20 @@ class Field < ApplicationRecord
 
     case TYPES.key(column_type)
     when :checkbox
-      value.is_a?(TrueClass) || value.is_a?(FalseClass) || value == 'true' || value == 'false'
+      checkbox_value_valid?(value)
     when :multiple_select
-      value.is_a?(Array) && MultipleSelect.all_exist?(field: self, titles: value)
+      multiple_select_value_valid?(value)
     when :single_select
-      SingleSelect.exists?(field: self, title: value)
+      single_select_value_valid?(value)
     when :date
       Safe.date(value)
     when :currency
       Safe.float(value)
     when :number
-      number_format == NUMBER_FORMATS[:integer] ? Safe.integer(value) : Safe.float(value)
+      number_value_valid?(value)
     else
       true
     end
-  end
-
-  def display_format(value)
-    return if value.nil?
-
-    if column_type == TYPES[:date]
-      Date.strptime(value, '%Y%m%d').strftime('%d/%m/%Y')
-    elsif column_type == TYPES[:currency]
-      decode_currency(value)
-    else
-      value
-    end
-  end
-
-  def storage_format(value)
-    return if value.nil?
-
-    if column_type == TYPES[:date]
-      Date.parse(value).strftime('%Y%m%d')
-    elsif column_type == TYPES[:currency]
-      encode_currency(value)
-    else
-      value
-    end
-  end
-
-  def encode_currency(value)
-    return if value.blank?
-
-    money = Monetize.parse("#{currency_iso_code} #{value}")
-
-    "MMM#{money.cents}MMM"
-  end
-
-  def decode_currency(value)
-    return if value.blank?
-
-    money = Money.from_cents(value.gsub('M', '').to_d, currency_iso_code)
-
-    money.amount
   end
 
   def self.keys
@@ -134,6 +86,26 @@ class Field < ApplicationRecord
   end
 
   private
+
+  def single_select_value_valid?(value)
+    SingleSelect.exists?(field: self, title: value)
+  end
+
+  def multiple_select_value_valid?(value)
+    value.is_a?(Array) && MultipleSelect.all_exist?(field: self, titles: value)
+  end
+
+  def number_value_valid?(value)
+    if number_format == NUMBER_FORMATS[:integer]
+      Safe.integer(value)
+    else
+      Safe.float(value)
+    end
+  end
+
+  def checkbox_value_valid?(value)
+    value.is_a?(TrueClass) || value.is_a?(FalseClass) || value == 'true' || value == 'false'
+  end
 
   def add_to_all_views
     return if skip_add_to_all_views

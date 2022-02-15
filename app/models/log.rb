@@ -59,20 +59,24 @@ class Log < ApplicationRecord
       outer_name = field_name.to_s
 
       if column_type(outer_name) == :jsonb
-        model[field_name].each do |inner_name, inner_to|
-          next if self.class.jsonb_columns_to_ignore.include?(inner_name)
-
-          inner_from = from_to.first.try(:[], inner_name)
-          next if inner_from == inner_to
-
-          field_changes["#{outer_name}.#{inner_name}"] = [inner_from, inner_to]
-        end
+        add_jsonb_changes(field_changes, field_name, from_to, outer_name)
       else
         field_changes[outer_name] = from_to
       end
     end
 
     field_changes
+  end
+
+  def add_jsonb_changes(field_changes, field_name, from_to, outer_name)
+    model[field_name].each do |inner_name, inner_to|
+      next if self.class.jsonb_columns_to_ignore.include?(inner_name)
+
+      inner_from = from_to.first.try(:[], inner_name)
+      next if inner_from == inner_to
+
+      field_changes["#{outer_name}.#{inner_name}"] = [inner_from, inner_to]
+    end
   end
 
   def set_version_number

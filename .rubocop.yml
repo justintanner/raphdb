@@ -12,6 +12,10 @@ Metrics/MethodLength:
   Enabled: true
   Max: 32
 
+Metrics/CyclomaticComplexity:
+  Enabled: true
+  Max: 8
+
 Style/RescueModifier:
   Enabled: true
   Exclude:

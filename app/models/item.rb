@@ -72,15 +72,19 @@ class Item < ApplicationRecord
   def prefix_combinations
     Field
       .with_prefixes
-      .select { |field| data.key?(field.key) && data.key?(field.prefix_field.key) }
-      .map { |field| data[field.prefix_field.key].to_s + data[field.key].to_s }
+      .select { |field| data_has_keys?(field.key, field.prefix_field.key) }
+      .map { |field| "#{data[field.prefix_field.key]}#{data[field.key]}" }
   end
 
   def suffix_combinations
     Field
       .with_suffixes
-      .select { |field| data.key?(field.key) && data.key?(field.suffix_field.key) }
-      .map { |field| data[field.key].to_s + data[field.suffix_field.key].to_s }
+      .select { |field| data_has_keys?(field.key, field.suffix_field.key) }
+      .map { |field| "#{data[field.key]}#{data[field.suffix_field.key]}" }
+  end
+
+  def data_has_keys?(*keys)
+    keys.all? { |key| data.key?(key) }
   end
 
   def copy_set_title_to_data
