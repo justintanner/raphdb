@@ -120,7 +120,9 @@ class Field < ApplicationRecord
   end
 
   def column_type_allowable
-    errors.add(:column_type, "must be one of the allowable types") unless TYPES.values.include?(column_type)
+    return if TYPES.value?(column_type)
+
+    errors.add(:column_type, "must be one of the allowable types")
   end
 
   def currency_has_iso_code
