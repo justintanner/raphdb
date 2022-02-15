@@ -61,6 +61,8 @@ module SearchProcessor
     )
   end
 
+  # TODO: Remove this method and replace with filters model.
+  # rubocop:disable Metrics/AbcSize
   def self.extract_advanced(query)
     remaining_query = query.dup
     numeric_keys = Field.numeric.keys.join('|')

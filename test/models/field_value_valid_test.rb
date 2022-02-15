@@ -70,8 +70,7 @@ class FieldValueValidTest < ActiveSupport::TestCase
   test 'should return false for an in-valid currency' do
     estimated_value = fields(:estimated_value)
 
-    assert_not estimated_value.value_valid?('not a currency'),
-               'Validated a non-currency'
+    assert_not estimated_value.value_valid?('not a currency'), 'Validated a non-currency'
   end
 
   test 'should return true for an valid currency' do

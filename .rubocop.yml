@@ -8,9 +8,19 @@ Metrics/BlockLength:
     - test/**/*.rb
     - config/**/*.rb
 
-# Metrics/MethodLength:
-#   Enabled: true
-#   Max: 32
+Metrics/MethodLength:
+  Enabled: true
+  Max: 32
+
+Style/RescueModifier:
+  Enabled: true
+  Exclude:
+    - lib/safe.rb
+
+Style/ClassVars:
+  Enabled: true
+  Exclude:
+    - app/models/concerns/positionable.rb
 
 Layout/LineLength:
   Enabled: true
