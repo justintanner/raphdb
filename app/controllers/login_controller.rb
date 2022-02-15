@@ -1,3 +1,3 @@
 class LoginController < ApplicationController
-  layout 'editor'
+  layout 'login'
 end
