@@ -1,7 +1,4 @@
-<%= content_for :no_sidebar, true %>
-<%= content_for :body_class, 'bg-light text-center' %>
-
-<main class="devise">
+<div class="devise">
   <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
   <% flash.each do |_type, msg| %>
@@ -26,4 +23,4 @@
   <div class="mt-3">
     <%= render "devise/shared/links" %>
   </div>
-</main>
+</div>
