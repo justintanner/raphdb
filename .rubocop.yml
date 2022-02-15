@@ -1,0 +1,7 @@
+Layout/ExtraSpacing:
+  Enabled: true
+  AllowForAlignment: false
+
+AllCops:
+  Exclude:
+    - 'bin/**/*'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAll < ActiveRecord::Migration[7.0]
   # This migration is a concatenation of all previous migrations, but with better indexes and foreign keys.
   def change
@@ -26,8 +28,8 @@ class CreateAll < ActiveRecord::Migration[7.0]
 
     create_table :users do |t|
       ## Database authenticatable
-      t.string :email, null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
+      t.string :email, null: false, default: ''
+      t.string :encrypted_password, null: false, default: ''
 
       ## Recoverable
       t.string :reset_password_token
@@ -124,7 +126,7 @@ class CreateAll < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_index :multiple_selects, [:field_id, :title], unique: true
+    add_index :multiple_selects, %i[field_id title], unique: true
 
     create_table :pages do |t|
       t.string :title
@@ -140,7 +142,7 @@ class CreateAll < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_index :single_selects, [:field_id, :title], unique: true
+    add_index :single_selects, %i[field_id title], unique: true
 
     create_table :sorts, force: :cascade do |t|
       t.references :view, null: false, foreign_key: true
@@ -156,6 +158,6 @@ class CreateAll < ActiveRecord::Migration[7.0]
       t.integer :position, index: true
     end
 
-    add_index :view_fields, [:view_id, :field_id], unique: true
+    add_index :view_fields, %i[view_id field_id], unique: true
   end
 end

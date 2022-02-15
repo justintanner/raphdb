@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class MultipleSelectTest < ActiveSupport::TestCase
@@ -77,9 +79,9 @@ class MultipleSelectTest < ActiveSupport::TestCase
     MultipleSelect.create!(field: field, title: 'Hungary')
 
     assert_not MultipleSelect.all_exist?(
-                 field: field,
-                 titles: %w[Canada Mexico]
-               ),
+      field: field,
+      titles: %w[Canada Mexico]
+    ),
                'Failed to match all'
   end
 
@@ -93,9 +95,9 @@ class MultipleSelectTest < ActiveSupport::TestCase
     MultipleSelect.create!(field: field, title: 'Hungary')
 
     assert_not MultipleSelect.all_exist?(
-                 field: field,
-                 titles: %w[Canada Hungary Mexico]
-               ),
+      field: field,
+      titles: %w[Canada Hungary Mexico]
+    ),
                'Failed to match all'
   end
 end

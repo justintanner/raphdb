@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fixture_import'
 require 'json_import'
 

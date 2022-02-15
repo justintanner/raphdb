@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BettterTsvectorPrefilter < ActiveRecord::Migration[7.0]
   def change
     remove_column :items, :data_tsvector_col

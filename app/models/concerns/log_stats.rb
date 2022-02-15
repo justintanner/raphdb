@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/concern'
 
 module LogStats
@@ -5,7 +7,7 @@ module LogStats
 
   class_methods do
     def with_mismatching_data_to_logs
-      all.select { |object| !object.logs_match_current_data? }
+      all.reject(&:logs_match_current_data?)
     end
   end
 
@@ -14,16 +16,13 @@ module LogStats
   end
 
   def data_log_diff
-    a =
-      self
-        .data
-        .except(*Field::RESERVED_KEYS)
-        .reject { |_k, v| v.nil? || v == false || v == [] }
+    a = data
+      .except(*Field::RESERVED_KEYS)
+      .reject { |_k, v| v.nil? || v == false || v == [] }
 
-    b =
-      Log
-        .rebuild_data_from_logs(self)
-        .reject { |_k, v| v.nil? || v == false || v == [] }
+    b = Log
+      .rebuild_data_from_logs(self)
+      .reject { |_k, v| v.nil? || v == false || v == [] }
 
     a.diff(b)
   end

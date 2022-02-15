@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # prettier-ignore
 Rails.application.routes.draw do
   devise_for :users, path: 'editor'

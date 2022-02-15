@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bench'
 
 namespace :bench do
@@ -21,7 +23,7 @@ namespace :bench do
       lambda do |_n|
         item_set = ItemSet.find_or_create_by!(title: 'Bench Set')
         if item_set.present?
-          item_set.items.each { |item| item.destroy_fully! }
+          item_set.items.each(&:destroy_fully!)
           item_set.destroy_fully!
         end
       end
@@ -54,7 +56,7 @@ namespace :bench do
     cleanup_lambda =
       lambda do |_n|
         item_set = ItemSet.find_or_create_by!(title: 'Bench Set')
-        item_set.items.each { |item| item.destroy_fully! }
+        item_set.items.each(&:destroy_fully!)
         item_set.destroy_fully!
       end
 
@@ -69,9 +71,9 @@ namespace :bench do
   task item_search: :environment do
     return unless Rails.env.development?
 
-    measure_lambda = lambda { |n| n.times.map { Item.search('apple') } }
+    measure_lambda = ->(n) { n.times.map { Item.search('apple') } }
 
-    cleanup_lambda = lambda { |_n| puts 'Nothing to clean up' }
+    cleanup_lambda = ->(_n) { puts 'Nothing to clean up' }
 
     Bench.measure_and_profile(
       'Item searching',

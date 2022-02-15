@@ -1,18 +1,19 @@
 # frozen_string_literal: true
+
 require 'active_support/concern'
 
 module Positionable
   extend ActiveSupport::Concern
 
   included do
-    before_save { self.position ||= self.next_position }
+    before_save { self.position ||= next_position }
 
     default_scope { order(position: :asc) }
   end
 
   class_methods do
     def position_within(*cols)
-      self.class_variable_set(:@@position_within_cols, cols.to_a)
+      class_variable_set(:@@position_within_cols, cols.to_a)
     end
   end
 
@@ -22,21 +23,19 @@ module Positionable
     raise 'position_within is not set' if position_within_cols.blank?
 
     position_within_cols
-      .select { |col| self.send(col).present? }
-      .map { |col| "#{col} = #{self.send(col)}" }
+      .select { |col| send(col).present? }
+      .map { |col| "#{col} = #{send(col)}" }
       .join(' AND ')
   end
 
   def next_position
-    self.class.where(self.position_group_where).count + 1
+    self.class.where(position_group_where).count + 1
   end
 
   def move_to(position_arg)
-    if self.class.class_variable_get(:@@position_within_cols).blank?
-      raise 'position_within is not set'
-    end
+    raise 'position_within is not set' if self.class.class_variable_get(:@@position_within_cols).blank?
 
-    new_position = [[position_arg, 1].max, self.next_position].min
+    new_position = [[position_arg, 1].max, next_position].min
     current_position = self.position
 
     return if new_position == current_position
@@ -46,7 +45,7 @@ module Positionable
         "
       UPDATE #{self.class.table_name}
       SET position = position - 1
-      WHERE #{self.position_group_where} AND position > ? AND position <= ?",
+      WHERE #{position_group_where} AND position > ? AND position <= ?",
         current_position,
         new_position
       )
@@ -55,12 +54,12 @@ module Positionable
         "
       UPDATE #{self.class.table_name}
       SET position = position + 1
-      WHERE #{self.position_group_where} AND position >= ? AND position < ?",
+      WHERE #{position_group_where} AND position >= ? AND position < ?",
         new_position,
         current_position
       )
     end
 
-    self.update(position: new_position)
+    update(position: new_position)
   end
 end

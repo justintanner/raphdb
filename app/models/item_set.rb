@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ItemSet < ApplicationRecord
   include CleanAndFormat
   include Loggable
@@ -11,7 +13,7 @@ class ItemSet < ApplicationRecord
 
   clean :title
   log_changes only: [:title],
-              skip_when: lambda { |item_set| item_set.importing }
+              skip_when: ->(item_set) { item_set.importing }
   friendly_id :title, use: :history
 
   before_save :copy_title_to_items

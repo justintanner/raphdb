@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/concern'
 
 module Loggable
@@ -56,14 +58,12 @@ module Loggable
   end
 
   def filtered_changes(action, attributes)
-    base_changes = action == 'create' ? self.previous_changes : self.changes
+    base_changes = action == 'create' ? previous_changes : changes
 
     filtered = base_changes.extract!(*attributes)
 
     attributes.each do |name|
-      if self.send(name).is_a?(ActionText::RichText)
-        filtered[name] = self.send(name).changes[name]
-      end
+      filtered[name] = send(name).changes[name] if send(name).is_a?(ActionText::RichText)
     end
 
     filtered

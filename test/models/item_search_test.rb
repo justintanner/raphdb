@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ItemSearchTest < ActiveSupport::TestCase
@@ -117,7 +119,7 @@ class ItemSearchTest < ActiveSupport::TestCase
   end
 
   test 'should sort by the default sort order' do
-    9.downto(1) { |n| item_create!({ item_title: n.to_s + ' apple(s)' }) }
+    9.downto(1) { |n| item_create!({ item_title: "#{n} apple(s)" }) }
 
     results = Item.search('apple')
 
@@ -165,8 +167,8 @@ class ItemSearchTest < ActiveSupport::TestCase
   test 'should be able to match by two advanced criteria at once' do
     items =
       1
-        .upto(5)
-        .map { |n| item_create!({ item_title: 'cherry-banana', number: n }) }
+      .upto(5)
+      .map { |n| item_create!({ item_title: 'cherry-banana', number: n }) }
 
     results = Item.search('item_title: "cherry-banana" number: 1-5')
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class View < ApplicationRecord
   include Undeletable
   has_many :sorts
@@ -27,12 +29,11 @@ class View < ApplicationRecord
 
   def associate_all_fields
     return if skip_associate_all_fields
+
     self.fields = Field.all
   end
 
   def only_one_default
-    if self.default_changed? && self.default == true
-      View.where.not(id: self.id).update_all(default: false)
-    end
+    View.where.not(id: id).update_all(default: false) if default_changed? && default == true
   end
 end

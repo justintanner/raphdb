@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Image < ApplicationRecord
   include Undeletable
   include Loggable
@@ -15,7 +17,7 @@ class Image < ApplicationRecord
     mid_retina: [500, 500],
     large: [745, 700],
     large_retina: [1490, 1400]
-  }
+  }.freeze
 
   has_one_attached :file do |attachable|
     SIZES.each do |name, size|
@@ -29,7 +31,7 @@ class Image < ApplicationRecord
   log_changes only: %i[deleted_at],
               on: %i[create destroy],
               associated: :item_or_item_set,
-              skip_when: lambda { |image| image.importing }
+              skip_when: ->(image) { image.importing }
   position_within :item_id, :item_set_id
 
   validate :item_or_set_present

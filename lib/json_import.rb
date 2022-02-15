@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JsonImport
   def self.sets(filename = 'lilywhite-sets.json')
     each_row(filename) do |row|
@@ -39,9 +41,7 @@ module JsonImport
       item.save!
     end
 
-    if skipped_item_count > 0
-      puts "Skipped #{skipped_item_count} items, because they didn't have an item_set."
-    end
+    puts "Skipped #{skipped_item_count} items, because they didn't have an item_set." if skipped_item_count.positive?
   end
 
   def self.images(filename = 'lilywhite-images.json')
@@ -51,11 +51,7 @@ module JsonImport
       item =
         row[:item_id].present? ? Item.unscoped.find_by(id: row[:item_id]) : nil
       item_set =
-        if row[:item_set_id].present?
-          ItemSet.unscoped.find_by(id: row[:item_set_id])
-        else
-          nil
-        end
+        (ItemSet.unscoped.find_by(id: row[:item_set_id]) if row[:item_set_id].present?)
 
       if item.blank? && item_set.blank?
         skipped_image_count += 1
@@ -79,7 +75,7 @@ module JsonImport
       image.save!
     end
 
-    if skipped_image_count > 0
+    if skipped_image_count.positive?
       puts "Skipped #{skipped_image_count} images, because they didn't have an item or item_set."
     end
   end
@@ -114,7 +110,7 @@ module JsonImport
 
       if row[:entry].present?
         row[:entry].each do |key, values|
-          if key == 'item_set_id' || key == 'deleted_at'
+          if %w[item_set_id deleted_at].include?(key)
             cleaned_entry[key] = values
           else
             sub_key = key.include?('.') ? key.split('.').last : key
@@ -144,7 +140,7 @@ module JsonImport
 
   def self.each_row(filename, &block)
     File.open(Rails.root.join('tmp', filename)) do |file|
-      json = JSON.load(file)
+      json = JSON.parse(file)
 
       json.each do |row|
         print '.'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Field < ApplicationRecord
   include Undeletable
   include CleanAndFormat
@@ -6,9 +8,9 @@ class Field < ApplicationRecord
   belongs_to :prefix_field, optional: true, class_name: 'Field'
   belongs_to :suffix_field, optional: true, class_name: 'Field'
 
-  RESERVED_KEYS = %w[extra_searchable_tokens]
+  RESERVED_KEYS = %w[extra_searchable_tokens].freeze
 
-  NUMBER_FORMATS = { integer: 'Integer (2)', decimal: 'Decimal(1.0)' }
+  NUMBER_FORMATS = { integer: 'Integer (2)', decimal: 'Decimal(1.0)' }.freeze
 
   TYPES = {
     single_line_text: 'Single line text',
@@ -20,7 +22,7 @@ class Field < ApplicationRecord
     currency: 'Currency',
     date: 'Date',
     images: 'Images'
-  }
+  }.freeze
 
   clean :title
 
@@ -62,7 +64,7 @@ class Field < ApplicationRecord
   def value_valid?(value)
     return true if value.nil?
 
-    case (self.column_type)
+    case column_type
     when TYPES[:checkbox]
       value.is_a?(TrueClass) || value.is_a?(FalseClass) || value == 'true' ||
         value == 'false'
@@ -84,7 +86,7 @@ class Field < ApplicationRecord
         nil
       end
     when TYPES[:number]
-      if self.number_format == NUMBER_FORMATS[:integer]
+      if number_format == NUMBER_FORMATS[:integer]
         value.to_i.to_s == value.to_s
       else
         begin
@@ -109,7 +111,7 @@ class Field < ApplicationRecord
   def decode_currency(value)
     return if value.blank?
 
-    money = Money.from_cents(value.gsub('M', '').to_d, self.currency_iso_code)
+    money = Money.from_cents(value.gsub('M', '').to_d, currency_iso_code)
 
     money.amount
   end
@@ -142,6 +144,7 @@ class Field < ApplicationRecord
 
   def add_to_all_views
     return if skip_add_to_all_views
+
     View.all.map do |view|
       ViewField.find_or_create_by!(view: view, field: self)
     end
@@ -152,13 +155,11 @@ class Field < ApplicationRecord
   end
 
   def column_type_allowable
-    unless TYPES.values.include?(self.column_type)
-      errors.add(:column_type, 'must be one of the allowable types')
-    end
+    errors.add(:column_type, 'must be one of the allowable types') unless TYPES.values.include?(column_type)
   end
 
   def currency_has_iso_code
-    if self.column_type == TYPES[:currency] && self.currency_iso_code.blank?
+    if column_type == TYPES[:currency] && currency_iso_code.blank?
       errors.add(:currency_iso_code, 'must be set if column type is currency')
     end
   end

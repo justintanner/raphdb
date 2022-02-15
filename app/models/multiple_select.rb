@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MultipleSelect < ApplicationRecord
   include CleanAndFormat
   belongs_to :field

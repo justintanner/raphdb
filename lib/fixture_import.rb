@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FixtureImport
   def self.fields(filename = 'fields.yml')
     each_row(filename) do |row|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/concern'
 
 module CleanAndFormat
@@ -7,7 +9,7 @@ module CleanAndFormat
     def clean(attribute)
       return if attribute.blank?
 
-      column_type = self.type_for_attribute(attribute.to_sym).type
+      column_type = type_for_attribute(attribute.to_sym).type
 
       before_validation do |record|
         Clean.attribute(record, attribute, column_type)
@@ -40,9 +42,7 @@ module Clean
   def self.format(key, value)
     field = Field.find_by(key: key)
 
-    if field.blank?
-      raise "Tried to clean and format an unknown field: data.#{key}"
-    end
+    raise "Tried to clean and format an unknown field: data.#{key}" if field.blank?
 
     field.storage_format(value)
   end

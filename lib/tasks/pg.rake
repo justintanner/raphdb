@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :pg do
   task reset_sequences: :environment do
     ActiveRecord::Base.connection.tables.each do |t|

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Sort < ApplicationRecord
   include Positionable
   belongs_to :view
   belongs_to :field
 
-  DIRECTIONS = %w[asc desc]
+  DIRECTIONS = %w[asc desc].freeze
 
   position_within :view_id
 
@@ -21,8 +23,6 @@ class Sort < ApplicationRecord
   end
 
   def direction_is_allowable
-    unless DIRECTIONS.include?(self.direction)
-      errors.add(:direction, "must be either 'asc' or 'desc'")
-    end
+    errors.add(:direction, "must be either 'asc' or 'desc'") unless DIRECTIONS.include?(self.direction)
   end
 end

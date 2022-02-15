@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/concern'
 
 module Undeletable
@@ -5,6 +7,7 @@ module Undeletable
 
   included do
     attr_accessor :really_destroy
+
     default_scope { where(deleted_at: nil) }
   end
 

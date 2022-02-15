@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -79,11 +81,8 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console'
 
-  # Auto code formatting [https://github.com/prettier/plugin-ruby]
-  gem 'prettier'
-
-  # Profiling ruby [https://github.com/ruby-prof/ruby-prof]
-  gem 'ruby-prof'
+  # Code formatting [https://github.com/rubocop/rubocop]
+  gem 'rubocop', require: false
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"

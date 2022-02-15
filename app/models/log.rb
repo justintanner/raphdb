@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Log < ApplicationRecord
   has_one :user
   belongs_to :model, polymorphic: true, optional: true
@@ -9,7 +11,7 @@ class Log < ApplicationRecord
 
   attr_accessor :loggable_changes, :importing
 
-  validates :model, presence: true, unless: lambda { |log| log.importing }
+  validates :model, presence: true, unless: ->(log) { log.importing }
 
   scope :newest_to_oldest, -> { order(version: :desc, created_at: :desc) }
   scope :oldest_to_newest, -> { order(version: :asc, created_at: :asc) }
@@ -54,6 +56,7 @@ class Log < ApplicationRecord
       if column_type(outer_name) == :jsonb
         model[field_name].each do |inner_name, inner_to|
           next if self.class.jsonb_columns_to_ignore.include?(inner_name)
+
           inner_from = from_to.first.try(:[], inner_name)
           next if inner_from == inner_to
 
@@ -70,7 +73,7 @@ class Log < ApplicationRecord
   def set_version_number
     return if importing
 
-    max = self.class.where(model: self.model).maximum(:version) || 0
+    max = self.class.where(model: model).maximum(:version) || 0
     self.version = max + 1
   end
 
