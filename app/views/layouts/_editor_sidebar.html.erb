@@ -11,11 +11,4 @@
   <% end %>
 </ul>
 
-<div class="dropdown border-top border-2">
-  <a href="javascript:void(0);" class="d-flex align-items-center text-decoration-none dropdown-toggle pt-3 px-3" id="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-    <%= current_user.email %>
-  </a>
-  <ul class="dropdown-menu text-small shadow" aria-labelledby="user-dropdown">
-    <li><%= link_to('Logout', destroy_user_session_path, class: "dropdown-item", data: { turbo_method: :delete }) %></li>
-  </ul>
-</div>
+

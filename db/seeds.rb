@@ -5,6 +5,7 @@ require "json_import"
 
 Page.create!(title: "Homepage", body: "<p>Welcome!</p>")
 User.create!(
+  name: "Testing",
   email: "testing@raphdb.com",
   password: "testing",
   password_confirmation: "testing"

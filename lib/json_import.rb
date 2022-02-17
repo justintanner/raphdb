@@ -140,7 +140,7 @@ module JsonImport
 
   def self.each_row(filename, &block)
     File.open(Rails.root.join("tmp", filename)) do |file|
-      json = JSON.parse(file)
+      json = JSON.parse(file.read)
 
       json.each do |row|
         print "."
