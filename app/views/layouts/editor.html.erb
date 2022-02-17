@@ -17,8 +17,11 @@
   <div class="row d-flex border-bottom border-2">
     <div class="col-auto d-flex align-items-center p-3" style="width: 300px">
         <span>JL Editor</span>
-        <button class="btn btn-light btn-sm ms-3 shadow-none" data-action="click->editor--base#toggleSidebar">
-          <%= render "svgs/bi-layout-sidebar-inset" %><span class="ms-2" data-editor--base-target="toggleLabel">Collapse</span>
+        <button type="button" class="btn btn-light btn-sm ms-3 shadow-none ms-auto" data-editor--base-target="hideSidebarButton" data-action="editor--base#toggleSidebar">
+          <%= render "svgs/bi-layout-sidebar-inset" %><span class="ms-2">Hide</span>
+        </button>
+        <button type="button" class="btn btn-light btn-sm ms-3 shadow-none ms-auto d-none" data-editor--base-target="showSidebarButton" data-action="editor--base#toggleSidebar">
+          <%= render "svgs/bi-layout-sidebar-inset-reverse" %><span class="ms-2">Show</span>
         </button>
     </div>
     <div class="col d-flex align-items-center p-3">

@@ -1,17 +1,31 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = [ "sidebar", "toggleLabel" ];
+  static targets = [ "sidebar", "showSidebarButton", "hideSidebarButton" ];
 
   toggleSidebar() {
     const sidebar = this.sidebarTarget;
+    const showButton = this.showSidebarButtonTarget;
+    const hideButton = this.hideSidebarButtonTarget;
+
+    console.log(showButton, hideButton, sidebar);
 
     if (sidebar.style.display === "none") {
       sidebar.style.display = "flex";
-      this.toggleLabelTarget.innerText = "Collapse";
+
+      showButton.classList.remove("d-block");
+      showButton.classList.add("d-none");
+
+      hideButton.classList.add("d-block");
+      hideButton.classList.remove("d-none");
     } else {
       sidebar.style.setProperty("display", "none", "important")
-      this.toggleLabelTarget.innerText = "Show";
+
+      showButton.classList.remove("d-none");
+      showButton.classList.add("d-block");
+
+      hideButton.classList.add("d-none");
+      hideButton.classList.remove("d-block");
     }
   }
 }
