@@ -1,3 +1,21 @@
-<ul class="list-unstyled">
-  <li><%= link_to('Logout', destroy_user_session_path, data: { turbo_method: :delete }) %></li>
+<ul class="nav nav-pills d-flex flex-column mb-auto">
+  <% View.all.each do |view| %>
+  <li class="nav-item">
+    <%= link_to editor_view_path(view), class: class_names("nav-link": true, "active": @view == view), aria_current: "view" do %>
+      <%= render "svgs/bi-table" %><span class="ms-2"><%= view.title %></span>
+      <% if @view == view %>
+        <span class="float-end"><%= render "svgs/bi-check" %></span>
+      <% end %>
+    <% end %>
+  </li>
+  <% end %>
 </ul>
+
+<div class="dropdown border-top border-2">
+  <a href="javascript:void(0);" class="d-flex align-items-center text-decoration-none dropdown-toggle pt-3 px-3" id="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+    <%= current_user.email %>
+  </a>
+  <ul class="dropdown-menu text-small shadow" aria-labelledby="user-dropdown">
+    <li><%= link_to('Logout', destroy_user_session_path, class: "dropdown-item", data: { turbo_method: :delete }) %></li>
+  </ul>
+</div>

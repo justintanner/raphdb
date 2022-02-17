@@ -1,6 +1,7 @@
-<% if resource.errors.any? %>
+<% messages = all_devise_messages(resource, flash) %>
+<% if messages.present? %>
   <div class="alert alert-danger" role="alert">
-    <% resource.errors.full_messages.each do |message| %>
+    <% messages.each do |message| %>
       <p class="mb-1"><%= message %></p>
     <% end %>
   </div>

@@ -1,11 +1,7 @@
 <div class="devise">
   <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-  <% flash.each do |_type, msg| %>
-    <div class="alert alert-danger" role="alert"><%= msg %></div>
-  <% end %>
-
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }, html: { onsubmit: "window.copyCSRFMetaTagToFormAuthenticityToken()" }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }, html: { onsubmit: "window.copyCSRFMetaTagToFormAuthenticityToken()" }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="form-floating mb-0">

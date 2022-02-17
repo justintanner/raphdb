@@ -34,6 +34,8 @@ class View < ApplicationRecord
   end
 
   def only_one_default
-    View.where.not(id: id).update_all(default: false) if default_changed? && default == true
+    return unless default_changed? && default == true
+
+    View.where.not(id: id).update_all(default: false)
   end
 end

@@ -2,42 +2,38 @@
 <html lang="en" class="h-100">
 <head>
   <title><%= yield :title %></title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <%= stylesheet_link_tag 'application', "data-turbo-track": 'reload' %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
   <%= yield :head %>
 </head>
 
 <body class="h-100">
 
-<div class="container-fluid d-flex flex-column h-100">
-  <div class="row">
-    <div class="col bg-light">
-      Top
-      <a href="#" data-bs-target="#sidebar" data-bs-toggle="collapse" class="btn btn-sm btn-secondary">Views</a>
+<div class="container-fluid d-flex flex-column h-100" data-controller="editor--base">
+  <div class="row d-flex border-bottom border-2">
+    <div class="col-auto d-flex align-items-center p-3" style="width: 300px">
+        <span>JL Editor</span>
+        <button class="btn btn-light btn-sm ms-3 shadow-none" data-action="click->editor--base#toggleSidebar">
+          <%= render "svgs/bi-layout-sidebar-inset" %><span class="ms-2" data-editor--base-target="toggleLabel">Collapse</span>
+        </button>
+    </div>
+    <div class="col d-flex align-items-center p-3">
+      <%= render "svgs/bi-table" %><span class="ms-2"><%= yield :title %></span>
     </div>
   </div>
 
   <div class="row d-flex flex-fill justify-content-start">
     <div class="col-auto d-flex px-0">
-      <div id="sidebar" class="bg-dark collapse collapse-horizontal show">
-        <%= render 'layouts/editor_sidebar' %>
+      <div id="sidebar" class="d-flex flex-column h-100 border-end border-2 p-3" data-editor--base-target="sidebar">
+        <%= render "layouts/editor_sidebar" %>
       </div>
     </div>
     <div class="col d-flex flex-column h-100 pt-2">
-      <div class="row">
-        <div class="col">
-          <%= yield %>
-        </div>
-      </div>
-      <div class="row mt-auto bg-light">
-        <div class="col">
-          Footer
-        </div>
-      </div>
+      <%= yield %>
     </div>
   </div>
 </div>

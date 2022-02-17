@@ -9,6 +9,6 @@ class EditorController < ActionController::Base
   def set_current_user
     return unless defined?(current_user)
 
-    LoggableStore.user_id = current_user.try(:id) || current_user
+    LoggableStore.user_id = current_user.try(:id)
   end
 end
