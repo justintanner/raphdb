@@ -1,11 +1,17 @@
 <%= content_for :title, @view.title %>
 
 <div class="row">
-  <div class="col">
-    <table>
+  <div class="col p-0">
+    <table class="table-search">
+      <thead>
       <tr>
-        <th>Table goes here!</th>
+      <% @view.fields.each do |field| %>
+        <th class="text-nowrap"><small><%= field.title %></small></th>
+      <% end %>
       </tr>
+      </thead>
+      <tbody>
+      </tbody>
     </table>
   </div>
 </div>
