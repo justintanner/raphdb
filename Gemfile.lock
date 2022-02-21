@@ -167,6 +167,8 @@ GEM
       rack (>= 1.6.2, < 3)
       rack-protection
     orm_adapter (0.5.0)
+    pagy (5.10.1)
+      activesupport
     parallel (1.21.0)
     parser (3.1.0.0)
       ast (~> 2.4.1)
@@ -305,6 +307,7 @@ DEPENDENCIES
   monetize
   money
   omniauth
+  pagy
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.1)

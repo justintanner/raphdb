@@ -8,8 +8,6 @@ export default class extends Controller {
     const showButton = this.showSidebarButtonTarget;
     const hideButton = this.hideSidebarButtonTarget;
 
-    console.log(showButton, hideButton, sidebar);
-
     if (sidebar.style.display === "none") {
       sidebar.style.display = "flex";
 

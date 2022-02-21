@@ -5,29 +5,21 @@ require "active_support/concern"
 module Search
   extend ActiveSupport::Concern
 
-  class_methods do
-    def search(query, options = {})
-      SearchProcessor.query(query, self, options)
-    end
+  def search(query, options = {})
+    SearchProcessor.query(query, self, options)
   end
 end
 
 module SearchProcessor
-  MAX_RESULTS = 200
-  DEFAULT_PER_PAGE = 100
-
-  def self.query(query, klass, options)
+  def self.query(query, view, options)
     remaining_query = pre_clean(query)
 
     remaining_query, advanced_options = extract_advanced(remaining_query)
 
-    klass
-      .includes(:images)
+    Item
       .where(tsvector_where(remaining_query))
       .where(advanced_where(advanced_options))
-      .order(order_by)
-      .offset(offset(options[:page], options[:per_page]))
-      .limit(limit(options[:per_page]))
+      .order(order_by(view))
   end
 
   def self.tsvector_where(query)
@@ -94,24 +86,13 @@ module SearchProcessor
   end
   # rubocop:enable Metrics/AbcSize
 
-  def self.order_by
-    # TODO: Add a new option accept a view or order as an option.
-    Arel.sql(View.default.sql_sort_order)
-  end
-
-  def self.offset(page, per_page)
-    page.is_a?(Numeric) && page >= 1 ? (page - 1) * limit(per_page) : 0
-  end
-
-  def self.limit(per_page)
-    if per_page.is_a?(Numeric) && per_page.positive? && per_page <= MAX_RESULTS
-      per_page
-    else
-      DEFAULT_PER_PAGE
-    end
+  def self.order_by(view)
+    Arel.sql(view.sql_sort_order)
   end
 
   def self.pre_clean(query)
+    return "" if query.blank?
+
     query.gsub(%r{[~`!@#%^&(){};<,>?/|+=]}, " ").gsub(/[[:space:]]+/, " ").strip
   end
 

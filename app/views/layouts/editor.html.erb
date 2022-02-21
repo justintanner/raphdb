@@ -13,7 +13,7 @@
 
 <body class="h-100">
 
-<div class="container-fluid d-flex flex-column h-100" data-controller="editor--base">
+<div class="container-fluid d-flex flex-column vh-100" data-controller="editor--base">
   <div class="row d-flex border-bottom border-2">
     <div class="col-auto d-flex align-items-center p-3" style="width: 300px">
         <span>JL Editor</span>
@@ -46,7 +46,7 @@
         <%= render "layouts/editor_sidebar" %>
       </div>
     </div>
-    <div class="col d-flex flex-column h-100">
+    <div class="col d-flex flex-column h-100 p-0 overflow-hidden">
       <%= yield %>
     </div>
   </div>

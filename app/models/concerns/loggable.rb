@@ -28,7 +28,6 @@ module Loggable
           log_destroy!(associated, attributes, record, skip_when)
         end
       end
-      # rubocop:enable Style/GuardClause
     end
   end
 

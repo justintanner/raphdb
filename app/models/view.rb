@@ -2,6 +2,9 @@
 
 class View < ApplicationRecord
   include Undeletable
+  include Search
+  include HotHelpers
+
   has_many :sorts
   has_many :view_fields
   has_many :fields, through: :view_fields
@@ -18,7 +21,7 @@ class View < ApplicationRecord
   end
 
   def sql_sort_order
-    sorts.map(&:to_sql).join(", ")
+    sorts.includes(:field).map(&:to_sql).join(", ")
   end
 
   def self.default

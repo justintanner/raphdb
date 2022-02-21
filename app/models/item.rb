@@ -6,7 +6,6 @@ class Item < ApplicationRecord
   include LogStats
   include Undeletable
   include FriendlyId
-  include Search
 
   belongs_to :item_set
 
@@ -27,6 +26,10 @@ class Item < ApplicationRecord
   validate :no_symbols_in_data
   validate :data_values_valid
 
+  def title
+    data.try(:[], "item_title")
+  end
+
   def display_data
     Field
       .all
@@ -35,8 +38,12 @@ class Item < ApplicationRecord
       .with_indifferent_access
   end
 
-  def title
-    data.try(:[], "item_title")
+  def to_hot
+    {
+      id: id,
+      item_set_id: item_set_id,
+      data: display_data
+    }
   end
 
   def should_generate_new_friendly_id?

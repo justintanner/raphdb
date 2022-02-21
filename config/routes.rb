@@ -10,6 +10,9 @@ Rails.application.routes.draw do
       collection do
         get :default
       end
+      member do
+        get :search
+      end
     end
   end
 

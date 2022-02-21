@@ -5,3 +5,8 @@ import "trix";
 import "@rails/actiontext";
 import "popper";
 import "bootstrap";
+import "moment";
+import "pikaday";
+import "numbro";
+import "dompurify";
+import "handsontable";
