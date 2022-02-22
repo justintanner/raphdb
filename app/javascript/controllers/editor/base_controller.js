@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = [ "sidebar", "showSidebarButton", "hideSidebarButton" ];
+  static targets = [ "sidebar", "showSidebarButton", "hideSidebarButton", "hot" ];
 
   toggleSidebar() {
     const sidebar = this.sidebarTarget;
@@ -17,7 +17,7 @@ export default class extends Controller {
       hideButton.classList.add("d-block");
       hideButton.classList.remove("d-none");
     } else {
-      sidebar.style.setProperty("display", "none", "important")
+      sidebar.style.setProperty("display", "none", "important");
 
       showButton.classList.remove("d-none");
       showButton.classList.add("d-block");
@@ -25,5 +25,8 @@ export default class extends Controller {
       hideButton.classList.add("d-none");
       hideButton.classList.remove("d-block");
     }
+
+    const hotController = this.application.getControllerForElementAndIdentifier(this.hotTarget, 'editor--hot')
+    hotController.resize()
   }
 }

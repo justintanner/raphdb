@@ -1,23 +1,27 @@
 import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = {searchPath: String}
-  static targets = ["columns", "colHeaders"]
+  static values = {searchPath: String};
+  static targets = ["columns", "colHeaders"];
+
+  setContainerWidthHeight() {
+    const that = this;
+    const container = that.element.parentElement;
+    const col = container.parentElement;
+    const colStyle = window.getComputedStyle(col);
+
+    container.style.width = colStyle.width;
+    container.style.height = colStyle.height;
+  }
 
   resize() {
     const that = this;
-    
-    const parentStyle = window.getComputedStyle(that.element.parentNode)
 
-    that.element.style.width = parentStyle.width
-    that.element.style.height = parentStyle.height
-
-    if (typeof (that.element.handsontable) === 'function') {
-      that.element.handsontable('getInstance').refreshDimensions()
-    }
+    that.setContainerWidthHeight();
+    that.hotInstance.refreshDimensions();
   }
 
-  fetchRecords(hotInstance) {
+  fetchRecords() {
     const that = this;
 
     that.alreadyFetchedPaths ||= [];
@@ -32,46 +36,49 @@ export default class extends Controller {
     fetch(that.searchPathValue)
       .then((data) => data.text())
       .then((json) => {
-        const response = JSON.parse(json)
-        const sourceData = hotInstance.getSourceData();
-        hotInstance.updateData(sourceData.concat(response['records']))
+        const response = JSON.parse(json);
+        const sourceData = that.hotInstance.getSourceData();
+        that.hotInstance.updateData(sourceData.concat(response['records']));
 
         if (response['pagy']['page'] === response['pagy']['last']) {
-          that.searchPathValue = response['pagy']['page_url']
+          // Use the same page that we just fetched to stop fetching pages.
+          that.searchPathValue = response['pagy']['page_url'];
         } else {
-          that.searchPathValue = response['pagy']['next_url']
+          that.searchPathValue = response['pagy']['next_url'];
         }
       })
-     // TODO: Handle error case!
+    // TODO: Handle error case!
   }
 
   initialize() {
     const that = this;
 
-    const columns = JSON.parse(that.columnsTarget.innerHTML)
-    const colHeaders = JSON.parse(that.colHeadersTarget.innerHTML)
+    const columns = JSON.parse(that.columnsTarget.innerHTML);
+    const colHeaders = JSON.parse(that.colHeadersTarget.innerHTML);
 
-    const hotInstance = new Handsontable(that.element, {
+    that.setContainerWidthHeight();
+
+    that.hotInstance = new Handsontable(that.element, {
       data: [],
       columns: columns,
       colHeaders: colHeaders,
       rowHeaders: true,
       licenseKey: 'non-commercial-and-evaluation'
-    })
+    });
 
-    const autoRowSize = hotInstance.getPlugin('AutoRowSize')
+    const autoRowSize = that.hotInstance.getPlugin('AutoRowSize');
 
-    that.fetchRecords(hotInstance)
+    that.fetchRecords();
 
-    hotInstance.addHook('afterScrollVertically', function () {
-      const totalRows = hotInstance.countRows()
+    that.hotInstance.addHook('afterScrollVertically', function () {
+      const totalRows = that.hotInstance.countRows()
       const lastVisibleRow = autoRowSize.getLastVisibleRow()
 
       if (lastVisibleRow < totalRows - 30) {
         return;
       }
 
-      that.fetchRecords(hotInstance);
-    })
+      that.fetchRecords()
+    });
   }
 }

@@ -1,15 +1,17 @@
 <%= content_for :title, @view.title %>
 
-<div data-controller="editor--hot"
-     data-action="resize@window->resize"
-     data-editor--hot-search-path-value="<%= search_editor_view_path(@view) %>">
+<div id="hot-container" class="overflow-hidden">
+  <div data-controller="editor--hot"
+       data-editor--base-target="hot"
+       data-action="resize@window->editor--hot#resize resize@document->editor--hot#resize"
+       data-editor--hot-search-path-value="<%= search_editor_view_path(@view) %>">
 
-  <script type="application/json" data-editor--hot-target="colHeaders">
-    <%= raw @view.hot_col_headers.to_json %>
-  </script>
+    <script type="application/json" data-editor--hot-target="colHeaders">
+      <%= raw @view.hot_col_headers.to_json %>
+    </script>
 
-  <script type="application/json" data-editor--hot-target="columns">
-    <%= raw @view.hot_columns.to_json %>
-  </script>
-  <div data-editor--hot-target="container" class="overflow-hidden"></div>
+    <script type="application/json" data-editor--hot-target="columns">
+      <%= raw @view.hot_columns.to_json %>
+    </script>
+  </div>
 </div>
