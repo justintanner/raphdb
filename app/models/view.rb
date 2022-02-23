@@ -3,11 +3,11 @@
 class View < ApplicationRecord
   include Undeletable
   include Search
-  include HotHelpers
+  include Hot::ViewHelpers
 
   has_many :sorts
   has_many :view_fields
-  has_many :fields, through: :view_fields
+  has_many :fields, through: :view_fields, source: :field
 
   validates :title, presence: true
 

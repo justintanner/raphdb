@@ -1,9 +1,11 @@
-import {Controller} from "@hotwired/stimulus"
+import {Controller} from "@hotwired/stimulus";
+import "handsontable";
 
 export default class extends Controller {
   static values = {searchPath: String};
-  static targets = ["columns", "colHeaders"];
+  static targets = ["columns", "colHeaders", "spinner"];
 
+  // Handsontable requires it's parent container to have a height and width set, so that it can size itself.
   setContainerWidthHeight() {
     const that = this;
     const container = that.element.parentElement;
@@ -38,6 +40,9 @@ export default class extends Controller {
       .then((json) => {
         const response = JSON.parse(json);
         const sourceData = that.hotInstance.getSourceData();
+
+        that.spinnerTarget.classList.add('d-none');
+
         that.hotInstance.updateData(sourceData.concat(response['records']));
 
         if (response['pagy']['page'] === response['pagy']['last']) {
@@ -63,6 +68,7 @@ export default class extends Controller {
       columns: columns,
       colHeaders: colHeaders,
       rowHeaders: true,
+      manualColumnResize: true,
       licenseKey: 'non-commercial-and-evaluation'
     });
 

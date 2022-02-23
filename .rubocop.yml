@@ -45,7 +45,7 @@ Style/Documentation:
     - app/helpers/**/*.rb
     - config/**/*.rb
 
-ClassLength:
+Metrics/ClassLength:
   Enabled: true
   Exclude:
     - test/**/*.rb

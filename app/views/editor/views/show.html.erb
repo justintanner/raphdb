@@ -1,7 +1,8 @@
 <%= content_for :title, @view.title %>
 
 <div id="hot-container" class="overflow-hidden">
-  <div data-controller="editor--hot"
+  <div class="d-flex"
+       data-controller="editor--hot"
        data-editor--base-target="hot"
        data-action="resize@window->editor--hot#resize resize@document->editor--hot#resize"
        data-editor--hot-search-path-value="<%= search_editor_view_path(@view) %>">
@@ -13,5 +14,9 @@
     <script type="application/json" data-editor--hot-target="columns">
       <%= raw @view.hot_columns.to_json %>
     </script>
+
+    <div class="spinner-border mt-5 mx-auto" role="status" data-editor--hot-target="spinner">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
 </div>

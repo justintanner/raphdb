@@ -6,6 +6,7 @@ class Field < ApplicationRecord
   include Undeletable
   include CleanAndFormat
   include ValueEncoding
+  include Hot::FieldHelpers
 
   has_many :view_fields
   belongs_to :prefix_field, optional: true, class_name: "Field"

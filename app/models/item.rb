@@ -6,6 +6,7 @@ class Item < ApplicationRecord
   include LogStats
   include Undeletable
   include FriendlyId
+  include Hot::ItemHelpers
 
   belongs_to :item_set
 
@@ -36,14 +37,6 @@ class Item < ApplicationRecord
       .map { |field| [field.key, field.display_format(data[field.key])] }
       .to_h
       .with_indifferent_access
-  end
-
-  def to_hot
-    {
-      id: id,
-      item_set_id: item_set_id,
-      data: display_data
-    }
   end
 
   def should_generate_new_friendly_id?
