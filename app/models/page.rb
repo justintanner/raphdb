@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Page < ApplicationRecord
-  include CleanAndFormat
+  include Cleanable
   include Loggable
   include Undeletable
   include FriendlyId

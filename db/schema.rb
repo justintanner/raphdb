@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_17_162009) do
+ActiveRecord::Schema.define(version: 2022_02_28_165508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2022_02_17_162009) do
     t.string "date_format"
     t.string "currency_iso_code"
     t.string "number_format", default: "Integer (2)"
+    t.string "bootstrap_col", default: "col-12"
     t.index ["deleted_at"], name: "index_fields_on_deleted_at"
     t.index ["prefix_field_id"], name: "index_fields_on_prefix_field_id"
     t.index ["suffix_field_id"], name: "index_fields_on_suffix_field_id"
@@ -111,12 +112,12 @@ ActiveRecord::Schema.define(version: 2022_02_17_162009) do
   create_table "items", force: :cascade do |t|
     t.bigint "item_set_id", null: false
     t.string "slug"
-    t.jsonb "data"
-    t.virtual "virtual", type: :tsvector, as: "to_tsvector('english'::regconfig, data)", stored: true
+    t.jsonb "data", default: {}
     t.datetime "deleted_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.virtual "data_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, (regexp_replace((data)::text, '([^a-z0-9]+)'::text, ' \\1 '::text, 'gi'::text))::jsonb)", stored: true
+    t.text "search_data"
+    t.virtual "search_tsvector_col", type: :tsvector, as: "to_tsvector('english'::regconfig, search_data)", stored: true
     t.index ["data"], name: "index_items_on_data"
     t.index ["deleted_at"], name: "index_items_on_deleted_at"
     t.index ["item_set_id"], name: "index_items_on_item_set_id"

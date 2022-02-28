@@ -34,29 +34,27 @@ class ItemSetTest < ActiveSupport::TestCase
 
   test "items should have a copy of the sets title" do
     item_set = ItemSet.create(title: "Two Items")
-    Item.create(data: {item_title: "First Item"}, item_set: item_set)
-    item_set.items << Item.create(data: {item_title: "Second Item"})
+    first_item = Item.create(data: {item_title: "First Item"}, item_set: item_set)
+    second_item = Item.create(data: {item_title: "Second Item"})
+    item_set.items << second_item
 
-    assert_equal "Two Items",
-      item_set.items.first.data["set_title"],
-      "Item set title was not copied to items"
-    assert_equal "Two Items",
-      item_set.items.last.data["set_title"],
-      "Item set title was not copied to items"
+    assert_equal "Two Items", first_item.data["set_title"], "Item set title was not copied to items"
+    assert_equal "Two Items", second_item.data["set_title"], "Item set title was not copied to items"
   end
 
   test "updating a set title is reflected in all items" do
     item_set = ItemSet.create(title: "Two Items")
-    Item.create(data: {item_title: "First Item"}, item_set: item_set)
-    item_set.items << Item.create(data: {item_title: "Second Item"})
+    first_item = Item.create(data: {item_title: "First Item"}, item_set: item_set)
+    second_item = Item.create(data: {item_title: "Second Item"})
+    item_set.items << second_item
+    item_set.reload
 
     item_set.update(title: "New Title")
-    assert_equal "New Title",
-      item_set.items.first.data["set_title"],
-      "Item set title was not copied to items"
-    assert_equal "New Title",
-      item_set.items.last.data["set_title"],
-      "Item set title was not copied to items"
+    first_item.reload
+    second_item.reload
+
+    assert_equal "New Title", first_item.data["set_title"], "Item set title was not copied to items"
+    assert_equal "New Title", second_item.data["set_title"], "Item set title was not copied to items"
   end
 
   test "should soft delete sets" do

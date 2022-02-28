@@ -39,8 +39,6 @@ class SortTest < ActiveSupport::TestCase
         direction: "asc"
       )
 
-    assert_equal sort.to_sql,
-      "data->'number' ASC",
-      "Sort was not exported to SQL"
+    assert_equal sort.to_sql, "data->'number' ASC", "Sort was not exported to SQL"
   end
 end

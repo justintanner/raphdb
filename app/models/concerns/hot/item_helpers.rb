@@ -10,7 +10,7 @@ module Hot
       {
         id: id,
         item_set_id: item_set_id,
-        data: display_data
+        data: data
       }
     end
   end

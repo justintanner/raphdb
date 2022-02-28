@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SingleSelect < ApplicationRecord
-  include CleanAndFormat
+  include Cleanable
   belongs_to :field
 
   clean :title

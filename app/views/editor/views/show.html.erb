@@ -15,8 +15,15 @@
       <%= raw @view.hot_columns.to_json %>
     </script>
 
+    <script type="text/template" data-editor--hot-target="editButton">
+    <a href="javascript:void(0);" class="text-body p-0 m-0 shadow-none" data-bs-toggle="offcanvas" data-bs-target="#editItemForm" aria-controls="offcanvasRight"><%= render "svgs/bi_arrows-angle-expand" %></a>
+    </script>
+
     <div class="spinner-border mt-5 mx-auto" role="status" data-editor--hot-target="spinner">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
 </div>
+
+<%= render "editor/items/form" %>
+

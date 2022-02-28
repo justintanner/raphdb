@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-# prettier-ignore
 Rails.application.routes.draw do
+  # Sometimes rails is unable to db:drop db:create for RAILS_ENV=test, commenting out the below line fixes it, why?
   devise_for :users, path: "editor"
 
   namespace :editor do
     root to: "views#default"
+
+    resources :items, only: [:edit, :update]
     resources :views, only: [:show] do
       collection do
         get :default

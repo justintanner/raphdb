@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Item < ApplicationRecord
-  include CleanAndFormat
+  include Cleanable
   include Loggable
   include LogStats
   include Undeletable
@@ -21,7 +21,7 @@ class Item < ApplicationRecord
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_data
-  before_save :generate_extra_searchable_tokens
+  before_save :generate_search_text, :format_fields
 
   validate :title_present
   validate :no_symbols_in_data
@@ -31,34 +31,37 @@ class Item < ApplicationRecord
     data.try(:[], "item_title")
   end
 
-  def display_data
-    Field
-      .all
-      .map { |field| [field.key, field.display_format(data[field.key])] }
-      .to_h
-      .with_indifferent_access
-  end
-
   def should_generate_new_friendly_id?
     data_key_changed?("item_title")
   end
 
   private
 
-  def data_key_changed?(key)
-    return unless data_changed?
-
-    changes["data"].first.try(:[], key) != changes["data"].second.try(:[], key)
+  def format_fields
+    Field.all_cached.each do |field|
+      if data_key_changed?(field.key)
+        data[field.key] = field.format(data[field.key])
+      end
+    end
   end
 
-  def generate_extra_searchable_tokens
+  def generate_search_text
     return unless data_changed?
 
-    # This key is mirrored in Field::RESERVED_KEYS
-    data["extra_searchable_tokens"] = number_fields_as_strings
+    self.search_data = Field
+      .searchable_cached
+      .map { |field| data[field.key] }
+      .concat(extra_tokens_by_combining_fields)
+      .join(" ")
+      .gsub(/([^a-z0-9]+)/i, ' \1 ')
+      .gsub(/[[:space:]]+/, " ")
+      .strip
+  end
+
+  def extra_tokens_by_combining_fields
+    number_fields_as_strings
       .concat(prefix_combinations)
       .concat(suffix_combinations)
-      .join(" ")
   end
 
   def number_fields_as_strings
@@ -87,11 +90,13 @@ class Item < ApplicationRecord
   end
 
   def copy_set_title_to_data
-    data["set_title"] = item_set.title if item_set_id_changed? && item_set.present?
+    if item_set_id_changed? && item_set.present?
+      data["set_title"] = item_set.title
+    end
   end
 
   def title_present
-    errors.add(:data_item_title, "Please set data[item_title]") if data.try(:[], "item_title").blank?
+    errors.add(:data_item_title, "Please set data[item_title]") if data["item_title"].blank?
   end
 
   def no_symbols_in_data
@@ -101,10 +106,16 @@ class Item < ApplicationRecord
   end
 
   def data_values_valid
-    Field.all.each do |field|
-      if data_key_changed?(field.key) && !field.value_valid?(display_data[field.key])
+    Field.all_cached.each do |field|
+      if data_key_changed?(field.key) && !field.value_valid?(data[field.key])
         errors.add("data_#{field.key}".to_sym, "invalid")
       end
     end
+  end
+
+  def data_key_changed?(key)
+    return unless data_changed?
+
+    changes["data"].first.try(:[], key) != changes["data"].second.try(:[], key)
   end
 end

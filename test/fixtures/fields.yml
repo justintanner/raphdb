@@ -4,38 +4,45 @@ set_title:
   column_type: Single line text
   permanent: true
   same_across_set: true
+  bootstrap_col: col-12
 set_comment:
   title: Set Comment
   key: set_comment
   column_type: Long text
   same_across_set: true
+  bootstrap_col: col-12
 sold_as:
   title: Sold As
   key: sold_as
   column_type: Single line text
   same_across_set: true
+  bootstrap_col: col-6
 first_use:
   title: First Use
   key: first_use
-  date_format: "%m/%d/%Y"
+  date_format: "%d/%m/%Y"
   column_type: Date
   same_across_set: true
+  bootstrap_col: col-6
 where_sold:
   title: Where Sold
   key: where_sold
   column_type: Single line text
   same_across_set: true
+  bootstrap_col: col-6
 item_title:
   title: Item Title
   key: item_title
   column_type: Single line text
   permanent: true
   same_across_set: false
+  bootstrap_col: col-12
 prefix:
   title: Prefix
   key: prefix
   column_type: Single line text
   item_identifier: true
+  bootstrap_col: col-2
 number:
   title: Number
   key: number
@@ -44,43 +51,53 @@ number:
   number_format: Integer (2)
   prefix_field: prefix
   suffix_field: in_set
+  bootstrap_col: col-2
 in_set:
   title: In set
   key: in_set
   column_type: Single line text
   item_identifier: true
+  bootstrap_col: col-2
 orientation:
   title: Oritentation
   key: orientation
   column_type: Single select
+  bootstrap_col: col-6
 in_reference_collection:
   title: In ref collection
   key: in_reference_collection
   column_type: Checkbox
   publish: false
+  bootstrap_col: col-4
 item_comment:
   title: Item Comment
   key: item_comment
   column_type: Long text
+  bootstrap_col: col-12
 places:
   title: Places
   key: places
   column_type: Multiple select
+  bootstrap_col: col-12
 artist:
   title: Artist
   key: artist
   column_type: Single line text
+  bootstrap_col: col-6
 estimated_value:
   title: Estimated value
   key: estimated_value
   column_type: Currency
   currency_iso_code: USD
+  bootstrap_col: col-6
 tags:
   title: Tags
   key: tags
   column_type: Multiple select
+  bootstrap_col: col-12
 featured:
   title: Featured
   key: featured
   column_type: Checkbox
   publish: false
+  bootstrap_col: col-4

@@ -107,42 +107,4 @@ class FieldTest < ActiveSupport::TestCase
 
     assert_includes view.fields, field, "Field was not added to the view"
   end
-
-  test "should encode money starting with dollars signs" do
-    estimated_value = fields(:estimated_value)
-
-    encoded = estimated_value.encode_currency("$123.45")
-
-    assert_equal "MMM12345MMM", encoded, "The encoded value was not correct"
-  end
-
-  test "should encode money starting with commas" do
-    estimated_value = fields(:estimated_value)
-
-    encoded = estimated_value.encode_currency("$9,001")
-
-    assert_equal "MMM900100MMM", encoded, "The encoded value was not correct"
-  end
-
-  test "should encode euro formatted currencies" do
-    euro_field =
-      Field.new(
-        title: "Euros",
-        key: "euros",
-        column_type: Field::TYPES[:currency],
-        currency_iso_code: "EUR"
-      )
-
-    encoded = euro_field.encode_currency("€123,45")
-
-    assert_equal "MMM12345MMM", encoded, "The encoded value was not correct"
-  end
-
-  test "should tolerate poorly formatted currencies" do
-    estimated_value = fields(:estimated_value)
-
-    encoded = estimated_value.encode_currency("1.2.3.45")
-
-    assert_equal "MMM120MMM", encoded, "The encoded value was not correct"
-  end
 end

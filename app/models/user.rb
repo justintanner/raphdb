@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  include CleanAndFormat
+  include Cleanable
   # Options not used from the devise setup :registerable, :timeoutable, :confirmable, :lockable
   devise :database_authenticatable,
     :recoverable,

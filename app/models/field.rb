@@ -4,15 +4,16 @@ require "safe"
 
 class Field < ApplicationRecord
   include Undeletable
-  include CleanAndFormat
-  include ValueEncoding
+  include Cleanable
+  include DataValidation
+  include DataFormatters
   include Hot::FieldHelpers
 
   has_many :view_fields
   belongs_to :prefix_field, optional: true, class_name: "Field"
   belongs_to :suffix_field, optional: true, class_name: "Field"
 
-  RESERVED_KEYS = %w[extra_searchable_tokens].freeze
+  RESERVED_KEYS = %w[id].freeze
 
   NUMBER_FORMATS = {integer: "Integer (2)", decimal: "Decimal(1.0)"}.freeze
 
@@ -28,6 +29,8 @@ class Field < ApplicationRecord
     images: "Images"
   }.freeze
 
+  SEARCHABLE_TYPES = %i[single_line_text long_text multiple_select single_select number].freeze
+
   clean :title
 
   attr_accessor :skip_add_to_all_views
@@ -41,31 +44,32 @@ class Field < ApplicationRecord
   validate :column_type_allowable
   validate :currency_has_iso_code
 
-  def value_valid?(value)
-    return true if value.nil?
+  def column_type_sym
+    Field::TYPES.key(column_type)
+  end
 
-    case TYPES.key(column_type)
-    when :checkbox
-      checkbox_value_valid?(value)
-    when :multiple_select
-      multiple_select_value_valid?(value)
-    when :single_select
-      single_select_value_valid?(value)
-    when :date
-      Safe.date(value)
-    when :currency
-      Safe.float(value)
-    when :number
-      number_value_valid?(value)
-    else
-      true
-    end
+  def currency_symbol
+    return nil if currency_iso_code.blank?
+
+    Money.from_cents(1, currency_iso_code).symbol
   end
 
   def self.keys
     pluck(:key)
   end
 
+  # TODO: Use rails caching?
+  def self.all_cached
+    return @all_cache if defined? @all_cache
+
+    @all_cache = all
+  end
+
+  def self.searchable_cached
+    all_cached.find_all { |field| SEARCHABLE_TYPES.include?(field.column_type_sym) }
+  end
+
+  # TODO: Use all_cached in the methods below.
   def self.single_selects
     where(column_type: TYPES[:single_select])
   end
@@ -87,26 +91,6 @@ class Field < ApplicationRecord
   end
 
   private
-
-  def single_select_value_valid?(value)
-    SingleSelect.exists?(field: self, title: value)
-  end
-
-  def multiple_select_value_valid?(value)
-    value.is_a?(Array) && MultipleSelect.all_exist?(field: self, titles: value)
-  end
-
-  def number_value_valid?(value)
-    if number_format == NUMBER_FORMATS[:integer]
-      Safe.integer(value)
-    else
-      Safe.float(value)
-    end
-  end
-
-  def checkbox_value_valid?(value)
-    value.is_a?(TrueClass) || value.is_a?(FalseClass) || value == "true" || value == "false"
-  end
 
   def add_to_all_views
     return if skip_add_to_all_views

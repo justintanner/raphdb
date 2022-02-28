@@ -7,17 +7,19 @@ module Hot
     extend ActiveSupport::Concern
 
     def hot_col_headers
-      fields.map(&:title)
+      [""] + fields.map(&:title)
     end
 
     def hot_columns
-      fields.map do |field|
-        config = {
-          data: "data.#{field.key}"
-        }
+      columns = [{data: "id", type: "edit", width: 32, className: "htCenter htMiddle", readOnly: true}]
 
-        config.merge(field.hot_type)
+      fields.each do |field|
+        config = {data: "data.#{field.key}"}
+
+        columns << config.merge(field.hot_type)
       end
+
+      columns
     end
   end
 end

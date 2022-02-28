@@ -25,7 +25,7 @@ module SearchProcessor
   def self.tsvector_where(query)
     return unless query.present?
 
-    ["data_tsvector_col @@ to_tsquery('english', ?)", postgres_query_string(query)]
+    ["search_tsvector_col @@ to_tsquery('english', ?)", postgres_query_string(query)]
   end
 
   def self.advanced_where(advanced_options)

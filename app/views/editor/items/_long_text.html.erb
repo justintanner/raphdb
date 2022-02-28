@@ -1,0 +1,4 @@
+<div class="<%= class_names(field.bootstrap_col, "mb-3") %>">
+  <label class="form-label" for="item_data_<%= field.key %>"><%= field.title %></label>
+  <%= text_area_tag "item[data][#{field.key}]", @item.data[field.key], class: "form-control" %>
+</div>

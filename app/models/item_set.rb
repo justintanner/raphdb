@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ItemSet < ApplicationRecord
-  include CleanAndFormat
+  include Cleanable
   include Loggable
   include Undeletable
   include FriendlyId
@@ -23,13 +23,12 @@ class ItemSet < ApplicationRecord
     title_changed?
   end
 
-  # This allows the set title to be searchable by using the items.data index.
+  # This allows the set title to be searchable in items.
   def copy_title_to_items
     return if importing
     return unless title_changed?
 
     items.each do |item|
-      item.data ||= {}
       item.data["set_title"] = title
       item.save!
     end

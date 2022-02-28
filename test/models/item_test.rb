@@ -38,6 +38,30 @@ class ItemTest < ActiveSupport::TestCase
       "data keys are not all strings"
   end
 
+  test "should stores dates in a standard string format" do
+    item = item_create!({item_title: "Apple", first_use: "1902-01-31"})
+
+    assert_equal "31/01/1902", item.data["first_use"]
+  end
+
+  test "numbers should not be stored as string" do
+    item = item_create!({item_title: "Apple", number: "123"})
+
+    assert_equal 123, item.data["number"], "Number was stored as string"
+  end
+
+  test "should encode currencies as strings" do
+    item = item_create!({item_title: "Apple", estimated_value: "$9,001"})
+
+    assert_equal "9001.00", item.data["estimated_value"]
+  end
+
+  test "should encode european currencies" do
+    item = item_create!({item_title: "Apple", estimated_value: "€123,45"})
+
+    assert_equal "123.45", item.data["estimated_value"]
+  end
+
   test "all single selects should already be in the database" do
     item = Item.new(item_set: item_sets(:empty_set))
     item.data = {item_title: "Apple", orientation: "Not in Database"}
@@ -93,6 +117,17 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal "second-123-quoted", item.slug
   end
 
+  test "should not save boolean as text" do
+    item = item_create!({item_title: "Apple", featured: "true"})
+
+    assert_equal true, item.data["featured"]
+
+    item.data["featured"] = "false"
+    item.save!
+
+    assert_equal false, item.data["featured"]
+  end
+
   test "title trim a squish whitespace" do
     item = item_create!({item_title: " lots \t of\t spaces \n"})
 
@@ -124,21 +159,11 @@ class ItemTest < ActiveSupport::TestCase
     assert_not_includes Item.all, item, "Found deleted item in all items"
   end
 
-  test "should save date fields to item in a non-searchable format" do
-    # See fields(:first_use) for details on the the Date field.
-    item = item_create!(item_title: "Apple", first_use: Date.new(1904, 1, 30))
-
-    assert_equal "19040130", item.data["first_use"]
-    assert_equal "30/01/1904", item.display_data["first_use"]
-  end
-
   test "should save string date fields in a non-searchable format" do
     # See fields(:first_use) for details on the the Date field.
     item = item_create!(item_title: "Apple", first_use: "1904-01-30")
     results = View.default.search("1904-")
     assert_not_includes results, item, "Found item with date"
-    assert_equal "19040130", item.data["first_use"]
-    assert_equal "30/01/1904", item.display_data["first_use"]
   end
 
   test "should save currency fields in a non-searchable format" do
@@ -150,8 +175,5 @@ class ItemTest < ActiveSupport::TestCase
 
     results = View.default.search("125")
     assert_not_includes results, item, "Found item with currency"
-
-    assert_equal "MMM12567MMM", item.data["estimated_value"]
-    assert_equal 125.67, item.display_data["estimated_value"]
   end
 end

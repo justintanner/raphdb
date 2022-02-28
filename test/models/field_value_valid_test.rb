@@ -76,12 +76,7 @@ class FieldValueValidTest < ActiveSupport::TestCase
   test "should return true for an valid currency" do
     estimated_value = fields(:estimated_value)
 
-    assert estimated_value.value_valid?("125.67"),
-      'Failed to validate a valid currency ("125.67")'
-    assert estimated_value.value_valid?(125.67),
-      "Failed to validate a valid currency (125.67)"
-    assert estimated_value.value_valid?(1),
-      "Failed to validate a valid currency (1)"
+    assert estimated_value.value_valid?("123.57"), "Failed to validate a valid currency"
   end
 
   test "should return false for an in-valid number" do
