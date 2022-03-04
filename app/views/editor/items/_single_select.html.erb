@@ -1,0 +1,11 @@
+<div class="<%= class_names(field.bootstrap_col, "mb-3") %>">
+  <label class="form-label" for="item_data_<%= field.key %>"><%= field.title %></label>
+  <%= select_tag "item[data][#{field.key}]",
+                 options_for_select(field.single_select_data, @item.data[field.key]),
+                 class: "form-select",
+                 data: {
+                   "controller": "editor--single-select",
+                   "editor--single-select-field-id-value": field.id,
+                   "editor--single-select-create-path-value": editor_single_selects_path
+                 } %>
+</div>

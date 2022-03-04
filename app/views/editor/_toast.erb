@@ -1,0 +1,10 @@
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 11" >
+  <div id="toast" data-controller="editor--toast" data-action="toast@window->editor--toast#show" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+    <div class="toast-header">
+      <span class="text-danger me-2"><%= render "svgs/bi-bug-fill" %></span>
+      <strong class="me-auto text-danger" data-editor--toast-target="title"></strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" data-editor--toast-target="body"></div>
+  </div>
+</div>

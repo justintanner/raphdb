@@ -25,6 +25,10 @@ module DataFormatters
     value == true || value == "true" || value == 1
   end
 
+  def format_date(value)
+    Date.parse(value).strftime(date_format)
+  end
+
   def format_currency(value)
     Monetize
       .parse("#{currency_iso_code} #{value}")
@@ -37,9 +41,5 @@ module DataFormatters
     else
       Safe.float(value)
     end
-  end
-
-  def format_date(value)
-    Date.parse(value).strftime(date_format)
   end
 end

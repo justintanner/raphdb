@@ -54,6 +54,10 @@ class Field < ApplicationRecord
     Money.from_cents(1, currency_iso_code).symbol
   end
 
+  def single_select_data
+    SingleSelect.where(field: self).pluck(:title)
+  end
+
   def self.keys
     pluck(:key)
   end

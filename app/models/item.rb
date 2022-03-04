@@ -21,7 +21,7 @@ class Item < ApplicationRecord
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_data
-  before_save :generate_search_text, :format_fields
+  before_save :format_fields, :generate_search_data
 
   validate :title_present
   validate :no_symbols_in_data
@@ -45,7 +45,7 @@ class Item < ApplicationRecord
     end
   end
 
-  def generate_search_text
+  def generate_search_data
     return unless data_changed?
 
     self.search_data = Field
@@ -54,7 +54,7 @@ class Item < ApplicationRecord
       .concat(extra_tokens_by_combining_fields)
       .join(" ")
       .gsub(/([^a-z0-9]+)/i, ' \1 ')
-      .gsub(/[[:space:]]+/, " ")
+      .gsub(/[[:space:]]+/i, " ")
       .strip
   end
 

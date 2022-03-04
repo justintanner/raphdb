@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   namespace :editor do
     root to: "views#default"
 
+    resources :single_selects, only: [:create]
     resources :items, only: [:edit, :update]
     resources :views, only: [:show] do
       collection do

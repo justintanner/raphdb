@@ -105,6 +105,7 @@ module JsonImport
   end
 
   def self.logs(filename = "lilywhite-logs.json")
+    fields = Field.all_cached.to_a
     each_row(filename) do |row|
       cleaned_entry = {}
 
@@ -115,9 +116,11 @@ module JsonImport
           else
             sub_key = key.include?(".") ? key.split(".").last : key
 
+            field = fields.find { |field| field.key = sub_key }
+
             cleaned_entry[key] = [
-              Clean.clean_and_format(sub_key, values.first),
-              Clean.clean_and_format(sub_key, values.second)
+              field.format(Clean.squish_and_strip(values.first)),
+              field.format(Clean.squish_and_strip(values.second))
             ]
           end
         end

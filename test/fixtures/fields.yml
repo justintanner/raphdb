@@ -59,7 +59,7 @@ in_set:
   item_identifier: true
   bootstrap_col: col-2
 orientation:
-  title: Oritentation
+  title: Orientation
   key: orientation
   column_type: Single select
   bootstrap_col: col-6

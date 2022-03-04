@@ -12,3 +12,4 @@ pin "@rails/actiontext", to: "actiontext.js"
 pin "popper", to: "popper.js", preload: true
 pin "bootstrap", to: "bootstrap.min.js", preload: true
 pin "handsontable", to: "handsontable.full.min.js"
+pin "tom-select" # @2.0.1
