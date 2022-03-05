@@ -1,7 +1,6 @@
 <div class="<%= class_names(field.bootstrap_col, "mb-3") %>">
-  <label class="form-label mb-2">&nbsp;</label>
-  <div class="form-check">
+  <div class="form-check" style="margin-top: 38px">
     <%= check_box_tag "item[data][#{field.key}]", "true", @item.data[field.key] == true, class: "form-check-input" %>
-    <label class="form-check-label" for="item_data_<%= field.key %>"><%= field.title %></label>
+    <label class="form-check-label text-nowrap" for="item_data_<%= field.key %>"><%= field.title %></label>
   </div>
 </div>

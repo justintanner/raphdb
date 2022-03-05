@@ -1,0 +1,11 @@
+<div class="<%= field.bootstrap_col %>">
+  <label class="form-label" for="item_data_<%= field.key %>"><%= field.title %></label>
+  <%= text_field_tag "item[data][#{field.key}]",
+                     @item.data[field.key],
+                     class: class_names("form-control": true, "is-invalid": item.errors.include?(field.form_error_sym)) %>
+  <% if item.errors.include?(field.form_error_sym) %>
+  <div class="invalid-feedback mb-1"><%= item.errors.full_messages_for(field.form_error_sym).join(',') %></div>
+  <% else %>
+  <div class="mb-3"></div>
+  <% end %>
+</div>

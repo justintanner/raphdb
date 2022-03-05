@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_28_165508) do
+ActiveRecord::Schema.define(version: 2022_03_04_171218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,8 +68,9 @@ ActiveRecord::Schema.define(version: 2022_02_28_165508) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "date_format"
     t.string "currency_iso_code"
-    t.string "number_format", default: "Integer (2)"
+    t.string "number_format"
     t.string "bootstrap_col", default: "col-12"
+    t.integer "position"
     t.index ["deleted_at"], name: "index_fields_on_deleted_at"
     t.index ["prefix_field_id"], name: "index_fields_on_prefix_field_id"
     t.index ["suffix_field_id"], name: "index_fields_on_suffix_field_id"

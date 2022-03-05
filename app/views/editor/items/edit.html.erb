@@ -1,10 +1,13 @@
-<%= form_for(@item, url: editor_item_path(@item.id), data: { controller: "editor--item" }) do |form| %>
-  <div class="row p-3">
-    <% Field.all_cached.each do |field| %>
-      <%= render field.column_type_sym.to_s, { form: form, field: field, item: @item } %>
-    <% end %>
+<div class="col">
+  <%= form_for(@item, url: editor_item_path(@item.id), data: { controller: "editor--item" }) do |form| %>
+    <div class="row p-3">
+      <% Field.all_cached.each do |field| %>
+        <%= render field.column_type_sym.to_s, { form: form, field: field, item: @item } %>
+      <% end %>
 
-    <%= form.submit "Save", class: "btn btn-primary" %>
-  </div>
-<% end %>
+      <%= form.submit "Save", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
 

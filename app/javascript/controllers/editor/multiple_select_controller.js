@@ -10,12 +10,14 @@ export default class extends Controller {
 
     const onOptionAddCallback = (value, _data) => {
       const data = {
-        "single_select": {"title": value, "field_id": that.fieldIdValue}
+        "multiple_select": {"title": value, "field_id": that.fieldIdValue}
       }
-      const successCallback = (_json) => {}
+
+      const successCallback = (json) => {
+        console.log('successCallback', json);
+      }
 
       const errorCallback = (json) => {
-        console.log('errorCallback', json);
         that.dispatch('error', { target: document, prefix: null, detail: { message: json.errors.join(', ') } });
       }
 
@@ -23,7 +25,11 @@ export default class extends Controller {
     }
 
     new TomSelect(that.element, {
-      plugins: ['dropdown_input'],
+      plugins: {
+        remove_button: {
+          title: 'Remove this item',
+        }
+      },
       persist: false,
       create: true,
       createOnBlur: true,
@@ -34,5 +40,15 @@ export default class extends Controller {
       },
       onOptionAdd: onOptionAddCallback,
     });
+  }
+
+  error() {
+
+  }
+
+  toast(title, body) {
+    console.log('toasting');
+    const event = new CustomEvent("toast", { detail: { title: title, body: body } });
+    window.dispatchEvent(event);
   }
 }

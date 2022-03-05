@@ -5,6 +5,7 @@ require "safe"
 class Field < ApplicationRecord
   include Undeletable
   include Cleanable
+  include Positionable
   include DataValidation
   include DataFormatters
   include Hot::FieldHelpers
@@ -48,8 +49,12 @@ class Field < ApplicationRecord
     Field::TYPES.key(column_type)
   end
 
+  def form_error_sym
+    "data_#{key}".to_sym
+  end
+
   def currency_symbol
-    return nil if currency_iso_code.blank?
+    return if currency_iso_code.blank?
 
     Money.from_cents(1, currency_iso_code).symbol
   end
@@ -58,8 +63,23 @@ class Field < ApplicationRecord
     SingleSelect.where(field: self).pluck(:title)
   end
 
+  def multiple_select_data
+    # Will this become a problem when we have many thousands of options?
+    MultipleSelect.where(field: self).pluck(:title)
+  end
+
   def self.keys
     pluck(:key)
+  end
+
+  def self.params
+    all_cached.map do |field|
+      if field.column_type_sym == :multiple_select
+        {field.key.to_sym => []}
+      else
+        field.key.to_sym
+      end
+    end
   end
 
   # TODO: Use rails caching?

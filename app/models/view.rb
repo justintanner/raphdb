@@ -7,7 +7,7 @@ class View < ApplicationRecord
 
   has_many :sorts
   has_many :view_fields
-  has_many :fields, through: :view_fields, source: :field
+  has_many :fields, -> { reorder("view_fields.position ASC") }, through: :view_fields, source: :field
 
   validates :title, presence: true
 

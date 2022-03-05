@@ -17,14 +17,21 @@ module Positionable
     end
   end
 
-  def position_group_where
-    position_within_cols = self.class.class_variable_get(:@@position_within_cols)
-    raise "position_within is not set" if position_within_cols.blank?
+  def position_within_cols
+    if self.class.class_variables.include?(:@@position_within_cols)
+      self.class.class_variable_get(:@@position_within_cols)
+    end
+  end
 
-    position_within_cols
-      .select { |col| send(col).present? }
-      .map { |col| "#{col} = #{send(col)}" }
-      .join(" AND ")
+  def position_group_where
+    if position_within_cols.present?
+      position_within_cols
+        .select { |col| send(col).present? }
+        .map { |col| "#{col} = #{send(col)}" }
+        .join(" AND ")
+    else
+      "TRUE"
+    end
   end
 
   def next_position

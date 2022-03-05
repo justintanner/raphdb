@@ -24,6 +24,17 @@ class ItemTest < ActiveSupport::TestCase
     assert_not item.save, "Saved the item without a set"
   end
 
+  test "should validate data fields, such as number" do
+    item = Item.create(
+      data: {
+        item_title: "Valid Item",
+        number: "invalid"
+      },
+      item_set: item_sets(:orphan)
+    )
+    assert_not item.save, "Saved the item with an invalid number"
+  end
+
   test "should never allow a field with a symbol for a key" do
     item = Item.new
     item.data = {}

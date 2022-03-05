@@ -1,7 +1,15 @@
-<div class="<%= class_names(field.bootstrap_col, "mb-3") %>">
+<div class="<%= field.bootstrap_col %>">
   <label class="form-label" for="item_data_<%= field.key %>"><%= field.title %></label>
   <div class="input-group">
     <span class="input-group-text" id="inputGroupPrepend"><%= field.currency_symbol %></span>
-    <%= text_field_tag "item[data][#{field.key}]", @item.data[field.key], class: "form-control", aria: { describedby: "inputGroupPrepend" } %>
+    <%= text_field_tag "item[data][#{field.key}]",
+                       @item.data[field.key],
+                       class: class_names("form-control": true, "is-invalid": item.errors.include?(field.form_error_sym)),
+                       aria: { describedby: "inputGroupPrepend" } %>
   </div>
+  <% if item.errors.include?(field.form_error_sym) %>
+    <div class="invalid-feedback mb-1"><%= item.errors.full_messages_for(field.form_error_sym).join(',') %></div>
+  <% else %>
+    <div class="mb-3"></div>
+  <% end %>
 </div>

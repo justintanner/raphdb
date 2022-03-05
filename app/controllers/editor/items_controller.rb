@@ -12,14 +12,14 @@ module Editor
       if @item.update(item_params)
         redirect_to edit_editor_item_path(@item.id)
       else
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 
     private
 
     def item_params
-      params.require(:item).permit(data: Field.keys)
+      params.require(:item).permit(data: Field.params)
     end
   end
 end

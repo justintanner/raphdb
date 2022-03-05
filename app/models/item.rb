@@ -96,7 +96,7 @@ class Item < ApplicationRecord
   end
 
   def title_present
-    errors.add(:data_item_title, "Please set data[item_title]") if data["item_title"].blank?
+    errors.add(:data_item_title, "cannot be blank") if data["item_title"].blank?
   end
 
   def no_symbols_in_data
@@ -108,7 +108,7 @@ class Item < ApplicationRecord
   def data_values_valid
     Field.all_cached.each do |field|
       if data_key_changed?(field.key) && !field.value_valid?(data[field.key])
-        errors.add("data_#{field.key}".to_sym, "invalid")
+        errors.add(field.form_error_sym, "invalid") # TODO: Need a per-field error message
       end
     end
   end
