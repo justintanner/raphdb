@@ -4,17 +4,17 @@ require "test_helper"
 
 class MultipleSelectTest < ActiveSupport::TestCase
   test "should strip all whitespace from titles" do
-    multiple_select =
-      MultipleSelect.create!(title: " \r foo  \n\r\t   ", field: fields(:tags))
-    assert_equal "foo", multiple_select.title
+    multiple_select = MultipleSelect.create!(title: " \r Foo  \n\r\t   ", field: fields(:tags))
+    assert_equal "Foo", multiple_select.title
+  end
+
+  test "should titleize all words" do
+    multiple_select = MultipleSelect.create!(title: "up size me", field: fields(:tags))
+    assert_equal "Up Size Me", multiple_select.title
   end
 
   test "should have a unique title within a field" do
-    field =
-      Field.create!(
-        title: "Countries",
-        column_type: Field::TYPES[:multiple_select]
-      )
+    field = Field.create!(title: "Countries", column_type: Field::TYPES[:multiple_select])
 
     MultipleSelect.create!(field: field, title: "Canada")
     MultipleSelect.create!(field: field, title: "Hungary")
@@ -24,12 +24,19 @@ class MultipleSelectTest < ActiveSupport::TestCase
     end
   end
 
+  test "should order by title" do
+    field = Field.create!(title: "Countries", column_type: Field::TYPES[:multiple_select])
+
+    hungary = MultipleSelect.create!(field: field, title: "Hungary")
+    canada = MultipleSelect.create!(field: field, title: "Canada")
+
+    assert_equal canada, MultipleSelect.where(field: field).first, "First was not Canada"
+    assert_equal hungary, MultipleSelect.where(field: field).last, "First last was not Hungary"
+  end
+
   test "should not enforce uniqueness between different fields" do
-    field =
-      Field.create!(
-        title: "Countries",
-        column_type: Field::TYPES[:multiple_select]
-      )
+    field = Field.create!(title: "Countries", column_type: Field::TYPES[:multiple_select])
+
     MultipleSelect.create!(field: field, title: "Canada")
     MultipleSelect.create!(field: field, title: "Hungary")
 
@@ -44,11 +51,8 @@ class MultipleSelectTest < ActiveSupport::TestCase
   end
 
   test "should check for the existence of all keys" do
-    field =
-      Field.create!(
-        title: "Countries",
-        column_type: Field::TYPES[:multiple_select]
-      )
+    field = Field.create!(title: "Countries", column_type: Field::TYPES[:multiple_select])
+
     MultipleSelect.create!(field: field, title: "Canada")
     MultipleSelect.create!(field: field, title: "Hungary")
 
@@ -57,11 +61,8 @@ class MultipleSelectTest < ActiveSupport::TestCase
   end
 
   test "existence check should ignore duplicates" do
-    field =
-      Field.create!(
-        title: "Countries",
-        column_type: Field::TYPES[:multiple_select]
-      )
+    field = Field.create!(title: "Countries", column_type: Field::TYPES[:multiple_select])
+
     MultipleSelect.create!(field: field, title: "Canada")
     MultipleSelect.create!(field: field, title: "Hungary")
 
@@ -70,11 +71,8 @@ class MultipleSelectTest < ActiveSupport::TestCase
   end
 
   test "existence check should fail when one does not match" do
-    field =
-      Field.create!(
-        title: "Countries",
-        column_type: Field::TYPES[:multiple_select]
-      )
+    field = Field.create!(title: "Countries", column_type: Field::TYPES[:multiple_select])
+
     MultipleSelect.create!(field: field, title: "Canada")
     MultipleSelect.create!(field: field, title: "Hungary")
 
@@ -86,11 +84,8 @@ class MultipleSelectTest < ActiveSupport::TestCase
   end
 
   test "existence check should fail when two match, but one doesnt" do
-    field =
-      Field.create!(
-        title: "Countries",
-        column_type: Field::TYPES[:multiple_select]
-      )
+    field = Field.create!(title: "Countries", column_type: Field::TYPES[:multiple_select])
+
     MultipleSelect.create!(field: field, title: "Canada")
     MultipleSelect.create!(field: field, title: "Hungary")
 

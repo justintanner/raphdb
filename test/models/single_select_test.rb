@@ -13,11 +13,7 @@ class SingleSelectTest < ActiveSupport::TestCase
   end
 
   test "should have a unique title within a field" do
-    field =
-      Field.create!(
-        title: "Meridiems",
-        column_type: Field::TYPES[:single_select]
-      )
+    field = Field.create!(title: "Meridiems", column_type: Field::TYPES[:single_select])
 
     SingleSelect.create!(field: field, title: "AM")
     SingleSelect.create!(field: field, title: "PM")
@@ -27,12 +23,19 @@ class SingleSelectTest < ActiveSupport::TestCase
     end
   end
 
+  test "should order by title" do
+    field = Field.create!(title: "Meridiems", column_type: Field::TYPES[:single_select])
+
+    pm = SingleSelect.create!(field: field, title: "PM")
+    am = SingleSelect.create!(field: field, title: "AM")
+
+    assert_equal am, SingleSelect.where(field: field).first, "First was not AM"
+    assert_equal pm, SingleSelect.where(field: field).last, "Last was not PM"
+  end
+
   test "should not enforce uniqueness between different fields" do
-    field =
-      Field.create!(
-        title: "Meridiems",
-        column_type: Field::TYPES[:single_select]
-      )
+    field = Field.create!(title: "Meridiems", column_type: Field::TYPES[:single_select])
+
     SingleSelect.create!(field: field, title: "AM")
     SingleSelect.create!(field: field, title: "PM")
 

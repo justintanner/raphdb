@@ -71,14 +71,14 @@ orientation:
   title: Orientation
   key: orientation
   column_type: Single select
-  bootstrap_col: col-2
+  bootstrap_col: col-3
   position: 10
 in_reference_collection:
   title: In ref collection
   key: in_reference_collection
   column_type: Checkbox
   publish: false
-  bootstrap_col: col-2
+  bootstrap_col: col-3
   position: 11
 item_comment:
   title: Item Comment
@@ -103,14 +103,14 @@ estimated_value:
   key: estimated_value
   column_type: Currency
   currency_iso_code: USD
-  bootstrap_col: col-6
+  bootstrap_col: col-3
   position: 15
 featured:
   title: Featured
   key: featured
   column_type: Checkbox
   publish: false
-  bootstrap_col: col-2
+  bootstrap_col: col-3
   position: 16
 tags:
   title: Tags
