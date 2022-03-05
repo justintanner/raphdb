@@ -35,11 +35,7 @@ class FieldTest < ActiveSupport::TestCase
   end
 
   test "should soft delete" do
-    field =
-      Field.create!(
-        title: "  Cherry \r\n\t ",
-        column_type: Field::TYPES[:single_line_text]
-      )
+    field = Field.create!(title: "Apple", column_type: Field::TYPES[:single_line_text])
     assert field.destroy, "Failed to destroy field"
 
     assert_not field.destroyed?, "Item was hard deleted"
@@ -80,6 +76,11 @@ class FieldTest < ActiveSupport::TestCase
   test "should only allow valid column_types" do
     field = Field.new(title: "A", column_type: "invalid")
     assert_not field.save, "Saved the field with an invalid column_type"
+  end
+
+  test "fields should be order by field.position not view_field.position" do
+    assert_equal fields(:set_title), Field.all.first, "First field is not set_title"
+    assert_equal fields(:tags), Field.all.last, "Last field is not tags"
   end
 
   test "deleting a field should not touch any view_fields" do
