@@ -14,3 +14,5 @@ pin "popper", to: "popper.js", preload: true
 pin "bootstrap", to: "bootstrap.min.js", preload: true
 pin "handsontable", to: "handsontable.full.min.js"
 pin "tom-select" # @2.0.1
+pin "pikaday" # @1.8.2
+pin "moment" # @2.29.1

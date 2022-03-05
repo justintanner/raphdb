@@ -68,6 +68,10 @@ class Field < ApplicationRecord
     MultipleSelect.where(field: self).pluck(:title)
   end
 
+  def pikaday_date_format
+    date_format.gsub("%Y", "YYYY").gsub("%m", "MM").gsub("%d", "DD")
+  end
+
   def self.keys
     pluck(:key)
   end

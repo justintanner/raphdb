@@ -11,15 +11,13 @@ export default class extends Controller {
     const onOptionAddCallback = (value, _data) => {
       const data = {
         "multiple_select": {"title": value, "field_id": that.fieldIdValue}
-      }
+      };
 
-      const successCallback = (json) => {
-        console.log('successCallback', json);
-      }
+      const successCallback = (json) => { };
 
       const errorCallback = (json) => {
         that.dispatch('error', { target: document, prefix: null, detail: { message: json.errors.join(', ') } });
-      }
+      };
 
       fetchPost(that.createPathValue, data, successCallback, errorCallback);
     }
@@ -40,15 +38,5 @@ export default class extends Controller {
       },
       onOptionAdd: onOptionAddCallback,
     });
-  }
-
-  error() {
-
-  }
-
-  toast(title, body) {
-    console.log('toasting');
-    const event = new CustomEvent("toast", { detail: { title: title, body: body } });
-    window.dispatchEvent(event);
   }
 }
