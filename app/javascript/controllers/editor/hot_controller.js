@@ -2,8 +2,8 @@ import { Controller } from "@hotwired/stimulus";
 import "handsontable";
 
 export default class extends Controller {
-  static values = { searchPath: String };
-  static targets = ["columns", "colHeaders", "spinner", "editButton"];
+  static values = { searchPath: String, editPath: String };
+  static targets = ["columns", "colHeaders", "spinner", "expandSvg"];
 
   // Handsontable requires it's parent container to have a height and width set, so that it can size itself.
   setContainerWidthHeight() {
@@ -105,7 +105,7 @@ export default class extends Controller {
       }
     }
 
-    Handsontable.cellTypes.registerCellType('multipleselect', {
+    Handsontable.cellTypes.registerCellType("multipleselect", {
       editor: Handsontable.editors.TextEditor,
       renderer: customRenderer,
       allowInvalid: true,
@@ -119,13 +119,25 @@ export default class extends Controller {
       Handsontable.renderers.BaseRenderer(instance, td, row, column, prop, value, cellProperties);
       Handsontable.dom.empty(td);
 
-      var stuff = that.editButtonTarget.innerHTML.replace(/(\r\n|\n|\r)/gm, "").trim();
+      const a = document.createElement("a");
+      a.className = "text-body p-0 m-0 shadow-none";
+      a.innerHTML = that.expandSvgTarget.innerHTML.replace(/(\r\n|\n|\r)/gm, "").trim();
 
-      console.log(stuff, stuff);
-      td.innerHTML = stuff;
+      a.addEventListener("click", function (event) {
+        const turboFrame = document.getElementById("edit_item");
+        turboFrame.src = that.editPathValue.replace(":id", value);
+
+        const editItemForm = document.getElementById("edit-item-form");
+        const bsOffcanvas = new bootstrap.Offcanvas(editItemForm);
+
+        /* TODO: This is not toggling! */
+        bsOffcanvas.toggle();
+      });
+
+      td.append(a);
     }
 
-    Handsontable.cellTypes.registerCellType('edit', {
+    Handsontable.cellTypes.registerCellType("edit", {
       renderer: customRenderer,
       readOnly: true,
     });

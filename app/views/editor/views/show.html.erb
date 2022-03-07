@@ -6,7 +6,8 @@
          data-controller="editor--hot"
          data-editor--base-target="hot"
          data-action="resize@window->editor--hot#resize resize@document->editor--hot#resize"
-         data-editor--hot-search-path-value="<%= search_editor_view_path(@view) %>">
+         data-editor--hot-search-path-value="<%= search_editor_view_path(@view) %>"
+         data-editor--hot-edit-path-value="<%= edit_editor_item_path(':id') %>">
 
       <script type="application/json" data-editor--hot-target="colHeaders">
         <%= raw @view.hot_col_headers.to_json %>
@@ -16,8 +17,8 @@
         <%= raw @view.hot_columns.to_json %>
       </script>
 
-      <script type="text/template" data-editor--hot-target="editButton">
-        <a href="javascript:void(0);" class="text-body p-0 m-0 shadow-none" data-bs-toggle="offcanvas" data-bs-target="#editItemForm" aria-controls="offcanvasRight"><%= render "svgs/bi_arrows-angle-expand" %></a>
+      <script type="text/template" data-editor--hot-target="expandSvg">
+        <%= render "svgs/bi_arrows-angle-expand" %>
       </script>
 
       <div class="spinner-border mt-5 mx-auto" role="status" data-editor--hot-target="spinner">

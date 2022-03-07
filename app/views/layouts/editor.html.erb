@@ -16,7 +16,7 @@
 <div class="container-fluid d-flex flex-column vh-100" data-controller="editor--base">
   <div class="row d-flex border-bottom border-2">
     <div class="col-auto d-flex align-items-center p-3" style="width: 300px">
-        <span>JL Editor</span>
+        <span><%= link_to "JL Editor", editor_root_path %></span>
         <button type="button" class="btn btn-light btn-sm ms-3 shadow-none ms-auto" data-editor--base-target="hideSidebarButton" data-action="editor--base#toggleSidebar">
           <%= render "svgs/bi-layout-sidebar-inset" %><span class="ms-2">Hide</span>
         </button>

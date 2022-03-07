@@ -4,7 +4,7 @@ require "test_helper"
 
 class FieldTest < ActiveSupport::TestCase
   test "should not save without a title" do
-    field = Field.new(column_type: Field::TYPES[:date])
+    field = Field.new(column_type: Field::TYPES[:date0])
     assert_not field.save, "Saved the field without a title"
   end
 

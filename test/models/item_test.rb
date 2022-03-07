@@ -55,6 +55,12 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal "31/01/1902", item.data["first_use"]
   end
 
+  test "should not store empty strings" do
+    item = item_create!({item_title: "Apple", first_use: ""})
+
+    assert_nil item.data["first_use"], "First use should be nil"
+  end
+
   test "numbers should not be stored as string" do
     item = item_create!({item_title: "Apple", number: "123"})
 

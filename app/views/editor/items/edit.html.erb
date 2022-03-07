@@ -1,4 +1,5 @@
 <div class="col">
+  <%= turbo_frame_tag 'edit_item' do %>
   <%= form_for(@item, url: editor_item_path(@item.id), data: { controller: "editor--item" }) do |form| %>
     <div class="row p-3">
       <% Field.all_cached.each do |field| %>
@@ -7,6 +8,7 @@
 
       <%= form.submit "Save", class: "btn btn-primary" %>
     </div>
+  <% end %>
   <% end %>
 </div>
 

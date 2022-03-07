@@ -37,6 +37,7 @@ module Clean
     cleaned_value = squish_and_strip(value)
 
     cleaned_value = titleize(cleaned_value) if options[:titleize]
+    cleaned_value = nil if cleaned_value == ""
 
     cleaned_value
   end

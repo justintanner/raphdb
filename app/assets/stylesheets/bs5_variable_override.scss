@@ -31,10 +31,12 @@ $cyan-700: shade-color($cyan, 40%) !default;
 $cyan-800: shade-color($cyan, 60%) !default;
 $cyan-900: shade-color($cyan, 80%) !default;
 
-$nav-pills-link-active-color: $gray-700 !default;
-$nav-pills-link-active-bg: $cyan-100 !default;
+$nav-pills-link-active-color: $gray-700;
+$nav-pills-link-active-bg: $cyan-100;
 
-$toast-background-color: white !default;
+$toast-background-color: white;
+
+$offcanvas-horizontal-width: 60vw;
 
 .bi {
   display: inline-block;
