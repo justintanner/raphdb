@@ -1,0 +1,8 @@
+.footer .nav > li > a::after {
+  content: '·';
+  padding-left: 32px;
+}
+
+.footer .nav > li:last-child > a::after {
+  content :none;
+}

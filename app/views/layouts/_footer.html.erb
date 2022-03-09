@@ -1,0 +1,23 @@
+<footer class="footer mt-auto pt-5 pb-3">
+  <div class="container">
+    <div class="row">
+      <ul class="nav justify-content-center">
+        <% Page.all.each do |page| %>
+          <li class="list-unstyled list-inline">
+            <%= link_to page.title, "/#{page.slug}", class: 'nav-link' %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="row text-center">
+      <p class="text-muted mt-2 font-serif">
+        <span class="badge bg-secondary d-inline-block d-sm-none">XS</span>
+        <span class="badge bg-secondary d-none d-sm-inline-block d-md-none">SM</span>
+        <span class="badge bg-secondary d-none d-md-inline-block d-lg-none">MD</span>
+        <span class="badge bg-secondary d-none d-lg-inline-block d-xl-none">LG</span>
+        <span class="badge bg-secondary d-none d-xl-inline-block d-xxl-none">XL</span>
+        <span class="badge bg-secondary d-none d-xxl-inline-block">XXL</span>
+        All images are royalty free. The information about each item is licensed under <a rel="license" href="http://creativecommons.org/licenses/by/4.0">cc by</a>.</p>
+    </div>
+  </div>
+</footer>

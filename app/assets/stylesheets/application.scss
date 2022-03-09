@@ -1,25 +1,10 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
-
 // Configuration
 @import "bootstrap/functions";
 
 // Overrides
-@import "bs5_variable_override";
+@import "app/bs5_overrides";
 
+// Configuration continued
 @import "bootstrap/variables";
 @import "bootstrap/mixins";
 @import "bootstrap/utilities";
@@ -62,4 +47,17 @@
 
 // Utilities
 @import "bootstrap/utilities/api";
+
+// Third party
+@import "third_party/actiontext";
+@import "third_party/handsontable";
+@import "third_party/pikaday";
+@import "third_party/tom-select";
+
+// Custom styles
+@import "app/bs5_additions";
+@import "app/editor";
+@import "app/devise";
+@import "app/header";
+
 
