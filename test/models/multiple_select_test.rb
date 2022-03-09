@@ -8,11 +8,6 @@ class MultipleSelectTest < ActiveSupport::TestCase
     assert_equal "Foo", multiple_select.title
   end
 
-  test "should titleize all words" do
-    multiple_select = MultipleSelect.create!(title: "up size me", field: fields(:tags))
-    assert_equal "Up Size Me", multiple_select.title
-  end
-
   test "should have a unique title within a field" do
     field = Field.create!(title: "Countries", column_type: Field::TYPES[:multiple_select])
 

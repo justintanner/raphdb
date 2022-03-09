@@ -33,10 +33,9 @@ module Clean
     end
   end
 
-  def self.clean_value(value, options)
+  def self.clean_value(value, options = {})
     cleaned_value = squish_and_strip(value)
 
-    cleaned_value = titleize(cleaned_value) if options[:titleize]
     cleaned_value = nil if cleaned_value == ""
 
     cleaned_value
@@ -44,9 +43,5 @@ module Clean
 
   def self.squish_and_strip(value)
     value.is_a?(String) ? value.gsub(/[[:space:]]+/, " ").strip : value
-  end
-
-  def self.titleize(value)
-    value.is_a?(String) ? value.titleize : value
   end
 end

@@ -3,8 +3,8 @@
     <div class="row">
       <ul class="nav justify-content-center">
         <% Page.all.each do |page| %>
-          <li class="list-unstyled list-inline">
-            <%= link_to page.title, "/#{page.slug}", class: 'nav-link' %>
+          <li class="navbar-item">
+            <%= link_to page.title, "/#{page.slug}", class: "nav-link font-serif text-gray-600 text-blue-hover" %>
           </li>
         <% end %>
       </ul>

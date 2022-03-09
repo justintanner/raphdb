@@ -1,4 +1,23 @@
-# one:
-#   record: name_of_fixture (ClassOfFixture)
-#   name: content
-#   body: <p>In a <i>million</i> stars!</p>
+ homepage_content:
+   record: homepage (Page)
+   name: body
+   body: <h1>TuckDB Lilywhite is a free database of antique postcards<br />published by Lilywhite Ltd. <a href="/about"><u>Learn More</u></a></h1>
+
+about_content:
+  record: about (Page)
+  name: body
+  body: |
+    <h2>What is TuckDB Lilywhite?</h2>
+    <p>TuckDB Lilywhite is a free database of antique postcards. TuckDB Lilywhite is a companion site to TuckDB Postcards containing postcards published by Lilywhite Ltd and Firth.</p>
+
+    <p>During the creation of TuckDB Postcards it was discovered that many cards published by Raphael Tuck & Sons had identical images and numbers to those published by Lilywhite or Firth. This companion collection does not aim to be a comprehensive list of Lilywhite or Firth postcard.</p>
+
+    <h2>More than Postcards</h2>
+    <p>Raphael Tuck & Sons published more than just postcards. Please visit our sister site TuckDB Ephemera for puzzles, books, calendars and more.</p>
+
+    <p>Also we have created a third site TuckDB Catalogues, containing the original Tuck sales catalogues. These catalogues list everything that Raphael Tuck & Sons sold.</p>
+
+    <p>Credits and Additional Information</p>
+    <p>TuckDB would not have been possible without the great help of many contributors. For a full list please visit the credits section.</p>
+
+    <p>For more information about TuckDB and Raphael Tuck & Sons please see our Frequently Asked Questions.</p>

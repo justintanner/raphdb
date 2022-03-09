@@ -15,3 +15,14 @@
 .font-serif {
   font-family: $font-family-serif;
 }
+
+.text-gray-600 {
+  color: $gray-600;
+}
+
+.text-hover-link {
+  &:hover {
+    color: $link-hover-color;
+    text-decoration: underline !important;
+  }
+}

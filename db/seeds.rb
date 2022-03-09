@@ -3,25 +3,18 @@
 require "fixture_import"
 require "json_import"
 
-Page.create!(title: "Homepage", body: "<p>Welcome!</p>")
-User.create!(
-  name: "Testing",
-  email: "testing@raphdb.com",
-  password: "testing",
-  password_confirmation: "testing"
-)
+fixture_names = %w[users pages views fields single_selects sorts action_text/rich_texts active_storage/attachments active_storage/blobs]
+FixtureImport.load_fixtures(fixture_names)
 
-FixtureImport.views
+puts "Seeded #{User.count} users from the fixtures"
+puts "Seeded #{Page.count} pages from the fixtures"
 puts "Seeded #{View.count} views from the fixtures"
-
-FixtureImport.fields
 puts "Seeded #{Field.count} fields from the fixtures"
-
-FixtureImport.single_selects
 puts "Seeded #{SingleSelect.count} single selects from the fixtures"
-
-FixtureImport.sorts
 puts "Seeded #{Sort.count} sorts from the fixtures"
+puts "Seeded #{ActionText::RichText.count} rich texts from the fixtures"
+puts "Seeded #{ActiveStorage::Attachment.count} attachments from the fixtures"
+puts "Seeded #{ActiveStorage::Blob.count} blob from the fixtures"
 
 JsonImport.sets
 puts "Seeded #{ItemSet.count} sets from lilywhite-sets.json"

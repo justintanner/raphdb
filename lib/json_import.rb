@@ -28,6 +28,9 @@ module JsonImport
         next
       end
 
+      row[:data][:places] = row[:data][:places].map { |place| Clean.clean_value(place) } if row[:data][:places].present?
+      row[:data][:tags] = row[:data][:tags].map { |place| Clean.clean_value(place) } if row[:data][:tags].present?
+
       item =
         Item.new(
           data: row[:data],
@@ -89,19 +92,25 @@ module JsonImport
       tags += row[:data][:tags] if row[:data][:tags].present?
     end
 
-    places_field = Field.find_by(key: "places")
+    places = places.map { |place| Clean.clean_value(place) }
     places.uniq!
     places.compact_blank!
+
+    places_field = Field.find_by(key: "places")
 
     places.each do |place|
       MultipleSelect.create!(title: place, field: places_field)
     end
 
-    tags_field = Field.find_by(key: "tags")
+    tags = tags.map { |tag| Clean.clean_value(tag) }
     tags.uniq!
     tags.compact_blank!
 
-    tags.each { |tag| MultipleSelect.create!(title: tag, field: tags_field) }
+    tags_field = Field.find_by(key: "tags")
+
+    tags.each do |tag|
+      MultipleSelect.create!(title: tag, field: tags_field)
+    end
   end
 
   def self.logs(filename = "lilywhite-logs.json")

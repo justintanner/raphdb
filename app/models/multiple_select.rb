@@ -4,7 +4,7 @@ class MultipleSelect < ApplicationRecord
   include Cleanable
   belongs_to :field
 
-  clean :title, titleize: true
+  clean :title
 
   default_scope { order(title: :asc) }
 
