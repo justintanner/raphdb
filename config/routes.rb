@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :items, only: [:index]
+
   get "/:slug", to: "pages#show"
 
   root "pages#show", slug: "homepage"

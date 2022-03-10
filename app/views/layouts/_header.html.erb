@@ -5,7 +5,7 @@
 
       <ul class="navbar-nav ms-auto me-3 font-serif d-none d-md-flex">
         <li class="navbar-item active">
-          <%= link_to "Cards", "/tags", class: "nav-link" %>
+          <%= link_to "Cards", "/items", class: "nav-link" %>
         </li>
 
         <li class="navbar-item">
@@ -31,7 +31,7 @@
       <div id="search-box-container">
         <form class="input-group border rounded bg-light" id="search-box" action="/postcards">
           <input class="form-control bg-light border-0" name="q" value="" id="search-input" type="text" placeholder="Search..."/>
-          <button class="btn d-flex align-items-center p-0 pe-2" style="padding-top: 1px;" type="submit"><%= render "svgs/bi-search" %></button>
+          <button class="btn d-flex align-items-center p-0 pe-2" style="padding-top: 2px !important;" type="submit"><%= render "svgs/bi-search" %></button>
         </form>
       </div>
     </div>

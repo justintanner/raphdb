@@ -14,6 +14,6 @@
   <body class="d-flex flex-column h-100">
   <%= render "layouts/header" %>
   <%= yield %>
-  <%= render "layouts/footer" %>
+  <%= render "layouts/footer" unless content_for?(:no_footer) %>
   </body>
 </html>

@@ -16,6 +16,18 @@
   font-family: $font-family-serif;
 }
 
+.btn-outline-body {
+  background-color: $white;
+  color: $body-color;
+  border-color: $body-color;
+
+  &:hover, active {
+    background-color: $body-color;
+    color: $white;
+    border-color: $body-color;
+  }
+}
+
 .text-gray-600 {
   color: $gray-600;
 }

@@ -1,0 +1,35 @@
+<%= content_for :no_footer, true %>
+
+<div class="container-fluid">
+  <div class="card py-2 ps-3 pe-2">
+    <div class="row align-items-center">
+      <div class="col">
+        <span class="fs-5">Search Results</span>
+      </div>
+      <div class="col text-end">
+        <div class="btn-group" role="group" aria-label="Search ">
+          <button type="button" class="btn btn-outline-body"><%= render "svgs/bi-grid-3x3-gap" %><span class="ms-1">Small</span></button>
+          <button type="button" class="btn btn-outline-body active"><%= render "svgs/bi-grid" %><span class="ms-1">Medium</span></button>
+          <button type="button" class="btn btn-outline-body"><%= render "svgs/bi-list" %><span class="ms-1">List</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="spinner-border mx-auto mt-5 d-none" id="search-spinner" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+
+<div class="container-fluid" id="list-container" style="display: none">
+  <div class="card p-3">
+    <table class="list-table">
+      <thead>
+      <tr>
+      </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
