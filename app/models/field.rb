@@ -69,7 +69,15 @@ class Field < ApplicationRecord
   end
 
   def pikaday_date_format
+    return unless date_format.present?
+
     date_format.gsub("%Y", "YYYY").gsub("%m", "MM").gsub("%d", "DD")
+  end
+
+  def example_date_format
+    return unless date_format.present?
+
+    date_format.gsub("%Y", "1929").gsub("%m", "02").gsub("%d", "30")
   end
 
   def self.keys

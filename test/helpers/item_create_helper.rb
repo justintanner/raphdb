@@ -6,4 +6,10 @@ module ItemCreateHelper
 
     Item.create!(data: data, item_set: item_set)
   end
+
+  def item_new(data = {}, item_set = nil)
+    item_set ||= item_sets(:orphan)
+
+    Item.new(data: data, item_set: item_set)
+  end
 end

@@ -30,4 +30,24 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  item_data_errors:
+    single_line_text:
+      empty: "Must not be empty"
+      invalid: "Must be a string"
+    long_text:
+      empty: "Must not be empty"
+      invalid: "Must be a string"
+    checkbox:
+      invalid: "Must be checked or unchecked"
+    multiple_select:
+      invalid: "A selected option was not found"
+    single_select:
+      invalid: "The option was not found"
+    number:
+      invalid: "Must be a number"
+    currency:
+      invalid: "Must be a currency like 100 or 1.50"
+    date:
+      invalid: "Must be a date like %{example_date}"
+    images:
+      invalid: "Must be a valid image"

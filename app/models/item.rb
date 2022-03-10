@@ -108,7 +108,8 @@ class Item < ApplicationRecord
   def data_values_valid
     Field.all_cached.each do |field|
       if data_key_changed?(field.key) && !field.value_valid?(data[field.key])
-        errors.add(field.form_error_sym, "invalid") # TODO: Need a per-field error message
+        message = I18n.t("item_data_errors.#{field.column_type_sym}.invalid", example_date: field.example_date_format)
+        errors.add(field.form_error_sym, message)
       end
     end
   end

@@ -10,6 +10,10 @@ module DataValidation
     return true if value.nil?
 
     case column_type_sym
+    when :single_line_text
+      value.is_a?(String)
+    when :long_text
+      value.is_a?(String)
     when :checkbox
       checkbox_value_valid?(value)
     when :multiple_select
