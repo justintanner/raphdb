@@ -10,7 +10,7 @@
                        "editor--multiple-select-create-path-value": editor_multiple_selects_path
                      } %>
   <% if item.errors.include?(field.form_error_sym) %>
-    <div class="invalid-feedback mb-1"><%= item.errors.full_messages_for(field.form_error_sym).join(',') %></div>
+    <div class="invalid-feedback mb-1"><%= item.errors[field.form_error_sym].first %></div>
   <% else %>
     <div class="mb-3"></div>
   <% end %>
