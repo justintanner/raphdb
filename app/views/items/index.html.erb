@@ -1,35 +1,37 @@
 <%= content_for :no_footer, true %>
 
-<div class="container-fluid">
-  <div class="card py-2 ps-3 pe-2">
-    <div class="row align-items-center">
-      <div class="col">
-        <span class="fs-5">Search Results</span>
-      </div>
-      <div class="col text-end">
-        <div class="btn-group" role="group" aria-label="Search ">
-          <button type="button" class="btn btn-outline-body"><%= render "svgs/bi-grid-3x3-gap" %><span class="ms-1">Small</span></button>
-          <button type="button" class="btn btn-outline-body active"><%= render "svgs/bi-grid" %><span class="ms-1">Medium</span></button>
-          <button type="button" class="btn btn-outline-body"><%= render "svgs/bi-list" %><span class="ms-1">List</span></button>
-        </div>
-      </div>
+<div class="container-medium">
+  <div class="row">
+    <div class="col">
+      <h1 class="text-center font-serif mb-3">Postcards</h1>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="#"><%= render "svgs/bi-grid-3x3-gap" %><span class="ms-1 d-none d-sm-inline">Small</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#"><%= render "svgs/bi-grid" %><span class="ms-1 d-none d-sm-inline">Medium</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><%= render "svgs/bi-list" %><span class="ms-1 d-none d-sm-inline">List</span></a>
+        </li>
+
+        <li class="nav-item pt-2 ms-auto">
+          <span class="text-muted">All <%= @pagy.count %> cards</span>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
 
-<div class="spinner-border mx-auto mt-5 d-none" id="search-spinner" role="status">
-  <span class="visually-hidden">Loading...</span>
-</div>
+<%= turbo_frame_tag "page_handler" %>
 
-<div class="container-fluid" id="list-container" style="display: none">
-  <div class="card p-3">
-    <table class="list-table">
-      <thead>
-      <tr>
-      </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+<div class="container-medium">
+  <div class="row pt-3 gx-3" id="items">
+    <%= render partial: "medium_card", collection: @items, as: :item %>
+  </div>
+  <div class="row">
+    <div class="col text-center">
+      <%= render "pager", pagy: @pagy %>
+    </div>
   </div>
 </div>

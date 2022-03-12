@@ -1,0 +1,35 @@
+.container-medium {
+  @include make-container();
+}
+
+@media (min-width: 564px) {
+  .container-medium {
+    width: 564px;
+  }
+}
+
+@media (min-width: 1120px) {
+  .container-medium {
+    width: 1120px;
+  }
+}
+
+@media (min-width: 1676px) {
+  .container-medium {
+    width: 1676px;
+  }
+}
+
+.card-medium {
+  height: 330px;
+  max-width: 100%;
+  width: 100%;
+  display: inline-block;
+}
+
+@media (min-width: 540px) {
+  .card-medium {
+    width: 540px;
+    max-width: 540px;
+  }
+}

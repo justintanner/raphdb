@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
 class ItemsController < ApplicationController
+  include Pagy::Backend
+
   def index
-    @records = View.default.search(params[:q])
+    @pagy, @items = pagy(View.default.search(params[:q]))
+  end
+
+  def show
+    @item = Item.friendly.find(params[:id])
   end
 end

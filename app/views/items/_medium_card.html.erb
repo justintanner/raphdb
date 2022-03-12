@@ -1,0 +1,33 @@
+<div class="col-auto" id="<%= dom_id(item) %>">
+  <div class="card card-medium mb-3">
+    <div class="card-header text-truncate">
+      <div class="row">
+        <div class="col text-truncate">
+          <%= link_to item do %>
+            <%= render "svgs/bi-box-arrow-up-left" %>
+            <span class="p-0 ms-2"><%= item.title %></span>
+          <% end %>
+        </div>
+        <div class="col-auto text-right">
+          <span class="p-0"><%= item.data["number"] %></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-auto pe-0">
+          <%= link_to item do %>
+          <%= image_tag "medium-short.jpg", class: "border" %>
+          <% end %>
+        </div>
+        <div class="col">
+          <label class="text-muted"><small>Set Title</small></label>
+          <p>COTTAGE GARDENS</p>
+          <label class="text-muted"><small>Set Comment</small></label>
+          <p>OILETTE, COPYRIGHT LONDON, PRINTED IN ENGLAND, 4 backs, come oilfacsim but not so trade named</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
  homepage_content:
    record: homepage (Page)
    name: body
-   body: <h1>TuckDB Lilywhite is a free database of antique postcards<br />published by Lilywhite Ltd. <a href="/about"><u>Learn More</u></a></h1>
+   body: <h1>Justin's Lilywhite's is a free database of antique postcards<br />published by Lilywhite Ltd.</h1>
 
 about_content:
   record: about (Page)

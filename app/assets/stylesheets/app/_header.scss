@@ -17,6 +17,11 @@
   background: -webkit-linear-gradient(#495057, #343a40);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  &:hover {
+    background: -webkit-linear-gradient($link-hover-color, $link-hover-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 #search-box-container {
