@@ -1,8 +1,8 @@
 <% if pagy.next %>
   <%= link_to("Load More",
               items_path(page: pagy.next),
-              id: "pager",
-              class: "btn btn-lg btn-outline-dark d-inline-block my-5",
+              id: "load-more",
+              class: "btn btn-light d-inline-block my-5",
               data: {
                 turbo_frame: "page_handler"
               }) %>

@@ -27,11 +27,11 @@
 
 <div class="container-medium">
   <div class="row pt-3 gx-3" id="items">
-    <%= render partial: "medium_card", collection: @items, as: :item %>
+    <%= render partial: "medium", collection: @items, as: :item %>
   </div>
   <div class="row">
     <div class="col text-center">
-      <%= render "pager", pagy: @pagy %>
+      <%= render "load_more", pagy: @pagy %>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
 <%= turbo_frame_tag "page_handler" do %>
-  <%= turbo_stream_action_tag("append", target: "items", template: %(#{render partial: "medium_card", collection: @items, as: :item })) %>
-  <%= turbo_stream_action_tag("replace", target: "pager", template: %(#{render "pager", pagy: @pagy})) %>
+  <%= turbo_stream_action_tag("append", target: "items", template: %(#{render partial: "medium", collection: @items, as: :item })) %>
+  <%= turbo_stream_action_tag("replace", target: "load-more", template: %(#{render "load_more", pagy: @pagy})) %>
 <% end %>
