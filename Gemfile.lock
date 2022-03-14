@@ -108,6 +108,8 @@ GEM
       actionmailer (>= 5.0)
       devise (>= 4.6)
     digest (3.1.0)
+    down (5.3.0)
+      addressable (~> 2.8)
     erubi (1.10.0)
     execjs (2.8.1)
     ffi (1.15.4)
@@ -301,6 +303,7 @@ DEPENDENCIES
   debug
   devise
   devise_invitable
+  down
   friendly_id
   image_processing (~> 1.2)
   importmap-rails

@@ -3,8 +3,8 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
-require "helpers/open_fixture_helper"
-require "helpers/item_create_helper"
+require "support/open_fixture_helper"
+require "support/item_create_helper"
 
 module ActiveSupport
   class TestCase

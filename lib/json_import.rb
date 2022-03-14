@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uri"
+
 module JsonImport
   def self.sets(filename = "lilywhite-sets.json")
     each_row(filename) do |row|
@@ -61,7 +63,6 @@ module JsonImport
         next
       end
 
-      # TODO: Fetch the actual image, or put a fake one in the db.
       image =
         Image.new(
           position: row[:position],
@@ -76,6 +77,9 @@ module JsonImport
       image.id = row[:id].to_i
 
       image.save!
+
+      file_path = download_file(row[:original_url])
+      image.file.attach(io: File.open(file_path), filename: File.basename(file_path))
     end
 
     if skipped_image_count.positive?
@@ -148,6 +152,23 @@ module JsonImport
         importing: true
       )
     end
+  end
+
+  def self.download_file(url)
+    return if url.blank?
+
+    path = URI.parse(url).path
+
+    local_path = Rails.root.join("tmp").to_s + path
+
+    if File.exist?(local_path)
+      puts "Using cached file: #{local_path}"
+      local_path
+    end
+
+    FileUtils.mkdir_p(File.dirname(local_path))
+    Down.download(url, destination: local_path)
+    local_path
   end
 
   def self.each_row(filename, &block)

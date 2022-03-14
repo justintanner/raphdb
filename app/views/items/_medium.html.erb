@@ -17,8 +17,11 @@
     <div class="card-body">
       <div class="row">
         <div class="col-auto pe-0">
-          <%= link_to item do %>
-          <%= image_tag "medium-short.jpg", class: "border" %>
+          <% if item.images.present? %>
+            <%= link_to item do %>
+              <% image = item.images.with_attached_file.first %>
+              <%= image_tag image.variant(:medium).processed.url, srcset: image.srcset(:medium_retina, :medium), sizes: "#{image.width(:medium)}px", class: "border" %>
+            <% end %>
           <% end %>
         </div>
         <div class="col">

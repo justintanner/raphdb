@@ -93,6 +93,9 @@ group :development do
   # Profile [https://ruby-prof.github.io/]
   gem "ruby-prof"
 
+  # Downloading images for importing data [https://github.com/janko/down]
+  gem "down"
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 end
