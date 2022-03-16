@@ -20,6 +20,7 @@
                           srcset: image.srcset(:small_retina, :small),
                           sizes: "#{image.width(:small)}px",
                           width: image.width(:small),
+                          height: image.height(:small),
                           class: class_names("border": true, "border-secondary": current_image == image),
                           data: {"splide-target": "thumb"} %>
           <% end %>

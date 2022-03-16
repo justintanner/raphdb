@@ -36,6 +36,8 @@
         <%= image_tag @image.variant(:large).processed.url,
                       srcset: @image.srcset(:large_retina, :large, :medium_retina, :medium),
                       sizes: "100vw",
+                      width: @image.width(:large),
+                      height: @image.height(:large),
                       class: "card-img-top img-fluid" %>
         <div class="card-body p-1">
           <%= render "splide", { item: @item,
@@ -58,7 +60,12 @@
                 </a>
               </div>
               <div class="col">
-                <a href="javascript:void(0);" class="d-flex align-items-center justify-content-end" data-clipboard-text="<%= url_for(@item) %>" data-bs-original-title="Copy to Clipboard">
+                <a href="javascript:void(0);"
+                   id="copy-link"
+                   class="d-flex align-items-center justify-content-end"
+                   data-clipboard-text="<%= request.original_url %>"
+                   data-bs-original-title="Copy to Clipboard"
+                   data-controller="clipboard">
                   <%= render "svgs/bi-link-45deg" %>
                   <span class="ms-1"><small>Share Link</small></span>
                 </a>

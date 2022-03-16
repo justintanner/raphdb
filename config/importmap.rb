@@ -17,3 +17,4 @@ pin "tom-select" # @2.0.1
 pin "pikaday" # @1.8.2
 pin "moment" # @2.29.1
 pin "@splidejs/splide", to: "@splidejs--splide.js" # @3.6.11
+pin "clipboard" # @2.0.10

@@ -23,6 +23,8 @@
               <%= image_tag image.variant(:medium).processed.url,
                             srcset: image.srcset(:medium_retina, :medium),
                             sizes: "#{image.width(:medium)}px",
+                            width: image.width(:medium),
+                            height: image.height(:medium),
                             class: "border" %>
             <% end %>
           <% end %>
