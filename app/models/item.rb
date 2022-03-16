@@ -31,20 +31,6 @@ class Item < ApplicationRecord
     data.try(:[], "item_title")
   end
 
-  def populated_fields
-    Field.all_cached.find_all do |field|
-      data[field.key].present?
-    end
-  end
-
-  def short?(field)
-    field.column_type_sym == :number ||
-      field.column_type_sym == :currency ||
-      field.column_type_sym == :date ||
-      field.column_type_sym == :boolean ||
-      (field.column_type_sym == :single_line_text && data[field.key].length < 23)
-  end
-
   def should_generate_new_friendly_id?
     data_key_changed?("item_title")
   end

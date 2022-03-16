@@ -57,7 +57,7 @@ module SearchProcessor
   # TODO: Remove this method and replace with filters model.
   def self.extract_advanced(query)
     remaining_query = query.dup
-    numeric_keys = Field.numeric.keys.join("|")
+    numeric_keys = Field.numeric.map(&:key).join("|")
     number_range_regex = /(#{numeric_keys}):\s*([0-9]+-[0-9]+)/i
 
     advanced_options =

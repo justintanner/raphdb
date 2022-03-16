@@ -1,24 +1,24 @@
 <% content_for(:head) do %>
   <style>
-    .main-card {
+    .card-item-horizontal {
       min-width: <%= @image.width(:large) %>px;
       width: <%= @image.width(:large) %>px;
     }
 
     @media (max-width: <%= @image.width(:large) %>px) {
-      .main-card {
+      .card-item-horizontal {
         width: 100%;
         min-width: 100%;
       }
     }
 
-    .sidebar {
+    .item-sidebar {
       width: <%= @image.width(:large) %>px;
       max-width: 100%;
     }
 
     @media (min-width: <%= @image.width(:large) + 450 %>px) {
-      .sidebar {
+      .item-sidebar {
         width: 350px;
       }
     }
@@ -32,7 +32,7 @@
 <div class="container-fluid">
   <div class="row justify-content-center g-3">
     <div class="col-auto">
-      <div class="card main-card">
+      <div class="card card-item-horizontal">
         <%= image_tag @image.variant(:large).processed.url,
                       srcset: @image.srcset(:large_retina, :large, :medium_retina, :medium),
                       sizes: "100vw",
@@ -49,7 +49,7 @@
     </div>
 
     <div class="col-auto">
-      <div class="sidebar">
+      <div class="item-sidebar">
         <div class="card mb-3">
           <div class="card-header px-3 border-bottom-0">
             <div class="row">
@@ -87,12 +87,12 @@
             </div>
           </div>
           <div class="card-body">
-            <% @item.populated_fields.each do |field| %>
-              <% if @item.short?(field) %>
-                <p class="mb-2"><label class="text-muted me-1"><small><%= field.title %></small></label><%= @item.data[field.key] %></p>
+            <% Field.published_with_data(@item).each do |field| %>
+              <% if field.short_label?(@item) %>
+                <p class="mb-2"><label class="item-short-label text-muted me-1"><small><%= field.title %></small></label><%= field.data_for_display(@item) %></p>
               <% else %>
                 <label class="text-muted"><small><%= field.title %></small></label>
-                <p><%= @item.data[field.key] %></p>
+                <p><%= field.data_for_display(@item) %></p>
               <% end %>
             <% end %>
           </div>

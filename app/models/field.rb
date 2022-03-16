@@ -8,6 +8,8 @@ class Field < ApplicationRecord
   include Positionable
   include DataValidation
   include DataFormatters
+  include DataDisplay
+  include TypeHelpers
   include Hot::FieldHelpers
 
   has_many :view_fields
@@ -59,34 +61,13 @@ class Field < ApplicationRecord
     Money.from_cents(1, currency_iso_code).symbol
   end
 
-  def single_select_data
-    SingleSelect.where(field: self).pluck(:title)
-  end
-
-  def multiple_select_data
-    # Will this become a problem when we have many thousands of options?
-    MultipleSelect.where(field: self).pluck(:title)
-  end
-
-  def pikaday_date_format
-    return unless date_format.present?
-
-    date_format.gsub("%Y", "YYYY").gsub("%m", "MM").gsub("%d", "DD")
-  end
-
-  def example_date_format
-    return unless date_format.present?
-
-    date_format.gsub("%Y", "1929").gsub("%m", "02").gsub("%d", "30")
-  end
-
   def self.keys
     pluck(:key)
   end
 
   def self.params
     all_cached.map do |field|
-      if field.column_type_sym == :multiple_select
+      if field.multiple_select?
         {field.key.to_sym => []}
       else
         field.key.to_sym
@@ -101,29 +82,32 @@ class Field < ApplicationRecord
     @all_cache = all
   end
 
+  def self.published
+    all_cached.find_all { |field| field.publish }
+  end
+
   def self.searchable_cached
     all_cached.find_all { |field| SEARCHABLE_TYPES.include?(field.column_type_sym) }
   end
 
-  # TODO: Use all_cached in the methods below.
   def self.single_selects
-    where(column_type: TYPES[:single_select])
+    all_cached.find_all { |field| field.single_select? }
   end
 
   def self.multiple_selects
-    where(column_type: TYPES[:multiple_select])
+    all_cached.find_all { |field| field.multiple_select? }
   end
 
   def self.numeric
-    where(column_type: TYPES[:number])
+    all_cached.find_all { |field| field.number? }
   end
 
   def self.with_prefixes
-    where.not(prefix_field_id: nil)
+    all_cached.find_all { |field| !field.prefix_field_id.nil? }
   end
 
   def self.with_suffixes
-    where.not(suffix_field_id: nil)
+    all_cached.find_all { |field| !field.suffix_field_id.nil? }
   end
 
   private
