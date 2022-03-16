@@ -1,0 +1,113 @@
+<% content_for(:head) do %>
+  <style>
+    .card-item-horizontal {
+      min-width: <%= current_image.width(:large) %>px;
+      width: <%= current_image.width(:large) %>px;
+    }
+
+    @media (max-width: <%= current_image.width(:large) %>px) {
+      .card-item-horizontal {
+        width: 100%;
+        min-width: 100%;
+      }
+    }
+
+    .item-sidebar {
+      width: <%= current_image.width(:large) %>px;
+      max-width: 100%;
+    }
+
+    @media (min-width: <%= current_image.width(:large) + 450 %>px) {
+      .item-sidebar {
+        width: 350px;
+      }
+    }
+  </style>
+<% end %>
+
+<div class="container">
+  <h1 class="text-center mt-1 pb-3"><%= current_item.title %></h1>
+</div>
+
+<div class="container-fluid">
+  <div class="row justify-content-center g-3">
+    <div class="col-auto">
+      <div class="card card-item-horizontal">
+        <%= image_tag current_image.variant(:large).processed.url,
+                      srcset: current_image.srcset(:large_retina, :large, :medium_retina, :medium),
+                      sizes: "100vw",
+                      width: current_image.width(:large),
+                      height: current_image.height(:large),
+                      class: "card-img-top img-fluid" %>
+        <div class="card-body p-1">
+          <%= render "splide", { item: current_item,
+                                 current_image: current_image,
+                                 max_width: current_image.width(:large),
+                                 position: position } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-auto">
+      <div class="item-sidebar">
+        <div class="card mb-3">
+          <div class="card-header px-3 border-bottom-0">
+            <div class="row">
+              <div class="col">
+                <a href="javascript:void(0);"
+                   data-controller="lightbox"
+                   data-action="click->lightbox#open"
+                   data-lightbox-position-value="<%= position - 1 %>"
+                   class="d-flex align-items-center">
+                  <%= render "svgs/bi-arrows-fullscreen" %>
+                  <span class="ms-2"><small>Expand Images</small></span>
+                </a>
+              </div>
+              <div class="col">
+                <a href="javascript:void(0);"
+                   id="copy-link"
+                   class="d-flex align-items-center justify-content-end"
+                   data-clipboard-text="<%= request.original_url %>"
+                   data-bs-original-title="Copy to Clipboard"
+                   data-controller="clipboard">
+                  <%= render "svgs/bi-link-45deg" %>
+                  <span class="ms-1"><small>Share Link</small></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="card mb-3">
+          <div class="card-header px-3">
+            <div class="row">
+              <div class="col">Card</div>
+              <div class="col text-end">
+                <a class="pe-1 align-middle" href=""><%= render "svgs/bi-arrow-left-square" %></a>
+                <span class="font-monospace align-middle"><small>1/13</small></span>
+                <a class="ps-1 align-middle" href=""><%= render "svgs/bi-arrow-right-square" %></a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <% Field.published_with_data(current_item).each do |field| %>
+              <% if field.short_label?(current_item) %>
+                <p class="mb-2"><label class="item-short-label text-muted me-1"><small><%= field.title %></small></label><%= field.data_for_display(current_item) %></p>
+              <% else %>
+                <label class="text-muted"><small><%= field.title %></small></label>
+                <p><%= field.data_for_display(current_item) %></p>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-none">
+  <% current_item.images.with_attached_file.each do |image| %>
+    <a data-fslightbox="gallery" href="<%= image.file.url %>"></a>
+  <% end %>
+</div>
