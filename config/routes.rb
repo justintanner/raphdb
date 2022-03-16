@@ -20,7 +20,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :items, only: [:index, :show]
+  resources :items, only: [:index, :show] do
+    member do
+      get "picture/:picture_number", to: "items#show", as: :picture
+    end
+  end
 
   get "/:slug", to: "pages#show"
 

@@ -1,0 +1,30 @@
+<div class="splide"
+     data-controller="splide"
+     data-splide-max-width-value="<%= max_width %>"
+     data-splide-position-value="<%= position %>">
+  <div class="splide__arrows">
+    <button class="splide__arrow splide__arrow--prev">
+      <%= render "svgs/bi-chevron-right" %>
+    </button>
+    <button class="splide__arrow splide__arrow--next">
+      <%= render "svgs/bi-chevron-right" %>
+    </button>
+  </div>
+
+  <div class="splide__track">
+    <ul class="splide__list">
+      <% item.images.with_attached_file.each do |image| %>
+        <li class="splide__slide">
+          <%= link_to picture_item_path(item, image.position) do %>
+            <%= image_tag image.variant(:small).processed.url,
+                          srcset: image.srcset(:small_retina, :small),
+                          sizes: "#{image.width(:small)}px",
+                          width: image.width(:small),
+                          class: class_names("border": true, "border-secondary": current_image == image),
+                          data: {"splide-target": "thumb"} %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
