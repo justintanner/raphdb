@@ -37,6 +37,14 @@ class Image < ApplicationRecord
 
   validate :item_or_set_present
 
+  def horizontal?
+    width >= height
+  end
+
+  def vertical?
+    height > width
+  end
+
   def width(variant = :original)
     analyze_now(variant)
 

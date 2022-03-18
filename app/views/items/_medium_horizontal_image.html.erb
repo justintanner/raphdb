@@ -1,0 +1,30 @@
+<%= link_to item do %>
+  <%= image_tag first_image.variant(:medium).processed.url,
+                srcset: first_image.srcset(:medium_retina, :medium),
+                sizes: "#{first_image.width(:medium)}px",
+                width: first_image.width(:medium),
+                height: first_image.height(:medium),
+                class: "border" %>
+<% end %>
+
+<ul class="list-group list-group-horizontal mt-2">
+  <% images = item.images.with_attached_file %>
+  <% images.each.with_index(1) do |image, index| %>
+    <li class="list-group-item p-2">
+      <%= link_to picture_item_path(item, image.position) do %>
+        <%= image_tag image.variant(:micro).processed.url,
+                      srcset: image.srcset(:micro_retina, :micro),
+                      sizes: "#{image.width(:micro)}px",
+                      width: image.width(:micro),
+                      height: image.height(:micro),
+                      class: class_names("border": true, "border-dark": image == first_image) %>
+      <% end %>
+    </li>
+    <% if images.count > 3 && index == 3 %>
+      <li class="list-group-item p-2">
+        <span class="badge bg-light text-dark">+ <%= images.count - index %></span>
+      </li>
+      <% break %>
+    <% end %>
+  <% end %>
+</ul>

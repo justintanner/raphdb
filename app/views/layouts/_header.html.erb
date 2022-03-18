@@ -29,10 +29,10 @@
       </div>
 
       <div id="search-box-container">
-        <form class="input-group border rounded bg-light" id="search-box" action="/postcards">
-          <input class="form-control bg-light border-0" name="q" value="" id="search-input" type="text" placeholder="Search..."/>
+        <%= form_tag items_url, method: :get, class: "input-group border rounded bg-light", id: "search-box" do |form| %>
+          <%= text_field_tag "q", params[:q], class: "form-control bg-light border-0", id: "search-input", placeholder: "Search..." %>
           <button class="btn d-flex align-items-center p-0 pe-2" style="padding-top: 2px !important;" type="submit"><%= render "svgs/bi-search" %></button>
-        </form>
+        <% end %>
       </div>
     </div>
   </nav>

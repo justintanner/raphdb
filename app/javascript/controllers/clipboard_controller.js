@@ -10,7 +10,7 @@ export default class extends Controller {
     const originalHtml = that.element.innerHTML;
 
     clipboard.on("success", function(e) {
-      that.element.innerHTML = that.svgCheck() + '<span class="ms-1"><small>Link Copied!</small></span>';
+      that.element.innerHTML = that.svgCheck() + '<span class="ms-1"><small>Copied!</small></span>';
 
       setTimeout(function() {
         that.element.innerHTML = originalHtml;
