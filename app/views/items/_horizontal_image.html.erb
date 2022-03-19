@@ -91,14 +91,7 @@
             </div>
           </div>
           <div class="card-body">
-            <% Field.published_with_data(current_item).each do |field| %>
-              <% if field.short_label?(current_item) %>
-                <p class="mb-2"><label class="item-short-label text-muted me-1"><small><%= field.title %></small></label><%= field.data_for_display(current_item) %></p>
-              <% else %>
-                <label class="text-muted"><small><%= field.title %></small></label>
-                <p><%= field.data_for_display(current_item) %></p>
-              <% end %>
-            <% end %>
+            <%= render "fields_data", current_item: current_item %>
           </div>
         </div>
       </div>

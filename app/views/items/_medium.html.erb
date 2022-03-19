@@ -27,10 +27,9 @@
           <% end %>
         </div>
         <div class="col">
-          <label class="text-muted"><small>Set Title</small></label>
-          <p>COTTAGE GARDENS</p>
-          <label class="text-muted"><small>Set Comment</small></label>
-          <p>OILETTE, COPYRIGHT LONDON, PRINTED IN ENGLAND, 4 backs, come oilfacsim but not so trade named</p>
+          <div class="pb-5 overflow-hidden" style="height: 250px;">
+            <%= render "fields_data", current_item: item, except: %w(item_title prefix number in_set), limit: 4 %>
+          </div>
         </div>
       </div>
     </div>
