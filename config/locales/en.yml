@@ -30,6 +30,10 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  search_results: "Search Results"
+  all_results: "All Postcards"
+  search_found: "Search \"%{query}\" found %{count} cards"
+  count_all_items: "All %{count} cards"
   item_data_errors:
     single_line_text:
       empty: "Must not be empty"

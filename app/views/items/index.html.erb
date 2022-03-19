@@ -1,9 +1,10 @@
 <%= content_for :no_footer, true %>
+<%= content_for :title, search_title(query: params[:q]) %>
 
 <div class="container-medium">
   <div class="row">
     <div class="col">
-      <h1 class="text-center font-serif mb-3">Postcards</h1>
+      <h1 class="text-center font-serif mb-3"><%= search_title(query: params[:q]) %></h1>
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <a class="nav-link" href="#"><%= render "svgs/bi-grid-3x3-gap" %><span class="ms-1 d-none d-sm-inline">Small</span></a>
@@ -16,7 +17,7 @@
         </li>
 
         <li class="nav-item pt-2 ms-auto">
-          <span class="text-muted">All <%= @pagy.count %> cards</span>
+          <span class="text-muted"><%= search_count(count: @pagy.count, query: params[:q]) %></span>
         </li>
       </ul>
     </div>
