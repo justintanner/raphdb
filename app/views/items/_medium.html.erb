@@ -9,7 +9,11 @@
           <% end %>
         </div>
         <div class="col-auto text-right">
-          <span class="p-0"><%= item.data["number"] %></span>
+          <span class="p-0">
+            <% Field.identifiers.each do |field| %>
+              <%= item.data[field.key] %>
+            <% end %>
+          </span>
         </div>
       </div>
     </div>

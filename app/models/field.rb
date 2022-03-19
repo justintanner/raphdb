@@ -110,6 +110,10 @@ class Field < ApplicationRecord
     all_cached.find_all { |field| !field.suffix_field_id.nil? }
   end
 
+  def self.identifiers
+    all_cached.find_all { |field| field.item_identifier }
+  end
+
   private
 
   def add_to_all_views
