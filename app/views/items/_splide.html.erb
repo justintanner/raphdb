@@ -21,7 +21,7 @@
                           sizes: "#{image.width(:small)}px",
                           width: image.width(:small),
                           height: image.height(:small),
-                          class: class_names("border": true, "border-secondary": current_image == image),
+                          class: class_names("border": true, "border-secondary": featured_image == image),
                           data: {"splide-target": "thumb"} %>
           <% end %>
         </li>

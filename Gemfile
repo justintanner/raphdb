@@ -29,6 +29,9 @@ gem "stimulus-rails"
 # Pagination [https://github.com/ddnexus/pagy]
 gem "pagy"
 
+# Background job processing [https://github.com/mperham/sidekiq]
+gem "sidekiq"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

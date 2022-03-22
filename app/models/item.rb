@@ -10,9 +10,10 @@ class Item < ApplicationRecord
 
   belongs_to :item_set
 
-  # TODO: Add scope if images relationship starts doing n+1 queries.
-  # https://gist.github.com/georgeclaghorn/9baf3b9f1796eed5a983d35825b7f86c
   has_many :images
+
+  # Borrowed from: https://gist.github.com/georgeclaghorn/9baf3b9f1796eed5a983d35825b7f86c
+  scope :with_attached_images, -> { includes(:images).merge(Image.with_attached_file) }
 
   attr_accessor :importing
 

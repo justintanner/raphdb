@@ -8,6 +8,8 @@ class Image < ApplicationRecord
   belongs_to :item, optional: true
   belongs_to :item_set, optional: true
 
+  after_create :process_image
+
   # TODO: Create active jobs to analyze and resize images.
   SIZES = {
     micro: [30, 30],
@@ -98,6 +100,10 @@ class Image < ApplicationRecord
   end
 
   private
+
+  def process_image
+    ProcessImageJob.perform_now(id)
+  end
 
   def analyze_now(variant = :original)
     if variant == :original

@@ -15,7 +15,7 @@ export default class extends Controller {
       gap: '8px',
       pagination: false,
       keyboard: false,
-      start: that.positionValue,
+      start: that.positionValue - 1,
     });
 
     splideInstance.mount();
