@@ -37,6 +37,7 @@
                       width: featured_image.width(:large),
                       height: featured_image.height(:large),
                       class: "card-img-top img-fluid",
+                      loading: "lazy",
                       alt: "Image #{position}" %>
         <div class="card-body p-1">
           <%= render "splide", { item: item,
@@ -85,9 +86,20 @@
             <div class="row">
               <div class="col">Card</div>
               <div class="col text-end">
-                <a class="pe-1 align-middle" href=""><%= render "svgs/bi-arrow-left-square" %></a>
-                <span class="font-monospace align-middle"><small>1/13</small></span>
-                <a class="ps-1 align-middle" href=""><%= render "svgs/bi-arrow-right-square" %></a>
+                <% metadata = position_metadata(item) %>
+                <% if metadata[:prev].present? %>
+                  <%= link_to item_path(metadata[:prev]), class: "pe-1 align-middle" do %>
+                    <%= render "svgs/bi-arrow-left-square" %>
+                  <% end %>
+                <% end %>
+
+                <span class="font-monospace align-middle"><small><%= metadata[:current] %>/<%= metadata[:total] %></small></span>
+
+                <% if metadata[:next].present? %>
+                  <%= link_to item_path(metadata[:next]), class: "ps-1 align-middle" do %>
+                    <%= render "svgs/bi-arrow-right-square" %>
+                  <% end %>
+                <% end %>
               </div>
             </div>
           </div>

@@ -4,6 +4,7 @@
                 sizes: "#{first_image.width(:medium)}px",
                 width: first_image.width(:medium),
                 height: first_image.height(:medium),
+                loading: "lazy",
                 class: "border" %>
 <% end %>
 
@@ -17,6 +18,7 @@
                       sizes: "#{image.width(:micro)}px",
                       width: image.width(:micro),
                       height: image.height(:micro),
+                      loading: "lazy",
                       class: class_names("border": true, "border-dark": image == first_image) %>
       <% end %>
     </li>
