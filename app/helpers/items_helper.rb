@@ -20,7 +20,7 @@ module ItemsHelper
       }
     else
       {
-        current: 11,
+        current: 1,
         total: items_array.length,
         next: nil,
         prev: nil

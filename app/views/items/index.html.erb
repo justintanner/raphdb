@@ -7,10 +7,12 @@
       <h1 class="text-center font-serif mb-3"><%= search_title(query: params[:q]) %></h1>
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link" href="#"><%= render "svgs/bi-grid-3x3-gap" %><span class="ms-1 d-none d-sm-inline">Small</span></a>
+          <a class="nav-link" href="#"><%= render "svgs/bi-grid-3x3-gap" %>
+            <span class="ms-1 d-none d-sm-inline">Small</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="#"><%= render "svgs/bi-grid" %><span class="ms-1 d-none d-sm-inline">Medium</span></a>
+          <a class="nav-link active" href="#"><%= render "svgs/bi-grid" %>
+            <span class="ms-1 d-none d-sm-inline">Medium</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#"><%= render "svgs/bi-list" %><span class="ms-1 d-none d-sm-inline">List</span></a>
@@ -28,7 +30,20 @@
 
 <div class="container-medium">
   <div class="row pt-3 gx-3" id="items">
-    <%= render partial: "medium", collection: @items, as: :item %>
+    <% if @items.empty? %>
+      <div class="col ms-3">
+        <h4 class="mb-3">Your search did not match any item</h4>
+        <p>Suggestions:</p>
+
+        <ul>
+          <li>Remove some words from search query</li>
+          <li>Try different keywords</li>
+          <li>Try more general keywords</li>
+        </ul>
+      </div>
+    <% else %>
+      <%= render partial: "medium", collection: @items, as: :item %>
+    <% end %>
   </div>
   <div class="row">
     <div class="col text-center">

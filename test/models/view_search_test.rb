@@ -10,6 +10,20 @@ class ViewSearchTest < ActiveSupport::TestCase
     assert_equal item, records.first, "Item was not found"
   end
 
+  test "when given two keywords match both" do
+    item = item_create!({item_title: "apple banana"})
+    records = View.default.search("apple banana")
+
+    assert_equal item, records.first, "Item was not found"
+  end
+
+  test "when given two keywords and one does not match, match nothing" do
+    item_create!({item_title: "apple banana"})
+    records = View.default.search("apple cherry")
+
+    assert_empty records, "Item should not have been found"
+  end
+
   test "should result all records for nil queries" do
     records = View.default.search(nil)
 
@@ -48,15 +62,6 @@ class ViewSearchTest < ActiveSupport::TestCase
     records = View.default.search("apple")
 
     assert_empty records, "records were not empty"
-  end
-
-  test "should match a keyword in two items" do
-    first_item = item_create!({item_title: "apple"})
-    second_item = item_create!({item_title: "banana"})
-    records = View.default.search("apple banana")
-
-    assert_includes records.to_a, first_item, "First item was not matched"
-    assert_includes records.to_a, second_item, "Second item was not matched"
   end
 
   test "should match two keywords in a single item" do

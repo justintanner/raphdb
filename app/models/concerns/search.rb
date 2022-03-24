@@ -98,6 +98,6 @@ module SearchProcessor
   end
 
   def self.postgres_query_string(query)
-    query.gsub(/[[:space:]]/, "|")
+    query.gsub(/[[:space:]]/, "&")
   end
 end
