@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ItemCreateHelper
+module ItemHelper
   def item_create!(data = {}, item_set = nil)
     item_set ||= item_sets(:orphan)
 

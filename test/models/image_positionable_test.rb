@@ -18,9 +18,9 @@ class ImagePositionableTest < ActiveSupport::TestCase
 
   test "should sort by position" do
     item = items(:single)
-    third_image = Image.create!(item: item, position: 3)
-    first_image = Image.create!(item: item, position: 1)
-    second_image = Image.create!(item: item, position: 2)
+    third_image = Image.create!(item: item, position: 3, processed_at: Time.now)
+    first_image = Image.create!(item: item, position: 1, processed_at: Time.now)
+    second_image = Image.create!(item: item, position: 2, processed_at: Time.now)
 
     assert_equal item.images,
       [first_image, second_image, third_image],
@@ -28,9 +28,9 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test "moving first to second should re-position items" do
-    first_image = Image.create!(item: items(:single), position: 1)
-    second_image = Image.create!(item: items(:single), position: 2)
-    third_image = Image.create!(item: items(:single), position: 3)
+    first_image = Image.create!(item: items(:single), position: 1, processed_at: Time.now)
+    second_image = Image.create!(item: items(:single), position: 2, processed_at: Time.now)
+    third_image = Image.create!(item: items(:single), position: 3, processed_at: Time.now)
 
     first_image.move_to(2)
 

@@ -31,7 +31,7 @@
   <div class="row justify-content-center g-3">
     <div class="col-auto">
       <div class="card card-item-horizontal">
-        <%= image_tag featured_image.variant(:large).processed.url,
+        <%= image_tag featured_image.file.variant(:large).url,
                       srcset: featured_image.srcset(:large_retina, :large, :medium_retina, :medium),
                       sizes: "#{featured_image.width(:large)}px",
                       width: featured_image.width(:large),
@@ -55,7 +55,7 @@
             <div class="row">
               <div class="col">
                 <div data-controller="lightbox" data-lightbox-position-value="<%= position - 1 %>">
-                  <% item.images.with_attached_file.each do |image| %>
+                  <% item.images.each do |image| %>
                     <a data-lightbox-target="url" data-fslightbox="lightbox_for_<%= item.id %>" href="<%= image.file.url %>"></a>
                   <% end %>
 
@@ -80,33 +80,7 @@
           </div>
         </div>
 
-
-        <div class="card mb-3">
-          <div class="card-header px-3">
-            <div class="row">
-              <div class="col">Card</div>
-              <div class="col text-end">
-                <% metadata = position_metadata(item) %>
-                <% if metadata[:prev].present? %>
-                  <%= link_to item_path(metadata[:prev]), class: "pe-1 align-middle" do %>
-                    <%= render "svgs/bi-arrow-left-square" %>
-                  <% end %>
-                <% end %>
-
-                <span class="font-monospace align-middle"><small><%= metadata[:current] %>/<%= metadata[:total] %></small></span>
-
-                <% if metadata[:next].present? %>
-                  <%= link_to item_path(metadata[:next]), class: "ps-1 align-middle" do %>
-                    <%= render "svgs/bi-arrow-right-square" %>
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <%= render "fields_data", item: item %>
-          </div>
-        </div>
+        <%= render "card", item: item %>
       </div>
     </div>
   </div>

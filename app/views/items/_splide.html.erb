@@ -16,7 +16,7 @@
       <% item.images.with_attached_file.each do |image| %>
         <li class="splide__slide">
           <%= link_to picture_item_path(item, image.position) do %>
-            <%= image_tag image.variant(:small).processed.url,
+            <%= image_tag image.file.variant(:small).url,
                           srcset: image.srcset(:small_retina, :small),
                           sizes: "#{image.width(:small)}px",
                           width: image.width(:small),

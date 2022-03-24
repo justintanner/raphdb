@@ -1,0 +1,37 @@
+<div class="container">
+  <h1 class="text-center mt-1 pb-3"><%= item.title %></h1>
+</div>
+
+<div class="container-fluid">
+  <div class="row justify-content-center g-3">
+    <div class="col-auto">
+      <div class="item-sidebar">
+        <div class="card mb-3">
+          <div class="card-header px-3 border-bottom-0">
+            <div class="row">
+              <div class="col">
+                <a href="#" class="d-flex align-items-center">
+                  <%= render "svgs/bi-cloud-upload" %>
+                  <span class="ms-2"><small>Contribute Image</small></span>
+                </a>
+              </div>
+              <div class="col">
+                <a href="javascript:void(0);"
+                   id="copy-link"
+                   class="d-flex align-items-center justify-content-end"
+                   data-clipboard-text="<%= request.original_url %>"
+                   data-bs-original-title="Copy to Clipboard"
+                   data-controller="clipboard">
+                  <%= render "svgs/bi-link-45deg" %>
+                  <span class="ms-1"><small>Share</small></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%= render "card", item: item %>
+      </div>
+    </div>
+  </div>
+</div>

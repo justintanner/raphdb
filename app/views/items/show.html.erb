@@ -1,1 +1,5 @@
-<%= render "horizontal_image", item: @item, featured_image: @featured_image %>
+<% if @featured_image.present? %>
+  <%= render "horizontal_image", item: @item, featured_image: @featured_image %>
+<% else %>
+  <%= render "no_image", item: @item, featured_image: @featured_image %>
+<% end %>

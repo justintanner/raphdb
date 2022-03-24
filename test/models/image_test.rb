@@ -18,21 +18,14 @@ class ImageTest < ActiveSupport::TestCase
     assert_not image.save, "Saved without an item or item_set"
   end
 
-  test "should be able to manually attach an file" do
-    image = Image.create!(item: items(:football))
-    image.attach(io: open_fixture("horizontal.jpg"), filename: "horizontal.jpg")
-
-    assert image.file.attached?, "File not attached"
-  end
-
   test "should be able to attach multiple images" do
     item = items(:football)
 
     horizontal = Image.create!(item: item)
-    horizontal.attach(io: open_fixture("horizontal.jpg"), filename: "horizontal.jpg")
+    attach_and_process(horizontal, "horizontal.jpg")
 
     vertical = Image.create!(item: item)
-    vertical.attach(io: open_fixture("vertical.jpg"), filename: "vertical.jpg")
+    attach_and_process(vertical, "vertical.jpg")
 
     assert_includes item.images, horizontal, "Horizontal image not found"
     assert_includes item.images, vertical, "Vertical image not found"
@@ -42,10 +35,10 @@ class ImageTest < ActiveSupport::TestCase
     item = items(:football)
 
     horizontal = Image.create!(item: item)
-    horizontal.attach(io: open_fixture("horizontal.jpg"), filename: "horizontal.jpg")
+    attach_and_process(horizontal, "horizontal.jpg")
 
     vertical = Image.create!(item: item)
-    vertical.attach(io: open_fixture("vertical.jpg"), filename: "vertical.jpg")
+    attach_and_process(vertical, "vertical.jpg")
 
     item.images.with_attached_file.each do |image|
       assert_kind_of Image, image, "Image is not an Image"
@@ -54,7 +47,7 @@ class ImageTest < ActiveSupport::TestCase
 
   test "should return the width and height for the original image" do
     image = Image.create!(item: items(:football))
-    image.attach(io: open_fixture("horizontal.jpg"), filename: "horizontal.jpg")
+    attach_and_process(image, "horizontal.jpg")
 
     assert_equal 1623, image.width(:original), "Width is not correct"
     assert_equal 1056, image.height(:original), "Height is not correct"
@@ -62,7 +55,7 @@ class ImageTest < ActiveSupport::TestCase
 
   test "should return the width and height for a variant of the image" do
     image = Image.create!(item: items(:football))
-    image.attach(io: open_fixture("horizontal.jpg"), filename: "horizontal.jpg")
+    attach_and_process(image, "horizontal.jpg")
 
     assert_equal 250, image.width(:medium), "Width is not correct"
     assert_equal 163, image.height(:medium), "Height is not correct"
@@ -70,7 +63,7 @@ class ImageTest < ActiveSupport::TestCase
 
   test "should return the max width and max height for a variant of the image" do
     image = Image.create!(item: items(:football))
-    image.attach(io: open_fixture("horizontal.jpg"), filename: "horizontal.jpg")
+    attach_and_process(image, "horizontal.jpg")
 
     assert_equal 250, image.max_width(:medium), "Width is not correct"
     assert_equal 250, image.max_height(:medium), "Height is not correct"
@@ -78,7 +71,7 @@ class ImageTest < ActiveSupport::TestCase
 
   test "returns img tag sizes strings for medium sized images" do
     image = Image.create!(item: items(:football))
-    image.attach(io: open_fixture("vertical.jpg"), filename: "vertical.jpg")
+    attach_and_process(image, "vertical.jpg")
 
     actual_srcset = image.srcset(:medium_retina, :medium)
     assert actual_srcset.include?("314w"), "Couldn't find 314px in srcset"

@@ -15,11 +15,11 @@ class ItemsController < ApplicationController
   private
 
   def featured_image(item)
-    if params[:picture_number].present? && (params[:picture_number].to_i > item.images.maximum(:position))
+    if params[:picture_number].present? && (params[:picture_number].to_i > item.images&.maximum(:position).to_i)
       raise ActionController::RoutingError, "Not Found"
     end
 
-    item.images.with_attached_file.find_by(position: position)
+    item.images.find_by(position: position)
   end
 
   def position

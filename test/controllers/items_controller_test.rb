@@ -19,6 +19,8 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should render the item page with a different featured picture" do
+    process_images_for(item: items(:football))
+
     get picture_item_path(items(:football).id, 2)
     assert_response :success
   end

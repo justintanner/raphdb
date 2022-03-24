@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ProcessImageJobTest < ActiveJob::TestCase
+class AnalyzeAndProcessImageJobTest < ActiveJob::TestCase
   def setup
     # Fake host to satisfy active storage in test.
     ActiveStorage::Current.url_options = {host: "localhost:9000"}
@@ -13,18 +13,18 @@ class ProcessImageJobTest < ActiveJob::TestCase
 
   test "should create all variants of an image, analyze them and set a flag" do
     image = Image.create!(item: items(:football))
-    image.attach(io: open_fixture("horizontal.jpg"), filename: "horizontal.jpg")
+    image.file.attach(io: open_fixture("horizontal.jpg"), filename: "horizontal.jpg")
 
-    ProcessImageJob.perform_now(image.id)
+    AnalyzeAndProcessImageJob.perform_now(image.id)
 
     image.reload
 
-    assert image.attached?, "Image should be attached"
-    assert image.analyzed?, "Image should be analyzed"
-    assert image.processed, "Flag was not set"
+    assert image.file.attached?, "Image should be attached"
+    assert image.file.analyzed?, "Image should be analyzed"
+    assert image.processed_at, "Flag was not set"
 
     Image::SIZES.each do |name, _dimensions|
-      assert image.variant(name).send(:record).image.blob.analyzed?
+      assert image.file.variant(name).send(:record).image.blob.analyzed?
     end
   end
 end

@@ -1,0 +1,26 @@
+<div class="card mb-3">
+  <div class="card-header px-3">
+    <div class="row">
+      <div class="col">Card</div>
+      <div class="col text-end">
+        <% metadata = position_metadata(item) %>
+        <% if metadata[:prev].present? %>
+          <%= link_to item_path(metadata[:prev]), class: "pe-1 align-middle" do %>
+            <%= render "svgs/bi-arrow-left-square" %>
+          <% end %>
+        <% end %>
+
+        <span class="font-monospace align-middle"><small><%= metadata[:current] %>/<%= metadata[:total] %></small></span>
+
+        <% if metadata[:next].present? %>
+          <%= link_to item_path(metadata[:next]), class: "ps-1 align-middle" do %>
+            <%= render "svgs/bi-arrow-right-square" %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <%= render "fields_data", item: item %>
+  </div>
+</div>

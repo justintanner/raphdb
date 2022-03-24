@@ -10,10 +10,9 @@ class Item < ApplicationRecord
 
   belongs_to :item_set
 
-  has_many :images
+  has_many :images, -> { where.not(processed_at: nil) }
 
-  # Borrowed from: https://gist.github.com/georgeclaghorn/9baf3b9f1796eed5a983d35825b7f86c
-  scope :with_attached_images, -> { includes(:images).merge(Image.with_attached_file) }
+  scope :with_attached_images, -> { includes(images: [file_attachment: [blob: :variant_records]]) }
 
   attr_accessor :importing
 

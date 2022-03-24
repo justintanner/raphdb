@@ -21,7 +21,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-auto pe-0">
-          <% first_image = item.images.with_attached_file.select(&:attached?).first %>
+          <% first_image = item.images.first %>
           <% if first_image.present? %>
             <% if first_image.horizontal? %>
               <%= render "medium_horizontal_image", first_image: first_image, item: item %>

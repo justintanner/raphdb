@@ -4,19 +4,21 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 require "support/open_fixture_helper"
-require "support/item_create_helper"
+require "support/item_helper"
+require "support/image_helper"
 
 module ActiveSupport
   class TestCase
-    # NOTE: this M1 mac setting helped "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
     # Turned off parallel tests for now because of errors related to active storage.
+    # NOTE: This M1 mac setting "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES" helped but didn't fix the problem.
     # parallelize(workers: :number_of_processors)
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
     include OpenFixtureHelper
-    include ItemCreateHelper
+    include ItemHelper
+    include ImageHelper
     include Devise::Test::IntegrationHelpers
   end
 end

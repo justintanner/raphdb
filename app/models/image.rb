@@ -30,7 +30,6 @@ class Image < ApplicationRecord
 
   attr_accessor :importing
 
-  delegate_missing_to :file
   log_changes only: %i[deleted_at],
     on: %i[create destroy],
     associated: :item_or_item_set,
@@ -40,34 +39,40 @@ class Image < ApplicationRecord
   validate :item_or_set_present
 
   def horizontal?
+    return unless processed_at.present?
+
     width >= height
   end
 
   def vertical?
+    return unless processed_at.present?
+
     height > width
   end
 
   def width(variant = :original)
-    analyze_now(variant)
+    return unless processed_at.present?
 
     if variant == :original
       file.metadata["width"]
     else
-      file.variant(variant).processed.send(:record).image.metadata["width"]
+      file.variant(variant).send(:record).image.metadata["width"]
     end
   end
 
   def height(variant = :original)
-    analyze_now(variant)
+    return unless processed_at.present?
 
     if variant == :original
       file.metadata["height"]
     else
-      file.variant(variant).processed.send(:record).image.metadata["height"]
+      file.variant(variant).send(:record).image.metadata["height"]
     end
   end
 
   def max_width(variant = :original)
+    return unless processed_at.present?
+
     if variant == :original
       file.metadata["width"]
     else
@@ -76,6 +81,8 @@ class Image < ApplicationRecord
   end
 
   def max_height(variant = :original)
+    return unless processed_at.present?
+
     if variant == :original
       file.metadata["height"]
     else
@@ -84,8 +91,10 @@ class Image < ApplicationRecord
   end
 
   def srcset(*variants)
+    return unless processed_at.present?
+
     variants
-      .map { |variant| "#{variant(variant).processed.url} #{width(variant)}w" }
+      .map { |variant| "#{file.variant(variant).url} #{width(variant)}w" }
       .join(",")
   end
 
@@ -102,27 +111,6 @@ class Image < ApplicationRecord
   private
 
   def process_image
-    ProcessImageJob.perform_now(id)
-  end
-
-  def analyze_now(variant = :original)
-    if variant == :original
-      analyze_original_now
-    else
-      analyze_variant_now(variant)
-    end
-  end
-
-  def analyze_original_now
-    return if file.analyzed?
-
-    file.analyze
-  end
-
-  def analyze_variant_now(variant)
-    return if variant.blank?
-    return if file.variant(variant).processed.send(:record).image.blob.analyzed?
-
-    file.variant(variant).processed.send(:record).image.blob.analyze
+    AnalyzeAndProcessImageJob.perform_now(id)
   end
 end
