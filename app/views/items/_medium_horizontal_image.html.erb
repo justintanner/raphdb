@@ -9,6 +9,7 @@
 <% end %>
 
 <ul class="list-group list-group-horizontal mt-2">
+  <% total_images = item.images.length %>
   <% item.images.each.with_index(1) do |image, index| %>
     <li class="list-group-item p-2">
       <%= link_to picture_item_path(item, image.position) do %>
@@ -21,9 +22,9 @@
                       class: class_names("border": true, "border-dark": image == first_image) %>
       <% end %>
     </li>
-    <% if item.images.count > 3 && index == 3 %>
+    <% if total_images > 3 && index == 3 %>
       <li class="list-group-item p-2">
-        <span class="badge bg-light text-dark">+ <%= item.images.count - index %></span>
+        <span class="badge bg-light text-dark">+ <%= total_images - index %></span>
       </li>
       <% break %>
     <% end %>

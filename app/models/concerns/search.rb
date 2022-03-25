@@ -17,7 +17,7 @@ module SearchProcessor
     remaining_query, advanced_options = extract_advanced(remaining_query)
 
     Item
-      .with_attached_images
+      .with_attached_images_and_variants
       .where(tsvector_where(remaining_query))
       .where(advanced_where(advanced_options))
       .order(order_by(view))

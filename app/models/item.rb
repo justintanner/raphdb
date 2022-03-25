@@ -12,7 +12,9 @@ class Item < ApplicationRecord
 
   has_many :images, -> { where.not(processed_at: nil) }
 
-  scope :with_attached_images, -> { includes(images: [file_attachment: [blob: :variant_records]]) }
+  scope :with_attached_images_and_variants, -> {
+    includes(images: [file_attachment: [blob: [variant_records: [image_attachment: :blob]]]])
+  }
 
   attr_accessor :importing
 
