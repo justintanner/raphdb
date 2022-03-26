@@ -1,5 +1,5 @@
 <% if pagy.next %>
-  <%= link_to(items_path(page: pagy.next), id: "load-more", class: "btn btn-light d-inline-block my-5",
+  <%= link_to(items_path(q: params[:q], page: pagy.next), id: "load-more", class: "btn btn-light d-inline-block my-5",
               data: {
                 controller: "loadmore",
                 turbo_frame: "page_handler"
