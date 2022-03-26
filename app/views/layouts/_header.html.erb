@@ -1,6 +1,6 @@
-<header>
-  <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom mb-3">
-    <div class="container-fluid">
+<header class="border-bottom mb-3">
+  <div class="<%= content_for(:container_class) || "container" %>">
+    <nav class="navbar navbar-expand-md navbar-light bg-white">
       <a class="navbar-brand font-serif" href="/">Justin's Lilywhites</a>
 
       <ul class="navbar-nav ms-auto me-3 font-serif d-none d-md-flex">
@@ -34,6 +34,6 @@
           <button class="btn d-flex align-items-center p-0 pe-2" style="padding-top: 2px !important;" type="submit"><%= render "svgs/bi-search" %></button>
         <% end %>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
 </header>
