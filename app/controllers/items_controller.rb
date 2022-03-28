@@ -5,6 +5,7 @@ class ItemsController < ApplicationController
 
   def index
     @pagy, @items = pagy(View.default.search(params[:q]))
+    @tab = tab
   end
 
   def show
@@ -26,5 +27,13 @@ class ItemsController < ApplicationController
     return 1 if params[:picture_number].blank?
 
     params[:picture_number].to_i
+  end
+
+  def tab
+    if %w[small medium list].include?(params[:tab])
+      params[:tab]
+    else
+      "medium"
+    end
   end
 end
