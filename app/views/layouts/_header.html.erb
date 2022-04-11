@@ -4,8 +4,9 @@
       <a class="navbar-brand font-serif" href="/">Justin's Lilywhites</a>
 
       <ul class="navbar-nav ms-auto me-3 font-serif d-none d-md-flex">
+
         <li class="navbar-item active">
-          <%= link_to "Cards", "/items", class: "nav-link" %>
+          <%= link_to 'Cards', items_path(tab: params[:tab]), class: "nav-link" %>
         </li>
 
         <li class="navbar-item">

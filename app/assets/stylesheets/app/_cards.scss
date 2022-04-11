@@ -1,3 +1,8 @@
+/* Same as container-fluid */
+.container-list {
+  @include make-container();
+}
+
 .container-medium {
   @include make-container();
 }

@@ -1,0 +1,31 @@
+<%= turbo_frame_tag "page_handler" %>
+
+<div class="container-list">
+  <div class="row">
+    <div class="col d-flex flex-column h-100 pt-3">
+      <div class="list-wrapper">
+        <table class="list-table">
+          <thead>
+          <tr>
+            <% View.default.fields.each do |field| %>
+              <th><%= field.title %></th>
+            <% end %>
+          </tr>
+          </thead>
+          <tbody id="append-items">
+          <%= render partial: "list_item", collection: @items, as: :item %>
+          </tbody>
+          <tfoot>
+          <tr>
+            <td colspan="<%= View.default.fields.length %>">
+              <%= render "load_more_rows", pagy: @pagy, tab: "list" %>
+              Footer
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

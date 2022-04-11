@@ -30,7 +30,7 @@ class ItemsController < ApplicationController
   end
 
   def tab
-    if %w[small medium list].include?(params[:tab])
+    if %w[medium list].include?(params[:tab])
       params[:tab]
     else
       "medium"
