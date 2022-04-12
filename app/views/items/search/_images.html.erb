@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "page_handler" %>
 
-<div class="container-medium">
+<div class="container-images">
   <div class="row pt-3 gx-3" id="append-items">
     <% if @items.empty? %>
       <div class="col ms-3">
@@ -14,12 +14,12 @@
         </ul>
       </div>
     <% else %>
-      <%= render partial: "medium_item", collection: @items, as: :item %>
+      <%= render partial: "items/search/images_item", collection: @items, as: :item %>
     <% end %>
   </div>
   <div class="row">
     <div class="col text-center">
-      <%= render "load_more", pagy: @pagy, tab: "medium" %>
+      <%= render "items/search/images_load_more", pagy: @pagy, tab: "images" %>
     </div>
   </div>
 </div>

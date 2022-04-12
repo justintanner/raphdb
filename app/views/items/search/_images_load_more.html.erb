@@ -1,9 +1,9 @@
 <% if pagy.next %>
   <%= link_to(items_path(q: params[:q], page: pagy.next, tab: tab),
-              id: "load-more",
+              id: "images-load-more",
               class: "btn btn-light d-inline-block my-5",
               data: {
-                controller: "loadmore",
+                controller: "images-load-more",
                 turbo_frame: "page_handler"
               }) do %>
     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

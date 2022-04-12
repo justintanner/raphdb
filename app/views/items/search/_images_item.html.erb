@@ -24,9 +24,9 @@
           <% first_image = item.images.first %>
           <% if first_image.present? %>
             <% if first_image.horizontal? %>
-              <%= render "medium_horizontal_image", first_image: first_image, item: item %>
+              <%= render "items/search/horizontal_image", first_image: first_image, item: item %>
             <% else %>
-              <%= render "medium_vertical_image", first_image: first_image, item: item %>
+              <%= render "items/search/vertical_image", first_image: first_image, item: item %>
             <% end %>
           <% end %>
         </div>

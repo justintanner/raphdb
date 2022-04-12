@@ -30,10 +30,10 @@ class ItemsController < ApplicationController
   end
 
   def tab
-    if %w[medium list].include?(params[:tab])
+    if %w[images list].include?(params[:tab])
       params[:tab]
     else
-      "medium"
+      "images"
     end
   end
 end

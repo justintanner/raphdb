@@ -1,9 +1,4 @@
 <%= turbo_frame_tag "page_handler" do %>
-  <% if @tab == "medium" %>
-    <%= turbo_stream_action_tag("append", target: "append-items", template: %(#{render partial: "#{@tab}_item", collection: @items, as: :item })) %>
-    <%= turbo_stream_action_tag("replace", target: "load-more", template: %(#{render "load_more", pagy: @pagy, tab: "medium"})) %>
-  <% else %>
-    <%= turbo_stream_action_tag("append", target: "append-items", template: %(#{render partial: "#{@tab}_item", collection: @items, as: :item })) %>
-    <%= turbo_stream_action_tag("replace", target: "load-more-rows", template: %(#{render "load_more_rows", pagy: @pagy, tab: "list"})) %>
-  <% end %>
+  <%= turbo_stream_action_tag("append", target: "append-items", template: %(#{render partial: "items/search/#{@tab}_item", collection: @items, as: :item })) %>
+  <%= turbo_stream_action_tag("replace", target: "#{@tab}-load-more", template: %(#{render "items/search/#{@tab}_load_more", pagy: @pagy, tab: @tab})) %>
 <% end %>

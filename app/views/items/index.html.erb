@@ -8,7 +8,7 @@
       <h1 class="text-center font-serif mb-3"><%= search_title(query: params[:q]) %></h1>
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <%= link_to items_path(q: params[:q], page: @pagy.page, tab: "medium"), class: class_names("nav-link": true, "active": @tab == "medium") do %>
+          <%= link_to items_path(q: params[:q], page: @pagy.page, tab: "images"), class: class_names("nav-link": true, "active": @tab == "images") do %>
             <%= render "svgs/bi-grid" %><span class="ms-1 d-none d-md-inline">Images</span>
           <% end %>
         </li>
@@ -26,7 +26,7 @@
 </div>
 
 <% if @tab == "list" %>
-  <%= render "list" %>
+  <%= render "items/search/list" %>
 <% else %>
-  <%= render "medium" %>
+  <%= render "items/search/images" %>
 <% end %>

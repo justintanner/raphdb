@@ -1,9 +1,0 @@
-<% if pagy.next %>
-  <%= link_to('', items_path(q: params[:q], page: pagy.next, tab: tab),
-              id: "load-more-rows",
-              class: "d-none",
-              data: {
-                load_more_rows_target: "loadRowsButton",
-                turbo_frame: "page_handler"
-              }) %>
-<% end %>

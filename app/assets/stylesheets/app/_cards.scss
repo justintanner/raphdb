@@ -3,26 +3,26 @@
   @include make-container();
 }
 
-.container-medium {
+.container-images {
   @include make-container();
 }
 
 @media (min-width: 564px) {
-  .container-medium {
+  .container-images {
     max-width: 564px !important;
     width: 564px !important;
   }
 }
 
 @media (min-width: 1120px) {
-  .container-medium {
+  .container-images {
     max-width: 1120px !important;
     width: 1120px !important;
   }
 }
 
 @media (min-width: 1676px) {
-  .container-medium {
+  .container-images {
     max-width: 1676px !important;
     width: 1676px !important;
   }

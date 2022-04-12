@@ -1,0 +1,5 @@
+<tr <% if item_iteration.last? %>data-controller="list-load-more"<% end %>>
+<% Field.published.each do |field| %>
+  <td><%= item.data[field.key] %></td>
+<% end %>
+</tr>
