@@ -1,30 +1,46 @@
 import {Controller} from "@hotwired/stimulus"
+import store from 'storejs';
 
 // Connects to data-controller="list"
 export default class extends Controller {
+  static targets = ["colHeader"];
+
   connect() {
-    this.createResizableTable(this.element);
+    const that = this;
+
+    that.setColWidths();
+    that.createResizableTable(that.element);
+  }
+
+  setColWidths() {
+    store.keys().forEach((key) => {
+      if (key.startsWith('col_width_')) {
+        const id = key.split('col_width_')[1];
+        const col = document.getElementById(id);
+
+        col.style.width = store.get(key);
+      }
+    })
   }
 
   createResizableTable(table) {
     const that = this;
 
-    const cols = table.querySelectorAll('th');
-    [].forEach.call(cols, function (col) {
-      // Add a resizer element to the column
+    that.colHeaderTargets.forEach((colHeader) => {
       const resizer = document.createElement('div');
       resizer.classList.add('resizer');
 
-      // Set the height
       resizer.style.height = `${table.offsetHeight}px`;
 
-      col.appendChild(resizer);
+      colHeader.appendChild(resizer);
 
-      that.createResizableColumn(col, resizer);
+      that.createResizableColumn(colHeader, resizer);
     });
   };
 
   createResizableColumn(col, resizer) {
+    const that = this;
+
     let x = 0;
     let w = 0;
 
@@ -49,6 +65,7 @@ export default class extends Controller {
       resizer.classList.remove('resizing');
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
+      store.set(`col_width_${col.id}`, col.style.width);
     };
 
     resizer.addEventListener('mousedown', mouseDownHandler);

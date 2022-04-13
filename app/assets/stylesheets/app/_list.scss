@@ -40,6 +40,10 @@
   border-right: 1px solid $card-border-color;
 }
 
+.list-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .list-table thead {
   background-color: $gray-100;
   position: sticky;
@@ -59,18 +63,18 @@
 .resizer {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -1px;
   width: 5px;
   cursor: col-resize;
   user-select: none;
   z-index: 9001;
 }
 .resizer:hover, .resizing {
-  border-right: 2px solid blue;
+  border-right: 2px solid $link-hover-color;
 }
 
 .resizable {
-  border: 1px solid gray;
+  border: 1px solid $link-hover-color;
   height: 100px;
   width: 100px;
   position: relative;

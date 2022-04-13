@@ -19,3 +19,4 @@ pin "moment" # @2.29.1
 pin "@splidejs/splide", to: "@splidejs--splide.js" # @3.6.11
 pin "clipboard" # @2.0.10
 pin "fslightbox" # @3.3.1
+pin "storejs" # @2.0.1

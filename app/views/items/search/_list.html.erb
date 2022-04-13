@@ -8,7 +8,7 @@
           <thead>
           <tr>
             <% Field.published.each do |field| %>
-              <th><div class="list-col-title"><%= field.title %></div></th>
+              <th data-list-target="colHeader" id="<%= dom_id(field) %>"><div class="list-col-title"><%= field.title %></div></th>
             <% end %>
           </tr>
           </thead>
