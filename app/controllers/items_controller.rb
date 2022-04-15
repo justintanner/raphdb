@@ -4,7 +4,7 @@ class ItemsController < ApplicationController
   include Pagy::Backend
 
   def index
-    @pagy, @items = pagy(View.default.search(params[:q]))
+    @pagy, @items = pagy(View.default.search(params[:q]), items: per_page)
     @tab = tab
   end
 
@@ -34,6 +34,14 @@ class ItemsController < ApplicationController
       params[:tab]
     else
       "images"
+    end
+  end
+
+  def per_page
+    if tab == "list"
+      75
+    else
+      25
     end
   end
 end

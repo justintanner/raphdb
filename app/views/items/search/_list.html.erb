@@ -17,9 +17,14 @@
           </tbody>
           <tfoot>
           <tr>
-            <td colspan="<%= View.default.fields.length %>">
+            <td>
               <%= render "items/search/list_load_more", pagy: @pagy, tab: "list" %>
-              Footer
+              <div class="d-none align-items-center" data-list-target="spinnerContainer">
+                <span class="spinner-border text-secondary spinner-border-sm" role="status" aria-hidden="true"></span>
+              </div>
+            </td>
+            <td colspan="<%= View.default.fields.length - 1%>">
+              &nbsp;
             </td>
           </tr>
           </tfoot>

@@ -90,4 +90,16 @@ class MultipleSelectTest < ActiveSupport::TestCase
     ),
       "Failed to match all"
   end
+
+  test "rotates a color based on the text xof the select" do
+    color = MultipleSelect.color("A")
+
+    assert_includes MultipleSelect::COLORS, color, "Color not in list"
+  end
+
+  test "assigns a color even if text is blank" do
+    color = MultipleSelect.color("")
+
+    assert_includes MultipleSelect::COLORS, color, "Color not in list"
+  end
 end

@@ -1,5 +1,23 @@
 <tr <% if item_iteration.last? %>data-controller="list-load-more"<% end %>>
-<% Field.published.each do |field| %>
-  <td><%= item.data[field.key] %></td>
-<% end %>
+  <% Field.published.each do |field| %>
+    <td>
+      <% if field.key == "item_title" %>
+        <%= link_to item, class: "me-1" do %>
+          <small><%= render "svgs/bi-box-arrow-in-up-left" %></small>
+        <% end %>
+      <% elsif field.key == "set_title" %>
+          <%= link_to item.item_set, class: "me-1" do %>
+            <small><%= render "svgs/bi-box-arrow-in-up-left" %></small>
+          <% end %>
+      <% end %>
+
+      <% if field.multiple_select? && item.data[field.key].present? %>
+        <% item.data[field.key].each do |text| %>
+        <span class="badge rounded-pill bg-<%= MultipleSelect.color(text) %>-100 text-dark fw-normal fs-6"><%= text %></span>
+        <% end %>
+      <% else %>
+        <%= item.data[field.key] %>
+      <% end %>
+      </td>
+  <% end %>
 </tr>

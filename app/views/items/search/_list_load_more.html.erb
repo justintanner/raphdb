@@ -2,5 +2,8 @@
   <%= link_to('', items_path(q: params[:q], page: pagy.next, tab: tab),
               id: "list-load-more",
               class: "d-none",
-              data: { turbo_frame: "page_handler" }) %>
+              data: {
+                action: "click->list#spinner",
+                turbo_frame: "page_handler"
+              }) %>
 <% end %>

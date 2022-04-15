@@ -1,9 +1,9 @@
 import {Controller} from "@hotwired/stimulus"
-import store from 'storejs';
+import store from "storejs";
 
 // Connects to data-controller="list"
 export default class extends Controller {
-  static targets = ["colHeader"];
+  static targets = ["colHeader", "spinnerContainer"];
 
   connect() {
     const that = this;
@@ -12,13 +12,24 @@ export default class extends Controller {
     that.createResizableTable(that.element);
   }
 
+  spinner() {
+    this.spinnerContainerTarget.classList.remove("d-none");
+    this.spinnerContainerTarget.classList.add("d-flex");
+
+    setTimeout(() => {
+      this.spinnerContainerTarget.classList.remove("d-flex");
+      this.spinnerContainerTarget.classList.add("d-none");
+    }, 450);
+  }
+
   setColWidths() {
     store.keys().forEach((key) => {
       if (key.startsWith('col_width_')) {
         const id = key.split('col_width_')[1];
         const col = document.getElementById(id);
-
-        col.style.width = store.get(key);
+        if (col) {
+          col.style.width = store.get(key);
+        }
       }
     })
   }
@@ -39,8 +50,6 @@ export default class extends Controller {
   };
 
   createResizableColumn(col, resizer) {
-    const that = this;
-
     let x = 0;
     let w = 0;
 

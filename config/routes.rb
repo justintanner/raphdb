@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :item_sets, path: "sets", only: [:show]
+
   get "/:slug", to: "pages#show"
 
   root "pages#show", slug: "homepage"
