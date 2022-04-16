@@ -18,6 +18,7 @@ module SearchProcessor
 
     Item
       .with_attached_images_and_variants
+      .with_sets
       .where(tsvector_where(remaining_query))
       .where(advanced_where(advanced_options))
       .order(order_by(view))

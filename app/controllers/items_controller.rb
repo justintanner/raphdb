@@ -28,20 +28,4 @@ class ItemsController < ApplicationController
 
     params[:picture_number].to_i
   end
-
-  def tab
-    if %w[images list].include?(params[:tab])
-      params[:tab]
-    else
-      "images"
-    end
-  end
-
-  def per_page
-    if tab == "list"
-      75
-    else
-      25
-    end
-  end
 end

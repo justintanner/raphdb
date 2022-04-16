@@ -1,11 +1,50 @@
 .list-wrapper {
   overflow: scroll;
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 268px);
   width: 100%;
   margin: 0 !important;
-  border-top: 1px solid $card-border-color;
-  border-left: 1px solid $card-border-color;
+  border: 1px solid $card-border-color;
+  border-top-right-radius: $card-border-radius;
   border-top-left-radius: $card-border-radius;
+}
+
+@include media-breakpoint-up(sm) {
+  .list-wrapper {
+    max-height: calc(100vh - 236px);
+  }
+}
+
+.list-wrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background-color: $gray-100;
+}
+
+.list-wrapper::-webkit-scrollbar-corner {
+  background-color: $gray-100;
+  border-color: transparent;
+}
+
+.list-wrapper::-webkit-scrollbar-thumb {
+  border-radius: $card-border-radius;
+  background-color: $gray-500;
+}
+
+.list-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: $link-hover-color;
+}
+.list-wrapper::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.list-wrapper::-webkit-scrollbar-track:horizontal {
+  border-top: 1px solid $card-border-color;
+}
+
+.list-wrapper::-webkit-scrollbar-track:vertical {
+  border-top-right-radius: $card-border-radius;
+  border-left: 1px solid $card-border-color;
 }
 
 .list-table {
@@ -14,6 +53,7 @@
   border-spacing: 0;
   margin: 0 !important;
   width: 100%;
+  height: 100%;
 }
 
 .list-table th,
@@ -40,6 +80,10 @@
   border-right: 1px solid $card-border-color;
 }
 
+.list-table tbody td:last-child, .list-table thead th:last-child {
+  border-right: none;
+}
+
 .list-table tbody tr:last-child td {
   border-bottom: none;
 }
@@ -48,16 +92,6 @@
   background-color: $gray-100;
   position: sticky;
   inset-block-start: 0;
-}
-
-.list-table tfoot {
-  background-color: $gray-100;
-  position: sticky;
-  inset-block-end: 0;
-}
-
-.list-table tfoot td {
-  border-top: 1px solid $card-border-color;
 }
 
 .resizer {
@@ -78,4 +112,15 @@
   height: 100px;
   width: 100px;
   position: relative;
+}
+
+.list-footer {
+  height: 38px;
+  width: 100%;
+  background-color: $gray-100;
+  border-left: 1px solid $card-border-color;
+  border-right: 1px solid $card-border-color;
+  border-bottom: 1px solid $card-border-color;
+  border-bottom-right-radius: $card-border-radius;
+  border-bottom-left-radius: $card-border-radius;
 }

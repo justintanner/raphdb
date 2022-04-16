@@ -1,11 +1,18 @@
 <% Field.published_with_data(item).each.with_index(1) do |field, index| %>
   <% next if local_variables.include?(:except) && except.include?(field.key) %>
   <% if field.short_label?(item) && !local_variables.include?(:limit) %>
-    <p class="mb-2"><label class="item-short-label text-muted me-1"><small><%= field.title %></small></label><%= field.data_for_display(item) %></p>
+    <p class="mb-2">
+      <label class="item-short-label text-muted me-1"><small><%= field.title %></small></label>
+      <%= render("items/set_link", item_set: item.item_set) if field.key == "set_title" %>
+      <%= field.data_for_display(item) %>
+    </p>
   <% else %>
     <% value = field.data_for_display(item) %>
     <label class="text-muted"><small><%= field.title %></small></label>
-    <p><%= local_variables.include?(:max_chars) ? value.truncate(max_chars) : value %></p>
+    <p>
+      <%= render("items/set_link", item_set: item.item_set) if field.key == "set_title" %>
+      <%= local_variables.include?(:max_chars) ? value.truncate(max_chars) : value %>
+    </p>
   <% end %>
   <% break if local_variables.include?(:limit) && index >= limit %>
 <% end %>

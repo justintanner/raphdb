@@ -16,6 +16,8 @@ class Item < ApplicationRecord
     includes(images: [file_attachment: [blob: [variant_records: [image_attachment: :blob]]]])
   }
 
+  scope :with_sets, -> { includes(:item_set) }
+
   attr_accessor :importing
 
   clean :data

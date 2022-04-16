@@ -40,7 +40,7 @@ module ItemsHelper
     if query.present?
       I18n.t("search_found", query: query.truncate(24), count: count)
     else
-      I18n.t("count_all_items", count: count)
+      t("count_all_items", count: count)
     end
   end
 end
