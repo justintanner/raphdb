@@ -1,4 +1,4 @@
-<tr <%= load_more_shim(item_iteration) %>>
+<tr id="<%= dom_id(item) %>" <%= load_more_shim(item_iteration) %>>
   <% Field.published.each do |field| %>
     <td>
       <% if field.multiple_select? && item.data[field.key].present? %>
