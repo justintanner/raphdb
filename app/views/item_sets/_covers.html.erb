@@ -1,0 +1,30 @@
+<div class="text-center font-serif mt-1 mb-3">
+  <h1 class="accordion-header d-inline-block" id="flush-headingOne">
+    <button class="accordion-button collapsed fs-1 py-2 text-center" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+      <span class="me-3">Set: <%= @item_set.title %></span>
+    </button>
+  </h1>
+  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+    <div class="accordion-body">
+      <p class=""><u>Set Covers</u></p>
+
+      <ul class="list-group list-group-horizontal-sm d-inline-block mx-auto" data-controller="lightbox">
+        <% @item_set.images.each do |image| %>
+          <li class="list-group-item">
+            <a data-lightbox-target="url" href="<%= image.file.url %>"></a>
+            <a href="javascript:void(0);" data-action="click->lightbox#open" data-lightbox-position-param="<%= image.position - 1 %>">
+              <%= image_tag image.file.variant(:small).url,
+                            srcset: image.srcset(:small_retina, :small, :micro_retina, :micro),
+                            sizes: "#{image.width(:small)}px",
+                            width: image.width(:small),
+                            height: image.height(:small),
+                            class: "img-fluid",
+                            loading: "lazy",
+                            alt: "Set Cover Image #{image.position}" %>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

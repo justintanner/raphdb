@@ -33,7 +33,8 @@ en:
   search_results: "Search Results"
   all_results: "All Postcards"
   search_found: "Search \"%{query}\" found %{count} cards"
-  count_all_items: "%{count} cards"
+  count_all_items: "All %{count} cards"
+  count_set_items: "%{count} cards in set"
   item_data_errors:
     single_line_text:
       empty: "Must not be empty"

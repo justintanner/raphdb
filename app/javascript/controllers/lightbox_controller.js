@@ -3,7 +3,6 @@ import "fslightbox"
 
 // Connects to data-controller="lightbox"
 export default class extends Controller {
-  static values = { position: Number };
   static targets = ["url"];
 
   connect() {
@@ -33,10 +32,10 @@ export default class extends Controller {
     }];
   }
 
-  open() {
+  open(event) {
     const that = this;
 
-    that.lightbox.open(that.positionValue);
+    that.lightbox.open(event.params.position);
   }
 }
 

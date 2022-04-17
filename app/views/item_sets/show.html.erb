@@ -1,14 +1,13 @@
+<%= content_for :title, "Set: #{@item_set.title}" %>
+
 <div class="container-<%= @tab %>">
-  <div class="text-center mb-3">
-    <h1 class="accordion-header d-inline-block" id="flush-headingOne">
-      <button class="accordion-button collapsed fs-1 text-center" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-        <span class="me-3"><%= render "svgs/bi-collection-22" %><%= @item_set.title %></span>
-      </button>
-    </h1>
-    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-        <code>.accordion-flush</code> class. This is the first item's accordion body.
-      </div>
+  <div class="row">
+    <div class="col">
+      <% if @item_set.images.any? %>
+        <%= render "covers" %>
+      <% else %>
+        <h1 class="text-center font-serif mt-1 mb-3">Set: <%= @item_set.title %></h1>
+      <% end %>
     </div>
   </div>
 </div>

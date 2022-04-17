@@ -39,8 +39,10 @@ module ItemsHelper
   def search_count(count:, query: nil)
     if query.present?
       I18n.t("search_found", query: query.truncate(24), count: count)
+    elsif controller_name == "item_sets"
+      I18n.t("count_set_items", count: count)
     else
-      t("count_all_items", count: count)
+      I18n.t("count_all_items", count: count)
     end
   end
 
