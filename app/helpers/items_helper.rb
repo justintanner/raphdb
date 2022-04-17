@@ -43,4 +43,11 @@ module ItemsHelper
       t("count_all_items", count: count)
     end
   end
+
+  def show_list_load_more(item_iteration)
+    if (item_iteration.size > 30 && item_iteration.index == item_iteration.size - 30) || item_iteration.size <= 30 && item_iteration.last?
+      puts "load it up!!!"
+      'data-controller="list-load-more"'.html_safe
+    end
+  end
 end

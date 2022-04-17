@@ -1,5 +1,3 @@
-<%= turbo_frame_tag "page_handler" %>
-
 <div class="container-list">
   <div class="row">
     <div class="col d-flex flex-column h-100 pt-3" data-controller="list">
@@ -21,9 +19,9 @@
       </div>
       <div class="list-footer d-flex align-items-center">
         <%= render "items/search/list_load_more", pagy: pagy, tab: "list" %>
-        <div class="d-none ms-2" data-list-target="spinnerContainer">
-          <span class="spinner-border text-secondary spinner-border-sm" role="status" aria-hidden="true"></span>
-        </div>
+        <%= turbo_frame_tag "list_spinner" do %>
+          <%= render "items/search/list_spinner" %>
+        <% end %>
       </div>
     </div>
   </div>

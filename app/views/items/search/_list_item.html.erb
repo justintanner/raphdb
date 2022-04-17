@@ -1,4 +1,4 @@
-<tr <% if item_iteration.last? %>data-controller="list-load-more"<% end %>>
+<tr <%= show_list_load_more(item_iteration) %>>
   <% Field.published.each do |field| %>
     <td>
       <% if field.key == "item_title" %>

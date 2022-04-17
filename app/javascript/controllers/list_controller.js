@@ -3,7 +3,7 @@ import store from "storejs";
 
 // Connects to data-controller="list"
 export default class extends Controller {
-  static targets = ["colHeader", "spinnerContainer"];
+  static targets = ["colHeader", "listSpinner"];
 
   connect() {
     const that = this;
@@ -13,13 +13,8 @@ export default class extends Controller {
   }
 
   spinner() {
-    this.spinnerContainerTarget.classList.remove("d-none");
-    this.spinnerContainerTarget.classList.add("d-flex");
-
-    setTimeout(() => {
-      this.spinnerContainerTarget.classList.remove("d-flex");
-      this.spinnerContainerTarget.classList.add("d-none");
-    }, 450);
+    this.listSpinnerTarget.classList.remove("d-none");
+    this.listSpinnerTarget.classList.add("d-flex");
   }
 
   setColWidths() {

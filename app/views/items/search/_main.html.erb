@@ -24,6 +24,8 @@
   </div>
 </div>
 
+<%= turbo_frame_tag "page_handler" %>
+
 <% if tab == "list" %>
   <%= render "items/search/list", items: items, pagy: pagy %>
 <% else %>
