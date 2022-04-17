@@ -1,9 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="list-load-more"
+// Connects to data-controller="load-more"
 export default class extends Controller {
   connect() {
-    if (document.getElementById("list-load-more-button")) {
+    if (document.getElementById("load-more-button")) {
       this.createObserver();
     }
   }
@@ -27,9 +27,10 @@ export default class extends Controller {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         /* Not using an stimulus target because this is outside the controller */
-        document.getElementById("list-load-more-button").click();
+        document.getElementById("load-more-button").click();
 
-        /* Turning off this observer so it doesn't keep loading */
+        /* After the load-more shim controller has fetched a new page,
+        we are disabling so that the next load more shim will be picked up. */
         that.observer.disconnect();
       }
     })

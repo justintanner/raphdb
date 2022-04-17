@@ -1,6 +1,6 @@
 <% if pagy.next %>
   <%= link_to(items_path(q: params[:q], page: pagy.next, tab: tab),
-              id: "images-load-more-button",
+              id: "load-more-button",
               class: "btn btn-light d-inline-block my-5",
               data: {
                 controller: "images-load-more",

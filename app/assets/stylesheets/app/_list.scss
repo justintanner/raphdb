@@ -1,6 +1,6 @@
 .list-wrapper {
   overflow: scroll;
-  max-height: calc(100vh - 268px);
+  max-height: calc(100vh - 262px);
   width: 100%;
   margin: 0 !important;
   border: 1px solid $card-border-color;
@@ -10,7 +10,7 @@
 
 @include media-breakpoint-up(sm) {
   .list-wrapper {
-    max-height: calc(100vh - 236px);
+    max-height: calc(100vh - 230px);
   }
 }
 
@@ -115,7 +115,7 @@
 }
 
 .list-footer {
-  height: 38px;
+  height: 32px;
   width: 100%;
   background-color: $gray-100;
   border-left: 1px solid $card-border-color;

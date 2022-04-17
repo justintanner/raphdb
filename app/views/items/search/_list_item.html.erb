@@ -1,23 +1,21 @@
-<tr <%= show_list_load_more(item_iteration) %>>
+<tr <%= load_more_shim(item_iteration) %>>
   <% Field.published.each do |field| %>
     <td>
-      <% if field.key == "item_title" %>
-        <%= link_to item, class: "me-1" do %>
-          <small><%= render "svgs/bi-box-arrow-in-up-left" %></small>
-        <% end %>
-      <% elsif field.key == "set_title" %>
-          <%= link_to item.item_set, class: "me-1" do %>
-            <small><%= render "svgs/bi-box-arrow-in-up-left" %></small>
-          <% end %>
-      <% end %>
-
       <% if field.multiple_select? && item.data[field.key].present? %>
         <% item.data[field.key].each do |text| %>
-        <span class="badge rounded-pill bg-<%= MultipleSelect.color(text) %>-100 text-dark fw-normal fs-6"><%= text %></span>
+          <span class="badge rounded-pill bg-<%= MultipleSelect.color(text) %>-100 text-dark fw-normal fs-6"><%= text %></span>
+        <% end %>
+      <% elsif field.key == "item_title" %>
+        <%= link_to item, class: "me-1" do %>
+          <%= render "svgs/bi-box-arrow-up-left" %><span class="ms-2"><%= item.data[field.key] %></span>
+        <% end %>
+      <% elsif field.key == "set_title" && controller_name != "item_sets" %>
+        <%= link_to item.item_set, class: "me-1" do %>
+          <%= render "svgs/bi-collection" %><span class="ms-1"><%= item.data[field.key] %></span>
         <% end %>
       <% else %>
         <%= item.data[field.key] %>
       <% end %>
-      </td>
+    </td>
   <% end %>
 </tr>

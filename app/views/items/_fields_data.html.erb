@@ -3,15 +3,21 @@
   <% if field.short_label?(item) && !local_variables.include?(:limit) %>
     <p class="mb-2">
       <label class="item-short-label text-muted me-1"><small><%= field.title %></small></label>
-      <%= render("items/set_link", item_set: item.item_set) if field.key == "set_title" %>
-      <%= field.data_for_display(item) %>
+      <% if field.key == "set_title" %>
+        <%= render("items/set_link", item_set: item.item_set) %>
+      <% else %>
+        <%= field.data_for_display(item) %>
+      <% end %>
     </p>
   <% else %>
     <% value = field.data_for_display(item) %>
     <label class="text-muted"><small><%= field.title %></small></label>
     <p>
-      <%= render("items/set_link", item_set: item.item_set) if field.key == "set_title" %>
-      <%= local_variables.include?(:max_chars) ? value.truncate(max_chars) : value %>
+      <% if field.key == "set_title" && controller_name != "item_sets"%>
+        <%= render("items/set_link", item_set: item.item_set) %>
+      <% else %>
+        <%= local_variables.include?(:max_chars) ? value.truncate(max_chars) : value %>
+      <% end %>
     </p>
   <% end %>
   <% break if local_variables.include?(:limit) && index >= limit %>

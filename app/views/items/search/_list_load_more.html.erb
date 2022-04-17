@@ -1,6 +1,6 @@
 <% if pagy.next %>
-  <%= link_to('', items_path(q: params[:q], page: pagy.next, tab: tab),
-              id: "list-load-more-button",
+  <%= link_to("", items_path(q: params[:q], page: pagy.next, tab: tab),
+              id: "load-more-button",
               class: "d-none",
               data: {
                 action: "click->list#spinner",
