@@ -33,7 +33,7 @@ puts "Seeded #{Image.count} images from lilywhite-images.json"
 JsonImport.logs
 puts "Seeded #{Log.count} logs from lilywhite-logs.json"
 
-# After JSON importing all primary keys will be off because we injecting their id.
+# After JSON importing all primary keys will be off because we are injecting their ids.
 ActiveRecord::Base.connection.tables.each do |t|
   ActiveRecord::Base.connection.reset_pk_sequence!(t)
 end

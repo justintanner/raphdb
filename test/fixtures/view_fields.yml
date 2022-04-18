@@ -2,67 +2,71 @@ item_title_vf:
   view: default
   field: item_title
   position: 1
+item_images_vf:
+  view: default
+  field: images
+  position: 2
 item_comment_vf:
   view: default
   field: item_comment
-  position: 2
+  position: 3
 in_reference_collection_vf:
   view: default
   field: in_reference_collection
-  position: 3
+  position: 4
 prefix_vf:
   view: default
   field: prefix
-  position: 4
+  position: 5
 number_vf:
   view: default
   field: number
-  position: 5
+  position: 6
 in_set_vf:
   view: default
   field: in_set
-  position: 6
+  position: 7
 set_title_vf:
   view: default
   field: set_title
-  position: 7
+  position: 8
 set_comment_vf:
   view: default
   field: set_comment
-  position: 8
+  position: 9
 orientation_vf:
   view: default
   field: orientation
-  position: 9
+  position: 10
 artist_vf:
   view: default
   field: artist
-  position: 10
+  position: 11
 sold_as_vf:
   view: default
   field: sold_as
-  position: 11
+  position: 12
 first_use_vf:
   view: default
   field: first_use
-  position: 12
+  position: 13
 where_sold_vf:
   view: default
   field: where_sold
-  position: 13
+  position: 14
 places_vf:
   view: default
   field: places
-  position: 14
+  position: 15
 tags_vf:
   view: default
   field: tags
-  position: 15
+  position: 16
 estimated_value_vf:
   view: default
   field: estimated_value
-  position: 16
+  position: 17
 featured_vf:
   view: default
   field: featured
-  position: 17
+  position: 18

@@ -118,3 +118,9 @@ tags:
   column_type: Multiple select
   bootstrap_col: col-12
   position: 17
+images:
+  title: Images
+  key: images
+  column_type: Images
+  bootstrap_col: col-12
+  position: 18

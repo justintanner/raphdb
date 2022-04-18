@@ -16,6 +16,8 @@ class Field < ApplicationRecord
   belongs_to :prefix_field, optional: true, class_name: "Field"
   belongs_to :suffix_field, optional: true, class_name: "Field"
 
+  scope :published, -> { where(publish: true) }
+
   RESERVED_KEYS = %w[id].freeze
 
   NUMBER_FORMATS = {integer: "Integer (2)", decimal: "Decimal(1.0)"}.freeze
@@ -80,10 +82,6 @@ class Field < ApplicationRecord
     return @all_cache if defined? @all_cache
 
     @all_cache = all
-  end
-
-  def self.published
-    all_cached.find_all { |field| field.publish }
   end
 
   def self.searchable_cached

@@ -5,7 +5,7 @@
         <table class="list-table">
           <thead>
           <tr>
-            <% Field.published.each do |field| %>
+            <% View.default.fields.published.each do |field| %>
               <th data-list-target="colHeader" id="<%= dom_id(field) %>">
                 <div class="list-col-title"><%= field.title %></div>
               </th>

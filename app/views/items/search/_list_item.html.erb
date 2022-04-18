@@ -1,7 +1,25 @@
 <tr id="<%= dom_id(item) %>" <%= load_more_shim(item_iteration) %>>
-  <% Field.published.each do |field| %>
+  <% View.default.fields.published.each do |field| %>
     <td>
-      <% if field.multiple_select? && item.data[field.key].present? %>
+      <% if field.images? %>
+        <div data-controller="lightbox">
+          <% item.images.each do |image| %>
+            <div class="d-inline-block">
+              <a data-lightbox-target="url" href="<%= image.file.url %>"></a>
+              <a href="javascript:void(0);" data-action="click->lightbox#open" data-lightbox-position-param="<%= image.position - 1 %>">
+                <%= image_tag image.file.variant(:micro).url,
+                              srcset: image.srcset(:micro_retina, :micro),
+                              sizes: "#{image.width(:micro)}px",
+                              width: image.width(:micro),
+                              height: image.height(:micro),
+                              class: "border border-2 rounded",
+                              loading: "lazy",
+                              alt: "Set Cover Image #{image.position}" %>
+              </a>
+            </div>
+          <% end %>
+        </div>
+      <% elsif field.multiple_select? && item.data[field.key].present? %>
         <% item.data[field.key].each do |text| %>
           <span class="badge rounded-pill bg-<%= MultipleSelect.color(text) %>-100 text-dark fw-normal fs-6"><%= text %></span>
         <% end %>
