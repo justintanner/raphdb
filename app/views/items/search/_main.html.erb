@@ -26,7 +26,9 @@
 
 <%= turbo_frame_tag "page_handler" %>
 
-<% if tab == "list" %>
+<% if items.empty? %>
+  <%= render "items/search/no_results", tab: tab %>
+<% elsif tab == "list" %>
   <%= render "items/search/list", items: items, pagy: pagy %>
 <% else %>
   <%= render "items/search/images", items: items, pagy: pagy %>
