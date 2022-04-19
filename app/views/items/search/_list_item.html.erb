@@ -1,4 +1,6 @@
 <tr id="<%= dom_id(item) %>" <%= load_more_shim(item_iteration) %>>
+  <td class="list-index-col"><small class="text-muted"><%= pagy.offset + item_iteration.index + 1 %></small></td>
+  </td>
   <% View.default.fields.published.each do |field| %>
     <td class="<%= class_names("list-images-col": field.images?) %>">
       <% if field.images? %>

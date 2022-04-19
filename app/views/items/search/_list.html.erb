@@ -5,6 +5,7 @@
         <table class="list-table">
           <thead>
           <tr>
+            <th class="list-index-col"></th>
             <% View.default.fields.published.each do |field| %>
               <th data-list-target="colHeader" id="<%= dom_id(field) %>">
                 <div class="list-col-title"><%= field.title %></div>
@@ -13,7 +14,7 @@
           </tr>
           </thead>
           <tbody id="append-items">
-          <%= render partial: "items/search/list_item", collection: items, as: :item %>
+          <%= render partial: "items/search/list_item", collection: items, as: :item, locals: { pagy: pagy } %>
           </tbody>
         </table>
       </div>

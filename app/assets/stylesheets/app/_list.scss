@@ -67,6 +67,12 @@
   vertical-align: center;
 }
 
+.list-table th.list-index-col, .list-table td.list-index-col {
+  border-right: none;
+  width: 40px;
+  text-align: center;
+}
+
 .list-table thead {
   background-color: $gray-100;
   position: sticky;
