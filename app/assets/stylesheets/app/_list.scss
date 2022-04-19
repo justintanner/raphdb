@@ -62,6 +62,17 @@
   padding: $table-cell-padding-y $table-cell-padding-x;
 }
 
+.list-table td.list-images-col {
+  padding: 0 $table-cell-padding-x;
+  vertical-align: center;
+}
+
+.list-table thead {
+  background-color: $gray-100;
+  position: sticky;
+  inset-block-start: 0;
+}
+
 .list-table thead th .list-col-title, .list-table td {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -86,12 +97,6 @@
 
 .list-table tbody tr:last-child td {
   border-bottom: none;
-}
-
-.list-table thead {
-  background-color: $gray-100;
-  position: sticky;
-  inset-block-start: 0;
 }
 
 .resizer {

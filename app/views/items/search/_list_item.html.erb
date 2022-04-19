@@ -1,6 +1,6 @@
 <tr id="<%= dom_id(item) %>" <%= load_more_shim(item_iteration) %>>
   <% View.default.fields.published.each do |field| %>
-    <td>
+    <td class="<%= class_names("list-images-col": field.images?) %>">
       <% if field.images? %>
         <div data-controller="lightbox">
           <% item.images.each do |image| %>
