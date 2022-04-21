@@ -1,31 +1,8 @@
 <%= content_for :title, @view.title %>
 
 <div class="col d-flex flex-column p-0 overflow-hidden" id="hot-col">
-  <div id="hot-container" class="overflow-hidden">
-    <div class="d-flex"
-         data-controller="editor--hot"
-         data-editor--base-target="hot"
-         data-action="resize@window->editor--hot#resize resize@document->editor--hot#resize"
-         data-editor--hot-search-path-value="<%= search_editor_view_path(@view) %>"
-         data-editor--hot-edit-path-value="<%= edit_editor_item_path(':id') %>">
 
-      <script type="application/json" data-editor--hot-target="colHeaders">
-        <%= raw @view.hot_col_headers.to_json %>
-      </script>
-
-      <script type="application/json" data-editor--hot-target="columns">
-        <%= raw @view.hot_columns.to_json %>
-      </script>
-
-      <script type="text/template" data-editor--hot-target="expandSvg">
-        <%= render "svgs/bi-arrows-angle-expand" %>
-      </script>
-
-      <div class="spinner-border mt-5 mx-auto" role="status" data-editor--hot-target="spinner">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  </div>
+  <%= render "items/search/list", items: @items, pagy: @pagy %>
 </div>
 
 <%= render "editor/items/form" %>

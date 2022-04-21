@@ -10,7 +10,6 @@ class Image < ApplicationRecord
 
   after_create :process_image
 
-  # TODO: Create active jobs to analyze and resize images.
   SIZES = {
     micro: [30, 30],
     micro_retina: [60, 60],
@@ -88,14 +87,6 @@ class Image < ApplicationRecord
     else
       SIZES[variant].second
     end
-  end
-
-  def srcset(*variants)
-    return unless processed_at.present?
-
-    variants
-      .map { |variant| "#{file.variant(variant).url} #{width(variant)}w" }
-      .join(",")
   end
 
   def item_or_item_set

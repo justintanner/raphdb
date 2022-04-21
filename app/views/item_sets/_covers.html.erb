@@ -13,8 +13,8 @@
           <li class="list-group-item">
             <a data-lightbox-target="url" href="<%= image.file.url %>"></a>
             <a href="javascript:void(0);" data-action="click->lightbox#open" data-lightbox-position-param="<%= image.position - 1 %>">
-              <%= image_tag image.file.variant(:small).url,
-                            srcset: image.srcset(:small_retina, :small, :micro_retina, :micro),
+              <%= image_tag url_for(image.file.variant(:small)),
+                            srcset: srcset(image, :small_retina, :small, :micro_retina, :micro),
                             sizes: "#{image.width(:small)}px",
                             width: image.width(:small),
                             height: image.height(:small),

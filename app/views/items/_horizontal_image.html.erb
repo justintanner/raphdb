@@ -31,8 +31,8 @@
   <div class="row justify-content-center g-3">
     <div class="col-auto">
       <div class="card card-item-horizontal">
-        <%= image_tag featured_image.file.variant(:large).url,
-                      srcset: featured_image.srcset(:large_retina, :large, :medium_retina, :medium),
+        <%= image_tag url_for(featured_image.file.variant(:large)),
+                      srcset: srcset(featured_image, :large_retina, :large, :medium_retina, :medium),
                       sizes: "#{featured_image.width(:large)}px",
                       width: featured_image.width(:large),
                       height: featured_image.height(:large),

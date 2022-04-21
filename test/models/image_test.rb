@@ -68,13 +68,4 @@ class ImageTest < ActiveSupport::TestCase
     assert_equal 250, image.max_width(:medium), "Width is not correct"
     assert_equal 250, image.max_height(:medium), "Height is not correct"
   end
-
-  test "returns img tag sizes strings for medium sized images" do
-    image = Image.create!(item: items(:football))
-    attach_and_process(image, "vertical.jpg")
-
-    actual_srcset = image.srcset(:medium_retina, :medium)
-    assert actual_srcset.include?("314w"), "Couldn't find 314px in srcset"
-    assert actual_srcset.include?("157w"), "Couldn't find 157px in srcset"
-  end
 end

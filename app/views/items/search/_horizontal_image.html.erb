@@ -1,6 +1,6 @@
 <%= link_to item do %>
-  <%= image_tag first_image.file.variant(:medium).url,
-                srcset: first_image.srcset(:medium_retina, :medium),
+  <%= image_tag url_for(first_image.file.variant(:medium)),
+                srcset: srcset(first_image, :medium_retina, :medium),
                 sizes: "#{first_image.width(:medium)}px",
                 width: first_image.width(:medium),
                 height: first_image.height(:medium),
@@ -13,8 +13,8 @@
   <% item.images.each.with_index(1) do |image, index| %>
     <li class="list-group-item p-2">
       <%= link_to picture_item_path(item, image.position) do %>
-        <%= image_tag image.file.variant(:micro).url,
-                      srcset: image.srcset(:micro_retina, :micro),
+        <%= image_tag url_for(image.file.variant(:micro)),
+                      srcset: srcset(image, :micro_retina, :micro),
                       sizes: "#{image.width(:micro)}px",
                       width: image.width(:micro),
                       height: image.height(:micro),
