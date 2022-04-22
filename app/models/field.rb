@@ -10,7 +10,6 @@ class Field < ApplicationRecord
   include DataFormatters
   include DataDisplay
   include TypeHelpers
-  include Hot::FieldHelpers
 
   has_many :view_fields
   belongs_to :prefix_field, optional: true, class_name: "Field"

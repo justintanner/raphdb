@@ -6,7 +6,6 @@ class Item < ApplicationRecord
   include LogStats
   include Undeletable
   include FriendlyId
-  include Hot::ItemHelpers
 
   belongs_to :item_set
 

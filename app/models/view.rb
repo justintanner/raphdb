@@ -3,7 +3,6 @@
 class View < ApplicationRecord
   include Undeletable
   include Search
-  include Hot::ViewHelpers
 
   has_many :sorts
   has_many :view_fields
