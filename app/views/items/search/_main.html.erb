@@ -24,8 +24,6 @@
   </div>
 </div>
 
-<%= turbo_frame_tag "page_handler" %>
-
 <% if items.empty? %>
   <%= render "items/search/no_results", tab: tab %>
 <% elsif tab == "list" %>

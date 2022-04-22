@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class EditorController < ActionController::Base
+class EditorController < ApplicationController
   before_action :authenticate_user!, :set_current_user
   layout "editor"
 

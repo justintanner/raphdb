@@ -1,9 +1,8 @@
 <%= content_for :title, @view.title %>
 
-<div class="col d-flex flex-column p-0 overflow-hidden" id="hot-col">
-
+<div class="col d-flex flex-column p-0 overflow-hidden">
   <%= render "items/search/list", items: @items, pagy: @pagy %>
 </div>
 
-<%= render "editor/items/form" %>
+<%# render "editor/items/form" %>
 

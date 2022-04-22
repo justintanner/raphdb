@@ -1,8 +1,8 @@
 <%= turbo_frame_tag "page_handler" do %>
-  <%= turbo_stream_action_tag("append", target: "append-items", template: %(#{render partial: "items/search/#{@tab}_item", collection: @items, as: :item, locals: { pagy: @pagy } })) %>
-  <%= turbo_stream_action_tag("replace", target: "load-more-button", template: %(#{render "items/search/#{@tab}_load_more", pagy: @pagy, tab: @tab})) %>
+  <%= turbo_stream_action_tag("append", target: "append-items", template: %(#{render partial: "items/search/#{tab}_item", collection: items, as: :item, locals: { pagy: pagy } })) %>
+  <%= turbo_stream_action_tag("replace", target: "load-more-button", template: %(#{render "items/search/#{tab}_load_more", pagy: pagy, tab: tab})) %>
 
-  <% if @tab == "list" %>
+  <% if tab == "list" %>
     <%= turbo_stream_action_tag("update", target: "list_spinner", template: %(#{render "items/search/list_spinner"})) %>
   <% end %>
 <% end %>
