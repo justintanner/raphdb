@@ -2,10 +2,11 @@ import {Controller} from "@hotwired/stimulus";
 import TomSelect from "tom-select";
 import {fetchPost} from "fetch";
 
+// Connects to data-controller="editor-multiple-select"
 export default class extends Controller {
   static values = {fieldId: Number, createPath: String};
 
-  initialize() {
+  connect() {
     const that = this;
 
     const onOptionAddCallback = (value, _data) => {

@@ -1,32 +1,26 @@
-<%= turbo_frame_tag "page_handler" %>
-
-<div class="container-list">
-  <div class="row">
-    <div class="col d-flex flex-column h-100 pt-3" data-controller="list">
-      <div class="list-wrapper">
-        <table class="list-table">
-          <thead>
-          <tr>
-            <th class="list-index-col"></th>
-            <% View.default.fields.published.each do |field| %>
-              <th data-list-target="colHeader" id="<%= dom_id(field) %>">
-                <div class="list-col-title"><%= field.title %></div>
-              </th>
-            <% end %>
-          </tr>
-          </thead>
-          <tbody id="append-items">
-          <%= render partial: "items/search/list_item", collection: items, as: :item, locals: { pagy: pagy } %>
-          </tbody>
-        </table>
-      </div>
-      <div class="list-footer d-flex align-items-center">
-        <%= render "items/search/list_load_more", pagy: pagy, tab: "list" %>
-        <%= turbo_frame_tag "list_spinner" do %>
-          <%= render "items/search/list_spinner" %>
+<div class="list" data-controller="list" data-action="resize@window->list#maxHeight" data-list-padding-bottom-value="<%= controller_name == "views" ? "0" : "12" %>">
+  <div data-list-target="wrapper" class="<%= class_names("list-table-wrapper", "no-border": controller_name == "views") %>">
+    <table class="list-table">
+      <thead>
+      <tr>
+        <th class="list-index-col"></th>
+        <% View.default.fields.published.each do |field| %>
+          <th data-list-target="colHeader" id="<%= dom_id(field) %>">
+            <div class="list-col-title"><%= field.title %></div>
+          </th>
         <% end %>
-      </div>
-    </div>
+      </tr>
+      </thead>
+      <tbody id="append-items">
+      <%= render partial: "items/search/list_item", collection: items, as: :item, locals: { pagy: pagy } %>
+      </tbody>
+    </table>
+  </div>
+  <div data-list-target="footer" class="<%= class_names("list-footer", "d-flex", "align-items-center", "no-border": controller_name == "views") %>">
+    <%= turbo_frame_tag "page_handler" %>
+    <%= render "items/search/list_load_more", pagy: pagy, tab: "list" %>
+    <%= turbo_frame_tag "list_spinner" do %>
+      <%= render "items/search/list_spinner" %>
+    <% end %>
   </div>
 </div>
-

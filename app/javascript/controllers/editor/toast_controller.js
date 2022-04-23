@@ -4,10 +4,11 @@ export default class extends Controller {
   static targets = [ "title", "body" ];
 
   error({detail: { message }}) {
-    this.titleTarget.innerHTML = 'Sorry, something went wrong';
-    this.bodyTarget.innerHTML = message;
+    const that = this;
+    that.titleTarget.innerHTML = 'Sorry, something went wrong';
+    that.bodyTarget.innerHTML = message;
 
-    var toast = bootstrap.Toast.getOrCreateInstance(this.element);
+    const toast = bootstrap.Toast.getOrCreateInstance(that.element);
     toast.show();
   }
 }

@@ -3,11 +3,13 @@ import store from "storejs";
 
 // Connects to data-controller="list"
 export default class extends Controller {
-  static targets = ["colHeader", "listSpinner"];
+  static targets = ["colHeader", "wrapper", "footer", "listSpinner"];
+  static values = { paddingBottom: Number };
 
   connect() {
     const that = this;
 
+    that.maxHeight();
     that.setColWidths();
     that.createResizableTable(that.element);
   }
@@ -17,10 +19,21 @@ export default class extends Controller {
     this.listSpinnerTarget.classList.add("d-flex");
   }
 
+  maxHeight() {
+    const that = this;
+
+    const parent = that.element.parentElement;
+    const footerHeight = that.footerTarget.offsetHeight;
+    const newHeight = window.innerHeight - parent.offsetTop - that.paddingBottomValue;
+
+    that.wrapperTarget.style.maxHeight =  newHeight - footerHeight + "px";
+    that.element.style.maxHeight = newHeight + "px";
+  }
+
   setColWidths() {
     store.keys().forEach((key) => {
-      if (key.startsWith('col_width_')) {
-        const id = key.split('col_width_')[1];
+      if (key.startsWith("col_width_")) {
+        const id = key.split("col_width_")[1];
         const col = document.getElementById(id);
         if (col) {
           col.style.width = store.get(key);
@@ -33,8 +46,8 @@ export default class extends Controller {
     const that = this;
 
     that.colHeaderTargets.forEach((colHeader) => {
-      const resizer = document.createElement('div');
-      resizer.classList.add('resizer');
+      const resizer = document.createElement("div");
+      resizer.classList.add("resizer");
 
       resizer.style.height = `${table.offsetHeight}px`;
 
@@ -54,10 +67,10 @@ export default class extends Controller {
       const styles = window.getComputedStyle(col);
       w = parseInt(styles.width, 10);
 
-      document.addEventListener('mousemove', mouseMoveHandler);
-      document.addEventListener('mouseup', mouseUpHandler);
+      document.addEventListener("mousemove", mouseMoveHandler);
+      document.addEventListener("mouseup", mouseUpHandler);
 
-      resizer.classList.add('resizing');
+      resizer.classList.add("resizing");
     };
 
     const mouseMoveHandler = function (e) {
@@ -66,12 +79,12 @@ export default class extends Controller {
     };
 
     const mouseUpHandler = function () {
-      resizer.classList.remove('resizing');
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', mouseUpHandler);
+      resizer.classList.remove("resizing");
+      document.removeEventListener("mousemove", mouseMoveHandler);
+      document.removeEventListener("mouseup", mouseUpHandler);
       store.set(`col_width_${col.id}`, col.style.width);
     };
 
-    resizer.addEventListener('mousedown', mouseDownHandler);
+    resizer.addEventListener("mousedown", mouseDownHandler);
   }
 }
