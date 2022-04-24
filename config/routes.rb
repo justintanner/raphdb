@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         get :search
       end
     end
+    resource :settings, only: [:create]
   end
 
   resources :items, only: [:index, :show] do

@@ -1,0 +1,2 @@
+module Editor::SettingsHelper
+end

@@ -14,35 +14,13 @@
 <body class="h-100">
 
 <div class="container-fluid d-flex flex-column vh-100" data-controller="editor--base">
-  <div class="row d-flex border-bottom border-2">
-    <div class="col-auto d-flex align-items-center p-3" style="width: 300px">
-        <span><%= link_to "JL Editor", editor_root_path %></span>
-        <button type="button" class="btn btn-light btn-sm ms-3 shadow-none ms-auto" data-editor--base-target="hideSidebarButton" data-action="editor--base#toggleSidebar">
-          <%= render "svgs/bi-layout-sidebar-inset" %><span class="ms-2">Hide</span>
-        </button>
-        <button type="button" class="btn btn-light btn-sm ms-3 shadow-none ms-auto d-none" data-editor--base-target="showSidebarButton" data-action="editor--base#toggleSidebar">
-          <%= render "svgs/bi-layout-sidebar-inset-reverse" %><span class="ms-2">Show</span>
-        </button>
-    </div>
-    <div class="col d-flex align-items-center p-3">
-      <%= render "svgs/bi-table" %><span class="ms-2"><%= yield :title %></span>
-
-      <div class="dropdown ms-auto">
-        <a href="javascript:void(0);" class="dropdown-toggle text-decoration-none text-body" id="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false" alt="<%= current_user.email %>">
-          <span class="d-inline-flex badge rounded-circle bg-warning p-0 wh-32px">
-            <span class="my-auto mx-auto text-white"><%= current_user.name_initials %></span>
-          </span>
-        </a>
-        <ul class="dropdown-menu text-small shadow" aria-labelledby="user-dropdown">
-          <li><%= link_to('Logout', destroy_user_session_path, class: "dropdown-item", data: { turbo_method: :delete }) %></li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <%= render "layouts/editor_header" %>
 
   <div class="row d-flex flex-fill justify-content-start">
     <div class="col-auto d-flex px-0">
-      <div id="sidebar" class="d-flex flex-column h-100 border-end border-2 p-3" data-editor--base-target="sidebar">
+      <div id="sidebar"
+           data-editor--base-target="sidebar"
+           class="<%= class_names("flex-column", "h-100", "border-end", "border-2", "p-3", "d-flex": current_user.settings["sidebar_open"], "d-none": !current_user.settings["sidebar_open"]) %>">
         <%= render "layouts/editor_sidebar" %>
       </div>
     </div>

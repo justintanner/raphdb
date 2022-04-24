@@ -13,6 +13,8 @@ class User < ApplicationRecord
 
   clean :name
 
+  before_save :no_boolean_strings
+
   validates :name, presence: true
 
   def remember_me
@@ -24,5 +26,17 @@ class User < ApplicationRecord
       .split(/[[:space:]]+/)
       .map(&:first)
       .join
+  end
+
+  private
+
+  def no_boolean_strings
+    settings.each do |key, value|
+      if value == "false"
+        settings[key] = false
+      elsif value == "true"
+        settings[key] = true
+      end
+    end
   end
 end
