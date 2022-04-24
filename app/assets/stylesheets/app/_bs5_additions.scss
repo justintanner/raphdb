@@ -8,6 +8,13 @@
   height: 32px;
 }
 
+.no-box-shadow {
+  box-shadow: none;
+  &:hover, &:focus {
+    box-shadow: none;
+  }
+}
+
 .font-size-sm {
   font-size: $font-size-sm !important;
 }

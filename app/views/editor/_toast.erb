@@ -1,7 +1,7 @@
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 11" >
+<div class="position-fixed top-0 start-0 p-3" style="z-index: 11" >
   <div id="toast"
-       data-controller="editor--toast"
-       data-action="error@document->editor--toast#error"
+       data-controller="toast"
+       data-action="error@document->toast#error"
        class="toast"
        role="alert"
        aria-live="assertive"
@@ -9,9 +9,9 @@
        data-bs-autohide="false">
     <div class="toast-header">
       <span class="text-danger me-2"><%= render "svgs/bi-bug-fill" %></span>
-      <strong class="me-auto text-danger" data-editor--toast-target="title"></strong>
+      <strong class="me-auto text-danger" data-toast-target="title"></strong>
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
-    <div class="toast-body" data-editor--toast-target="body"></div>
+    <div class="toast-body" data-toast-target="body"></div>
   </div>
 </div>

@@ -5,9 +5,9 @@
                      class: class_names("form-select": true, "is-invalid": item.errors.include?(field.form_error_sym)),
                      multiple: true,
                      data: {
-                       "controller": "editor--multiple-select",
-                       "editor--multiple-select-field-id-value": field.id,
-                       "editor--multiple-select-create-path-value": editor_multiple_selects_path
+                       "controller": "multiple-select",
+                       "multiple-select-field-id-value": field.id,
+                       "multiple-select-create-path-value": editor_multiple_selects_path
                      } %>
   <% if item.errors.include?(field.form_error_sym) %>
     <div class="invalid-feedback mb-1"><%= item.errors[field.form_error_sym].first %></div>

@@ -1,35 +1,27 @@
 <tr id="<%= dom_id(item) %>" <%= load_more_shim(item_iteration) %>>
   <td class="list-index-col"><small class="text-muted"><%= pagy.offset + item_iteration.index + 1 %></small></td>
-  </td>
+
+  <% if controller_name == "views" %>
+    <td class="list-edit-col">
+      <%= button_tag class: "btn btn-link no-box-shadow p-0 m-0", data: { action: "editor#edit", editor_edit_url_param: edit_editor_item_path(item.id) } do %>
+        <%= render "svgs/bi-pencil-square" %>
+      <% end %>
+    </td>
+  <% end %>
+
   <% View.default.fields.published.each do |field| %>
     <td class="<%= class_names("list-images-col": field.images?) %>">
       <% if field.images? %>
-        <div data-controller="lightbox">
-          <% item.images.each do |image| %>
-            <div class="d-inline-block">
-              <a data-lightbox-target="url" href="<%= url_for(image.file) %>"></a>
-              <a href="javascript:void(0);" data-action="click->lightbox#open" data-lightbox-position-param="<%= image.position - 1 %>">
-                <%= image_tag url_for(image.file.variant(:micro)),
-                              srcset: srcset(image, :micro_retina, :micro),
-                              sizes: "#{image.width(:micro)}px",
-                              width: image.width(:micro),
-                              height: image.height(:micro),
-                              class: "border border-2 rounded",
-                              loading: "lazy",
-                              alt: "Image #{image.position}" %>
-              </a>
-            </div>
-          <% end %>
-        </div>
+        <%= render "items/search/list_lightbox", item: item %>
       <% elsif field.multiple_select? && item.data[field.key].present? %>
         <% item.data[field.key].each do |text| %>
           <span class="badge rounded-pill bg-<%= MultipleSelect.color(text) %>-100 text-dark fw-normal fs-6"><%= text %></span>
         <% end %>
-      <% elsif field.key == "item_title" %>
+      <% elsif field.key == "item_title" && controller_name != "views" %>
         <%= link_to item, class: "me-1" do %>
           <%= render "svgs/bi-box-arrow-up-left" %><span class="ms-2"><%= item.data[field.key] %></span>
         <% end %>
-      <% elsif field.key == "set_title" && controller_name != "item_sets" %>
+      <% elsif field.key == "set_title" && controller_name != "item_sets" && controller_name != "views" %>
         <%= link_to item.item_set, class: "me-1" do %>
           <%= render "svgs/bi-collection" %><span class="ms-1"><%= item.data[field.key] %></span>
         <% end %>

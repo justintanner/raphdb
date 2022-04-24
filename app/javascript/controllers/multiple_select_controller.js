@@ -1,8 +1,8 @@
 import {Controller} from "@hotwired/stimulus";
 import TomSelect from "tom-select";
-import {fetchPost} from "fetch";
+import { post } from "@rails/request.js";
 
-// Connects to data-controller="editor-multiple-select"
+// Connects to data-controller="multiple-select"
 export default class extends Controller {
   static values = {fieldId: Number, createPath: String};
 
@@ -10,17 +10,11 @@ export default class extends Controller {
     const that = this;
 
     const onOptionAddCallback = (value, _data) => {
-      const data = {
+      const payload = {
         "multiple_select": {"title": value, "field_id": that.fieldIdValue}
       };
 
-      const successCallback = (json) => { };
-
-      const errorCallback = (json) => {
-        that.dispatch('error', { target: document, prefix: null, detail: { message: json.errors.join(', ') } });
-      };
-
-      fetchPost(that.createPathValue, data, successCallback, errorCallback);
+      that.createNew(payload);
     }
 
     new TomSelect(that.element, {
@@ -39,5 +33,21 @@ export default class extends Controller {
       },
       onOptionAdd: onOptionAddCallback,
     });
+  }
+
+  async createNew(payload) {
+    const that = this;
+    const response = await post(that.createPathValue, { body: JSON.stringify(payload) });
+
+    if (!response.ok) {
+      const json = await response.json;
+
+      let message = "Please reload the page"
+      if (Array.isArray(json.errors)) {
+        message = json.errors.join(", ");
+      }
+
+      that.dispatch("error", {target: document, prefix: null, detail: {message: message}});
+    }
   }
 }

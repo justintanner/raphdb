@@ -4,6 +4,9 @@
       <thead>
       <tr>
         <th class="list-index-col"></th>
+        <% if controller_name == "views" %>
+          <th class="list-edit-col"></th>
+        <% end %>
         <% View.default.fields.published.each do |field| %>
           <th data-list-target="colHeader" id="<%= dom_id(field) %>">
             <div class="list-col-title"><%= field.title %></div>

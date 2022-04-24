@@ -1,0 +1,17 @@
+<div data-controller="lightbox">
+  <% item.images.each do |image| %>
+    <div class="d-inline-block">
+      <a data-lightbox-target="url" href="<%= url_for(image.file) %>"></a>
+      <a href="javascript:void(0);" data-action="click->lightbox#open" data-lightbox-position-param="<%= image.position - 1 %>">
+        <%= image_tag url_for(image.file.variant(:micro)),
+                      srcset: srcset(image, :micro_retina, :micro),
+                      sizes: "#{image.width(:micro)}px",
+                      width: image.width(:micro),
+                      height: image.height(:micro),
+                      class: "border border-2 rounded",
+                      loading: "lazy",
+                      alt: "Image #{image.position}" %>
+      </a>
+    </div>
+  <% end %>
+</div>

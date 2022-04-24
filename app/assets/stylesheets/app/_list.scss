@@ -83,7 +83,15 @@
 .list-table th.list-index-col, .list-table td.list-index-col {
   border-right: none;
   text-align: right;
-  width: 60px;
+  min-width: 30px;
+  max-width: 60px;
+  overflow: unset;
+  text-overflow: unset;
+}
+
+.list-table th.list-edit-col, .list-table td.list-edit-col {
+  text-align: center;
+  width: 40px;
   overflow: unset;
   text-overflow: unset;
 }
