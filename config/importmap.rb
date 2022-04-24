@@ -17,3 +17,5 @@ pin "clipboard" # @2.0.10
 pin "fslightbox" # @3.3.1
 pin "storejs" # @2.0.1
 pin "@rails/request.js", to: "@rails--request.js.js" # @0.0.6
+pin "moment" # @2.29.3
+pin "pikaday" # @1.8.2

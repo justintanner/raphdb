@@ -4,9 +4,8 @@
                      @item.data[field.key],
                      class: class_names("form-select": true, "is-invalid": item.errors.include?(field.form_error_sym)),
                      data: {
-                       "controller": "editor--pikaday",
-                       "editor--pikaday-format-value": field.pikaday_date_format,
-                       "editor--single-select-create-path-value": editor_single_selects_path
+                       "controller": "pikaday",
+                       "pikaday-format-value": field.pikaday_date_format
                      } %>
   <% if item.errors.include?(field.form_error_sym) %>
     <div class="invalid-feedback mb-1"><%= item.errors[field.form_error_sym].first %></div>
