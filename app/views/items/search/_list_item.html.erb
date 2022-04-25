@@ -3,7 +3,8 @@
 
   <% if controller_name == "views" %>
     <td class="list-edit-col">
-      <%= button_tag class: "btn btn-link no-box-shadow p-0 m-0", data: { action: "editor#edit", editor_edit_url_param: edit_editor_item_path(item.id) } do %>
+      <%= button_tag class: "btn btn-link no-box-shadow p-0 m-0 mt-1px d-flex align-items-center",
+                     data: { action: "editor#edit", editor_edit_url_param: edit_editor_item_path(item.id) } do %>
         <%= render "svgs/bi-pencil-square" %>
       <% end %>
     </td>

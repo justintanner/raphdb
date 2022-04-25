@@ -8,6 +8,10 @@
   height: 32px;
 }
 
+.mt-1px {
+  margin-top: 1px !important;
+}
+
 .no-box-shadow {
   box-shadow: none;
   &:hover, &:focus {

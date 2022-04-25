@@ -20,5 +20,9 @@
       <% end %>
     </p>
   <% end %>
+  <% if field.divider && action_name == "show" %>
+    <hr class="my-3">
+  <% end %>
+
   <% break if local_variables.include?(:limit) && index >= limit %>
 <% end %>

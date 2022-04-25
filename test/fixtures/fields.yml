@@ -35,6 +35,7 @@ where_sold:
   same_across_set: true
   bootstrap_col: col-4
   position: 5
+  divider: true
 item_title:
   title: Item Title
   key: item_title

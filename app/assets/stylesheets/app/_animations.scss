@@ -1,0 +1,17 @@
+.flash-green {
+  -webkit-animation-name: flash-green-animation;
+  -webkit-animation-duration: 0.5s;
+
+  animation-name: flash-green-animation;
+  animation-duration: 0.5s;
+}
+
+@-webkit-keyframes flash-green-animation {
+  from { background: $green-400; }
+  to   { background: default; }
+}
+
+@keyframes flash-green-animation {
+  from { background: $green-400; }
+  to   { background: default; }
+}
