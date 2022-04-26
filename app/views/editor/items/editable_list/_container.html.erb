@@ -1,0 +1,29 @@
+<%= turbo_stream_from "editable_list_items_turbo" %>
+
+<div class="list" data-controller="list" data-action="resize@window->list#maxHeight" data-list-padding-bottom-value="0">
+  <div data-list-target="wrapper" class="list-table-wrapper no-border">
+    <table class="list-table">
+      <thead>
+      <tr>
+        <th class="list-index-col"></th>
+        <th class="list-edit-col"></th>
+        <% View.default.fields.each do |field| %>
+          <th data-list-target="colHeader" id="<%= dom_id(field) %>">
+            <div class="list-col-title"><%= field.title %></div>
+          </th>
+        <% end %>
+      </tr>
+      </thead>
+      <tbody id="editable-list-items">
+      <%= render partial: "editor/items/editable_list/items", locals: { items: items, pagy: pagy } %>
+      </tbody>
+    </table>
+  </div>
+  <div data-list-target="footer" class="list-footer d-flex align-items-center no-border">
+    <%= turbo_frame_tag "page_handler" %>
+    <%= render "items/list/load_more_button", pagy: pagy, tab: "list" %>
+    <%= turbo_frame_tag "list_spinner" do %>
+      <%= render "items/list/spinner" %>
+    <% end %>
+  </div>
+</div>

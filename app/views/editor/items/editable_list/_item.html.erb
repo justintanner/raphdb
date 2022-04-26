@@ -1,21 +1,20 @@
 <tr id="<%= dom_id(item) %>" data-list-target="tr" data-controller="<% if load_more %>load-more<% end %>">
   <td class="list-index-col"><small class="text-muted" data-list-target="number" data-list-id-value="<%= dom_id(item) %>"><%= number %></small></td>
 
-  <% View.default.fields.published.each do |field| %>
+  <td class="list-edit-col">
+    <%= button_tag class: "btn btn-link no-box-shadow p-0 m-0 mt-1px d-flex align-items-center",
+                   data: { action: "editor#edit", editor_edit_url_param: edit_editor_item_path(item.id) } do %>
+      <%= render "svgs/bi-pencil-square" %>
+    <% end %>
+  </td>
+
+  <% View.default.fields.each do |field| %>
     <td class="<%= class_names("list-images-col": field.images?) %>">
       <% if field.images? %>
         <%= render "items/list/carousel", item: item %>
       <% elsif field.multiple_select? && item.data[field.key].present? %>
         <% item.data[field.key].each do |text| %>
           <span class="badge rounded-pill bg-<%= MultipleSelect.color(text) %>-100 text-dark fw-normal fs-6"><%= text %></span>
-        <% end %>
-      <% elsif field.key == "item_title" %>
-        <%= link_to item, class: "me-1" do %>
-          <%= render "svgs/bi-box-arrow-up-left" %><span class="ms-2"><%= item.data[field.key] %></span>
-        <% end %>
-      <% elsif field.key == "set_title" && controller_name != "item_sets" %>
-        <%= link_to item.item_set, class: "me-1" do %>
-          <%= render "svgs/bi-collection" %><span class="ms-1"><%= item.data[field.key] %></span>
         <% end %>
       <% else %>
         <%= item.data[field.key] %>
