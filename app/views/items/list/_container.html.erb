@@ -16,15 +16,15 @@
       </tr>
       </thead>
       <tbody id="list-items">
-      <%= render partial: "items/search/list_items", locals: { items: items, pagy: pagy } %>
+      <%= render partial: "items/list/items", locals: { items: items, pagy: pagy } %>
       </tbody>
     </table>
   </div>
   <div data-list-target="footer" class="<%= class_names("list-footer", "d-flex", "align-items-center", "no-border": controller_name == "views") %>">
     <%= turbo_frame_tag "page_handler" %>
-    <%= render "items/search/list_load_more", pagy: pagy, tab: "list" %>
+    <%= render "items/list/load_more_button", pagy: pagy, tab: "list" %>
     <%= turbo_frame_tag "list_spinner" do %>
-      <%= render "items/search/list_spinner" %>
+      <%= render "items/list/spinner" %>
     <% end %>
   </div>
 </div>

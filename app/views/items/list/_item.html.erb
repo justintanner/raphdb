@@ -13,7 +13,7 @@
   <% View.default.fields.published.each do |field| %>
     <td class="<%= class_names("list-images-col": field.images?) %>">
       <% if field.images? %>
-        <%= render "items/search/list_lightbox", item: item %>
+        <%= render "items/list/carousel", item: item %>
       <% elsif field.multiple_select? && item.data[field.key].present? %>
         <% item.data[field.key].each do |text| %>
           <span class="badge rounded-pill bg-<%= MultipleSelect.color(text) %>-100 text-dark fw-normal fs-6"><%= text %></span>

@@ -25,15 +25,15 @@
 </div>
 
 <% if items.empty? %>
-  <%= render "items/search/no_results", tab: tab %>
+  <%= render "items/no_results", tab: tab %>
 <% elsif tab == "list" %>
   <div class="container-list mt-3">
     <div class="row">
       <div class="col d-flex flex-column h-100 py-0 overflow-hidden" style="height: 400px;">
-        <%= render "items/search/list", items: items, pagy: pagy %>
+        <%= render "items/list/container", items: items, pagy: pagy %>
       </div>
     </div>
   </div>
 <% else %>
-  <%= render "items/search/images", items: items, pagy: pagy %>
+  <%= render "items/images/container", items: items, pagy: pagy %>
 <% end %>

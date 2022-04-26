@@ -1,8 +1,0 @@
-<%= turbo_frame_tag "page_handler" do %>
-  <%= turbo_stream_action_tag("append", target: "#{tab}-items", template: %(#{render partial: "items/search/#{tab}_items", locals: { items: items, pagy: pagy } })) %>
-  <%= turbo_stream_action_tag("replace", target: "load-more-button", template: %(#{render "items/search/#{tab}_load_more", pagy: pagy, tab: tab})) %>
-
-  <% if tab == "list" %>
-    <%= turbo_stream_action_tag("update", target: "list_spinner", template: %(#{render "items/search/list_spinner"})) %>
-  <% end %>
-<% end %>
