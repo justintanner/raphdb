@@ -32,7 +32,7 @@ class Item < ApplicationRecord
 
   after_update_commit do
     broadcast_replace_to("images_items_turbo", target: self, partial: "items/images/item", locals: {item: self})
-    broadcast_replace_to("list_items_turbo", target: self, partial: "items/list/item", locals: {item: self, number: ""})
+    broadcast_replace_to("list_items_turbo", target: self, partial: "items/list/item", locals: {item: self, number: "", load_more: false})
   end
 
   def title

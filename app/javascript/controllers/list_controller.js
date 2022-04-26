@@ -3,8 +3,8 @@ import store from "storejs";
 
 // Connects to data-controller="list"
 export default class extends Controller {
-  static targets = ["wrapper", "colHeader", "tr", "numberSpan", "footer", "listSpinner"];
-  static values = { paddingBottom: Number, number: Number };
+  static targets = ["wrapper", "colHeader", "tr", "number", "footer", "listSpinner"];
+  static values = { paddingBottom: Number };
 
   connect() {
     const that = this;
@@ -14,22 +14,32 @@ export default class extends Controller {
     that.createResizableTable(that.element);
   }
 
-  // Stashing item index, so that when broadcast_update_to is applied we can sneak back the number in.
   trTargetConnected(tr) {
-    console.log("trTargetConnected");
     const that = this;
-    that.numberCache = that.numberCache || {};
+    const domId = tr.id;
+    const controller = tr.getAttribute("data-controller");
+    that.loadMoreCache = that.loadMoreCache || {};
 
-    that.numberCache[tr.id] = tr.getAttribute("data-list-number-value");
+    if (controller !== "load-more" && that.loadMoreCache[domId] === "load-more") {
+      //console.log(`cache hit:"${that.loadMoreCache[domId]}"`);
+      tr.setAttribute("data-controller", that.loadMoreCache[domId]);
+    } else {
+      //console.log(`saving cache:"${controller}"`);
+      that.loadMoreCache[domId] = controller;
+    }
   }
 
-  numberSpanConnected(span) {
+  numberTargetConnected(numberSpan) {
     const that = this;
+    const domId = numberSpan.getAttribute("data-list-id-value");
     that.numberCache = that.numberCache || {};
 
-    if (span.innerHTML === "") {
-      console.log("pp", span.parentElement.parentElement.id);
-      span.innerHTML = that.numberCache[span.parentElement.parentElement.id];
+    if (numberSpan.innerHTML) {
+      //console.log(`saving cache:"${numberSpan.innerHTML}"`);
+      that.numberCache[domId] = numberSpan.innerHTML;
+    } else {
+      //console.log("cache hit:", that.numberCache[domId]);
+      numberSpan.innerHTML = that.numberCache[domId];
     }
   }
 

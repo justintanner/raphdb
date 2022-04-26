@@ -1,5 +1,5 @@
-<tr id="<%= dom_id(item) %>" data-list-target="tr" data-list-number-value="<%= number %>">
-  <td class="list-index-col"><small class="text-muted" data-list-target="numberSpan"><%= number %></small></td>
+<tr id="<%= dom_id(item) %>" data-list-target="tr" data-controller="<% if load_more %>load-more<% end %>">
+  <td class="list-index-col"><small class="text-muted" data-list-target="number" data-list-id-value="<%= dom_id(item) %>"><%= number %></small></td>
 
   <% if controller_name == "views" %>
     <td class="list-edit-col">
