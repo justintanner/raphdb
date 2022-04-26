@@ -12,6 +12,8 @@
     <td class="<%= class_names("list-images-col": field.images?) %>">
       <% if field.images? %>
         <%= render "items/list/carousel", item: item %>
+      <% elsif field.checkbox? %>
+        <%= check_box_tag(field.key, 1, item.data[field.key]) %>
       <% elsif field.multiple_select? && item.data[field.key].present? %>
         <% item.data[field.key].each do |text| %>
           <span class="badge rounded-pill bg-<%= MultipleSelect.color(text) %>-100 text-dark fw-normal fs-6"><%= text %></span>
