@@ -1,5 +1,5 @@
-<tr id="<%= dom_id(item) %>" <%= load_more_shim(item_iteration) %>>
-  <td class="list-index-col"><small class="text-muted"><%= pagy.offset + item_iteration.index + 1 %></small></td>
+<tr id="<%= dom_id(item) %>" data-list-target="tr" data-list-number-value="<%= number %>">
+  <td class="list-index-col"><small class="text-muted" data-list-target="numberSpan"><%= number %></small></td>
 
   <% if controller_name == "views" %>
     <td class="list-edit-col">

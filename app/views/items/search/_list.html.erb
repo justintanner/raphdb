@@ -1,5 +1,6 @@
 <div class="list" data-controller="list" data-action="resize@window->list#maxHeight" data-list-padding-bottom-value="<%= controller_name == "views" ? "0" : "12" %>">
   <div data-list-target="wrapper" class="<%= class_names("list-table-wrapper", "no-border": controller_name == "views") %>">
+    <%= turbo_stream_from "list_items_turbo" %>
     <table class="list-table">
       <thead>
       <tr>
@@ -14,8 +15,8 @@
         <% end %>
       </tr>
       </thead>
-      <tbody id="append-items">
-      <%= render partial: "items/search/list_item", collection: items, as: :item, locals: { pagy: pagy } %>
+      <tbody id="list-items">
+      <%= render partial: "items/search/list_items", locals: { items: items, pagy: pagy } %>
       </tbody>
     </table>
   </div>

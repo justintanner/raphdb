@@ -30,6 +30,11 @@ class Item < ApplicationRecord
   validate :no_symbols_in_data
   validate :data_values_valid
 
+  after_update_commit do
+    broadcast_replace_to("images_items_turbo", target: self, partial: "items/search/images_item", locals: {item: self})
+    broadcast_replace_to("list_items_turbo", target: self, partial: "items/search/list_item", locals: {item: self, number: ""})
+  end
+
   def title
     data.try(:[], "item_title")
   end

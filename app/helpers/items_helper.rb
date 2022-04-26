@@ -51,4 +51,8 @@ module ItemsHelper
       'data-controller="load-more"'.html_safe
     end
   end
+
+  def insert_load_more_shim?(total, index)
+    (total > 30 && index == total - 30) || total <= 30 && (index == total - 1)
+  end
 end

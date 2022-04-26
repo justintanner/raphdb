@@ -20,7 +20,7 @@
       <% end %>
     </p>
   <% end %>
-  <% if field.divider && action_name == "show" %>
+  <% if field.divider && controller_name == "items" && (action_name == "show" || action_name == "edit") %>
     <hr class="my-3">
   <% end %>
 

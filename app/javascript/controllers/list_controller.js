@@ -3,8 +3,8 @@ import store from "storejs";
 
 // Connects to data-controller="list"
 export default class extends Controller {
-  static targets = ["colHeader", "wrapper", "footer", "listSpinner"];
-  static values = { paddingBottom: Number };
+  static targets = ["wrapper", "colHeader", "tr", "numberSpan", "footer", "listSpinner"];
+  static values = { paddingBottom: Number, number: Number };
 
   connect() {
     const that = this;
@@ -12,6 +12,25 @@ export default class extends Controller {
     that.maxHeight();
     that.setColWidths();
     that.createResizableTable(that.element);
+  }
+
+  // Stashing item index, so that when broadcast_update_to is applied we can sneak back the number in.
+  trTargetConnected(tr) {
+    console.log("trTargetConnected");
+    const that = this;
+    that.numberCache = that.numberCache || {};
+
+    that.numberCache[tr.id] = tr.getAttribute("data-list-number-value");
+  }
+
+  numberSpanConnected(span) {
+    const that = this;
+    that.numberCache = that.numberCache || {};
+
+    if (span.innerHTML === "") {
+      console.log("pp", span.parentElement.parentElement.id);
+      span.innerHTML = that.numberCache[span.parentElement.parentElement.id];
+    }
   }
 
   spinner() {
