@@ -12,18 +12,18 @@
   border-top: 1px solid $card-border-color;
   border-right: 1px solid $card-border-color;
   border-left: 1px solid $card-border-color;
-  border-top-right-radius: $card-border-radius;
+  border-top-right-radius: 0;
   border-top-left-radius: $card-border-radius;
 }
 
 .list-table-wrapper::-webkit-scrollbar {
   width: 10px;
   height: 10px;
-  background-color: $gray-100;
+  background-color: white;
 }
 
 .list-table-wrapper::-webkit-scrollbar-corner {
-  background-color: $gray-100;
+  background-color: white;
   border-color: transparent;
   border-bottom: 1px solid $card-border-color;
 }

@@ -21,7 +21,7 @@
             </tbody>
           </table>
         </div>
-        <div data-list-target="footer" class="list-footer d-flex align-items-center no-border">
+        <div data-list-target="footer" class="list-footer d-flex align-items-center">
           <%= turbo_frame_tag "page_handler" %>
           <%= render "items/list/load_more_button", pagy: pagy, tab: "list" %>
           <%= turbo_frame_tag "list_spinner" do %>
