@@ -133,4 +133,19 @@ class ItemTest < ActiveSupport::TestCase
     results = View.default.search("125")
     assert_not_includes results, item, "Found item with currency"
   end
+
+  test "changes to set titles propagate to all items in the set" do
+    item_set = ItemSet.create!(title: "Two items")
+    first_item = item_create!({item_title: "First", sold_as: "A"}, item_set)
+    second_item = item_create!({item_title: "Second", sold_as: "A"}, item_set)
+
+    first_item.data["set_title"] = "Changed"
+    first_item.data["sold_as"] = "Changed"
+    first_item.save!
+
+    second_item.reload
+
+    assert_equal second_item.data["set_title"], "Changed", "Set title did not propagate to all items"
+    assert_equal second_item.data["sold_as"], "Changed", "Set title did not propagate to all items"
+  end
 end

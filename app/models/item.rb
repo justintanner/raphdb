@@ -17,23 +17,21 @@ class Item < ApplicationRecord
 
   scope :with_sets, -> { includes(:item_set) }
 
-  attr_accessor :importing
+  attr_accessor :importing, :propagating
 
   clean :data
   log_changes only: %i[data item_set_id images], skip_when: ->(item) { item.importing }
   friendly_id :title, use: :history
 
   before_validation :copy_set_title_to_data
-  before_save :format_fields, :generate_search_data
+  before_save :format_fields, :generate_search_data, :propagate_set_fields
 
   validate :title_present
   validate :no_symbols_in_data
   validate :data_values_valid
 
   after_update_commit do
-    broadcast_replace_to("images_items_turbo", target: self, partial: "items/images/item", locals: {item: self})
-    broadcast_replace_to("list_items_turbo", target: self, partial: "items/list/item", locals: {item: self, number: "", load_more: false})
-    broadcast_replace_to("editable_list_items_turbo", target: self, partial: "editor/items/editable_list/item", locals: {item: self, number: "", load_more: false})
+    broadcast_update
   end
 
   def title
@@ -44,13 +42,17 @@ class Item < ApplicationRecord
     data_key_changed?("item_title")
   end
 
+  def broadcast_update
+    broadcast_replace_to("images_items_turbo", target: self, partial: "items/images/item", locals: {item: self})
+    broadcast_replace_to("list_items_turbo", target: self, partial: "items/list/item", locals: {item: self, number: "", load_more: false})
+    broadcast_replace_to("editable_list_items_turbo", target: self, partial: "editor/items/editable_list/item", locals: {item: self, number: "", load_more: false})
+  end
+
   private
 
   def format_fields
-    Field.all_cached.each do |field|
-      if data_key_changed?(field.key)
-        data[field.key] = field.format(data[field.key])
-      end
+    fields_that_changed.each do |field|
+      data[field.key] = field.format(data[field.key])
     end
   end
 
@@ -94,8 +96,20 @@ class Item < ApplicationRecord
       .map { |field| "#{data[field.key]}#{data[field.suffix_field.key]}" }
   end
 
-  def data_has_keys?(*keys)
-    keys.all? { |key| data.key?(key) }
+  def propagate_set_fields
+    return if propagating
+    return unless data_changed?
+
+    fields = fields_that_changed.find_all { |field| field.same_across_set }
+
+    # Not using update_all here because it doesn't trigger callbacks
+    if fields.present?
+      Item.where(item_set_id: item_set.id).where.not(id: id).each do |item|
+        item.propagating = true
+        fields.each { |field| item.data[field.key] = data[field.key] }
+        item.save!
+      end
+    end
   end
 
   def copy_set_title_to_data
@@ -115,12 +129,22 @@ class Item < ApplicationRecord
   end
 
   def data_values_valid
-    Field.all_cached.each do |field|
-      if data_key_changed?(field.key) && !field.value_valid?(data[field.key])
+    fields_that_changed.each do |field|
+      unless field.value_valid?(data[field.key])
         message = I18n.t("item_data_errors.#{field.column_type_sym}.invalid", example_date: field.example_date_format)
         errors.add(field.form_error_sym, message)
       end
     end
+  end
+
+  def fields_that_changed
+    Field
+      .all_cached
+      .find_all { |field| data_key_changed?(field.key) }
+  end
+
+  def data_has_keys?(*keys)
+    keys.all? { |key| data.key?(key) }
   end
 
   def data_key_changed?(key)
