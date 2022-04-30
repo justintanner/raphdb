@@ -25,14 +25,11 @@ class Item < ApplicationRecord
 
   before_validation :copy_set_title_to_data
   before_save :format_fields, :generate_search_data, :propagate_set_fields
+  after_update :broadcast_update
 
   validate :title_present
   validate :no_symbols_in_data
   validate :data_values_valid
-
-  after_update_commit do
-    broadcast_update
-  end
 
   def title
     data.try(:[], "item_title")
