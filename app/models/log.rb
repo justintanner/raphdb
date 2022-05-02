@@ -66,11 +66,11 @@ class Log < ApplicationRecord
     transform_changes = transform_changes(ar_changes)
     flat_changes = flatten_changes(transform_changes)
 
-    flat_changes.reject! do |key, _value|
-      key.include?(".") && self.class.jsonb_columns_to_ignore.include?(key.split(".").second)
+    flat_changes.reject! do |k, _v|
+      k.include?(".") && self.class.jsonb_columns_to_ignore.include?(k.split(".").second)
     end
 
-    flat_changes.reject! { |_key, value| !value.is_a?(Array) || value.first == value.second }
+    flat_changes.reject! { |_k, v| !v.is_a?(Array) || v.first == v.second }
 
     flat_changes
   end
@@ -78,23 +78,24 @@ class Log < ApplicationRecord
   def merge_entry(new_entry)
     merged_entry = entry
 
-    new_entry.each do |key, value|
-      merged_entry[key] = merged_entry.key?(key) ? [merged_entry[key].first, value.second] : value
+    new_entry.each do |k, v|
+      merged_entry[k] = merged_entry.key?(k) ? [merged_entry[k].first, v.second] : v
     end
 
     merged_entry
   end
 
   def transform_changes(ar_changes)
-    ar_changes.transform_values do |value|
-      if value.is_a?(Array) && value.length == 2 && value.first.is_a?(Hash) && value.second.is_a?(Hash)
-        value
+    ar_changes.transform_values do |v|
+      if v.is_a?(Array) && v.length == 2 && v.first.is_a?(Hash) && v.second.is_a?(Hash)
+        # Takes [{a: 1, b:2}, {a:3, b:4}] and transforms it to {a: [1, 3], b: [2, 4]}
+        v
           .flat_map(&:keys)
           .uniq
-          .map { |key| [key, [value.first[key], value.second[key]]] }
+          .map { |key| [key, [v.first[key], v.second[key]]] }
           .to_h
       else
-        value
+        v
       end
     end
   end
