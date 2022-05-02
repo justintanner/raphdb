@@ -8,7 +8,8 @@ class Log < ApplicationRecord
   # please use unscoped_associated for destroyed records.
   belongs_to :associated, polymorphic: true, optional: true
 
-  before_create :set_entry, :set_version_number
+  before_create :create_entry, :set_version_number
+  before_update :update_entry
 
   attr_accessor :loggable_changes, :importing
 
@@ -40,42 +41,71 @@ class Log < ApplicationRecord
     Field::RESERVED_KEYS
   end
 
+  def can_merge_changes?(ar_changes = {})
+    new_entry = generate_entry(ar_changes)
+
+    new_entry.keys.all? { |key| entry.key?(key) }
+  end
+
   private
 
-  def set_entry
+  def create_entry
     return if importing
 
-    self.entry = generate_entry
+    self.entry = generate_entry(loggable_changes)
   end
 
-  def safe_loggable_changes
-    loggable_changes || {}
+  def update_entry
+    return if importing
+
+    new_entry = generate_entry(loggable_changes)
+    self.entry = merge_entry(new_entry)
   end
 
-  def generate_entry
-    field_changes = {}
+  def generate_entry(ar_changes = {})
+    transform_changes = transform_changes(ar_changes)
+    flat_changes = flatten_changes(transform_changes)
 
-    safe_loggable_changes.each do |field_name, from_to|
-      outer_name = field_name.to_s
-
-      if column_type(outer_name) == :jsonb
-        add_jsonb_changes(field_changes, field_name, from_to, outer_name)
-      else
-        field_changes[outer_name] = from_to
-      end
+    flat_changes.reject! do |key, _value|
+      key.include?(".") && self.class.jsonb_columns_to_ignore.include?(key.split(".").second)
     end
 
-    field_changes
+    flat_changes.reject! { |_key, value| !value.is_a?(Array) || value.first == value.second }
+
+    flat_changes
   end
 
-  def add_jsonb_changes(field_changes, field_name, from_to, outer_name)
-    model[field_name].each do |inner_name, inner_to|
-      next if self.class.jsonb_columns_to_ignore.include?(inner_name)
+  def merge_entry(new_entry)
+    merged_entry = entry
 
-      inner_from = from_to.first.try(:[], inner_name)
-      next if inner_from == inner_to
+    new_entry.each do |key, value|
+      merged_entry[key] = merged_entry.key?(key) ? [merged_entry[key].first, value.second] : value
+    end
 
-      field_changes["#{outer_name}.#{inner_name}"] = [inner_from, inner_to]
+    merged_entry
+  end
+
+  def transform_changes(ar_changes)
+    ar_changes.transform_values do |value|
+      if value.is_a?(Array) && value.length == 2 && value.first.is_a?(Hash) && value.second.is_a?(Hash)
+        value
+          .flat_map(&:keys)
+          .uniq
+          .map { |key| [key, [value.first[key], value.second[key]]] }
+          .to_h
+      else
+        value
+      end
+    end
+  end
+
+  def flatten_changes(nested_hash, prefix = nil)
+    nested_hash.each_pair.reduce({}) do |hash, (key, value)|
+      if value.is_a?(Hash)
+        hash.merge(flatten_changes(value, "#{prefix}#{key}."))
+      else
+        hash.merge("#{prefix}#{key}" => value)
+      end
     end
   end
 

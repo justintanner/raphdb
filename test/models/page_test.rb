@@ -69,16 +69,11 @@ class PageTest < ActiveSupport::TestCase
     assert_not_includes Page.all, page, "Found deleted page in all pages"
   end
 
-  test "should keep a log of changes" do
-    page = Page.create!(title: "Title", body: "<p>A</p>")
-    page.update(body: "<p>B</p>")
+  test "should keep a log of body changes" do
+    page = Page.create!(title: "Title", body: "<p>body</p>")
 
-    assert_equal page.logs.count, 2, "Wrong number of versions"
+    expected_body_change = [nil, "<p>body</p>"]
 
-    expected_entry = {"body" => %w[<p>A</p> <p>B</p>]}
-
-    assert_equal expected_entry,
-      page.logs.first.entry,
-      "Changes were not tracked"
+    assert_equal expected_body_change, page.logs.first.entry["body"], "Changes were not tracked"
   end
 end

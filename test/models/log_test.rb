@@ -12,12 +12,11 @@ class LogTest < ActiveSupport::TestCase
         item_set: item_sets(:empty_set)
       )
 
-    log =
-      Log.create!(model: item, loggable_changes: item.changes, action: "create")
+    log = Log.create!(model: item, loggable_changes: item.changes, action: "create")
 
+    # No set_title here because we haven't really saved the "new" item yet.
     expected_entry = {
       "data.item_title" => [nil, "First title"],
-      "data.set_title" => [nil, item_sets(:empty_set).title],
       "item_set_id" => [nil, item_sets(:empty_set).id]
     }
 
@@ -31,8 +30,7 @@ class LogTest < ActiveSupport::TestCase
 
     item.data["item_title"] = "Second title"
 
-    log =
-      Log.create!(model: item, loggable_changes: item.changes, action: "update")
+    log = Log.create!(model: item, loggable_changes: item.changes, action: "update")
 
     expected_entry = {"data.item_title" => ["First title", "Second title"]}
 

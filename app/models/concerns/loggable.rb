@@ -37,7 +37,9 @@ module Loggable
     filtered = base_changes.extract!(*attributes)
 
     attributes.each do |name|
-      filtered[name] = send(name).changes[name] if send(name).is_a?(ActionText::RichText)
+      if send(name).is_a?(ActionText::RichText)
+        filtered[name] = send(name).changes[name]
+      end
     end
 
     filtered
@@ -59,12 +61,19 @@ module Loggable
   def log_update!(associated, attributes, record, skip_when)
     return if skip_when.is_a?(Proc) && skip_when.call(record)
 
-    Log.create!(
-      model: associated.nil? ? record : record.send(associated),
-      associated: associated.nil? ? nil : record,
-      loggable_changes: record.filtered_changes("update", attributes),
-      action: "update"
-    )
+    loggable_changes = record.filtered_changes("update", attributes)
+    latest_log = associated.nil? ? record.logs.first : record.send(associated).logs.first
+
+    if latest_log.present? && latest_log.can_merge_changes?(loggable_changes)
+      latest_log.update!(loggable_changes: loggable_changes, updated_at: DateTime.now)
+    else
+      Log.create!(
+        model: associated.nil? ? record : record.send(associated),
+        associated: associated.nil? ? nil : record,
+        loggable_changes: loggable_changes,
+        action: "update"
+      )
+    end
   end
 
   def log_destroy!(associated, attributes, record, skip_when)
