@@ -67,7 +67,7 @@ class Log < ApplicationRecord
     flat_changes = flatten_changes(transform_changes)
 
     flat_changes.reject! do |k, _v|
-      k.include?(".") && self.class.jsonb_columns_to_ignore.include?(k.split(".").second)
+      self.class.jsonb_columns_to_ignore.include?(k)
     end
 
     flat_changes.reject! { |_k, v| !v.is_a?(Array) || v.first == v.second }
@@ -101,11 +101,11 @@ class Log < ApplicationRecord
   end
 
   def flatten_changes(nested_hash, prefix = nil)
-    nested_hash.each_pair.reduce({}) do |hash, (key, value)|
-      if value.is_a?(Hash)
-        hash.merge(flatten_changes(value, "#{prefix}#{key}."))
+    nested_hash.each_pair.reduce({}) do |hash, (k, v)|
+      if v.is_a?(Hash)
+        hash.merge(flatten_changes(v, "#{prefix}#{k}."))
       else
-        hash.merge("#{prefix}#{key}" => value)
+        hash.merge("#{prefix}#{k}" => v)
       end
     end
   end
