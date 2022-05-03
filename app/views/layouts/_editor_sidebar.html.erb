@@ -1,8 +1,9 @@
-<ul class="nav nav-pills d-flex flex-column mb-auto">
+<p class="text-muted mb-2">Views</p>
+<ul class="nav flex-column nav-pills mb-3">
   <% View.all.each do |view| %>
   <li class="nav-item">
     <%= link_to editor_view_path(view), class: class_names("nav-link": true, "active": @view == view), aria_current: "view" do %>
-      <%= render "svgs/bi-table" %><span class="ms-2"><%= view.title %></span>
+      <%= render "svgs/bi-file-ruled" %><span class="ms-2"><%= view.title %></span>
       <% if @view == view %>
         <span class="float-end"><%= render "svgs/bi-check" %></span>
       <% end %>
@@ -11,4 +12,16 @@
   <% end %>
 </ul>
 
-
+<p class="text-muted mb-2">Pages</p>
+<ul class="nav flex-column nav-pills mt-0">
+<% Page.all.each do |page| %>
+  <li class="nav-item">
+    <%= link_to edit_editor_page_path(page), class: class_names("nav-link": true, "active": @page == page), aria_current: "page" do %>
+      <%= render "svgs/bi-file-earmark-richtext" %><span class="ms-2"><%= page.title %></span>
+      <% if @page == page %>
+        <span class="float-end"><%= render "svgs/bi-check" %></span>
+      <% end %>
+    <% end %>
+  </li>
+<% end %>
+</ul>

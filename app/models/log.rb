@@ -22,29 +22,28 @@ class Log < ApplicationRecord
     associated_type.constantize.unscoped { associated }
   end
 
-  def self.rebuild_data_from_logs(model)
-    data = {}
-
-    where(model: model)
-      .oldest_to_newest
-      .each do |log|
-        log
-          .entry
-          .select { |k, _v| k.starts_with?("data.") }
-          .each { |k, v| data[k.split(".").last] = v.second }
-      end
-
-    data
-  end
-
-  def self.jsonb_columns_to_ignore
-    Field::RESERVED_KEYS
-  end
-
   def can_merge_changes?(ar_changes = {})
     new_entry = generate_entry(ar_changes)
 
     new_entry.keys.all? { |key| entry.key?(key) }
+  end
+
+  def to_data_hash
+    entry
+      .select { |k, _v| k.starts_with?("data.") }
+      .map { |k, v| [k.split(".").last, v.second] }
+      .to_h
+  end
+
+  def self.rebuild_data_from_logs(model)
+    where(model: model)
+      .oldest_to_newest
+      .map { |log| log.to_data_hash }
+      .reduce({}, :merge)
+  end
+
+  def self.jsonb_columns_to_ignore
+    Field::RESERVED_KEYS
   end
 
   private

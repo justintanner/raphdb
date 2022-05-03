@@ -1,0 +1,2 @@
+module Editor::PagesHelper
+end

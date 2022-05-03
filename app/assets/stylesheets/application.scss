@@ -1,4 +1,4 @@
-// Configuration
+// Bootstrap 5
 @import "bootstrap/functions";
 
 // Overrides
@@ -47,6 +47,11 @@
 
 // Utilities
 @import "bootstrap/utilities/api";
+
+// Trix
+@import "trix";
+@import "actiontext";
+@import "app/trix_additions";
 
 // Third party
 @import "third_party/actiontext";

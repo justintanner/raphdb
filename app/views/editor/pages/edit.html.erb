@@ -1,0 +1,18 @@
+<% content_for(:title, "Editing Page: #{@page.title}") %>
+
+<div class="col d-flex flex-column p-3">
+  <%= form_with model: @page, url: editor_page_path(@page) do |form| %>
+    <div class="mb-3">
+      <%= form.label :title, class: "form-label" %>
+      <%= form.text_field :title, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <div class="trix-container">
+        <%= form.rich_text_area :body %>
+      </div>
+    </div>
+
+    <%= form.submit "Save", class: "btn btn-primary" %>
+  <% end %>
+</div>
