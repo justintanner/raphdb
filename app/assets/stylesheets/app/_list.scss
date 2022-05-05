@@ -1,6 +1,6 @@
 .list {
-  /* This will be overriden by JS */
-  max-height: calc(100vh - 230px);
+  /* This will be overridden by JS */
+  max-height: calc(100vh - 230px) !important;
 }
 
 .list-table-wrapper {

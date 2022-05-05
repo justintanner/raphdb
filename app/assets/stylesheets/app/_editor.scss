@@ -7,3 +7,14 @@
     width: 300px;
   }
 }
+
+trix-editor {
+  /* This will be overridden by JS */
+  max-height: calc(100vh - 300px) !important;
+  height: 100%;
+  overflow-y: auto !important;
+}
+
+.trix-container {
+  position: relative;
+}

@@ -1,18 +1,16 @@
 <% content_for(:title, "Editing Page: #{@page.title}") %>
 
-<div class="col d-flex flex-column p-3">
-  <%= form_with model: @page, url: editor_page_path(@page) do |form| %>
+<div class="col d-flex flex-column p-3 overflow-hidden">
+  <%= form_with model: @page, url: editor_page_path(@page), data: { controller: ""} do |form| %>
     <div class="mb-3">
-      <%= form.label :title, class: "form-label" %>
-      <%= form.text_field :title, class: "form-control" %>
+      <%= form.submit "Save", class: "btn btn-primary" %>
     </div>
 
-    <div class="mb-3">
-      <div class="trix-container">
-        <%= form.rich_text_area :body %>
-      </div>
+    <div class="form-floating mb-3">
+      <%= form.text_field :title, class: "form-control", id: "floatingInput" %>
+      <%= form.label :title, for: "floatingInput" %>
     </div>
 
-    <%= form.submit "Save", class: "btn btn-primary" %>
+    <%= form.rich_text_area :body, data: {controller: "trix-editor", action: "resize@window->trix-editor#maxHeight", "trix-editor-padding-bottom-value": "18"} %>
   <% end %>
 </div>
