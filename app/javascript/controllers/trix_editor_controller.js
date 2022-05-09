@@ -12,17 +12,26 @@ export default class extends Controller {
 
     console.log("Trix editor connected");
 
-    Trix.config.blockAttributes.heading2 = {
-      tagName: "h2",
-      terminal: true,
-      breakOnReturn: true,
-      group: false
+    Trix.config.blockAttributes.left = {
+      tagName: "align-left",
+      parse: false,
+      nestable: true,
+      exclusive: true
     }
 
-    const button ='<button type="button" class="trix-button trix-button--icon trix-button--icon-increase-nesting-level" data-trix-action="increaseNestingLevel" title="Increase Level" tabIndex="-1" disabled="">Increase Level</button>';
+    Trix.config.blockAttributes.center = {
+      tagName: "align-center",
+      parse: false,
+      nestable: true,
+      exclusive: true
+    }
 
-    const groupElement = document.querySelector(".trix-button-group--block-tools");
-    groupElement.insertAdjacentHTML("beforeend", button);
+    Trix.config.blockAttributes.right = {
+      tagName: "align-right",
+      parse: false,
+      nestable: true,
+      exclusive: true
+    }
   }
 
   maxHeight() {

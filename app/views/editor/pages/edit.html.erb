@@ -1,7 +1,7 @@
 <% content_for(:title, "Editing Page: #{@page.title}") %>
 
 <div class="col d-flex flex-column p-3 overflow-hidden">
-  <%= form_with model: @page, url: editor_page_path(@page), data: { controller: ""} do |form| %>
+  <%= form_with model: @page, url: editor_page_path(@page), data: { controller: "" } do |form| %>
     <div class="mb-3">
       <%= form.submit "Save", class: "btn btn-primary" %>
     </div>
@@ -11,6 +11,13 @@
       <%= form.label :title, for: "floatingInput" %>
     </div>
 
-    <%= form.rich_text_area :body, data: {controller: "trix-editor", action: "resize@window->trix-editor#maxHeight", "trix-editor-padding-bottom-value": "18"} %>
+
+    <%= render "trix_toolbar" %>
+
+    <%= form.rich_text_area :body, toolbar: "trix-toolbar", data: {
+      controller: "trix-editor",
+      action: "resize@window->trix-editor#maxHeight",
+      "trix-editor-padding-bottom-value": "18"
+    } %>
   <% end %>
 </div>
