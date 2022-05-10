@@ -19,3 +19,4 @@ pin "storejs" # @2.0.1
 pin "@rails/request.js", to: "@rails--request.js.js" # @0.0.6
 pin "moment" # @2.29.3
 pin "pikaday" # @1.8.2
+pin "sortablejs" # @1.15.0
