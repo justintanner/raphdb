@@ -1,6 +1,15 @@
 .bi {
   display: inline-block;
   vertical-align: -0.125em;
+  /* vertical-align: -2px; */
+}
+
+small .bi {
+  vertical-align: -3px;
+}
+
+small .bi-trash {
+  vertical-align: -4px;
 }
 
 .wh-32px {
