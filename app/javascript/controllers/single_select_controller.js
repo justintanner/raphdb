@@ -38,12 +38,7 @@ export default class extends Controller {
     if (!response.ok) {
       const json = await response.json;
 
-      let message = "Please reload the page"
-      if (Array.isArray(json.errors)) {
-        message = json.errors.join(", ");
-      }
-
-      that.dispatch("error", {target: document, prefix: null, detail: {message: message}});
+      that.dispatch("error", {target: document, prefix: null, detail: {json: json}});
     }
   }
 }
