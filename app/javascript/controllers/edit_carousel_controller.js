@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Sortable } from "sortablejs";
 import { patch } from "@rails/request.js";
 
-// Connects to data-controller="image-list"
+// Connects to data-controller="edit-carousel"
 export default class extends Controller {
   connect() {
     const that = this;
