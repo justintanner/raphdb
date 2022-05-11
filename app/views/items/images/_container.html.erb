@@ -1,8 +1,8 @@
 <%= turbo_frame_tag "page_handler" %>
 
 <div class="container-images">
-  <%= turbo_stream_from "images_items_turbo" %>
-  <div class="row pt-3 gx-3" id="images-items">
+  <%= turbo_stream_from "items_images_stream" %>
+  <div class="row pt-3 gx-3" id="items_images">
     <%= render partial: "items/images/items", locals: { items: items, pagy: pagy } %>
   </div>
   <div class="row">

@@ -1,4 +1,4 @@
-<%= turbo_stream_from "list_items_turbo" %>
+<%= turbo_stream_from "items_list_stream" %>
 
 <div class="container-list mt-3">
   <div class="row">
@@ -16,7 +16,7 @@
               <% end %>
             </tr>
             </thead>
-            <tbody id="list-items">
+            <tbody id="items_list">
             <%= render partial: "items/list/items", locals: { items: items, pagy: pagy } %>
             </tbody>
           </table>

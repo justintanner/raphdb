@@ -40,9 +40,9 @@ class Item < ApplicationRecord
   end
 
   def broadcast_update
-    broadcast_replace_to("images_items_turbo", target: self, partial: "items/images/item", locals: {item: self})
-    broadcast_replace_to("list_items_turbo", target: self, partial: "items/list/item", locals: {item: self, number: "", load_more: false})
-    broadcast_replace_to("editable_list_items_turbo", target: self, partial: "editor/items/editable_list/item", locals: {item: self, number: "", load_more: false})
+    broadcast_replace_to("items_images_stream", target: self, partial: "items/images/item", locals: {item: self})
+    broadcast_replace_to("items_list_stream", target: self, partial: "items/list/item", locals: {item: self, number: "", load_more: false})
+    broadcast_replace_to("editable_list_stream", target: self, partial: "editor/items/editable_list/item", locals: {item: self, number: "", load_more: false})
   end
 
   private

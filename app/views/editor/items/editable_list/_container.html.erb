@@ -1,4 +1,4 @@
-<%= turbo_stream_from "editable_list_items_turbo" %>
+<%= turbo_stream_from "editable_list_stream" %>
 
 <div class="list" data-controller="list" data-action="resize@window->list#maxHeight" data-list-padding-bottom-value="0">
   <div data-list-target="wrapper" class="list-table-wrapper no-border">
@@ -14,7 +14,7 @@
         <% end %>
       </tr>
       </thead>
-      <tbody id="editable-list-items">
+      <tbody id="editable_list">
       <%= render partial: "editor/items/editable_list/items", locals: { items: items, pagy: pagy } %>
       </tbody>
     </table>
