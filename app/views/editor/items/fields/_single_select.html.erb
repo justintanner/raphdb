@@ -4,8 +4,9 @@
                  options_for_select(field.single_select_data, @item.data[field.key]),
                  class: class_names("form-select": true, "is-invalid": item.errors.include?(field.form_error_sym)),
                  data: {
-                   "controller": "editor--pikaday",
-                   "editor--single-select-field-id-value": field.id
+                   "controller": "single-select",
+                   "single-select-field-id-value": field.id,
+                   "single-select-create-path-value": editor_single_selects_path
                  } %>
   <% if item.errors.include?(field.form_error_sym) %>
     <div class="invalid-feedback mb-1"><%= item.errors[field.key].first %></div>

@@ -2,7 +2,7 @@ import {Controller} from "@hotwired/stimulus";
 import moment from "moment";
 import Pikaday from "pikaday";
 
-// Connects to data-controller="pikaday"
+// Connects to data-controller="datepicker"
 export default class extends Controller {
   static values = {format: String};
 
