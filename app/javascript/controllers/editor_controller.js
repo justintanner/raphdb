@@ -52,10 +52,15 @@ export default class extends Controller {
       body: JSON.stringify({ settings: { sidebar_open: value } })
     });
 
-    if (response.ok) {
-      console.log("ok", response);
-    } else {
-      console.log("error", response);
+    if (!response.ok) {
+      const json = await response.json;
+
+      let message = "Please reload the page"
+      if (Array.isArray(json.errors)) {
+        message = json.errors.join(", ");
+      }
+
+      that.dispatch("error", {target: document, prefix: null, detail: {message: message}});
     }
   }
 }

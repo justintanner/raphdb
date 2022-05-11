@@ -1,0 +1,2 @@
+module Editor::ImagesHelper
+end

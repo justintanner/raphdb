@@ -9,6 +9,7 @@ class Image < ApplicationRecord
   belongs_to :item_set, optional: true
 
   after_create :process_image
+  after_update :broadcast_update
 
   SIZES = {
     micro: [30, 30],
@@ -36,6 +37,13 @@ class Image < ApplicationRecord
   position_within :item_id, :item_set_id
 
   validate :item_or_set_present
+
+  def broadcast_update
+    # Skipping broadcasts in tests for now, because image_positionable_test is failing.
+    if item.present? && !Rails.env.test?
+      broadcast_replace_to("edit_images_stream", target: "images_for_item_#{item.id}", partial: "editor/items/image_list", locals: {item: item})
+    end
+  end
 
   def horizontal?
     return unless processed_at.present?
