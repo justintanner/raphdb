@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import Trix from "trix"
 
-// Connects to data-controller="trix_editor_controller"
+// Connects to data-controller="page_editor_controller"
 export default class extends Controller {
   static values = { paddingBottom: Number };
 
@@ -10,8 +10,7 @@ export default class extends Controller {
 
     that.maxHeight();
 
-    console.log("Trix editor connected");
-
+    /* TODO: Alignment does not work with headings */
     Trix.config.blockAttributes.left = {
       tagName: "align-left",
       parse: false,
