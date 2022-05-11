@@ -40,10 +40,10 @@
                       loading: "lazy",
                       alt: "Image #{position}" %>
         <div class="card-body p-1">
-          <%= render "card_carousel", { item: item,
-                                        featured_image: featured_image,
-                                        max_width: featured_image.width(:large),
-                                        position: position } %>
+          <%= render "carousel", { item: item,
+                                   featured_image: featured_image,
+                                   max_width: featured_image.width(:large),
+                                   position: position } %>
         </div>
       </div>
     </div>

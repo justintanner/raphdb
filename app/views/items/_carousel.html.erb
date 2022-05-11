@@ -1,7 +1,7 @@
 <div class="splide"
-     data-controller="splide"
-     data-splide-max-width-value="<%= max_width %>"
-     data-splide-position-value="<%= position %>">
+     data-controller="carousel"
+     data-carousel-max-width-value="<%= max_width %>"
+     data-carousel-position-value="<%= position %>">
   <div class="splide__arrows">
     <button class="splide__arrow splide__arrow--prev">
       <%= render "svgs/bi-chevron-right" %>
@@ -22,7 +22,7 @@
                           width: image.width(:small),
                           height: image.height(:small),
                           class: class_names("border": true, "border-secondary": featured_image == image),
-                          data: {"splide-target": "thumb"} %>
+                          data: {"carousel-target": "thumb"} %>
           <% end %>
         </li>
       <% end %>

@@ -1,7 +1,7 @@
 import {Controller} from "@hotwired/stimulus";
 import Splide from "@splidejs/splide";
 
-// Connects to data-controller="splide"
+// Connects to data-controller="carousel"
 export default class extends Controller {
   static values = { maxWidth: Number, position: Number };
   static targets = [ "thumb" ];
