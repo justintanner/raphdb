@@ -54,12 +54,12 @@
           <div class="card-header px-3 border-bottom-0">
             <div class="row">
               <div class="col">
-                <div data-controller="lightbox">
+                <div data-controller="enlarge">
                   <% item.images.each do |image| %>
-                    <a data-lightbox-target="url" href="<%= image.file.url %>"></a>
+                    <a data-enlarge-target="url" href="<%= image.file.url %>"></a>
                   <% end %>
 
-                  <a href="javascript:void(0);" data-action="click->lightbox#open" class="d-flex align-items-center" data-lightbox-position-param="<%= position - 1 %>">
+                  <a href="javascript:void(0);" data-action="click->enlarge#open" class="d-flex align-items-center" data-englarge-position-param="<%= position - 1 %>">
                     <%= render "svgs/bi-arrows-fullscreen" %>
                     <span class="ms-2"><small>Enlarge Image</small></span>
                   </a>

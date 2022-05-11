@@ -1,8 +1,8 @@
-<div data-controller="lightbox">
+<div data-controller="enlarge">
   <% item.images.each do |image| %>
     <div class="d-inline-block">
-      <a data-lightbox-target="url" href="<%= url_for(image.file) %>"></a>
-      <a href="javascript:void(0);" data-action="click->lightbox#open" data-lightbox-position-param="<%= image.position - 1 %>">
+      <a data-enlarge-target="url" href="<%= url_for(image.file) %>"></a>
+      <a href="javascript:void(0);" data-action="click->enlarge#open" data-enlarge-position-param="<%= image.position - 1 %>">
         <%= image_tag url_for(image.file.variant(:micro)),
                       srcset: srcset(image, :micro_retina, :micro),
                       sizes: "#{image.width(:micro)}px",

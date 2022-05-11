@@ -8,11 +8,11 @@
     <div class="accordion-body">
       <p class=""><u>Set Covers</u></p>
 
-      <ul class="list-group list-group-horizontal-sm d-inline-block mx-auto" data-controller="lightbox">
+      <ul data-controller="enlarge" class="list-group list-group-horizontal-sm d-inline-block mx-auto" >
         <% @item_set.images.each do |image| %>
           <li class="list-group-item">
-            <a data-lightbox-target="url" href="<%= image.file.url %>"></a>
-            <a href="javascript:void(0);" data-action="click->lightbox#open" data-lightbox-position-param="<%= image.position - 1 %>">
+            <a data-enlarge-target="url" href="<%= image.file.url %>"></a>
+            <a href="javascript:void(0);" data-action="click->enlarge#open" data-enlarge-position-param="<%= image.position - 1 %>">
               <%= image_tag url_for(image.file.variant(:small)),
                             srcset: srcset(image, :small_retina, :small, :micro_retina, :micro),
                             sizes: "#{image.width(:small)}px",

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import "fslightbox"
 
-// Connects to data-controller="lightbox"
+// Connects to data-controller="enlarge"
 export default class extends Controller {
   static targets = ["url"];
 
