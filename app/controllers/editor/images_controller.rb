@@ -9,6 +9,13 @@ module Editor
       render json: {image: @image}, status: :ok
     end
 
+    def destroy
+      @image = Image.find(params[:id])
+      @image.destroy
+
+      render json: {image: @image}, status: :ok
+    end
+
     private
 
     # Avoids nil.to_i returning 0

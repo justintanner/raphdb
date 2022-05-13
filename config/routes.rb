@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     resources :single_selects, only: [:create]
     resources :multiple_selects, only: [:create]
     resources :items, only: [:edit, :update]
-    resources :images, only: [:update]
+    resources :images, only: [:update, :destroy]
     resources :views, only: [:show] do
       collection do
         get :default

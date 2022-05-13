@@ -14,4 +14,14 @@ class Editor::ImagesControllerTest < ActionDispatch::IntegrationTest
     image.reload
     assert_equal image.position, 1, "Image was not positioned correctly"
   end
+
+  test "should destroy an image" do
+    image = images(:football_back2)
+
+    delete editor_image_path(image)
+    assert_response :success
+
+    image.reload
+    assert_not_nil image.deleted_at, "Image was not deleted"
+  end
 end
