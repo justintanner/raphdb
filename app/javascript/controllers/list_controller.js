@@ -3,13 +3,11 @@ import store from "storejs";
 
 // Connects to data-controller="list"
 export default class extends Controller {
-  static targets = ["wrapper", "colHeader", "tr", "number", "footer", "listSpinner"];
-  static values = { paddingBottom: Number };
+  static targets = ["colHeader", "tr", "number", "footer", "listSpinner"];
 
   connect() {
     const that = this;
 
-    that.maxHeight();
     that.setColWidths();
     that.createResizableTable(that.element);
   }
@@ -46,17 +44,6 @@ export default class extends Controller {
   spinner() {
     this.listSpinnerTarget.classList.remove("d-none");
     this.listSpinnerTarget.classList.add("d-flex");
-  }
-
-  maxHeight() {
-    const that = this;
-
-    const parent = that.element.parentElement;
-    const footerHeight = that.footerTarget.offsetHeight;
-    const newHeight = window.innerHeight - parent.offsetTop - that.paddingBottomValue;
-
-    that.wrapperTarget.style.maxHeight =  newHeight - footerHeight + "px";
-    that.element.style.maxHeight = newHeight + "px";
   }
 
   setColWidths() {

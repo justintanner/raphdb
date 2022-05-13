@@ -2,9 +2,12 @@
 
 <div class="container-list mt-3">
   <div class="row">
-    <div class="col d-flex flex-column h-100 py-0 overflow-hidden" style="height: 400px;">
-      <div class="list" data-controller="list" data-action="resize@window->list#maxHeight" data-list-padding-bottom-value="12">
-        <div data-list-target="wrapper" class="list-table-wrapper">
+    <div class="col d-flex flex-column overflow-hidden py-0">
+      <div class="list"
+           data-controller="list maximize-height"
+           data-action="resize@window->maximize-height#style"
+           data-maximize-height-margin-bottom-value="0">
+        <div class="list-table-wrapper">
           <table class="list-table">
             <thead>
             <tr>
@@ -21,7 +24,7 @@
             </tbody>
           </table>
         </div>
-        <div data-list-target="footer" class="list-footer d-flex align-items-center">
+        <div data-maximize-height-target="footer" class="list-footer d-flex align-items-center">
           <%= turbo_frame_tag "page_handler" %>
           <%= render "items/list/load_more_button", pagy: pagy, tab: "list" %>
           <%= turbo_frame_tag "list_spinner" do %>
@@ -32,3 +35,4 @@
     </div>
   </div>
 </div>
+

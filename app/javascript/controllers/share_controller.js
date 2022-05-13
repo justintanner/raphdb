@@ -1,12 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 import ClipboardJS from "clipboard"
 
-// Connects to data-controller="clipboard"
+// Connects to data-controller="share"
 export default class extends Controller {
   connect() {
     const that = this;
 
-    const clipboard = new ClipboardJS("#copy-link");
+    const clipboard = new ClipboardJS(that.element);
     const originalHtml = that.element.innerHTML;
 
     clipboard.on("success", function(e) {

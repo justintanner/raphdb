@@ -13,13 +13,12 @@
 
 <body class="h-100">
 
-<div class="container-fluid d-flex flex-column vh-100" data-controller="editor">
+<div class="container-fluid d-flex flex-column vh-100" data-controller="edit-button sidebar">
   <%= render "layouts/editor_header" %>
 
   <div class="row d-flex flex-fill justify-content-start">
     <div class="col-auto d-flex px-0">
-      <div id="sidebar"
-           data-editor-target="sidebar"
+      <div id="sidebar" data-sidebar-target="container"
            class="<%= class_names("flex-column", "h-100", "border-end", "border-2", "p-3", "d-flex": current_user.settings["sidebar_open"], "d-none": !current_user.settings["sidebar_open"]) %>">
         <%= render "layouts/editor_sidebar" %>
       </div>

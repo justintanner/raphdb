@@ -67,11 +67,9 @@
               </div>
               <div class="col">
                 <a href="javascript:void(0);"
-                   id="copy-link"
                    class="d-flex align-items-center justify-content-end"
-                   data-clipboard-text="<%= request.original_url %>"
-                   data-bs-original-title="Copy to Clipboard"
-                   data-controller="clipboard">
+                   data-controller="share"
+                   data-clipboard-text="<%= request.original_url %>">
                   <%= render "svgs/bi-link-45deg" %>
                   <span class="ms-1"><small>Share</small></span>
                 </a>

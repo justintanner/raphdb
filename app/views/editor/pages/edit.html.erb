@@ -15,9 +15,9 @@
     <%= render "trix_toolbar" %>
 
     <%= form.rich_text_area :body, toolbar: "trix-toolbar", data: {
-      controller: "page-editor",
-      action: "resize@window->page-editor#maxHeight",
-      "page-editor-padding-bottom-value": "18"
+      controller: "page-editor maximize-height",
+      action: "resize@window->maximize-height#style",
+      "maximize-height-margin-bottom-value": "18"
     } %>
   <% end %>
 </div>
