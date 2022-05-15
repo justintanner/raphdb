@@ -19,8 +19,20 @@
       <% end %>
     </div>
     <div class="col-2">
-      <div class="row p-3">
-        <p class="m-0 p-0"><label class="form-label">Images</label></p>
+      <div class="row p-3" data-controller="upload">
+        <div class="m-0 p-0">
+          <label class="form-label">Images</label>
+          <%= form_for(Image.new, url: editor_images_path, method: :post, html: {class: "d-inline-block"}) do |form| %>
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <%= form.hidden_field :item_id, value: @item.id %>
+            <span class="upload-span">
+              <%= render "svgs/bi-upload" %>
+              <%= form.file_field :files, multiple: true, class: "upload-input", data: { action: "change->upload#submit"} %>
+              <%= form.submit "Upload", class: "d-none", data: { upload_target: "submit"} %>
+            </span>
+          <% end %>
+        </div>
+
         <%= turbo_stream_from "edit_images_stream" %>
         <%= render "carousel", { item: @item } %>
       </div>

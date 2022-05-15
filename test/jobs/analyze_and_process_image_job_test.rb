@@ -12,8 +12,7 @@ class AnalyzeAndProcessImageJobTest < ActiveJob::TestCase
   end
 
   test "should create all variants of an image, analyze them and set a flag" do
-    image = Image.create!(item: items(:football))
-    image.file.attach(io: open_fixture("horizontal.jpg"), filename: "horizontal.jpg")
+    image = image_create!(filename: "horizontal.jpg", item: items(:football), process: false)
 
     AnalyzeAndProcessImageJob.perform_now(image.id)
 

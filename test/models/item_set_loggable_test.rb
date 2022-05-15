@@ -19,7 +19,7 @@ class ItemSetLoggableTest < ActiveSupport::TestCase
 
   test "should track image uploads on the item_set" do
     item_set = ItemSet.create!(title: "A")
-    image = Image.create!(item_set: item_set)
+    image = image_create!(filename: "vertical.jpg", item_set: item_set)
 
     latest_log = item_set.logs.first
 
@@ -31,7 +31,7 @@ class ItemSetLoggableTest < ActiveSupport::TestCase
 
   test "should track image deletions on the item_set" do
     item_set = ItemSet.create!(title: "A")
-    image = Image.create!(item_set: item_set)
+    image = image_create!(filename: "vertical.jpg", item_set: item_set)
     image.destroy
 
     latest_log = item_set.logs.first

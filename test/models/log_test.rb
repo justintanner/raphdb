@@ -41,7 +41,7 @@ class LogTest < ActiveSupport::TestCase
 
   test "should track changes on associated models" do
     item = item_create!(item_title: "First title")
-    image = Image.create!(item: item)
+    image = image_create!(filename: "vertical.jpg", item: item)
 
     first_log =
       Log.create!(
@@ -58,7 +58,7 @@ class LogTest < ActiveSupport::TestCase
 
   test "should track changes destroy actions associated models" do
     item = item_create!(item_title: "First title")
-    image = Image.create!(item: item)
+    image = image_create!(filename: "vertical.jpg", item: item)
     item.destroy
 
     log =

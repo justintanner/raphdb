@@ -14,8 +14,7 @@ class ImagesHelperTest < ActionView::TestCase
   end
 
   test "returns img tag sizes strings for medium sized images" do
-    image = Image.create!(item: items(:football))
-    attach_and_process(image, "vertical.jpg")
+    image = image_create!(filename: "vertical.jpg", item: items(:football), process: true)
 
     actual_srcset = srcset(image, :medium_retina, :medium)
     assert actual_srcset.include?("314w"), "Couldn't find 314px in srcset"

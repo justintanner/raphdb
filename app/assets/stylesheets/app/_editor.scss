@@ -8,6 +8,29 @@
   }
 }
 
+.upload-span {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  font-size: 13px;
+  color: $link-color;
+  vertical-align: bottom;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.upload-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  direction: ltr;
+  cursor: pointer;
+}
+
 trix-editor {
   /* This will be overridden by JS */
   max-height: calc(100vh - 300px) !important;

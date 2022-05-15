@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { post } from "@rails/request.js"
 
 // Connects to data-controller="sidebar"
 export default class extends Controller {

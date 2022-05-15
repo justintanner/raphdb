@@ -44,14 +44,14 @@ class ItemLoggableTest < ActiveSupport::TestCase
 
   test "should track image uploads" do
     item = item_create!({item_title: "A"})
-    image = Image.create!(item: item)
+    image = image_create!(filename: "vertical.jpg", item: item)
 
     assert_equal image, item.logs.first.associated, "Image upload was not tracked"
   end
 
   test "should track image deletions" do
     item = item_create!({item_title: "A"})
-    image = Image.create!(item: item)
+    image = image_create!(filename: "vertical.jpg", item: item)
     image.destroy
 
     assert_equal image, item.logs.first.unscoped_associated, "Image destruction was not tracked"

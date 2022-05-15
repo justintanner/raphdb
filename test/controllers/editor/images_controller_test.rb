@@ -5,6 +5,24 @@ class Editor::ImagesControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:bob))
   end
 
+  test "should upload a new image to an item" do
+    item = items(:football)
+
+    post editor_images_path, params: {image: {item_id: item.id, files: [fixture_file_upload("vertical.jpg", "image/jpeg")]}}
+    assert_response :success
+  end
+
+  test "should upload be able to upload multiple images at one" do
+    item = items(:football)
+
+    files = [
+      fixture_file_upload("vertical.jpg", "image/jpeg"),
+      fixture_file_upload("horizontal.jpg", "image/jpeg")
+    ]
+    post editor_images_path, params: {image: {item_id: item.id, files: files}}
+    assert_response :success
+  end
+
   test "should update the position of an image" do
     image = images(:football_back2)
 

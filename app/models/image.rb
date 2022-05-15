@@ -8,7 +8,7 @@ class Image < ApplicationRecord
   belongs_to :item, optional: true
   belongs_to :item_set, optional: true
 
-  after_create :process_image
+  after_commit :queue_processing, on: :create
   after_update :broadcast_update
 
   SIZES = {
@@ -37,6 +37,7 @@ class Image < ApplicationRecord
   position_within :item_id, :item_set_id
 
   validate :item_or_set_present
+  validates_presence_of :file
 
   def broadcast_update
     # Skipping broadcasts in tests for now, because image_positionable_test is failing.
@@ -98,8 +99,9 @@ class Image < ApplicationRecord
     end
   end
 
+  # Using unscoped here to allow deleted items to stil be attached to their images.
   def item_or_item_set
-    item || item_set
+    Item.unscoped { item } || ItemSet.unscoped { item_set }
   end
 
   def item_or_set_present
@@ -108,9 +110,22 @@ class Image < ApplicationRecord
     errors.add(:item_id_or_item_set_id, "Please associate an item or item set")
   end
 
-  private
+  def queue_processing
+    AnalyzeAndProcessImageJob.perform_later(id)
+  end
 
-  def process_image
-    AnalyzeAndProcessImageJob.perform_now(id)
+  def process_now
+    return unless file.attached?
+
+    file.analyze unless file.analyzed?
+
+    SIZES.each do |name, _dimensions|
+      # .processed here will resize the variant
+      blob = file.variant(name).processed.send(:record).image.blob
+
+      blob.analyze unless blob.analyzed?
+    end
+
+    update(processed_at: Time.now)
   end
 end
