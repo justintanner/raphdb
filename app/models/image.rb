@@ -34,10 +34,19 @@ class Image < ApplicationRecord
     on: %i[create destroy],
     associated: :item_or_item_set,
     skip_when: ->(image) { image.importing }
-  position_within :item_id, :item_set_id
+  position_within :item, :item_set
 
   validate :item_or_set_present
   validates_presence_of :file
+
+  # Want to keep ActiveStorage attachments when destroying this model.
+  # Would prefer to use has_one_attached :file, dependent: nil, but that is not working ATM.
+  def destroy_keep_file!
+    destroy_skip_callbacks!
+    log_destroy!(:item_or_item_set, [:deleted_at], self, importing)
+    reposition_all
+    broadcast_update
+  end
 
   def broadcast_update
     # Skipping broadcasts in tests for now, because image_positionable_test is failing.
@@ -99,7 +108,7 @@ class Image < ApplicationRecord
     end
   end
 
-  # Using unscoped here to allow deleted items to stil be attached to their images.
+  # Using unscoped here to allow deleted items to retain their images.
   def item_or_item_set
     Item.unscoped { item } || ItemSet.unscoped { item_set }
   end
@@ -120,7 +129,7 @@ class Image < ApplicationRecord
     file.analyze unless file.analyzed?
 
     SIZES.each do |name, _dimensions|
-      # .processed here will resize the variant
+      # Calling .processed here will force the variant to be created.
       blob = file.variant(name).processed.send(:record).image.blob
 
       blob.analyze unless blob.analyzed?

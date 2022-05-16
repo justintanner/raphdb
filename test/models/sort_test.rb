@@ -21,8 +21,8 @@ class SortTest < ActiveSupport::TestCase
 
   test "should sort by position" do
     view = View.create!(title: "Sort by three fields")
-    second_sort = Sort.create(view: view, field: fields(:number), position: 2)
     first_sort = Sort.create(view: view, field: fields(:number), position: 1)
+    second_sort = Sort.create(view: view, field: fields(:number), position: 2)
     third_sort = Sort.create(view: view, field: fields(:number), position: 3)
 
     sorts = view.sorts

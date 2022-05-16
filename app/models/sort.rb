@@ -7,7 +7,7 @@ class Sort < ApplicationRecord
 
   DIRECTIONS = %w[asc desc].freeze
 
-  position_within :view_id
+  position_within :view
 
   before_validation :set_default_direction
   validate :direction_is_allowable

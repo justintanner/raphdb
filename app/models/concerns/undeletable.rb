@@ -18,19 +18,23 @@ module Undeletable
 
   def destroy_skip_callbacks!
     self.skip_destroy_callbacks = true
-    destroy!
+    destroy
   end
 
   def destroy
     if really_destroy
       super
     elsif skip_destroy_callbacks
-      update(deleted_at: Time.now)
+      set_deleted_at
     else
       run_callbacks :destroy do
-        update(deleted_at: Time.now)
+        set_deleted_at
       end
     end
+  end
+
+  def set_deleted_at
+    update(deleted_at: Time.now)
   end
 
   def destroy!

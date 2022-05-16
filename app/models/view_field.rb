@@ -8,5 +8,5 @@ class ViewField < ApplicationRecord
 
   validates :view, :field, presence: true
 
-  position_within :view_id
+  position_within :view
 end
