@@ -10,7 +10,7 @@ module Positionable
       self.position ||= next_position
     end
 
-    after_commit do
+    after_save do
       reposition_all if position_order_corrupt?
     end
 
