@@ -9,7 +9,7 @@ class Image < ApplicationRecord
   belongs_to :item_set, optional: true
 
   after_commit :queue_processing, on: :create
-  after_update :broadcast_update
+  after_commit :broadcast_update, on: :update
 
   SIZES = {
     micro: [30, 30],

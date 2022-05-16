@@ -106,4 +106,18 @@ class ImagePositionableTest < ActiveSupport::TestCase
     assert_equal second_image.position, 3, "Second image was not re-positioned to 3"
     assert_equal third_image.position, 2, "Third image was not re-positioned to 2"
   end
+
+  test "should handle cases where identical numbers get into the database somehow" do
+    item = items(:single)
+    image_create!(filename: "vertical.jpg", item: item, position: 1, process: true)
+    image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
+    image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
+
+    # This image should trigger a re-positioning of all other elements
+    image_create!(filename: "vertical.jpg", item: item, process: true)
+
+    item.reload
+
+    assert_equal 1.upto(4).to_a, item.images.map(&:position).sort, "Images are not sorted by position"
+  end
 end

@@ -26,7 +26,8 @@ module Editor
 
     def destroy
       @image = Image.find(params[:id])
-      @image.destroy
+      # Skipping callbacks for images, to keep ActiveStorage entries for deleted images.
+      @image.destroy_skip_callbacks!
 
       render json: {image: @image}, status: :ok
     end

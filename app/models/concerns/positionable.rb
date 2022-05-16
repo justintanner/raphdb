@@ -6,7 +6,13 @@ module Positionable
   extend ActiveSupport::Concern
 
   included do
-    before_save { self.position ||= next_position }
+    before_save do
+      if position.nil?
+        reposition_all if position_order_corrupt?
+
+        self.position = next_position
+      end
+    end
 
     default_scope { order(position: :asc) }
   end
@@ -23,7 +29,7 @@ module Positionable
     end
   end
 
-  def position_group_where
+  def positionable_where
     if position_within_cols.present?
       position_within_cols
         .select { |col| send(col).present? }
@@ -35,14 +41,24 @@ module Positionable
   end
 
   def next_position
-    self.class.where(position_group_where).count + 1
+    self.class.where(positionable_where).count + 1
   end
 
-  def move_to(position_arg)
+  def position_order_corrupt?
+    self.class.where(positionable_where).pluck(:position) != 1.upto(next_position - 1).to_a
+  end
+
+  def reposition_all
+    self.class.where(positionable_where).each.with_index(1) do |model, position|
+      model.update!(position: position) if model.position != position
+    end
+  end
+
+  def move_to(dest_position)
     raise "position_within is not set" if self.class.class_variable_get(:@@position_within_cols).blank?
 
-    new_position = [[position_arg, 1].max, next_position].min
-    current_position = self.position
+    new_position = [[dest_position, 1].max, next_position].min
+    current_position = position
 
     return if new_position == current_position
 
@@ -61,7 +77,7 @@ module Positionable
     self.class.execute_sql(
       "UPDATE #{self.class.table_name}
       SET position = position + 1
-      WHERE #{position_group_where} AND position >= ? AND position < ?",
+      WHERE #{positionable_where} AND position >= ? AND position < ?",
       new_position,
       current_position
     )
@@ -71,7 +87,7 @@ module Positionable
     self.class.execute_sql(
       "UPDATE #{self.class.table_name}
       SET position = position - 1
-      WHERE #{position_group_where} AND position > ? AND position <= ?",
+      WHERE #{positionable_where} AND position > ? AND position <= ?",
       current_position,
       new_position
     )

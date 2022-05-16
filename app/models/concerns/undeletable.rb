@@ -6,7 +6,7 @@ module Undeletable
   extend ActiveSupport::Concern
 
   included do
-    attr_accessor :really_destroy
+    attr_accessor :really_destroy, :skip_destroy_callbacks
 
     default_scope { where(deleted_at: nil) }
   end
@@ -16,9 +16,16 @@ module Undeletable
     destroy!
   end
 
+  def destroy_skip_callbacks!
+    self.skip_destroy_callbacks = true
+    destroy!
+  end
+
   def destroy
     if really_destroy
       super
+    elsif skip_destroy_callbacks
+      update(deleted_at: Time.now)
     else
       run_callbacks :destroy do
         update(deleted_at: Time.now)
