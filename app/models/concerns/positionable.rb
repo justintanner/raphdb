@@ -59,7 +59,7 @@ module Positionable
 
   def reposition_all
     positionable_objects.each.with_index(1) do |object, position|
-      object.update!(position: position) if object.position != position
+      object.update_column(:position, position) if object.position != position
     end
   end
 
@@ -75,7 +75,7 @@ module Positionable
       move_position_down(current_position, new_position)
     end
 
-    update(position: new_position)
+    update_column(:position, new_position)
   end
 
   private

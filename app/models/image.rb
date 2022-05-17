@@ -40,11 +40,12 @@ class Image < ApplicationRecord
   validates_presence_of :file
 
   # Keeps ActiveStorage attachments when destroying this model.
-  # Would prefer to use has_one_attached :file, dependent: nil, but that is not working ATM.
+  # Would prefer to use "has_one_attached :file, dependent: nil" above, but that is not working ATM.
   def destroy_keep_file!
     log_destroy!(:item_or_item_set, [:deleted_at], self, importing)
-    reposition_all
+    # This must come before reposition_all, so that the deleted image is positioned in it's old spot.
     set_deleted_at
+    reposition_all
     broadcast_update
   end
 

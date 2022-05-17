@@ -27,7 +27,7 @@ module Undeletable
   end
 
   def set_deleted_at
-    update(deleted_at: Time.now)
+    update_column(:deleted_at, Time.now)
   end
 
   def destroy!

@@ -84,13 +84,13 @@ class ImagePositionableTest < ActiveSupport::TestCase
 
     [one_first, one_second, two_first, two_second, two_third, two_fourth].each(&:reload)
 
-    assert_equal one_first.position, 1, "One first item image position is not 1"
-    assert_equal one_second.position, 2, "One second item image position is not 2"
+    assert_equal 1, one_first.position, "One first item image position is not 1"
+    assert_equal 2, one_second.position, "One second item image position is not 2"
 
-    assert_equal two_first.position, 2, "Two first was not re-positioned to 2"
-    assert_equal two_second.position, 3, "Two second was not re-positioned to 3"
-    assert_equal two_third.position, 4, "Two third was not re-positioned to 4"
-    assert_equal two_fourth.position, 1, "Two fourth was not re-positioned to 1"
+    assert_equal 2, two_first.position, "Two first was not re-positioned to 2"
+    assert_equal 3, two_second.position, "Two second was not re-positioned to 3"
+    assert_equal 4, two_third.position, "Two third was not re-positioned to 4"
+    assert_equal 1, two_fourth.position, "Two fourth was not re-positioned to 1"
   end
 
   test "should be able to position images for item_sets as well" do
