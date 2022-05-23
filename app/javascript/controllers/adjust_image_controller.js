@@ -11,12 +11,16 @@ export default class extends Controller {
 
   open(event) {
     const that = this;
+    const frame = document.getElementById("image_editor_frame");
+    const innerContainer = that.modalElement.querySelector(".image-editor-inner-container");
 
     //  CropperJS initializes incorrectly if initialized before the modal is shown.
     that.modalElement.addEventListener("shown.bs.modal", () => {
-      document.getElementById("image_editor_frame").src = event.params.url;
+      frame.src = event.params.url;
     });
 
+    // Prevents the previously adjusted image from showing up on load.
+    innerContainer.innerHTML = "";
     that.modal.show();
   }
 }

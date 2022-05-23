@@ -1,5 +1,5 @@
-import {Controller} from "@hotwired/stimulus"
-import { patch } from "@rails/request.js";
+import {Controller} from "@hotwired/stimulus";
+import {patch} from "@rails/request.js";
 import "cropperjs";
 
 // Connects to data-controller="image-editor"
@@ -15,12 +15,14 @@ export default class extends Controller {
 
   connect() {
     const that = this;
-    const startWithNoCrop = () => { this.cropper.clear();}
+    const startWithNoCrop = () => { this.cropper.clear(); }
+    const switchButtons = () => { that.showClearCrop(); }
 
     that.cropper = new Cropper(that.imageTarget, {
       viewMode: 1,
       zoomable: false,
-      ready: startWithNoCrop
+      ready: startWithNoCrop,
+      cropend: switchButtons,
     });
   }
 
@@ -28,6 +30,20 @@ export default class extends Controller {
     const that = this;
 
     that.cropper.crop();
+    that.showClearCrop();
+  }
+
+  clearCrop() {
+    const that = this;
+
+    that.cropper.clear();
+    that.hideClearCrop();
+  }
+
+  showClearCrop() {
+    const that = this;
+
+    console.log("showClearCrop");
 
     that.clearCropButtonTarget.classList.remove("d-none");
     that.clearCropButtonTarget.classList.add("d-block");
@@ -36,10 +52,8 @@ export default class extends Controller {
     that.cropButtonTarget.classList.add("d-none");
   }
 
-  clearCrop() {
+  hideClearCrop() {
     const that = this;
-
-    that.cropper.clear();
 
     that.clearCropButtonTarget.classList.remove("d-block");
     that.clearCropButtonTarget.classList.add("d-none");
