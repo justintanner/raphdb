@@ -1,0 +1,39 @@
+<%= turbo_frame_tag "image_editor_frame" do %>
+  <div data-controller="image-editor"
+       data-image-editor-id-value="<%= image.id %>"
+       data-image-editor-large-width-value="<%= image.width(:large) %>"
+       data-image-editor-large-height-value="<%= image.height(:large) %>"
+       data-image-editor-width-value="<%= image.width %>"
+       data-image-editor-height-value="<%= image.height %>">
+    <div class="d-flex justify-content-center py-3">
+      <button type="button" class="btn btn-outline-dark mx-1 d-block" data-image-editor-target="cropButton" data-action="click->image-editor#startCrop">
+        <%= render "svgs/bi-crop" %>
+        <span class="ms-1">Crop</span>
+      </button>
+      <button type="button" class="btn btn-outline-dark mx-1 d-none" data-image-editor-target="clearCropButton" data-action="click->image-editor#clearCrop">
+        <%= render "svgs/bi-x-circle" %>
+        <span class="ms-1">Clear Crop</span>
+      </button>
+      <button type="button" class="btn btn-outline-dark mx-1" data-action="click->image-editor#rotateLeft">
+        <%= render "svgs/bi-arrow-counterclockwise" %>
+        <span class="ms-1">Rotate Left</span>
+      </button>
+      <button type="button" class="btn btn-outline-dark mx-1" data-action="click->image-editor#rotateRight">
+        <%= render "svgs/bi-arrow-clockwise" %>
+        <span class="ms-1">Rotate Right</span>
+      </button>
+    </div>
+
+    <div class="h-100 border">
+      <img src="<%= url_for(image.file.variant(:large)) %>"
+           class=""
+           data-image-editor-target="image"
+           alt="editing image"/>
+    </div>
+
+    <div class="d-flex justify-content-center py-3 me-3">
+      <button type="button" class="btn btn-dark mx-1" data-action="click->image-editor#save" data-bs-dismiss="modal">Save</button>
+      <button type="button" class="btn btn-link mx-1" data-bs-dismiss="modal">Cancel</button>
+    </div>
+  </div>
+<% end %>

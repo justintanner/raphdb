@@ -4,6 +4,6 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body pt-0">
-    <%= turbo_frame_tag "edit_item", src: edit_editor_item_path(id: Item.first.id), data: { edit_button_target: "turboFrame" } %>
+    <%= turbo_frame_tag "edit_item_frame", src: edit_editor_item_path(id: Item.first.id), data: { edit_button_target: "turboFrame" } %>
   </div>
 </div>

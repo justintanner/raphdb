@@ -109,4 +109,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+
+  # Stubs and mocks [https://github.com/freerange/mocha]
+  gem "mocha"
 end

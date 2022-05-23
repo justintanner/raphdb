@@ -6,16 +6,18 @@ module Positionable
   extend ActiveSupport::Concern
 
   included do
+    attr_accessor :skip_repositioning
+
     before_save do
       self.position ||= next_position
     end
 
     after_save do
-      reposition_all if position_order_corrupt?
+      reposition_all unless skip_repositioning || objects_in_order?
     end
 
     after_destroy do
-      reposition_all
+      reposition_all unless skip_repositioning
     end
 
     default_scope { order(position: :asc) }
@@ -53,8 +55,8 @@ module Positionable
     positionable_objects.count + 1
   end
 
-  def position_order_corrupt?
-    positionable_objects.pluck(:position) != 1.upto(next_position - 1).to_a
+  def objects_in_order?
+    positionable_objects.pluck(:position) == 1.upto(next_position - 1).to_a
   end
 
   def reposition_all
@@ -75,7 +77,7 @@ module Positionable
       move_position_down(current_position, new_position)
     end
 
-    update_column(:position, new_position)
+    update(position: new_position)
   end
 
   private

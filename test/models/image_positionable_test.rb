@@ -3,6 +3,16 @@
 require "test_helper"
 
 class ImagePositionableTest < ActiveSupport::TestCase
+  def setup
+    # Fake host to satisfy active storage in test.
+    ActiveStorage::Current.url_options = {host: "localhost:9000"}
+  end
+
+  def after_teardown
+    super
+    FileUtils.rm_rf(ActiveStorage::Blob.service.root)
+  end
+
   test "should have a default position of 1" do
     image = image_create!(filename: "vertical.jpg", item: items(:single), process: true)
     assert_equal image.position, 1, "Position is not 1"

@@ -56,7 +56,7 @@
               <div class="col">
                 <div data-controller="enlarge">
                   <% item.images.each do |image| %>
-                    <a data-enlarge-target="url" href="<%= image.file.url %>"></a>
+                    <a data-enlarge-target="url" href="<%= url_for(image.file) %>"></a>
                   <% end %>
 
                   <a href="javascript:void(0);" data-action="click->enlarge#open" class="d-flex align-items-center" data-englarge-position-param="<%= position - 1 %>">

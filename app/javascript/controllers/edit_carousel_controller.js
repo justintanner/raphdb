@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 import { Sortable } from "sortablejs";
 import { patch } from "@rails/request.js";
 

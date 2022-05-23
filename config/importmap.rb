@@ -20,3 +20,4 @@ pin "moment" # @2.29.3
 pin "pikaday" # @1.8.2
 pin "sortablejs" # @1.15.0
 pin "@splidejs/splide", to: "@splidejs--splide.js" # @4.0.1
+pin "cropperjs" # @1.5.12, imported manually using the cropper.umd.js file, other dist files did not work.

@@ -52,11 +52,4 @@ class ImageTest < ActiveSupport::TestCase
     assert_equal 250, image.width(:medium), "Width is not correct"
     assert_equal 163, image.height(:medium), "Height is not correct"
   end
-
-  test "should return the max width and max height for a variant of the image" do
-    image = image_create!(filename: "horizontal.jpg", item: items(:football), process: true)
-
-    assert_equal 250, image.max_width(:medium), "Width is not correct"
-    assert_equal 250, image.max_height(:medium), "Height is not correct"
-  end
 end

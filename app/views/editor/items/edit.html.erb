@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "edit_item" do %>
+<%= turbo_frame_tag "edit_item_frame" do %>
   <div class="row">
     <div class="col-10">
       <%= form_for(@item, url: editor_item_path(@item.id)) do |form| %>
@@ -21,7 +21,7 @@
     <div class="col-2">
       <div class="row p-3" data-controller="upload">
         <div class="m-0 p-0">
-          <label class="form-label">Images</label>
+          <label class="form-label me-1">Images</label>
           <%= form_for(Image.new, url: editor_images_path, method: :post, html: {class: "d-inline-block"}) do |form| %>
             <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
             <%= form.hidden_field :item_id, value: @item.id %>

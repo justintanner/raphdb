@@ -134,6 +134,7 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     minitest (5.15.0)
+    mocha (1.14.0)
     monetize (1.12.0)
       money (~> 6.12)
     money (6.16.0)
@@ -298,6 +299,7 @@ DEPENDENCIES
   friendly_id
   image_processing (~> 1.2)
   importmap-rails
+  mocha
   monetize
   money
   omniauth

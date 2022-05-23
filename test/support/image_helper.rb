@@ -6,7 +6,7 @@ module ImageHelper
     image.file.attach(io: open_fixture(filename), filename: filename)
     image.save!
 
-    image.process_now if process
+    image.process! if process
 
     image
   end
