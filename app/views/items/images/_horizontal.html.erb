@@ -11,7 +11,7 @@
 <ul class="list-group list-group-horizontal mt-2">
   <% total_images = item.images.length %>
   <% item.images.each.with_index(1) do |image, index| %>
-    <li class="list-group-item p-2">
+    <li class="list-group-item d-flex align-items-center justify-content-center p-2">
       <%= link_to picture_item_path(item, image.position) do %>
         <%= image_tag url_for(image.file.variant(:micro)),
                       srcset: srcset(image, :micro_retina, :micro),
@@ -23,8 +23,8 @@
       <% end %>
     </li>
     <% if total_images > 4 && index == 3 %>
-      <li class="list-group-item p-2">
-        <span class="badge bg-light text-dark">+ <%= total_images - index %></span>
+      <li class="list-group-item d-flex align-items-center justify-content-center p-0">
+        <span class="text-dark font-monospace mx-2"><small>+<%= total_images - index %></small></span>
       </li>
       <% break %>
     <% end %>

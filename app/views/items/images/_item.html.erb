@@ -23,16 +23,16 @@
         <div class="col-auto pe-0">
           <% first_image = item.images.first %>
           <% if first_image.present? %>
-            <% if first_image.horizontal? %>
-              <%= render "items/images/horizontal", first_image: first_image, item: item %>
-            <% else %>
+            <% if first_image.height(:medium) >= 200 %>
               <%= render "items/images/vertical", first_image: first_image, item: item %>
+            <% else %>
+              <%= render "items/images/horizontal", first_image: first_image, item: item %>
             <% end %>
           <% end %>
         </div>
         <div class="col">
           <div class="pb-5 overflow-hidden" style="height: 250px;">
-            <%= render "items/fields_data", item: item, except: %w(item_title prefix number in_set), limit: 4, max_chars: 32 %>
+            <%= render "items/fields_data", item: item, except: %w(item_title prefix number in_set), limit: 3, max_chars: 32 %>
           </div>
         </div>
       </div>

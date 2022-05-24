@@ -1,7 +1,7 @@
 <div class="d-flex align-items-start">
   <ul class="list-group d-inline-block me-2">
     <% item.images.each.with_index(1) do |image, index| %>
-      <li class="list-group-item d-flex justify-content-center p-2" style="width: 46px;">
+      <li class="list-group-item d-flex align-items-center justify-content-center p-2" style="width: 46px;">
         <%= link_to picture_item_path(item, image.position) do %>
           <%= image_tag url_for(image.file.variant(:micro)),
                         srcset: srcset(image, :micro_retina, :micro),
@@ -11,9 +11,9 @@
                         class: class_names("border": true, "border-dark": image == first_image) %>
         <% end %>
       </li>
-      <% if item.images.count > 3 && index == 3 %>
-        <li class="list-group-item p-2">
-          <span class="badge bg-light text-dark">+ <%= item.images.count - index %></span>
+      <% if item.images.count > 4 && index == 3 %>
+        <li class="list-group-item d-flex align-items-center justify-content-center p-0">
+          <span class="text-dark font-monospace my-2"><small>+<%= item.images.count - index %></small></span>
         </li>
         <% break %>
       <% end %>
