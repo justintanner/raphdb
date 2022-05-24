@@ -1,7 +1,7 @@
 <div class="card p-0 mb-2"
      style="width: 160px;"
      id="<%= dom_id(image) %>"
-     data-controller="adjust-image enlarge"
+     data-controller="adjust-image"
      data-adjust-image-url-value="<%= url_for(image.file) %>"
      data-adjust-image-width-value="<%= image.width %>"
      data-adjust-image-height-value="<%= image.height %>">
@@ -17,15 +17,20 @@
           <span class="font-monospaced text-muted"><small><%= image.position %></small></span>
         </div>
         <div class="d-inline-block m-0 align-items-center">
-          <a data-enlarge-target="url" href="<%= url_for(image.file) %>"></a>
-          <%= image_tag url_for(image.file.variant(:small)),
-                        srcset: srcset(image, :small_retina, :small),
-                        sizes: "#{image.width(:small)}px",
-                        width: image.width(:small),
-                        height: image.height(:small),
-                        class: "border",
-                        loading: "lazy",
-                        alt: "Image #{position}" %>
+          <%= link_to url_for(image.file),
+                      data: {
+                        action: "enlarge#open",
+                        enlarge_target: "url",
+                        enlarge_position_params: image.position - 1} do %>
+            <%= image_tag url_for(image.file.variant(:small)),
+                          srcset: srcset(image, :small_retina, :small),
+                          sizes: "#{image.width(:small)}px",
+                          width: image.width(:small),
+                          height: image.height(:small),
+                          class: "border",
+                          loading: "lazy",
+                          alt: "Image #{position}" %>
+          <% end %>
         </div>
       </div>
     </div>

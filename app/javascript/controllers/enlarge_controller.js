@@ -36,6 +36,8 @@ export default class extends Controller {
     const that = this;
 
     that.lightbox.open(event.params.position);
+
+    event.preventDefault();
   }
 }
 
