@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     end
     resources :views, only: [:show] do
       collection do
-        get :default
+        get :default, as: :default
       end
       member do
         get :search
