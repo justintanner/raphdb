@@ -28,6 +28,10 @@ class User < ApplicationRecord
       .join
   end
 
+  def sidebar_open?
+    settings["sidebar_open"]
+  end
+
   private
 
   def no_boolean_strings

@@ -77,7 +77,8 @@ module Positionable
       move_position_down(current_position, new_position)
     end
 
-    update(position: new_position, skip_repositioning: true)
+    self.skip_repositioning = true
+    update(position: new_position)
   end
 
   private

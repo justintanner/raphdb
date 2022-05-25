@@ -18,13 +18,11 @@
 
   <div class="row d-flex flex-fill justify-content-start">
     <div class="col-auto d-flex px-0">
-      <div id="sidebar"
-           data-sidebar-target="container"
-           class="<%= class_names("flex-column", "h-100", "border-end", "border-2", "p-3", "d-flex": current_user.settings["sidebar_open"], "d-none": !current_user.settings["sidebar_open"]) %>">
-        <%= render "layouts/editor_sidebar" %>
-      </div>
+      <%= render "layouts/editor_sidebar" %>
     </div>
-    <%= yield %>
+    <div class="col d-flex flex-column p-0 overflow-hidden">
+      <%= yield %>
+    </div>
   </div>
 </div>
 

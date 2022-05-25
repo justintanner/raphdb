@@ -1,8 +1,5 @@
 <%= content_for :title, @view.title %>
 
-<div class="col d-flex flex-column p-0 overflow-hidden">
-  <%= render "editor/items/editable_list/container", items: @items, pagy: @pagy %>
-</div>
-
+<%= render "editor/items/editable_list/container", items: @items, pagy: @pagy %>
 <%= render "editor/items/form" %>
 

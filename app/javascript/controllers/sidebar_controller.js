@@ -27,6 +27,8 @@ export default class extends Controller {
 
     that.hideButtonTarget.classList.add("d-block");
     that.hideButtonTarget.classList.remove("d-none");
+
+    that.saveSettingSidebarOpen("true");
   }
 
   close() {
