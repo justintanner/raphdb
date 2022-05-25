@@ -4,7 +4,11 @@
   <td class="list-edit-col">
     <%= button_tag class: "btn btn-link no-box-shadow p-0 m-0 mt-1px d-flex align-items-center",
                    title: "Edit Item",
-                   data: { action: "click->edit-button#open", edit_button_url_param: edit_editor_item_path(item.id) } do %>
+                   data: {
+                     controller: "edit-button",
+                     action: "click->edit-button#open",
+                     edit_button_url_param: edit_editor_item_path(item.id)
+                   } do %>
       <%= render "svgs/bi-pencil-square" %>
     <% end %>
   </td>

@@ -15,5 +15,6 @@
   <%= render "layouts/header" %>
   <%= yield %>
   <%= render "layouts/footer" unless content_for?(:no_footer) %>
+  <%= render "layouts/error_popup" %>
   </body>
 </html>

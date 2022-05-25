@@ -1,9 +1,9 @@
 <div class="card card-editor-images p-0 mb-2"
      id="<%= dom_id(image) %>"
-     data-controller="adjust-image"
-     data-adjust-image-url-value="<%= url_for(image.file) %>"
-     data-adjust-image-width-value="<%= image.width %>"
-     data-adjust-image-height-value="<%= image.height %>">
+     data-controller="adjust-link"
+     data-adjust-link-url-value="<%= url_for(image.file) %>"
+     data-adjust-link-width-value="<%= image.width %>"
+     data-adjust-link-height-value="<%= image.height %>">
   <div class="card-body py-3 px-0">
     <div class="row">
       <div class="col">
@@ -38,8 +38,8 @@
         <div class="text-center mt-3">
           <%= link_to "javascript:void(0);",
                       data: {
-                        action: "adjust-image#open",
-                        adjust_image_url_param: edit_editor_image_path(image)
+                        action: "adjust-link#open",
+                        adjust_link_url_param: edit_editor_image_path(image)
                       },
                       class: "d-inline-block text-muted me-2" do %>
             <small><%= render "svgs/bi-crop" %><span class="ms-1">Adjust</span></small>
