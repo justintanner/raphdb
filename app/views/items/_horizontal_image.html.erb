@@ -59,7 +59,7 @@
                     <a data-enlarge-target="url" href="<%= url_for(image.file) %>"></a>
                   <% end %>
 
-                  <a href="javascript:void(0);" data-action="click->enlarge#open" class="d-flex align-items-center" data-englarge-position-param="<%= position - 1 %>">
+                  <a href="<%= url_for(featured_image.file) %>" data-action="click->enlarge#open" class="d-flex align-items-center" data-englarge-position-param="<%= position - 1 %>">
                     <%= render "svgs/bi-arrows-fullscreen" %>
                     <span class="ms-2"><small>Enlarge Image</small></span>
                   </a>

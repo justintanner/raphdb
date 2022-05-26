@@ -11,10 +11,12 @@
   <%= yield :head %>
 </head>
 
-<body class="h-100">
+<body class="h-100 overflow-hidden">
+
+<%= render "layouts/editor_header" %>
 
 <div class="container-fluid d-flex flex-column vh-100" data-controller="sidebar">
-  <%= render "layouts/editor_header" %>
+  <%= render "layouts/editor_toolbar" %>
 
   <div class="row d-flex flex-fill justify-content-start">
     <div class="col-auto d-flex px-0">

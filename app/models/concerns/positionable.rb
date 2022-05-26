@@ -60,6 +60,7 @@ module Positionable
   end
 
   def reposition_all
+    puts "repositioning_all for id: #{id}, position: #{position}"
     positionable_objects.each.with_index(1) do |object, position|
       object.update_column(:position, position) if object.position != position
     end

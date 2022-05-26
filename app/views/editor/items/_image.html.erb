@@ -20,7 +20,7 @@
                       data: {
                         action: "enlarge#open",
                         enlarge_target: "url",
-                        enlarge_position_params: image.position - 1} do %>
+                        enlarge_position_param: image.position - 1} do %>
             <%= image_tag url_for(image.file.variant(:small)),
                           srcset: srcset(image, :small_retina, :small),
                           sizes: "#{image.width(:small)}px",

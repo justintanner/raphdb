@@ -1,25 +1,28 @@
-<div class="row d-flex border-bottom border-2">
-  <div class="col-auto d-flex align-items-center p-3" style="width: 300px">
-    <span><%= link_to "JL Editor", editor_root_path %></span>
-    <button type="button" class="btn btn-light btn-sm ms-3 shadow-none ms-auto" data-sidebar-target="hideButton" data-action="sidebar#toggle">
-      <%= render "svgs/bi-layout-sidebar-inset" %><span class="ms-2">Hide</span>
-    </button>
-    <button type="button" class="btn btn-light btn-sm ms-3 shadow-none ms-auto d-none" data-sidebar-target="showButton" data-action="sidebar#toggle">
-      <%= render "svgs/bi-layout-sidebar-inset-reverse" %><span class="ms-2">Show</span>
-    </button>
-  </div>
-  <div class="col d-flex align-items-center p-3">
-    <%= render "svgs/bi-table" %><span class="ms-2"><%= yield :title %></span>
-
-    <div class="dropdown ms-auto">
-      <a href="javascript:void(0);" class="dropdown-toggle text-decoration-none text-body" id="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false" alt="<%= current_user.email %>">
-          <span class="d-inline-flex badge rounded-circle bg-warning p-0 wh-32px">
-            <span class="my-auto mx-auto text-white"><%= current_user.name_initials %></span>
-          </span>
-      </a>
-      <ul class="dropdown-menu text-small shadow" aria-labelledby="user-dropdown">
-        <li><%= link_to('Logout', destroy_user_session_path, class: "dropdown-item", data: { turbo_method: :delete }) %></li>
-      </ul>
+<div class="container-fluid bg-primary bg-gradient">
+  <header class="navbar p-1">
+    <div class="nav col-3">
+      <%= link_to editor_root_path, class: "text-white" do %>
+        <%= render "svgs/bi-columns" %><span class="ms-1 text-white">Editor</span>
+      <% end %>
     </div>
-  </div>
+
+    <div class="nav col-6 d-flex justify-content-center align-items-center text-white">
+      <%= yield :title_svg %><span class="ms-2 text-white"><%= yield :title %></span>
+    </div>
+
+    <div class="nav col-3">
+      <div class="dropdown ms-auto">
+        <div class="btn-group">
+          <button type="button" class="btn btn-link no-box-shadow dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+            <span class="d-inline-flex badge rounded-circle bg-light p-0 wh-32px">
+              <span class="my-auto mx-auto text-dark"><%= current_user.name_initials %></span>
+            </span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-start">
+            <li><%= link_to('Logout', destroy_user_session_path, class: "dropdown-item", data: { turbo_method: :delete }) %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
 </div>

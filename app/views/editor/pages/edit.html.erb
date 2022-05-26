@@ -1,4 +1,7 @@
-<% content_for(:title, "Editing Page: #{@page.title}") %>
+<% content_for :title, @page.title %>
+<% content_for :title_svg do %>
+  <%= render "svgs/bi-file-earmark-richtext" %>
+<% end %>
 
 <div class="p-3">
   <%= form_with model: @page, url: editor_page_path(@page), data: { controller: "" } do |form| %>
