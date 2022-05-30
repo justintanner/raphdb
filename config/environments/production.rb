@@ -84,6 +84,14 @@ Rails.application.configure do
   # require "syslog/logger"
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
 
+  # Settings for the exception_notification gem.
+  Rails.application.config.middleware.use ExceptionNotification::Rack,
+    email: {
+      email_prefix: "[RaphDB] ",
+      sender_address: %("exception" <exception@raphdb.com>),
+      exception_recipients: %w[jwt@hey.com]
+    }
+
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter

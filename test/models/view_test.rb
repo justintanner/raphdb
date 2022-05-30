@@ -36,8 +36,7 @@ class ViewTest < ActiveSupport::TestCase
     reverse_view.reload
 
     assert default_view.default, "Old default did not return to default"
-    assert_not reverse_view.default,
-      "Reversed still has a default status of true"
+    assert_not reverse_view.default, "Reversed still has a default status of true"
   end
 
   test "should be able to access the default view with a class method" do
@@ -97,9 +96,7 @@ class ViewTest < ActiveSupport::TestCase
 
     view.destroy
 
-    assert_not_equal ViewField.where(view: view, field: field).count,
-      0,
-      "ViewField must have been destroyed"
+    assert_not_equal ViewField.where(view: view, field: field).count, 0, "ViewField must have been destroyed"
   end
 
   test "should not get deleted fields" do
@@ -114,5 +111,20 @@ class ViewTest < ActiveSupport::TestCase
     view.reload
 
     assert_equal view.fields.count, 0, "Deleted field was returned"
+  end
+
+  test "should duplicate the default view" do
+    default_view = views(:default)
+
+    view = default_view.duplicate
+
+    assert_equal "Copy of #{default_view.title}", view.title, "Title was not copied"
+    assert !view.default, "New view is default"
+
+    assert_equal default_view.fields, view.fields, "Fields are not the same"
+    assert_equal default_view.fields.first, view.fields.first, "First field doesn't match"
+    assert_equal default_view.fields.last, view.fields.last, "Last field doesn't match"
+
+    assert_equal default_view.sql_sort_order, view.sql_sort_order, "Sort order is not the same"
   end
 end

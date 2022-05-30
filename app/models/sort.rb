@@ -16,6 +16,10 @@ class Sort < ApplicationRecord
     "data->'#{field.key}' #{direction.upcase}"
   end
 
+  def duplicate(view:)
+    Sort.create(view: view, field: field, direction: direction)
+  end
+
   private
 
   def set_default_direction

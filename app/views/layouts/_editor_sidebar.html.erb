@@ -1,19 +1,7 @@
 <div id="sidebar"
      data-sidebar-target="container"
      class="<%= class_names("flex-column", "h-100", "border-end", "border-2", "p-3", "d-flex": current_user.sidebar_open?, "d-none": !current_user.sidebar_open?) %>">
-  <p class="text-muted mb-2">Views</p>
-  <ul class="nav flex-column nav-pills mb-3">
-    <% View.all.each do |view| %>
-      <li class="nav-item">
-        <%= link_to editor_view_path(view), class: class_names("nav-link": true, "active": @view == view), aria_current: "view" do %>
-          <%= render "svgs/bi-file-ruled" %><span class="ms-2"><%= view.title %></span>
-          <% if @view == view %>
-            <span class="float-end"><%= render "svgs/bi-check" %></span>
-          <% end %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
+  <%= render "editor/views/views" %>
 
   <p class="text-muted mb-2">Pages</p>
   <ul class="nav flex-column nav-pills mt-0">

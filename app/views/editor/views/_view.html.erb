@@ -1,0 +1,10 @@
+<li class="nav-item" id="<%= dom_id(view) %>">
+  <%= link_to editor_view_path(view), class: class_names("nav-link", "active": @view == view), aria_current: "view" do %>
+    <%= render "svgs/bi-file-ruled" %><span class="ms-2"><%= view.title %></span>
+    <% if view.default %>D
+    <% end %>
+    <% if @view == view %>
+      <span class="float-end"><%= render "svgs/bi-check" %></span>
+    <% end %>
+  <% end %>
+</li>

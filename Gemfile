@@ -75,6 +75,9 @@ gem "money"
 # Currency parsing [https://github.com/RubyMoney/monetize]
 gem "monetize"
 
+# Send emails when a user gets an error [https://github.com/smartinez87/exception_notification]
+gem "exception_notification"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   # This gem break RubyMine's debugger, disabling it for now.

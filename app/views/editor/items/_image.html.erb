@@ -46,7 +46,7 @@
           <% end %>
           <%= link_to editor_image_path(image),
                       class: "d-inline-block text-muted",
-                      data: { turbo_confirm: "Are you sure you want to delete this image?", turbo_method: :delete } do %>
+                      data: { turbo_confirm: "Are you sure?", turbo_method: :delete } do %>
             <small><%= render "svgs/bi-trash" %><span class="">Delete</span></small>
           <% end %>
         </div>

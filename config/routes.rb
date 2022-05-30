@@ -15,12 +15,15 @@ Rails.application.routes.draw do
         get :edit
       end
     end
-    resources :views, only: [:show] do
+    resources :views, only: [:show, :update, :destroy] do
       collection do
         get :default, as: :default
       end
       member do
         get :search
+        get :destroy_and_redirect, as: :destroy_and_redirect
+        post :duplicate, as: :duplicate
+        post :set_default, as: :set_default
       end
     end
     resources :pages, only: [:edit, :update]
@@ -35,7 +38,7 @@ Rails.application.routes.draw do
 
   resources :item_sets, path: "sets", only: [:show]
 
+  get "/error", to: "errors#index", as: :error
   get "/:slug", to: "pages#show"
-
   root "pages#show", slug: "homepage"
 end

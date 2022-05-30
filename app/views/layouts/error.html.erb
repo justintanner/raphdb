@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
   <title>We're sorry, but something went wrong (500)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
+
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;
       background-color: #F1F1F1;
     }
+
     .container {
       width: 928px;
       margin: 0 auto;
@@ -20,36 +21,28 @@
       border-radius: 3px;
       vertical-align: top;
     }
+
     .container td {
       width: 464px;
       vertical-align: top;
     }
+
     h1 {
       text-align: center;
       margin: 40px 0;
     }
+
     ul li {
       margin: 0;
     }
-    p { margin: 0; line-height: 30px;}
-  </style>
-  
-  <h1>We're sorry, but something went wrong (500)</h1>
-  
-  <table class="container">
-    <tr>
-      <td>
-        <p>This error has been reported to an administrator.</p>
-        
-        <p>In the meantime:</p>
-        <ul>
-          <li style="margin-bottom: 10px">Press <b>the back button</b> and try again.</li>
-          <li style="margin-bottom: 10px">If this continues email: <a href="mailto:feedback@raphdb.com">feedback@raphdb.com</a></li>
-        </ul>
-      </td>
-      <td><img src="/images/fail_dog.jpg" alt="funny dog picture"></td>
-    </tr>
-  </table>
 
+    p {
+      margin: 0;
+      line-height: 30px;
+    }
+  </style>
 </head>
+<body>
+<%= yield %>
+</body>
 </html>

@@ -108,6 +108,9 @@ GEM
     down (5.3.0)
       addressable (~> 2.8)
     erubi (1.10.0)
+    exception_notification (4.5.0)
+      actionmailer (>= 5.2, < 8)
+      activesupport (>= 5.2, < 8)
     execjs (2.8.1)
     ffi (1.15.4)
     friendly_id (5.4.2)
@@ -296,6 +299,7 @@ DEPENDENCIES
   devise
   devise_invitable
   down
+  exception_notification
   friendly_id
   image_processing (~> 1.2)
   importmap-rails
