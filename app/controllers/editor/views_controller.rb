@@ -22,10 +22,9 @@ module Editor
 
       if @view.update(view_params)
         render json: {view: @view}, status: :ok
-        return
+      else
+        render json: {errors: @view.errors.full_messages}, status: :unprocessable_entity
       end
-
-      render json: {errors: @view.errors.full_messages}, status: :unprocessable_entity
     end
 
     def destroy
@@ -34,10 +33,9 @@ module Editor
 
       if @view.errors.present?
         redirect_to error_path(message: @view.errors.full_messages.join(", "))
-        return
+      else
+        redirect_to default_editor_views_path
       end
-
-      redirect_to default_editor_views_path
     end
 
     def duplicate
@@ -46,27 +44,15 @@ module Editor
 
       if @new_view.errors.present?
         redirect_to error_path(message: @new_view.errors.full_messages.join(", "))
-        return
+      else
+        redirect_to editor_view_path(@new_view)
       end
-
-      redirect_to editor_view_path(@new_view)
-    end
-
-    def set_default
-      @view = View.find(params[:id])
-
-      if @view.update(default: true)
-        render json: {view: @view}, status: :ok
-        return
-      end
-
-      render json: {errors: @view.errors.full_messages}, status: :unprocessable_entity
     end
 
     private
 
     def view_params
-      params.require(:view).permit(:title)
+      params.require(:view).permit(:title, :default)
     end
   end
 end

@@ -1,0 +1,39 @@
+<%= turbo_stream_from "view_dropdown_stream" %>
+
+<div id="view_dropdown" data-controller="rename-view">
+  <div class="dropdown" data-rename-view-target="dropdown">
+    <button type="button" class="btn btn-link btn-sm shadow-none d-flex align-items-center ms-1 dropdown-toggle" id="viewDropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+      <%= render "svgs/bi-file-spreadsheet" %><span class="ms-1"><%= view.title %></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="viewDropdownMenu">
+      <li><%= link_to "Duplicate View", duplicate_editor_view_path(view), data: { turbo_method: :post }, class: "dropdown-item" %></li>
+      <li>
+        <%= button_tag "Rename View",
+                       data: {
+                         action: "click->rename-view#show",
+                         rename_view_url_param: editor_view_path(view)
+                       },
+                       class: "dropdown-item" %>
+      </li>
+      <% unless view.default %>
+        <li><%= button_tag "Set as Default View",
+                           class: "dropdown-item",
+                           data: {
+                             controller: "set-default",
+                             action: "click->set-default#set",
+                             set_default_update_path_value: editor_view_path(view),
+                           } %>
+        </li>
+        <li>
+          <%= button_to "Delete View", editor_view_path(view), form: { data: { turbo_confirm: "Are you sure?" } }, class: "btn btn-link dropdown-item", method: :delete %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <div data-rename-view-target="container" class="d-none">
+    <%= text_field_tag :title,
+                       view.title,
+                       class: "form-control form-control-sm",
+                       data: { rename_view_target: "input", rename_view_update_path_value: editor_view_path(view)} %>
+  </div>
+</div>

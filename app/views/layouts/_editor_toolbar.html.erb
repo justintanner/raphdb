@@ -8,32 +8,9 @@
       <%= render "svgs/bi-layout-sidebar-inset-reverse" %><span class="ms-2">Sidebar</span>
     </button>
 
-    <div data-controller="rename-view">
-      <div class="dropdown" data-rename-view-target="dropdown">
-        <button type="button" class="btn btn-link btn-sm shadow-none d-flex align-items-center ms-1 dropdown-toggle" id="viewDropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
-          <%= render "svgs/bi-file-ruled" %><span class="ms-1"><%= yield :title %></span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="viewDropdownMenu">
-          <li><%= link_to "Duplicate View", duplicate_editor_view_path(@view), data: { turbo_method: :post }, class: "dropdown-item" %></li>
-          <li>
-            <button data-action="click->rename-view#show" class="dropdown-item" type="button">Rename View</button>
-          </li>
-          <% unless @view.default %>
-            <li><%= link_to "Set as Default View", set_default_editor_view_path(@view), data: { turbo_method: :post }, class: "dropdown-item" %></li>
-            <li>
-              <%= button_to "Delete View", editor_view_path(@view), form: { data: { turbo_confirm: "Are you sure?" } }, class: "btn btn-link dropdown-item", method: :delete %>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-      <div data-rename-view-target="form" class="d-none">
-        <%= form_for(@view, url: editor_view_path(@view), html: { class: "row align-items-center" }, data: { action: "submit->rename-view#hide"}) do |form| %>
-          <div class="col-auto pe-0"><%= form.text_field :title, class: "form-control form-control-sm", data: { rename_view_target: "input"} %></div>
-          <div class="col-auto ps-1"><%= form.submit "Rename", class: "btn btn-primary btn-sm" %></div>
-        <% end %>
-      </div>
-    </div>
+    <%= render "editor/views/dropdown", view: @view %>
   </div>
+
   <div class="col d-flex align-items-center p-2">
     <div id="search-box-container" class="ms-auto">
       <%= form_tag items_url, method: :get, class: "input-group border rounded bg-light", id: "search-box" do |_form| %>

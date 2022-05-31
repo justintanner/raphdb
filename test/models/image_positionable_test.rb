@@ -14,20 +14,22 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test "should have a default position of 1" do
-    image = image_create!(filename: "vertical.jpg", item: items(:single), process: true)
+    item = item_create!(item_title: "Only one")
+    image = image_create!(filename: "vertical.jpg", item: item, process: true)
     assert_equal image.position, 1, "Position is not 1"
   end
 
   test "should automatically position in the next spot" do
-    first_image = image_create!(filename: "vertical.jpg", item: items(:single), process: true)
-    second_image = image_create!(filename: "horizontal.jpg", item: items(:single), process: true)
+    item = item_create!(item_title: "Two")
+    first_image = image_create!(filename: "vertical.jpg", item: item, process: true)
+    second_image = image_create!(filename: "horizontal.jpg", item: item, process: true)
 
     assert_equal first_image.position, 1, "First item image position is not 1"
     assert_equal second_image.position, 2, "Second item image position is not 2"
   end
 
   test "should sort by position" do
-    item = items(:single)
+    item = item_create!(item_title: "Sort by position")
     first_image = image_create!(filename: "vertical.jpg", item: item, position: 1, process: true)
     second_image = image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
     third_image = image_create!(filename: "vertical.jpg", item: item, position: 3, process: true)
@@ -36,9 +38,10 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test "moving first to second should re-position items" do
-    first_image = image_create!(filename: "vertical.jpg", item: items(:single), position: 1, process: true)
-    second_image = image_create!(filename: "vertical.jpg", item: items(:single), position: 2, process: true)
-    third_image = image_create!(filename: "vertical.jpg", item: items(:single), position: 3, process: true)
+    item = item_create!(item_title: "Move First")
+    first_image = image_create!(filename: "vertical.jpg", item: item, position: 1, process: true)
+    second_image = image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
+    third_image = image_create!(filename: "vertical.jpg", item: item, position: 3, process: true)
 
     first_image.move_to(2)
 
@@ -50,9 +53,10 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test "moving third to first should re-position items" do
-    first_image = image_create!(filename: "vertical.jpg", item: items(:single), position: 1, process: true)
-    second_image = image_create!(filename: "vertical.jpg", item: items(:single), position: 2, process: true)
-    third_image = image_create!(filename: "vertical.jpg", item: items(:single), position: 3, process: true)
+    item = item_create!(item_title: "Move Third")
+    first_image = image_create!(filename: "vertical.jpg", item: item, position: 1, process: true)
+    second_image = image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
+    third_image = image_create!(filename: "vertical.jpg", item: item, position: 3, process: true)
 
     third_image.move_to(1)
 
@@ -82,13 +86,15 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test "moving items should should not bleed into other items" do
-    one_first = image_create!(filename: "vertical.jpg", item: items(:single), position: 1, process: true)
-    one_second = image_create!(filename: "horizontal.jpg", item: items(:single), position: 2, process: true)
+    one_item = item_create!(item_title: "One")
+    one_first = image_create!(filename: "vertical.jpg", item: one_item, position: 1, process: true)
+    one_second = image_create!(filename: "horizontal.jpg", item: one_item, position: 2, process: true)
 
-    two_first = image_create!(filename: "vertical.jpg", item: items(:tennis), position: 1, process: true)
-    two_second = image_create!(filename: "horizontal.jpg", item: items(:tennis), position: 2, process: true)
-    two_third = image_create!(filename: "vertical.jpg", item: items(:tennis), position: 3, process: true)
-    two_fourth = image_create!(filename: "horizontal.jpg", item: items(:tennis), position: 4, process: true)
+    two_item = item_create!(item_title: "Two")
+    two_first = image_create!(filename: "vertical.jpg", item: two_item, position: 1, process: true)
+    two_second = image_create!(filename: "horizontal.jpg", item: two_item, position: 2, process: true)
+    two_third = image_create!(filename: "vertical.jpg", item: two_item, position: 3, process: true)
+    two_fourth = image_create!(filename: "horizontal.jpg", item: two_item, position: 4, process: true)
 
     two_fourth.move_to(1)
 
@@ -104,21 +110,23 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test "should be able to position images for item_sets as well" do
-    first_image = image_create!(filename: "vertical.jpg", item_set: item_sets(:orphan), position: 1, process: true)
-    second_image = image_create!(filename: "vertical.jpg", item_set: item_sets(:orphan), position: 2, process: true)
-    third_image = image_create!(filename: "vertical.jpg", item_set: item_sets(:orphan), position: 3, process: true)
+    item_set = ItemSet.create!(title: "Covers")
+    first_image = image_create!(filename: "vertical.jpg", item_set: item_set, position: 1, process: true)
+    second_image = image_create!(filename: "vertical.jpg", item_set: item_set, position: 2, process: true)
+    third_image = image_create!(filename: "vertical.jpg", item_set: item_set, position: 3, process: true)
 
     third_image.move_to(2)
 
     [first_image, second_image, third_image].each(&:reload)
 
     assert_equal first_image.position, 1, "First image was not left alone"
+    # TODO: Seeing this fail, is this a problem with the test or the code?
     assert_equal second_image.position, 3, "Second image was not re-positioned to 3"
     assert_equal third_image.position, 2, "Third image was not re-positioned to 2"
   end
 
   test "should handle cases where identical numbers get into the database somehow" do
-    item = items(:single)
+    item = item_create!(item_title: "Messed up numbers")
     image_create!(filename: "vertical.jpg", item: item, position: 1, process: true)
     image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
     image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
@@ -132,7 +140,7 @@ class ImagePositionableTest < ActiveSupport::TestCase
   end
 
   test "deleting an image repositions the other images" do
-    item = items(:single)
+    item = item_create!(item_title: "Deleting image")
     first_image = image_create!(filename: "vertical.jpg", item: item, position: 1, process: true)
     second_image = image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
     third_image = image_create!(filename: "vertical.jpg", item: item, position: 3, process: true)

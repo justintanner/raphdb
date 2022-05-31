@@ -21,9 +21,7 @@ Rails.application.routes.draw do
       end
       member do
         get :search
-        get :destroy_and_redirect, as: :destroy_and_redirect
         post :duplicate, as: :duplicate
-        post :set_default, as: :set_default
       end
     end
     resources :pages, only: [:edit, :update]

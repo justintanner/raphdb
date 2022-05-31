@@ -18,13 +18,13 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
     patch "/editor/views/#{view.id}", params: {view: {title: "New Title"}}
 
     assert_response :success
-    assert_equal "New Title", view.reload.title
+    assert view.reload.title == "New Title"
   end
 
   test "should set a view to the be the default" do
     default_view = views(:default)
     view = View.create!(title: "New Default")
-    post "/editor/views/#{view.id}/set_default"
+    patch "/editor/views/#{view.id}", params: {view: {default: true}}
 
     assert_response :success
     assert view.reload.default, "View not set to default"
@@ -36,7 +36,7 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
     patch "/editor/views/#{view.id}", params: {view: {title: ""}}
 
     assert_response :unprocessable_entity
-    assert_equal response.body, {errors: ["Title can't be blank"]}.to_json
+    assert_equal "Title can't be blank", response.parsed_body["errors"].first
   end
 
   test "should soft delete a view" do

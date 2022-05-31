@@ -42,6 +42,7 @@ class View < ApplicationRecord
 
   def broadcast_update
     broadcast_replace_to("views_stream", target: self, partial: "editor/views/view", locals: {view: self})
+    broadcast_replace_to("view_dropdown_stream", target: "view_dropdown", partial: "editor/views/dropdown", locals: {view: self})
   end
 
   def self.default
