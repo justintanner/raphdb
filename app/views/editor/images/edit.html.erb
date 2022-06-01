@@ -8,20 +8,16 @@
          data-image-editor-height-value="<%= @image.height %>">
       <div class="d-flex justify-content-center py-3">
         <button type="button" class="btn btn-outline-dark mx-1 d-block" data-image-editor-target="cropButton" data-action="click->image-editor#startCrop">
-          <%= render "svgs/bi-crop" %>
-          <span class="ms-1">Crop</span>
+          <i class="bi-crop"></i><span class="ms-1">Crop</span>
         </button>
         <button type="button" class="btn btn-outline-dark mx-1 d-none" data-image-editor-target="clearCropButton" data-action="click->image-editor#clearCrop">
-          <%= render "svgs/bi-x-circle" %>
-          <span class="ms-1">Clear Crop</span>
+          <i class="bi-x-circle"></i><span class="ms-1">Clear Crop</span>
         </button>
         <button type="button" class="btn btn-outline-dark mx-1" data-action="click->image-editor#rotateLeft">
-          <%= render "svgs/bi-arrow-counterclockwise" %>
-          <span class="ms-1">Rotate Left</span>
+          <i class="bi-arrow-counterclockwise"></i><span class="ms-1">Rotate Left</span>
         </button>
         <button type="button" class="btn btn-outline-dark mx-1" data-action="click->image-editor#rotateRight">
-          <%= render "svgs/bi-arrow-clockwise" %>
-          <span class="ms-1">Rotate Right</span>
+          <i class="bi-arrow-clockwise"></i><span class="ms-1">Rotate Right</span>
         </button>
       </div>
 

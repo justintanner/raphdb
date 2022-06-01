@@ -11,11 +11,11 @@
         <% end %>
       <% elsif field.key == "item_title" %>
         <%= link_to item, class: "me-1" do %>
-          <%= render "svgs/bi-box-arrow-up-left" %><span class="ms-2"><%= item.data[field.key] %></span>
+          <i class="bi-box-arrow-up-left"></i><span class="ms-2"><%= item.data[field.key] %></span>
         <% end %>
       <% elsif field.key == "set_title" && controller_name != "item_sets" %>
         <%= link_to item.item_set, class: "me-1" do %>
-          <%= render "svgs/bi-collection" %><span class="ms-1"><%= item.data[field.key] %></span>
+          <i class="bi-collection"></i><span class="ms-1"><%= item.data[field.key] %></span>
         <% end %>
       <% else %>
         <%= item.data[field.key] %>

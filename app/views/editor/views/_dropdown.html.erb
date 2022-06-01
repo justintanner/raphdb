@@ -3,7 +3,7 @@
 <div id="view_dropdown" data-controller="rename-view">
   <div class="dropdown" data-rename-view-target="dropdown">
     <button type="button" class="btn btn-link btn-sm shadow-none d-flex align-items-center ms-1 dropdown-toggle" id="viewDropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
-      <%= render "svgs/bi-file-spreadsheet" %><span class="ms-1"><%= view.title %></span>
+      <i class="bi-file-spreadsheet"></i><span class="ms-1"><%= view.title %></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="viewDropdownMenu">
       <li><%= link_to "Duplicate View", duplicate_editor_view_path(view), data: { turbo_method: :post }, class: "dropdown-item" %></li>

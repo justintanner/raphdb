@@ -1,11 +1,11 @@
 <div class="row border-bottom border-2">
   <div class="col d-flex align-items-center p-2">
     <button type="button" class="btn btn-light btn-sm shadow-none" data-sidebar-target="hideButton" data-action="sidebar#toggle">
-      <%= render "svgs/bi-layout-sidebar-inset" %><span class="ms-2">Sidebar</span>
+      <i class="bi-layout-sidebar-inset"></i><span class="ms-2">Sidebar</span>
     </button>
 
     <button type="button" class="btn btn-light btn-sm shadow-none d-none" data-sidebar-target="showButton" data-action="sidebar#toggle">
-      <%= render "svgs/bi-layout-sidebar-inset-reverse" %><span class="ms-2">Sidebar</span>
+      <i class="bi-layout-sidebar-inset-reverse"></i><span class="ms-2">Sidebar</span>
     </button>
 
     <%= render "editor/views/dropdown", view: @view %>
@@ -15,7 +15,7 @@
     <div id="search-box-container" class="ms-auto">
       <%= form_tag items_url, method: :get, class: "input-group border rounded bg-light", id: "search-box" do |_form| %>
         <%= text_field_tag "q", params[:q], class: "form-control bg-light border-0", id: "search-input", placeholder: "Search..." %>
-        <button class="btn d-flex align-items-center p-0 pe-2" style="padding-top: 2px !important;" type="submit"><%= render "svgs/bi-search" %></button>
+        <button class="btn d-flex align-items-center p-0 pe-2" style="padding-top: 2px !important;" type="submit"><i class="bi-search"></i></button>
       <% end %>
     </div>
   </div>
