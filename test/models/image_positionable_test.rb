@@ -16,7 +16,7 @@ class ImagePositionableTest < ActiveSupport::TestCase
   test "should have a default position of 1" do
     item = item_create!(item_title: "Only one")
     image = image_create!(filename: "vertical.jpg", item: item, process: true)
-    assert_equal image.position, 1, "Position is not 1"
+    assert_equal 1, image.position, "Position is not 1"
   end
 
   test "should automatically position in the next spot" do
@@ -24,8 +24,8 @@ class ImagePositionableTest < ActiveSupport::TestCase
     first_image = image_create!(filename: "vertical.jpg", item: item, process: true)
     second_image = image_create!(filename: "horizontal.jpg", item: item, process: true)
 
-    assert_equal first_image.position, 1, "First item image position is not 1"
-    assert_equal second_image.position, 2, "Second item image position is not 2"
+    assert_equal 1, first_image.position, "First item image position is not 1"
+    assert_equal 2, second_image.position, "Second item image position is not 2"
   end
 
   test "should sort by position" do
@@ -34,7 +34,7 @@ class ImagePositionableTest < ActiveSupport::TestCase
     second_image = image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
     third_image = image_create!(filename: "vertical.jpg", item: item, position: 3, process: true)
 
-    assert_equal item.images, [first_image, second_image, third_image], "Images are not sorted by position"
+    assert_equal [first_image, second_image, third_image], item.images, "Images are not sorted by position"
   end
 
   test "moving first to second should re-position items" do
@@ -47,9 +47,9 @@ class ImagePositionableTest < ActiveSupport::TestCase
 
     [first_image, second_image, third_image].each(&:reload)
 
-    assert_equal first_image.position, 2, "First item was not re-positioned to 2"
-    assert_equal second_image.position, 1, "Second item was not re-positioned to 1"
-    assert_equal third_image.position, 3, "Third item was not re-positioned to 3"
+    assert_equal 2, first_image.position, "First item was not re-positioned to 2"
+    assert_equal 1, second_image.position, "Second item was not re-positioned to 1"
+    assert_equal 3, third_image.position, "Third item was not re-positioned to 3"
   end
 
   test "moving third to first should re-position items" do
@@ -64,9 +64,9 @@ class ImagePositionableTest < ActiveSupport::TestCase
     second_image.reload
     third_image.reload
 
-    assert_equal third_image.position, 1, "Third item was not re-positioned to 1"
-    assert_equal first_image.position, 2, "First item was not re-positioned to 2"
-    assert_equal second_image.position, 3, "Second item was not re-positioned to 3"
+    assert_equal 1, third_image.position, "Third item was not re-positioned to 1"
+    assert_equal 2, first_image.position, "First item was not re-positioned to 2"
+    assert_equal 3, second_image.position, "Second item was not re-positioned to 3"
   end
 
   test "positioning should not bleed into other items" do
@@ -78,11 +78,11 @@ class ImagePositionableTest < ActiveSupport::TestCase
     first_banana_image = image_create!(filename: "vertical.jpg", item: banana_item, process: true)
     second_banana_image = image_create!(filename: "horizontal.jpg", item: banana_item, process: true)
 
-    assert_equal first_apple_image.position, 1, "First item image position is not 1"
-    assert_equal second_apple_image.position, 2, "Second item image position is not 2"
+    assert_equal 1, first_apple_image.position, "First item image position is not 1"
+    assert_equal 2, second_apple_image.position, "Second item image position is not 2"
 
-    assert_equal first_banana_image.position, 1, "First item image position is not 1"
-    assert_equal second_banana_image.position, 2, "Second item image position is not 2"
+    assert_equal 1, first_banana_image.position, "First item image position is not 1"
+    assert_equal 2, second_banana_image.position, "Second item image position is not 2"
   end
 
   test "moving items should should not bleed into other items" do
@@ -119,10 +119,9 @@ class ImagePositionableTest < ActiveSupport::TestCase
 
     [first_image, second_image, third_image].each(&:reload)
 
-    assert_equal first_image.position, 1, "First image was not left alone"
-    # TODO: Seeing this fail, is this a problem with the test or the code?
-    assert_equal second_image.position, 3, "Second image was not re-positioned to 3"
-    assert_equal third_image.position, 2, "Third image was not re-positioned to 2"
+    assert_equal 1, first_image.position, "First image was not left alone"
+    assert_equal 3, second_image.position, "Second image was not re-positioned to 3"
+    assert_equal 2, third_image.position, "Third image was not re-positioned to 2"
   end
 
   test "should handle cases where identical numbers get into the database somehow" do
