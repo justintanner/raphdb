@@ -6,6 +6,7 @@ module ImageHelper
     image.file.attach(io: open_fixture(filename), filename: filename)
     image.save!
 
+    image.skip_repositioning = true if position.present?
     image.process! if process
 
     image

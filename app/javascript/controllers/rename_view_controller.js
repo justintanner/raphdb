@@ -6,7 +6,8 @@ import { patch } from "@rails/request.js"
 export default class extends Controller {
   static targets = ["dropdown", "container", "input"]
   static values = { updatePath: String }
-  show(event) {
+
+  show() {
     const that = this
 
     that.dropdownTarget.classList.add("d-none")
@@ -18,16 +19,30 @@ export default class extends Controller {
     useClickOutside(that)
   }
 
+  submit(event) {
+    const that = this
+
+    event.preventDefault();
+
+    that.rename()
+  }
+
   clickOutside() {
+    const that = this
+
+    that.rename()
+  }
+
+  rename() {
     const that = this
 
     that.dropdownTarget.classList.remove("d-none")
     that.containerTarget.classList.add("d-none")
 
-    that.rename(that.inputTarget.value)
+    that.updateView(that.inputTarget.value)
   }
 
-  async rename(title) {
+  async updateView(title) {
     const that = this;
     const payload = { "view": { "title": title } };
     const response = await patch(that.updatePathValue, { body: JSON.stringify(payload) });

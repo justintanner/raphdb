@@ -6,33 +6,45 @@
       <i class="bi-file-spreadsheet"></i><span class="ms-1"><%= view.title %></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="viewDropdownMenu">
-      <li><%= link_to "Duplicate View", duplicate_editor_view_path(view), data: { turbo_method: :post }, class: "dropdown-item" %></li>
       <li>
-        <%= button_tag "Rename View",
-                       data: {
-                         action: "click->rename-view#show",
-                       },
-                       class: "dropdown-item" %>
+        <%= link_to duplicate_editor_view_path(view), data: { turbo_method: :post }, class: "dropdown-item" do %>
+          <i class="bi-layers-half me-2"></i>Duplicate View
+        <% end %>
+      </li>
+      <li>
+        <i class="bi-rename"></i>
+        <%= button_tag data: { action: "click->rename-view#show" }, class: "dropdown-item" do %>
+          <i class="bi-pencil me-2"></i>Rename View
+        <% end %>
       </li>
       <% unless view.default %>
-        <li><%= button_tag "Set as Default View",
-                           class: "dropdown-item",
-                           data: {
-                             controller: "set-default",
-                             action: "click->set-default#set",
-                             set_default_update_path_value: editor_view_path(view),
-                           } %>
+        <li>
+          <%= button_tag class: "dropdown-item",
+                         data: {
+                           controller: "set-default",
+                           action: "click->set-default#set",
+                           set_default_update_path_value: editor_view_path(view),
+                         } do %>
+            <i class="bi-award me-2"></i>Set as Default View
+          <% end %>
         </li>
         <li>
-          <%= button_to "Delete View", editor_view_path(view), form: { data: { turbo_confirm: "Are you sure?" } }, class: "btn btn-link dropdown-item", method: :delete %>
+          <%= button_to editor_view_path(view), form: { data: { turbo_confirm: "Are you sure?" } }, class: "btn btn-link text-danger dropdown-item", method: :delete do %>
+            <i class="bi-trash me-2"></i>Delete View
+          <% end %>
         </li>
       <% end %>
     </ul>
   </div>
   <div data-rename-view-target="container" class="d-none">
+    <form action="#" data-action="rename-view#submit">
     <%= text_field_tag :title,
                        view.title,
                        class: "form-control form-control-sm",
-                       data: { rename_view_target: "input", rename_view_update_path_value: editor_view_path(view)} %>
+                       data: {
+                         rename_view_target: "input",
+                         rename_view_update_path_value: editor_view_path(view)
+                       } %>
+    </form>
   </div>
 </div>
