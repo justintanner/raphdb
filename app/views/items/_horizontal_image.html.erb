@@ -60,8 +60,7 @@
                   <% end %>
 
                   <a href="<%= url_for(featured_image.file) %>" data-action="click->enlarge#open" class="d-flex align-items-center" data-englarge-position-param="<%= position - 1 %>">
-                    <i class="bi-arrows-fullscreen"></i>
-                    <span class="ms-2"><small>Enlarge Image</small></span>
+                    <small><i class="bi bi-arrows-fullscreen me-2"></i>Enlarge Image</small>
                   </a>
                 </div>
               </div>
@@ -70,8 +69,7 @@
                    class="d-flex align-items-center justify-content-end"
                    data-controller="share"
                    data-clipboard-text="<%= request.original_url %>">
-                  <i class="bi-link-45deg"></i>
-                  <span class="ms-1"><small>Share</small></span>
+                  <small><i class="bi bi-link-45deg me-1"></i>Share</small>
                 </a>
               </div>
             </div>

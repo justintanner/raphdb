@@ -9,7 +9,7 @@
       <div class="col">
         <div class="d-inline-block ms-1 align-items-center">
           <button type="button" class="btn btn-link px-0 m-0 text-muted no-box-shadow handle">
-            <i class="bi-grip-vertical"></i>
+            <i class="bi bi-grip-vertical"></i>
           </button>
         </div>
         <div class="d-inline-block me-2 align-items-center">
@@ -42,12 +42,12 @@
                         adjust_link_url_param: edit_editor_image_path(image)
                       },
                       class: "d-inline-block text-muted me-2" do %>
-            <small><i class="bi-crop"></i><span class="ms-1">Adjust</span></small>
+            <small><i class="bi bi-crop"></i><span class="ms-1">Adjust</span></small>
           <% end %>
           <%= link_to editor_image_path(image),
                       class: "d-inline-block text-muted",
                       data: { turbo_confirm: "Are you sure?", turbo_method: :delete } do %>
-            <small><i class="bi-trash"></i><span class="ms-1">Delete</span></small>
+            <small><i class="bi bi-trash"></i><span class="ms-1">Delete</span></small>
           <% end %>
         </div>
       </div>

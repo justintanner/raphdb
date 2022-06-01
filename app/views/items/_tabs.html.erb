@@ -8,12 +8,12 @@
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <%= link_to url_for(only_path: false, q: params[:q], page: pagy.page, tab: "images"), class: class_names("nav-link": true, "active": tab == "images") do %>
-            <i class="bi-grid"></i><span class="ms-1">Images</span>
+            <i class="bi bi-grid me-1"></i>Images
           <% end %>
         </li>
         <li class="nav-item">
           <%= link_to url_for(only_path: false, q: params[:q], page: pagy.page, tab: "list"), class: class_names("nav-link": true, "active": tab == "list") do %>
-            <i class="bi-list"></i><span class="ms-1">List</span>
+            <i class="bi bi-list me-1"></i>List
           <% end %>
         </li>
         <li class="nav-item pt-2 ms-auto">

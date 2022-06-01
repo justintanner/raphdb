@@ -6,7 +6,7 @@
         <% metadata = position_metadata(item) %>
         <% if metadata[:prev].present? %>
           <%= link_to item_path(metadata[:prev]), class: "pe-1 align-middle" do %>
-            <i class="bi-arrow-left-square"></i>
+            <i class="bi bi-arrow-left-square"></i>
           <% end %>
         <% end %>
 
@@ -14,7 +14,7 @@
 
         <% if metadata[:next].present? %>
           <%= link_to item_path(metadata[:next]), class: "ps-1 align-middle" do %>
-            <i class="bi-arrow-right-square"></i>
+            <i class="bi bi-arrow-right-square"></i>
           <% end %>
         <% end %>
       </div>

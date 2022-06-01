@@ -1,9 +1,9 @@
 <li class="nav-item" id="<%= dom_id(view) %>">
   <%= link_to editor_view_path(view), class: class_names("nav-link", "active": @view == view), aria_current: "view" do %>
-    <i class="bi-file-spreadsheet"></i><span class="ms-2"><%= view.title %></span>
-    <% if view.default %><i class="bi-award"></i><% end %>
+    <i class="bi bi-file-spreadsheet me-2"></i><%= view.title %>
+    <% if view.default %><i class="bi bi-award"></i><% end %>
     <% if @view == view %>
-      <span class="float-end"><i class="bi-check"></i></span>
+      <span class="float-end"><i class="bi bi-check"></i></span>
     <% end %>
   <% end %>
 </li>

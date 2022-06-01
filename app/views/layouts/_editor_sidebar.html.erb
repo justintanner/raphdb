@@ -8,9 +8,9 @@
     <% Page.all.each do |page| %>
       <li class="nav-item">
         <%= link_to edit_editor_page_path(page), class: class_names("nav-link": true, "active": @page == page), aria_current: "page" do %>
-          <i class="bi-file-earmark-richtext"></i><span class="ms-2"><%= page.title %></span>
+          <i class="bi bi-file-earmark-richtext me-2"></i><%= page.title %>
           <% if @page == page %>
-            <span class="float-end"><i class="bi-check"></i></span>
+            <span class="float-end"><i class="bi bi-check"></i></span>
           <% end %>
         <% end %>
       </li>
