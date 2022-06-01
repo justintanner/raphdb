@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="maximize-height"
 export default class extends Controller {
   static values = { marginBottom: Number };
-  static targets = ["footer"];
+  static targets = ["wrapper", "footer"];
 
   connect() {
     const that = this;
@@ -15,8 +15,14 @@ export default class extends Controller {
     const that = this;
     const newHeight = window.innerHeight - that.element.offsetTop - that.marginBottom() - that.footerHeight();
 
-    that.element.style.setProperty("max-height", newHeight + "px", "important");
-    that.element.style.setProperty("height", newHeight + "px", "important");
+    let target = that.element;
+
+    if (that.hasWrapperTarget) {
+      target = that.wrapperTarget;
+    }
+
+    target.style.setProperty("max-height", newHeight + "px", "important");
+    target.style.setProperty("height", newHeight + "px", "important");
   }
 
   marginBottom() {

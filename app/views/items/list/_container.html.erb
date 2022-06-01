@@ -2,12 +2,9 @@
 
 <div class="container-list mt-3">
   <div class="row">
-    <div class="col d-flex flex-column overflow-hidden py-0">
-      <div class="list"
-           data-controller="list maximize-height"
-           data-action="resize@window->maximize-height#style"
-           data-maximize-height-margin-bottom-value="0">
-        <div class="list-table-wrapper">
+    <div class="col d-flex flex-column py-0">
+      <div class="list" data-controller="list maximize-height" data-action="resize@window->maximize-height#style" data-maximize-height-margin-bottom-value="10">
+        <div class="list-table-wrapper" data-maximize-height-target="wrapper">
           <table class="list-table">
             <thead>
             <tr>

@@ -6,7 +6,7 @@
 .list-table-wrapper {
   overflow: scroll;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 32px);
   margin: 0 !important;
   padding: 0;
   border-top: 1px solid $card-border-color;
@@ -36,6 +36,7 @@
 .list-table-wrapper::-webkit-scrollbar-thumb:hover {
   background-color: $link-hover-color;
 }
+
 .list-table-wrapper::-webkit-scrollbar-track {
   border-radius: 0;
   background-color: transparent;
@@ -58,7 +59,6 @@
   margin: 0 !important;
   padding: 0;
   width: 100%;
-  height: 100%;
 }
 
 .list-table th,
@@ -109,10 +109,6 @@
 
 .list-table tbody td:last-child, .list-table thead th:last-child {
   border-right: none;
-}
-
-.list-table tbody tr:last-child td {
-  border-bottom: none;
 }
 
 .resizer {

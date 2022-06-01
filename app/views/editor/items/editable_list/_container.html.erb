@@ -1,7 +1,7 @@
 <%= turbo_stream_from "editable_list_stream" %>
 
  <div class="list" data-controller="list maximize-height" data-action="resize@window->maximize-height#style">
-    <div class="list-table-wrapper no-border">
+    <div class="list-table-wrapper no-border" data-maximize-height-target="wrapper">
       <table class="list-table">
         <thead>
         <tr>
