@@ -11,12 +11,21 @@
     <%= render "editor/views/dropdown", view: @view %>
   </div>
 
-  <div class="col d-flex align-items-center p-2">
-    <div id="search-box-container" class="ms-auto">
-      <%= form_tag editor_view_path(@view), method: :get, class: "input-group border rounded bg-light", id: "search-box" do |_form| %>
-        <%= text_field_tag "q", params[:q], class: "form-control bg-light border-0", id: "search-input", placeholder: "Search..." %>
-        <button class="btn d-flex align-items-center p-0 pe-2" style="padding-top: 2px !important;" type="submit"><i class="bi bi-search"></i></button>
+  <div class="col-3 d-flex align-items-center p-2">
+    <%= form_tag editor_view_path(@view),
+                 method: :get,
+                 class: "input-group border rounded bg-light",
+                 data: {controller: "editor-search"} do |_form| %>
+      <%= text_field_tag "q",
+                         params[:q],
+                         class: "form-control form-control-sm bg-light no-focus-shadow border-0",
+                         data: {editor_search_target: "input"},
+                         placeholder: "Search..." %>
+      <%= button_tag type: "button",
+                     class: "btn btn-link text-muted hover-primary no-focus-shadow p-0 pe-2",
+                     data: {action: "click->editor-search#clear"} do %>
+        <i class="bi bi-x-circle"></i>
       <% end %>
-    </div>
+    <% end %>
   </div>
 </div>

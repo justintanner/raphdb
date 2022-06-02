@@ -14,6 +14,12 @@
   }
 }
 
+.no-focus-shadow {
+  &:focus, &:active {
+    box-shadow: none;
+  }
+}
+
 .font-size-sm {
   font-size: $font-size-sm !important;
 }
@@ -38,9 +44,9 @@
   color: $gray-600;
 }
 
-.text-hover-link {
+.hover-primary {
   &:hover {
-    color: $link-hover-color;
+    color: $link-hover-color !important;
     text-decoration: underline !important;
   }
 }
