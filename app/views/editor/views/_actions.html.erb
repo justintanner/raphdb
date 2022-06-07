@@ -1,6 +1,6 @@
-<%= turbo_stream_from "view_dropdown_stream" %>
+<%= turbo_stream_from "view_actions_stream" %>
 
-<div id="view_dropdown" data-controller="rename-view">
+<div id="actions-dropdown" data-controller="rename-view">
   <div class="dropdown" data-rename-view-target="dropdown">
     <button type="button" class="btn btn-link shadow-none d-flex align-items-center ms-1 dropdown-toggle" id="view-actions-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="bi bi-file-spreadsheet"></i><span class="ms-1"><%= view.title %></span>

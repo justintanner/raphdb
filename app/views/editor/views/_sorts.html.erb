@@ -10,7 +10,7 @@
     <div class="py-2 px-3" style="min-width: 600px;">
       <%= form_for(view, url: sorts_editor_view_path(view), method: :post) do |form| %>
         <ul class="list-group" data-sorts-target="ul">
-          <%= render partial: "editor/sorts/sort", collection: @view.sorts, as: :sort, locals: { form: form } %>
+          <%= render partial: "editor/views/sort", collection: @view.sorts, as: :sort, locals: { form: form } %>
         </ul>
 
         <div class="row mt-3">
@@ -32,7 +32,7 @@
 
       <%= form_for(view, url: sorts_editor_view_path(view), method: :post) do |form| %>
         <template data-sorts-target="newTemplate">
-          <%= render partial: "editor/sorts/sort",
+          <%= render partial: "editor/views/sort",
                      locals: { sort: Sort.new(field_id: Field.first.id, direction: "asc"), form: form, position: "{{position}}" } %>
         </template>
       <% end %>
