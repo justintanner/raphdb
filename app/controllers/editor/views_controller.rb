@@ -49,10 +49,29 @@ module Editor
       end
     end
 
+    def sorts
+      @view = View.find(params[:id])
+
+      View.transaction do
+        @view.sorts.clear
+
+        sorts_params[:sorts].each do |sort|
+          # sort looks like: [2, {field_id: 9001, direction: "asc", position: 2}]
+          @view.sorts.create(sort.second)
+        end
+      end
+
+      redirect_to editor_view_path(@view)
+    end
+
     private
 
     def view_params
       params.require(:view).permit(:title, :default)
+    end
+
+    def sorts_params
+      params.require(:view).permit(sorts: [:field_id, :direction, :position])
     end
   end
 end

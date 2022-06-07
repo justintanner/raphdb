@@ -127,4 +127,17 @@ class ViewTest < ActiveSupport::TestCase
 
     assert_equal default_view.sql_sort_order, view.sql_sort_order, "Sort order is not the same"
   end
+
+  test "updating sorts destroys un-needed ones" do
+    view = views(:default)
+
+    assert view.sorts.count > 0, "View has no sorts"
+
+    view.sorts.clear
+    sort = view.sorts.create!(field: fields(:tags), direction: "desc")
+
+    view.reload
+
+    assert_equal sort, view.sorts.first, "Sort was not added"
+  end
 end

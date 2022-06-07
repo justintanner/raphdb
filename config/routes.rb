@@ -22,8 +22,10 @@ Rails.application.routes.draw do
       member do
         get :search
         post :duplicate, as: :duplicate
+        post :sorts, as: :sorts
       end
     end
+
     resources :pages, only: [:edit, :update]
     resource :settings, only: [:create]
   end

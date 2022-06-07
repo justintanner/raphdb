@@ -4,7 +4,7 @@ class View < ApplicationRecord
   include Undeletable
   include Search
 
-  has_many :sorts
+  has_many :sorts, dependent: :destroy
   has_many :view_fields
   has_many :fields, -> { reorder("view_fields.position ASC") }, through: :view_fields, source: :field
 

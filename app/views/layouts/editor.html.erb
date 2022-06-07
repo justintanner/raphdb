@@ -16,7 +16,7 @@
 <%= render "layouts/editor_header" %>
 
 <div class="container-fluid d-flex flex-column vh-100" data-controller="sidebar">
-  <%= render "layouts/editor_toolbar" if controller_name == "views" %>
+  <%= render "editor/views/toolbar" if controller_name == "views" %>
 
   <div class="row d-flex flex-fill justify-content-start">
     <div class="col-auto d-flex px-0">

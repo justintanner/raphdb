@@ -33,6 +33,10 @@
   font-family: $font-family-serif;
 }
 
+.handle {
+  cursor: move;
+}
+
 .btn-outline-body {
   background-color: $white;
   color: $body-color;
@@ -52,7 +56,14 @@
 .hover-primary {
   &:hover {
     color: $link-hover-color !important;
-    text-decoration: underline !important;
+  }
+}
+
+.muted-link {
+  color: $gray-600;
+
+  &:hover {
+    color: $link-hover-color !important;
   }
 }
 

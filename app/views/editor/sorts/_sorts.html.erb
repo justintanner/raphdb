@@ -1,0 +1,40 @@
+<div class="dropdown">
+  <button type="button" class="btn btn-link shadow-none dropdown-toggle" role="button" id="sort-dropdown-button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+    <i class="bi bi-arrow-down-up me-2"></i><span class="d-none d-sm-inline">Sort</span>
+  </button>
+
+  <div class="dropdown-menu"
+       aria-labelledby="sort-dropdown-button"
+       data-controller="sorts"
+       data-sorts-numeric-field-ids-value="[<%= Field.numeric.pluck(:id).join(',') %>]">
+    <div class="py-2 px-3" style="min-width: 600px;">
+      <%= form_for(view, url: sorts_editor_view_path(view), method: :post) do |form| %>
+        <ul class="list-group" data-sorts-target="ul">
+          <%= render partial: "editor/sorts/sort", collection: @view.sorts, as: :sort, locals: { form: form } %>
+        </ul>
+
+        <div class="row mt-3">
+          <div class="col">
+            <%= select_tag "pick_another_field",
+                           options_from_collection_for_select(Field.all, "id", "title"),
+                           {
+                             prompt: "Pick another field to sort by",
+                             data: { sorts_target: "fieldSelect", action: "sorts#addNew" },
+                             class: "form-select form-select-sm",
+                           } %>
+          </div>
+          <div class="col text-end">
+            <%= link_to "Cancel", editor_view_path(view), class: "btn btn-link text-muted" %>
+            <%= form.submit "Apply", class: "btn btn-primary btm-sm" %>
+          </div>
+        </div>
+      <% end %>
+
+      <%= form_for(view, url: sorts_editor_view_path(view), method: :post) do |form| %>
+        <template data-sorts-target="newTemplate">
+          <%= render partial: "editor/sorts/sort", locals: { sort: Sort.new(field_id: Field.first.id, direction: "asc", position: 9001), form: form } %>
+        </template>
+      <% end %>
+    </div>
+  </div>
+</div>

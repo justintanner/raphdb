@@ -2,10 +2,10 @@
 
 <div id="view_dropdown" data-controller="rename-view">
   <div class="dropdown" data-rename-view-target="dropdown">
-    <button type="button" class="btn btn-link btn-sm shadow-none d-flex align-items-center ms-1 dropdown-toggle" id="viewDropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+    <button type="button" class="btn btn-link shadow-none d-flex align-items-center ms-1 dropdown-toggle" id="view-actions-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="bi bi-file-spreadsheet"></i><span class="ms-1"><%= view.title %></span>
     </button>
-    <ul class="dropdown-menu" aria-labelledby="viewDropdownMenu">
+    <ul class="dropdown-menu" aria-labelledby="view-actions-dropdown-button">
       <li>
         <%= link_to duplicate_editor_view_path(view), data: { turbo_method: :post }, class: "dropdown-item" do %>
           <i class="bi bi-layers-half me-2"></i>Duplicate View

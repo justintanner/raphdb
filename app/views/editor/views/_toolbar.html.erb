@@ -1,17 +1,18 @@
 <div class="row border-bottom border-2">
   <div class="col d-flex align-items-center p-2">
-    <button type="button" class="btn btn-light btn-sm shadow-none" data-sidebar-target="hideButton" data-action="sidebar#toggle">
+    <button type="button" class="btn btn-link shadow-none" data-sidebar-target="hideButton" data-action="sidebar#toggle">
       <i class="bi bi-layout-sidebar-inset me-2"></i>Sidebar
     </button>
 
-    <button type="button" class="btn btn-light btn-sm shadow-none d-none" data-sidebar-target="showButton" data-action="sidebar#toggle">
+    <button type="button" class="btn btn-link shadow-none d-none" data-sidebar-target="showButton" data-action="sidebar#toggle">
       <i class="bi bi-layout-sidebar-inset-reverse me-2"></i>Sidebar
     </button>
 
     <%= render "editor/views/dropdown", view: @view %>
+    <%= render "editor/sorts/sorts", view: @view %>
   </div>
 
-  <div class="col-3 d-flex align-items-center p-2">
+  <div class="col-4 col-lg-3 d-flex align-items-center p-2">
     <%= form_tag editor_view_path(@view),
                  method: :get,
                  class: "input-group border rounded bg-light",
