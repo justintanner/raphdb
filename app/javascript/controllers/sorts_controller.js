@@ -21,11 +21,15 @@ export default class extends Controller {
 
   addNew(event) {
     const that = this
-    const selectedFieldId = event.srcElement.value
+    const selectedFieldId = event.target.value
+    const position = that.nextPosition().toString()
+    const template = that.newTemplateTarget.innerHTML.replaceAll("{{position}}", position)
 
-    that.ulTarget.innerHTML += that.newTemplateTarget.innerHTML
+    that.ulTarget.insertAdjacentHTML("beforeend", template)
 
-    that.setNewlyAddedField(selectedFieldId)
+    const newlyAddedFieldSelect = document.getElementById(`view_sorts_${position}_field_id`)
+    newlyAddedFieldSelect.value = selectedFieldId
+
     that.resetPickAnotherSelect()
     that.disableUsedOptions()
     that.relabel()
@@ -52,7 +56,7 @@ export default class extends Controller {
   disableUsedOptions() {
     const that = this
 
-    const idsInUse = that.fieldSelectTargets.map((select) => { return select.value });
+    const idsInUse = that.fieldSelectTargets.map((select) => { return select.value })
 
     that.fieldSelectTargets.forEach((select) => {
       Array.from(select.options).forEach((option) => {
@@ -73,17 +77,8 @@ export default class extends Controller {
     })
   }
 
-  setNewlyAddedField(value) {
-    const that = this
-    const newlyAddedSelect = that.fieldSelectTargets[that.fieldSelectTargets.length - 2]
-
-    newlyAddedSelect.value = value
-  }
-
   resetPickAnotherSelect() {
-    const that = this
-
-    that.fieldSelectTargets.pop().selectedIndex = 0
+    document.getElementById("pick_another_field").selectedIndex = 0
   }
 
   relabelAndReposition() {
@@ -112,6 +107,13 @@ export default class extends Controller {
     that.positionTargets.forEach((element, index) => {
       return element.value = index + 1
     })
+  }
+
+  nextPosition() {
+    const that = this
+    const positions = that.positionTargets.map((element) => { return parseInt(element.value) })
+
+    return Math.max(...positions) + 1;
   }
 
   prettyDirections() {

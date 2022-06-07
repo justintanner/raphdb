@@ -32,7 +32,8 @@
 
       <%= form_for(view, url: sorts_editor_view_path(view), method: :post) do |form| %>
         <template data-sorts-target="newTemplate">
-          <%= render partial: "editor/sorts/sort", locals: { sort: Sort.new(field_id: Field.first.id, direction: "asc", position: 9001), form: form } %>
+          <%= render partial: "editor/sorts/sort",
+                     locals: { sort: Sort.new(field_id: Field.first.id, direction: "asc"), form: form, position: "{{position}}" } %>
         </template>
       <% end %>
     </div>

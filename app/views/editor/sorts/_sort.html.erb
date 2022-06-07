@@ -1,11 +1,15 @@
+<% position ||= sort.position %>
 <%= form.fields_for :sorts, sort do |sort_fields| %>
   <li class="list-group-item border-0 text-nowrap">
     <div class="row">
-      <%= sort_fields.hidden_field :position, name: "view[sorts][#{sort.position}][position]", data: { sorts_target: "position" } %>
+      <%= sort_fields.hidden_field :position,
+                                   name: "view[sorts][#{position}][position]",
+                                   data: { sorts_target: "position" },
+                                   value: position %>
       <div class="col-2 d-flex align-items-center">
         <i class="bi bi-grip-vertical me-2 text-muted handle"></i>
         <span data-sorts-target="label">
-        <% if sort.position == 1 %>
+        <% if position == 1 %>
           Sort by
         <% else %>
           then by
@@ -19,7 +23,8 @@
                                  {
                                    data: { sorts_target: "fieldSelect", action: "sorts#changeField" },
                                    class: "form-select form-select-sm",
-                                   name: "view[sorts][#{sort.position}][field_id]"
+                                   name: "view[sorts][#{position}][field_id]",
+                                   id: "view_sorts_#{position}_field_id"
                                  } %>
       </div>
       <div class="col-1 d-flex align-items-center">from</div>
@@ -29,12 +34,12 @@
                                        "asc",
                                        class: "form-check-input",
                                        autocomplete: "off",
-                                       name: "view[sorts][#{sort.position}][direction]",
-                                       id: "view_sorts_direction_#{sort.position}_asc" %>
+                                       name: "view[sorts][#{position}][direction]",
+                                       id: "view_sorts_direction_#{position}_asc" %>
           <%= sort_fields.label :direction,
                                 class: "form-check-label font-monospace",
-                                value: "#{sort.position}_asc",
-                                id: "label_#{sort.position}_asc" do %>
+                                value: "#{position}_asc",
+                                id: "label_#{position}_asc" do %>
             A <i class="bi bi-arrow-right"></i> Z
           <% end %>
         </div>
@@ -44,12 +49,12 @@
                                        class: "form-check-input",
                                        autocomplete: "off",
                                        data: { sorts_target: "directionDesc" },
-                                       name: "view[sorts][#{sort.position}][direction]",
-                                       id: "view_sorts_direction_#{sort.position}_desc" %>
+                                       name: "view[sorts][#{position}][direction]",
+                                       id: "view_sorts_direction_#{position}_desc" %>
           <%= sort_fields.label :direction,
                                 class: "form-check-label font-monospace",
-                                value: "#{sort.position}_desc",
-                                id: "label_#{sort.position}_desc" do %>
+                                value: "#{position}_desc",
+                                id: "label_#{position}_desc" do %>
             Z <i class="bi bi-arrow-right"></i> A
           <% end %>
         </div>
