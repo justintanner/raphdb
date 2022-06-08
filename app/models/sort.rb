@@ -5,7 +5,7 @@ class Sort < ApplicationRecord
   belongs_to :view
   belongs_to :field
 
-  DIRECTIONS = %w[asc desc].freeze
+  DIRECTIONS = %w[ASC DESC].freeze
 
   position_within :view
 
@@ -14,21 +14,21 @@ class Sort < ApplicationRecord
   validate :cant_use_field_twice_in_the_same_view
 
   def to_sql
-    "data->'#{field.key}' #{direction.upcase}"
+    self.class.sanitize_sql_for_order("data->'#{field.key}' #{direction}")
   end
 
-  def duplicate(view:)
-    Sort.create(view: view, field: field, direction: direction)
+  def duplicate(replacement_view:)
+    Sort.create(view: replacement_view, field: field, direction: direction)
   end
 
   private
 
   def set_default_direction
-    self.direction ||= "asc"
+    self.direction ||= "ASC"
   end
 
   def direction_is_allowable
-    errors.add(:direction, "must be either 'asc' or 'desc'") unless DIRECTIONS.include?(self.direction)
+    errors.add(:direction, "must be either 'ASC' or 'DESC'") unless DIRECTIONS.include?(self.direction)
   end
 
   def cant_use_field_twice_in_the_same_view

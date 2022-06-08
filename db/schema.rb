@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_30_194257) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_07_215136) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,6 +74,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_30_194257) do
     t.index ["deleted_at"], name: "index_fields_on_deleted_at"
     t.index ["prefix_field_id"], name: "index_fields_on_prefix_field_id"
     t.index ["suffix_field_id"], name: "index_fields_on_suffix_field_id"
+  end
+
+  create_table "filters", force: :cascade do |t|
+    t.bigint "view_id", null: false
+    t.bigint "field_id", null: false
+    t.string "operator"
+    t.string "value"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_filters_on_field_id"
+    t.index ["view_id"], name: "index_filters_on_view_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -232,6 +244,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_30_194257) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "fields", "fields", column: "prefix_field_id"
   add_foreign_key "fields", "fields", column: "suffix_field_id"
+  add_foreign_key "filters", "fields"
+  add_foreign_key "filters", "views"
   add_foreign_key "images", "item_sets"
   add_foreign_key "images", "items"
   add_foreign_key "items", "item_sets"

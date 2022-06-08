@@ -21,9 +21,9 @@ class SortTest < ActiveSupport::TestCase
 
   test "should sort by position" do
     view = View.create!(title: "Sort by three fields")
-    first_sort = Sort.create(view: view, field: fields(:prefix), position: 1)
-    second_sort = Sort.create(view: view, field: fields(:number), position: 2)
-    third_sort = Sort.create(view: view, field: fields(:in_set), position: 3)
+    first_sort = Sort.create!(view: view, field: fields(:prefix), position: 1)
+    second_sort = Sort.create!(view: view, field: fields(:number), position: 2)
+    third_sort = Sort.create!(view: view, field: fields(:in_set), position: 3)
 
     sorts = view.sorts
     assert_equal sorts.first, first_sort, "first_sort is not first"
@@ -36,16 +36,16 @@ class SortTest < ActiveSupport::TestCase
       Sort.create(
         view: views(:default),
         field: fields(:number),
-        direction: "asc"
+        direction: "ASC"
       )
 
-    assert_equal sort.to_sql, "data->'number' ASC", "Sort was not exported to SQL"
+    assert_equal "data->'number' ASC", sort.to_sql, "Sort was not exported to SQL"
   end
 
   test "shouldn't be able to have two sorts on the same field in the same view" do
     view = views(:default)
-    Sort.create(view: view, field: fields(:number), direction: "asc")
-    sort = Sort.new(view: view, field: fields(:number), direction: "desc")
+    Sort.create(view: view, field: fields(:number), direction: "ASC")
+    sort = Sort.new(view: view, field: fields(:number), direction: "DESC")
 
     assert_not sort.save, "Sort was saved with duplicate field"
   end

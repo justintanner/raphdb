@@ -5,6 +5,7 @@ class View < ApplicationRecord
   include Search
 
   has_many :sorts, dependent: :destroy
+  has_many :filters, dependent: :destroy
   has_many :view_fields
   has_many :fields, -> { reorder("view_fields.position ASC") }, through: :view_fields, source: :field
 
@@ -28,6 +29,10 @@ class View < ApplicationRecord
     sorts.includes(:field).map(&:to_sql).join(", ")
   end
 
+  def sql_filter_where
+    filters.includes(:field).map(&:to_sql).join(" AND ")
+  end
+
   def duplicate
     new_view = View.new
     new_view.title = "Copy of #{title}"
@@ -35,7 +40,8 @@ class View < ApplicationRecord
     new_view.fields = fields
     new_view.save
 
-    new_view.sorts = sorts.map { |sort| sort.duplicate(view: new_view) }
+    new_view.sorts = sorts.map { |sort| sort.duplicate(replacement_view: new_view) }
+    new_view.filters = filters.map { |filter| filter.duplicate(replacement_view: new_view) }
 
     new_view
   end

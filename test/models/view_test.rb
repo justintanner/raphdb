@@ -115,6 +115,8 @@ class ViewTest < ActiveSupport::TestCase
 
   test "should duplicate the default view" do
     default_view = views(:default)
+    default_view.filters.create!(field: fields(:set_title), operator: "is", value: "Apple")
+    default_view.filters.create!(field: fields(:number), operator: "is not", value: "5")
 
     view = default_view.duplicate
 
@@ -126,6 +128,7 @@ class ViewTest < ActiveSupport::TestCase
     assert_equal default_view.fields.last, view.fields.last, "Last field doesn't match"
 
     assert_equal default_view.sql_sort_order, view.sql_sort_order, "Sort order is not the same"
+    assert_equal default_view.sql_filter_where, view.sql_filter_where, "Filter where is not the same"
   end
 
   test "updating sorts destroys un-needed ones" do
@@ -134,7 +137,7 @@ class ViewTest < ActiveSupport::TestCase
     assert view.sorts.count > 0, "View has no sorts"
 
     view.sorts.clear
-    sort = view.sorts.create!(field: fields(:tags), direction: "desc")
+    sort = view.sorts.create!(field: fields(:tags), direction: "DESC")
 
     view.reload
 

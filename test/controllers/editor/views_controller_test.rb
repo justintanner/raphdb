@@ -56,7 +56,7 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
   test "should replace all existing sorts on a view" do
     view = views(:default)
 
-    params = {view: {sorts: {1 => {field_id: fields(:artist).id, direction: "asc", position: 1}}}}
+    params = {view: {sorts: {1 => {field_id: fields(:artist).id, direction: "ASC", position: 1}}}}
     post sorts_editor_view_path(view), params: params
     assert_response :redirect
 
@@ -68,8 +68,8 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
     view = views(:default)
 
     sorts = {
-      8 => {field_id: fields(:artist).id, direction: "asc", position: 2},
-      9 => {field_id: fields(:tags).id, direction: "desc", position: 1}
+      8 => {field_id: fields(:artist).id, direction: "ASC", position: 2},
+      9 => {field_id: fields(:tags).id, direction: "DESC", position: 1}
     }
     params = {view: {sorts: sorts}}
 
