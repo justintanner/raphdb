@@ -5,23 +5,27 @@ require "active_support/concern"
 module Search
   extend ActiveSupport::Concern
 
-  def search(query, options = {})
-    SearchProcessor.query(query, self, options)
+  def search(query)
+    SearchProcessor.query(query, self)
   end
 end
 
 module SearchProcessor
-  def self.query(query, view, options)
-    remaining_query = pre_clean(query)
-
-    remaining_query, advanced_options = extract_advanced(remaining_query)
+  def self.query(query, view)
+    cleaned_query = remove_bad_characters(query)
 
     Item
       .with_attached_images_and_variants
       .with_sets
-      .where(tsvector_where(remaining_query))
-      .where(advanced_where(advanced_options))
+      .where(filter_where(view))
+      .where(tsvector_where(cleaned_query))
       .order(order_by(view))
+  end
+
+  def self.filter_where(view)
+    return unless view.filters.present?
+
+    view.sql_filter_where
   end
 
   def self.tsvector_where(query)
@@ -30,69 +34,11 @@ module SearchProcessor
     ["search_tsvector_col @@ to_tsquery('english', ?)", postgres_query_string(query)]
   end
 
-  def self.advanced_where(advanced_options)
-    advanced_options
-      .filter_map do |hash|
-        case hash[:op]
-        when "range"
-          between(hash[:key], hash[:from], hash[:to])
-        when "equals"
-          equals(hash[:key], hash[:value])
-        end
-      end
-      .join(" AND ")
-  end
-
-  def self.equals(key, value)
-    ApplicationRecord.sanitize_sql_array(
-      ["(data->>? LIKE ?)", key, "%#{value}%"]
-    )
-  end
-
-  def self.between(key, from, to)
-    ApplicationRecord.sanitize_sql_array(
-      ["((data->?)::int BETWEEN ? AND ?)", key, from, to]
-    )
-  end
-
-  # TODO: Remove this method and replace with filters model.
-  def self.extract_advanced(query)
-    remaining_query = query.dup
-    numeric_keys = Field.numeric.map(&:key).join("|")
-    number_range_regex = /(#{numeric_keys}):\s*([0-9]+-[0-9]+)/i
-
-    advanced_options =
-      remaining_query
-        .scan(number_range_regex)
-        .map do |key, value|
-        from, to = value.split("-")
-        {op: "range", key: key, from: from.to_i, to: to.to_i}
-      end
-
-    remaining_query.gsub!(number_range_regex, "")
-    remaining_query.strip!
-
-    all_keys = Field.keys.join("|")
-    quoted_advanced_regex = /(#{all_keys}):\s*"*([^"]+)"*/i
-    advanced_options +=
-      remaining_query
-        .scan(quoted_advanced_regex)
-        .map do |key, value|
-        {op: "equals", key: key, value: value.gsub(/["']/, "")}
-      end
-
-    remaining_query.gsub!(quoted_advanced_regex, "")
-    remaining_query.strip!
-
-    [remaining_query, advanced_options]
-  end
-  # rubocop:enable Metrics/AbcSize
-
   def self.order_by(view)
     Arel.sql(view.sql_sort_order)
   end
 
-  def self.pre_clean(query)
+  def self.remove_bad_characters(query)
     return "" if query.blank?
 
     query.gsub(%r{[~`!@#%^&(){};<,>?/|+=]}, " ").gsub(/[[:space:]]+/, " ").strip

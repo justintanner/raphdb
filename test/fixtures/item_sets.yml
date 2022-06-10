@@ -4,6 +4,12 @@ orphan:
 empty_set:
   title: Empty Set
   slug: empty-set
+second_empty:
+  title: SECOND EMPTY
+  slug: second-empty
+third_empty:
+  title: THIRD EMPTY
+  slug: third-empty
 early_days_of_sport:
   title: EARLY DAYS OF SPORT
   slug: early-days-of-sport

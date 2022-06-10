@@ -44,6 +44,10 @@ module DataDisplay
     date_format.gsub("%Y", "YYYY").gsub("%m", "MM").gsub("%d", "DD")
   end
 
+  def postgres_date_format
+    pikaday_date_format
+  end
+
   def example_date_format
     return unless date_format.present?
 

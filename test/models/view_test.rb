@@ -116,7 +116,7 @@ class ViewTest < ActiveSupport::TestCase
   test "should duplicate the default view" do
     default_view = views(:default)
     default_view.filters.create!(field: fields(:set_title), operator: "is", value: "Apple")
-    default_view.filters.create!(field: fields(:number), operator: "is not", value: "5")
+    default_view.filters.create!(field: fields(:number), operator: "=", value: "5")
 
     view = default_view.duplicate
 

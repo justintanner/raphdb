@@ -2,10 +2,26 @@
 
 class Filter < ApplicationRecord
   include Positionable
+  include FilterSql
   belongs_to :view
   belongs_to :field
 
-  OPERATORS = ["contains", "does not contain", "is", "is not", "is empty", "is not empty"].freeze
+  STRING_OPS = ["contains", "does not contain", "is", "is not", "is empty", "is not empty"].freeze
+  CHECK_OPS = ["is checked", "is not checked"].freeze
+  MULTIPLE_SELECT_OPS = ["has any of", "has all of", "is exactly", "has none of", "is empty", "is not empty"].freeze
+  NUMERIC_OPS = ["=", "≠", ">", "<", "≥", "≤", "is empty", "is not empty"].freeze
+  DATE_OPS = ["is", "is before", "is after", "is empty", "is not empty"].freeze
+
+  OPERATORS = {
+    single_line_text: STRING_OPS,
+    long_text: STRING_OPS,
+    checkbox: CHECK_OPS,
+    multiple_select: MULTIPLE_SELECT_OPS,
+    single_select: STRING_OPS,
+    number: NUMERIC_OPS,
+    currency: NUMERIC_OPS,
+    date: DATE_OPS
+  }.freeze
 
   position_within :view
 
@@ -16,37 +32,16 @@ class Filter < ApplicationRecord
   validate :operator_is_allowable
   validate :cant_use_field_twice_in_the_same_view
 
-  def to_sql
-    self.class.sanitize_sql_for_conditions(to_sql_array)
-  end
-
   def duplicate(replacement_view:)
     Filter.create(view: replacement_view, field: field, operator: operator, value: value)
   end
 
   private
 
-  def to_sql_array
-    case operator
-    when "is"
-      ["data->? = ?", field.key, value]
-    when "is not"
-      ["data->? != ?", field.key, value]
-    when "contains"
-      ["data->? LIKE ?", field.key, "%#{self.class.sanitize_sql_like(value)}%"]
-    when "does not contain"
-      ["data->? NOT LIKE ?", field.key, "%#{self.class.sanitize_sql_like(value)}%"]
-    when "is empty"
-      ["data#>? IS NULL OR (elem->?)::text = 'null' OR elem->? = ''", "{#{field.key}}", field.key, field.key]
-    when "is not empty"
-      ["data#>? IS NOT NULL AND (elem->?)::text != 'null' AND elem->? != ''", "{#{field.key}}", field.key, field.key]
-    else
-      []
-    end
-  end
-
   def operator_is_allowable
-    errors.add(:operator, "invalid operator") unless OPERATORS.include?(operator)
+    return unless field.present?
+
+    errors.add(:operator, "invalid operator") unless OPERATORS[field.column_type_sym].include?(operator)
   end
 
   def cant_use_field_twice_in_the_same_view

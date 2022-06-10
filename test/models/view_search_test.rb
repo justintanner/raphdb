@@ -121,55 +121,450 @@ class ViewSearchTest < ActiveSupport::TestCase
     assert_equal records.last.data["number"], 9, "Wrong last item"
   end
 
-  test "should be able to search by number ranges" do
-    1.upto(5) { |n| item_create!({item_title: "apple", number: n}) }
-    6.upto(11) { |n| item_create!({item_title: "apple", number: n}) }
+  test "should filter title by 'contains'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "lunch")
+    item = item_create!({item_title: "breakfastlunchdinner"})
 
-    records = View.default.search("apple number: 1-5")
+    records = view.search("")
 
-    assert_equal records.count, 5, "Wrong number of records"
-    assert_equal records.first.data["number"], 1, "Wrong first item"
-    assert_equal records.last.data["number"], 5, "Wrong last item"
+    assert_equal records, [item], "Item was not found"
   end
 
-  test "should be able to search limit to one field" do
-    match_item = item_create!({item_title: "cherry-banana", number: 2})
-    dont_match_item =
-      item_create!(
-        {item_title: "A", item_comment: "cherry-banana", number: 1}
-      )
+  test "should filter title by 'does not contain'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:number), operator: "=", value: "5")
+    Filter.create!(view: view, field: fields(:item_title), operator: "does not contain", value: "lunch")
+    item_create!({item_title: "breakfastlunchdinner", number: 5})
+    item = item_create!({item_title: "zebra", number: 5})
 
-    records = View.default.search('item_title: "cherry-banana"')
+    records = view.search("")
 
-    assert_includes records, match_item, "Item was not found"
-    assert_not_includes records, dont_match_item, "Item was not found"
+    assert_equal records, [item], "Item was not found"
   end
 
-  test "should be able to match by two advanced criteria at once" do
-    items =
-      1
-        .upto(5)
-        .map { |n| item_create!({item_title: "cherry-banana", number: n}) }
+  test "should filter title by 'is'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:number), operator: "=", value: "5")
+    Filter.create!(view: view, field: fields(:item_title), operator: "is", value: "zebra")
+    item_create!({item_title: "elk", number: 5})
+    item = item_create!({item_title: "zebra", number: 5})
 
-    records = View.default.search('item_title: "cherry-banana" number: 1-5')
+    records = view.search("")
 
-    assert_equal records.first, items.first, "First item was not found"
-    assert_equal records.last, items.last, "Last item was not found"
+    assert_equal records, [item], "Item was not found"
   end
 
-  test "should be able to exact match an integer" do
-    item = item_create!({item_title: "apple", number: 9001})
+  test "should filter title by 'is not'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:number), operator: "=", value: "5")
+    Filter.create!(view: view, field: fields(:item_title), operator: "is not", value: "zebra")
+    item_create!({item_title: "zebra", number: 5})
+    item = item_create!({item_title: "elk", number: 5})
 
-    records = View.default.search("number: 9001")
+    records = view.search("")
 
-    assert_equal records.first, item, "Item was not found"
+    assert_equal records, [item], "Item was not found"
   end
 
-  test "should be able to partially match within a specific field" do
-    item = item_create!({item_title: "apple-banana-cherry"})
+  test "should filter title by 'is empty'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:prefix), operator: "is empty")
+    first_item = item_create!({item_title: "zebra1", prefix: nil, number: 1})
+    second_item = item_create!({item_title: "zebra2", number: 2})
 
-    records = View.default.search('item_title: "banana"')
+    records = view.search("")
 
-    assert_equal records.first, item, "Item was not found"
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter title by 'is not empty'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:prefix), operator: "is not empty")
+    item_create!({item_title: "zebra1", number: 1})
+    item = item_create!({item_title: "zebra2", prefix: "A", number: 2})
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter featured by 'is checked'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:featured), operator: "is checked")
+    item_create!({item_title: "zebra1", feature: false, number: 1})
+    item = item_create!({item_title: "zebra2", featured: true, number: 2})
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter featured by 'is not checked'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:featured), operator: "is not checked")
+    item_create!({item_title: "zebra1", featured: true, number: 1})
+    first_item = item_create!({item_title: "zebra2", number: 2})
+    second_item = item_create!({item_title: "zebra3", featured: false, number: 3})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter tags by 'has any of'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:tags), operator: "has any of", value: "Polo, Fox Hunting")
+    item_create!({item_title: "zebra1", tags: ["Football"], number: 1})
+    first_item = item_create!({item_title: "zebra2", tags: ["Golf", "Polo"], number: 2})
+    second_item = item_create!({item_title: "zebra3", tags: ["Fox Hunting", "Queen"], number: 3})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter tags by 'has all of'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:tags), operator: "has all of", value: "Polo, Fox Hunting")
+    item_create!({item_title: "zebra1", tags: ["Golf", "Polo"], number: 1})
+    item_create!({item_title: "zebra2", tags: ["Fox Hunting", "Queen"], number: 2})
+    first_item = item_create!({item_title: "zebra2", tags: ["Fox Hunting", "Polo", "Queen"], number: 3})
+    second_item = item_create!({item_title: "zebra3", tags: ["Polo", "Fox Hunting"], number: 4})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter tags by 'is exactly'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:tags), operator: "is exactly", value: "Polo, Fox Hunting")
+    item_create!({item_title: "zebra1", tags: ["Golf", "Polo"], number: 1})
+    item_create!({item_title: "zebra2", tags: ["Fox Hunting", "Queen"], number: 2})
+    item_create!({item_title: "zebra2", tags: ["Fox Hunting", "Polo", "Queen"], number: 3})
+    item = item_create!({item_title: "zebra3", tags: ["Fox Hunting", "Polo"], number: 4})
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter tags by 'has none of'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:tags), operator: "has none of", value: "Polo, Fox Hunting")
+    item_create!({item_title: "zebra1", tags: ["Polo", "Football"], number: 1})
+    item_create!({item_title: "zebra2", tags: ["Golf", "Fox Hunting"], number: 2})
+    item = item_create!({item_title: "zebra3", tags: ["Golf", "Queen"], number: 3})
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter tags by 'is empty'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:tags), operator: "is empty")
+    item_create!({item_title: "zebra1", tags: ["Polo", "Football"], number: 1})
+    first_item = item_create!({item_title: "zebra2", tags: [], number: 2})
+    second_item = item_create!({item_title: "zebra3", number: 3})
+    third_item = item_create!({item_title: "zebra4", tags: nil, number: 4})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item, third_item], "Item was not found"
+  end
+
+  test "should filter tags by 'is not empty'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:tags), operator: "is not empty")
+    item_create!({item_title: "zebra1", tags: [], number: 2})
+    item_create!({item_title: "zebra2", number: 3})
+    item_create!({item_title: "zebra3", tags: nil, number: 4})
+    item = item_create!({item_title: "zebra4", tags: ["Polo", "Football"], number: 1})
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter number by '='" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:number), operator: "=", value: "5")
+    item_create!({item_title: "zebra1", number: 50})
+    first_item = item_create!({item_title: "zebra2", number: "5"})
+    second_item = item_create!({item_title: "zebra3", number: 5})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter number by '≠'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:number), operator: "≠", value: "5")
+    item_create!({item_title: "zebra1", number: 5})
+    first_item = item_create!({item_title: "zebra2", number: "50"})
+    second_item = item_create!({item_title: "zebra3", number: 50})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter number by '>'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:number), operator: ">", value: "5")
+    item_create!({item_title: "zebra1", number: 5})
+    first_item = item_create!({item_title: "zebra2", number: 6})
+    second_item = item_create!({item_title: "zebra3", number: "7"})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter number by '<'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:number), operator: "<", value: "5")
+    item_create!({item_title: "zebra1", number: 5})
+    first_item = item_create!({item_title: "zebra2", number: 1})
+    second_item = item_create!({item_title: "zebra3", number: "3"})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter number by '≥'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:number), operator: "≥", value: "5")
+    item_create!({item_title: "zebra1", number: 4})
+    first_item = item_create!({item_title: "zebra2", number: 5})
+    second_item = item_create!({item_title: "zebra3", number: "6"})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter number by '≤'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:number), operator: "≤", value: "5")
+    item_create!({item_title: "zebra1", number: 6})
+    first_item = item_create!({item_title: "zebra2", number: "1"})
+    second_item = item_create!({item_title: "zebra3", number: "5"})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter number by 'is empty'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:number), operator: "is empty")
+    item_create!({item_title: "zebra1", number: 5})
+    first_item = item_create!({item_title: "zebra2", number: nil})
+    second_item = item_create!({item_title: "zebra3"})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter number by 'is not empty'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:number), operator: "is not empty")
+    item_create!({item_title: "zebra1"})
+    first_item = item_create!({item_title: "zebra2", number: 4})
+    second_item = item_create!({item_title: "zebra3", number: "5"})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter dates by 'is'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:first_use), operator: "is", value: "29/01/1913")
+    item_create!({item_title: "zebra1", first_use: "28/01/1913", number: 1}, item_sets(:orphan))
+    item = item_create!({item_title: "zebra2", first_use: "29/01/1913", number: 2}, item_sets(:early_days_of_sport))
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter dates by 'is before'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:first_use), operator: "is before", value: "29/01/1913")
+    item_create!({item_title: "zebra2", first_use: "29/01/1913", number: 2}, item_sets(:early_days_of_sport))
+    item = item_create!({item_title: "zebra1", first_use: "28/01/1913", number: 1}, item_sets(:orphan))
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter dates by 'is after'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:first_use), operator: "is after", value: "28/01/1913")
+    item_create!({item_title: "zebra1", first_use: "28/01/1913", number: 1}, item_sets(:orphan))
+    item = item_create!({item_title: "zebra2", first_use: "29/01/1913", number: 2}, item_sets(:early_days_of_sport))
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter dates by 'is empty'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:first_use), operator: "is empty", value: "28/01/1913")
+    item_create!({item_title: "zebra1", first_use: "28/01/1913", number: 1}, item_sets(:orphan))
+    first_item = item_create!({item_title: "zebra2", first_use: "", number: 2}, item_sets(:early_days_of_sport))
+    second_item = item_create!({item_title: "zebra3", first_use: nil, number: 3}, item_sets(:second_empty))
+    third_item = item_create!({item_title: "zebra4", number: 4}, item_sets(:third_empty))
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item, third_item], "Item was not found"
+  end
+
+  test "should filter dates by 'is not empty'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:first_use), operator: "is not empty", value: "28/01/1913")
+    item = item_create!({item_title: "zebra1", first_use: "28/01/1913", number: 1}, item_sets(:orphan))
+    item_create!({item_title: "zebra2", first_use: "", number: 2}, item_sets(:early_days_of_sport))
+    item_create!({item_title: "zebra3", first_use: nil, number: 3}, item_sets(:second_empty))
+    item_create!({item_title: "zebra4", number: 4}, item_sets(:third_empty))
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter currency by '='" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:estimated_value), operator: "=", value: "1.23")
+    item_create!({item_title: "zebra1", number: 1, estimated_value: "5.49"})
+    item = item_create!({item_title: "zebra2", number: 2, estimated_value: "1.23"})
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter currency by '≠'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:estimated_value), operator: "≠", value: "5.49")
+    item_create!({item_title: "zebra1", number: 1, estimated_value: "5.49"})
+    item = item_create!({item_title: "zebra2", number: 2, estimated_value: "1.23"})
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter currency by '>'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:estimated_value), operator: ">", value: "1.23")
+    item_create!({item_title: "zebra1", number: 1, estimated_value: "1.23"})
+    item = item_create!({item_title: "zebra2", number: 2, estimated_value: "1.24"})
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter currency by '<'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:estimated_value), operator: "<", value: "1.23")
+    item_create!({item_title: "zebra1", number: 1, estimated_value: "1.23"})
+    item = item_create!({item_title: "zebra2", number: 2, estimated_value: "1.22"})
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
+  end
+
+  test "should filter currency by '≥'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:estimated_value), operator: "≥", value: "1.24")
+    item_create!({item_title: "zebra1", number: 1, estimated_value: "1.23"})
+    first_item = item_create!({item_title: "zebra2", number: 2, estimated_value: "1.24"})
+    second_item = item_create!({item_title: "zebra3", number: 3, estimated_value: "1.24"})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter currency by '≤'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:estimated_value), operator: "≤", value: "1.24")
+    item_create!({item_title: "zebra1", number: 1, estimated_value: "1.25"})
+    first_item = item_create!({item_title: "zebra2", number: 2, estimated_value: "1.24"})
+    second_item = item_create!({item_title: "zebra3", number: 3, estimated_value: "1.23"})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item], "Item was not found"
+  end
+
+  test "should filter currency by 'is empty'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:estimated_value), operator: "is empty")
+    item_create!({item_title: "zebra1", number: 1, estimated_value: "1.25"})
+    first_item = item_create!({item_title: "zebra2", number: 2, estimated_value: ""})
+    second_item = item_create!({item_title: "zebra3", number: 3, estimated_value: nil})
+    third_item = item_create!({item_title: "zebra4", number: 4})
+
+    records = view.search("")
+
+    assert_equal records, [first_item, second_item, third_item], "Item was not found"
+  end
+
+  test "should filter currency by 'is not empty'" do
+    view = views(:default)
+    Filter.create!(view: view, field: fields(:item_title), operator: "contains", value: "zebra")
+    Filter.create!(view: view, field: fields(:estimated_value), operator: "is not empty")
+    item_create!({item_title: "zebra1", number: 1, estimated_value: ""})
+    item_create!({item_title: "zebra2", number: 2, estimated_value: nil})
+    item_create!({item_title: "zebra3", number: 3})
+    item = item_create!({item_title: "zebra4", number: 1, estimated_value: "1.25"})
+
+    records = view.search("")
+
+    assert_equal records, [item], "Item was not found"
   end
 end
