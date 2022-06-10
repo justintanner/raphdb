@@ -57,7 +57,22 @@ module Editor
 
         sorts_params[:sorts].each do |sort|
           # sort looks like: [2, {field_id: 9001, direction: "asc", position: 2}]
-          @view.sorts.create(sort.second)
+          @view.sorts.create!(sort.second)
+        end
+      end
+
+      redirect_to editor_view_path(@view)
+    end
+
+    def filters
+      @view = View.find(params[:id])
+
+      View.transaction do
+        @view.filters.clear
+
+        filters_params[:filters].each do |filter|
+          # filter looks like: [2, {field_id: 9001, operation: "=", value: "5", position: 2}]
+          @view.filters.create!(filter.second)
         end
       end
 
@@ -72,6 +87,10 @@ module Editor
 
     def sorts_params
       params.require(:view).permit(sorts: [:field_id, :direction, :position])
+    end
+
+    def filters_params
+      params.require(:view).permit(filters: [:field_id, :operator, :value, :position])
     end
   end
 end
