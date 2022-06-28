@@ -1,20 +1,14 @@
-import {Controller} from "@hotwired/stimulus";
-import moment from "moment";
-import Pikaday from "pikaday";
+import {Controller} from "@hotwired/stimulus"
+import "vanillajs-datepicker"
 
 // Connects to data-controller="datepicker"
 export default class extends Controller {
   static values = {format: String};
 
   connect() {
-    const that = this;
-
-    moment.suppressDeprecationWarnings = true;
-
-    new Pikaday({
-      field: that.element,
-      format: that.formatValue,
-      yearRange: [1850, new Date().getFullYear()]
-    });
+    console.log("datepicker_controller.js: connect()");
+    const datepicker = new Datepicker(this.element, {
+      format: this.formatValue,
+    })
   }
 }

@@ -83,17 +83,4 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
     assert_equal view.sorts.first.field, fields(:tags), "First sort not tags"
     assert_equal view.sorts.second.field, fields(:artist), "Second sort not artist"
   end
-
-  test "should add filters to a view" do
-    view = views(:default)
-
-    params = {view: {filters: {1 => {field_id: fields(:number).id, operator: "=", value: "5", position: 1}}}}
-    post filters_editor_view_path(view), params: params
-    assert_response :redirect
-
-    view.reload
-
-    assert_equal 1, view.filters.count, "View should have one filter"
-    assert_equal view.filters.first.field, fields(:number), "Filter not added"
-  end
 end

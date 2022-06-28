@@ -1,10 +1,10 @@
-import {Controller} from "@hotwired/stimulus";
-import TomSelect from "tom-select";
-import { post } from "@rails/request.js";
+import {DispatchController} from "./dispatch_controller"
+import TomSelect from "tom-select"
+import {post} from "@rails/request.js"
 
 // Connects to data-controller="single-select"
-export default class extends Controller {
-  static values = {fieldId: Number, createPath: String};
+export default class extends DispatchController {
+  static values = {fieldId: Number, createPath: String}
 
   connect() {
     const that = this;
@@ -32,13 +32,8 @@ export default class extends Controller {
   }
 
   async createNew(payload) {
-    const that = this;
-    const response = await post(that.createPathValue, { body: JSON.stringify(payload) });
+    const response = await post(this.createPathValue, { body: JSON.stringify(payload) });
 
-    if (!response.ok) {
-      const json = await response.json;
-
-      that.dispatch("error", {target: document, prefix: null, detail: {json: json}});
-    }
+    this.dispatchError(response);
   }
 }

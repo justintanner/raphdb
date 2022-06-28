@@ -33,5 +33,8 @@ module Raphdb
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
     config.active_job.queue_adapter = :sucker_punch
+
+    # Surpress .field_with_errors form wrappers
+    config.action_view.field_error_proc = proc { |html_tag, _instance| html_tag.html_safe }
   end
 end

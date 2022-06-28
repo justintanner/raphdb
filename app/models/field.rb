@@ -62,6 +62,18 @@ class Field < ApplicationRecord
     Money.from_cents(1, currency_iso_code).symbol
   end
 
+  def operators
+    Filter::OPERATORS[column_type_sym]
+  end
+
+  def self.field_id_operator_map
+    all_cached.map { |field| [field.id, field.operators] }.to_h
+  end
+
+  def self.field_id_column_type_map
+    all_cached.map { |field| [field.id, field.column_type_sym.to_s] }.to_h
+  end
+
   def self.keys
     pluck(:key)
   end

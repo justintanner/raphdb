@@ -1,0 +1,32 @@
+<div class="dropdown">
+  <button type="button"
+          class="btn btn-link shadow-none me-2 dropdown-toggle <%= class_names("btn-light-orange": view.filters.present?) %>"
+          role="button"
+          id="filter-dropdown-button"
+          data-bs-toggle="dropdown"
+          data-bs-auto-close="outside"
+          aria-expanded="false">
+    <i class="bi bi-filter me-2"></i><span class="d-none d-sm-inline">Filter</span>
+  </button>
+
+  <div class="dropdown-menu" aria-labelledby="filter-dropdown-button">
+    <div class="py-2 px-3" style="min-width: 632px;">
+      <%= turbo_frame_tag "filters" do %>
+        <%= turbo_frame_tag "empty_filters_message" do %>
+          <%= render "editor/filters/empty_filters_message" %>
+        <% end %>
+        <%= render partial: "editor/filters/filter", collection: view.filters, as: :filter, locals: { view: view } %>
+      <% end %>
+      <%= turbo_frame_tag "filter_operations" %>
+
+      <div class="row mt-3">
+        <div class="col-6">
+          <%= link_to "Add Filter", new_editor_view_filter_path(view_id: view.id), data: { turbo_frame: "filter_operations" }, class: "btn btn-sm btn-light-orange shadow-none" %>
+        </div>
+        <div class="col-6 text-end">
+          <%= link_to "Close", editor_view_path(view), class: "btn btn-link text-muted" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

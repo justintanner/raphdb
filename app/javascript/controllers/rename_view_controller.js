@@ -1,9 +1,9 @@
-import { Controller } from "@hotwired/stimulus"
+import {DispatchController} from "./dispatch_controller"
 import { useClickOutside } from "stimulus-use"
 import { patch } from "@rails/request.js"
 
 // Connects to data-controller="rename-view"
-export default class extends Controller {
+export default class extends DispatchController {
   static targets = ["dropdown", "container", "input"]
   static values = { updatePath: String }
 
@@ -47,10 +47,6 @@ export default class extends Controller {
     const payload = { "view": { "title": title } };
     const response = await patch(that.updatePathValue, { body: JSON.stringify(payload) });
 
-    if (!response.ok) {
-      const json = await response.json;
-
-      that.dispatch("error", {target: document, prefix: null, detail: {json: json}});
-    }
+    that.dispatchError(response);
   }
 }

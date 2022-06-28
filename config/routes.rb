@@ -23,7 +23,13 @@ Rails.application.routes.draw do
         get :search
         post :duplicate, as: :duplicate
         post :sorts, as: :sorts
-        post :filters, as: :filters
+        # post :filters, as: :filters
+      end
+
+      resources :filters, except: [:index, :show, :destroy], shallow: true do
+        collection do
+          delete :destroy_by_uuid, as: :destroy_by_uuid
+        end
       end
     end
 

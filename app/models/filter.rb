@@ -8,12 +8,26 @@ class Filter < ApplicationRecord
 
   position_within :view
 
+  validates :uuid, presence: true
   validates :view, presence: true
   validates :field, presence: true
   validates :operator, presence: true
 
-  validate :operator_is_allowable
-  validate :cant_use_field_twice_in_the_same_view
+  after_initialize :set_uuid
+
+  def set_default_field
+    self.field = Field.first if field.blank?
+  end
+
+  def set_default_operator
+    if field.present? && field_id_changed?
+      self.operator = OPERATORS[field.column_type_sym].first
+    end
+  end
+
+  def to_query
+    {view_id: view.id, field_id: field.id, temp_uuid: temp_uuid, operator: operator, value: value}.to_query
+  end
 
   def duplicate(replacement_view:)
     Filter.create(view: replacement_view, field: field, operator: operator, value: value)
@@ -21,15 +35,7 @@ class Filter < ApplicationRecord
 
   private
 
-  def operator_is_allowable
-    return unless field.present?
-
-    errors.add(:operator, "invalid operator") unless OPERATORS[field.column_type_sym].include?(operator)
-  end
-
-  def cant_use_field_twice_in_the_same_view
-    if Filter.where(view: view, field: field).exists?
-      errors.add(:field, "can't be used twice in the same view")
-    end
+  def set_uuid
+    self.uuid = SecureRandom.uuid if uuid.blank?
   end
 end

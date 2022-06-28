@@ -1,8 +1,9 @@
+import {DispatchController} from "./dispatch_controller"
 import { Controller } from "@hotwired/stimulus"
 import { patch } from "@rails/request.js"
 
 // Connects to data-controller="set-default"
-export default class extends Controller {
+export default class extends DispatchController {
   static values = { updatePath: String }
 
   set() {
@@ -16,10 +17,6 @@ export default class extends Controller {
     const payload = { "view": { "default": true } }
     const response = await patch(that.updatePathValue, { body: JSON.stringify(payload) })
 
-    if (!response.ok) {
-      const json = await response.json
-
-      that.dispatch("error", {target: document, prefix: null, detail: {json: json}})
-    }
+    that.dispatchError(response)
   }
 }

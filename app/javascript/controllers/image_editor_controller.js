@@ -1,9 +1,9 @@
-import {Controller} from "@hotwired/stimulus";
+import {DispatchController} from "./dispatch_controller"
 import {patch} from "@rails/request.js";
 import "cropperjs";
 
 // Connects to data-controller="image-editor"
-export default class extends Controller {
+export default class extends DispatchController {
   static targets = ["image", "cropButton", "clearCropButton"];
   static values = {
     "id": Number,
@@ -43,8 +43,6 @@ export default class extends Controller {
   showClearCrop() {
     const that = this;
 
-    console.log("showClearCrop");
-
     that.clearCropButtonTarget.classList.remove("d-none");
     that.clearCropButtonTarget.classList.add("d-block");
 
@@ -77,8 +75,6 @@ export default class extends Controller {
   save() {
     const that = this;
     const data = that.cropper.getData();
-
-    console.log(data);
 
     if (this.somethingChanged(data)) {
       that.updateImage(data);
@@ -121,11 +117,7 @@ export default class extends Controller {
     };
     const response = await patch(`/editor/images/${that.idValue}`, { body: JSON.stringify(payload) });
 
-    if (!response.ok) {
-      const json = await response.json;
-
-      that.dispatch("error", {target: document, prefix: null, detail: {json: json}});
-    }
+    that.dispatchError(response);
   }
 
   somethingChanged(data) {

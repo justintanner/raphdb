@@ -5,7 +5,7 @@
                      class: class_names("form-select": true, "is-invalid": item.errors.include?(field.form_error_sym)),
                      data: {
                        "controller": "datepicker",
-                       "datepicker-format-value": field.pikaday_date_format
+                       "datepicker-format-value": field.bs5_date_format,
                      } %>
   <% if item.errors.include?(field.form_error_sym) %>
     <div class="invalid-feedback mb-1"><%= item.errors[field.form_error_sym].first %></div>

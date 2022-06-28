@@ -1,17 +1,17 @@
-.flash-green {
-  -webkit-animation-name: flash-green-animation;
+.blink-green {
+  -webkit-animation-name: blink-green-animation;
   -webkit-animation-duration: 0.5s;
 
-  animation-name: flash-green-animation;
+  animation-name: blink-green-animation;
   animation-duration: 0.5s;
 }
 
-@-webkit-keyframes flash-green-animation {
+@-webkit-keyframes blink-green-animation {
   from { background: $green-400; }
   to   { background: default; }
 }
 
-@keyframes flash-green-animation {
+@keyframes blink-green-animation {
   from { background: $green-400; }
   to   { background: default; }
 }

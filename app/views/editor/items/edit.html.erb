@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-10">
       <%= form_for(@item, url: editor_item_path(@item.id)) do |form| %>
-        <div class="<%= class_names("row", "p-3", "flash-green": local_variables.include?(:flash_green)) %>">
+        <div class="<%= class_names("row", "p-3", "blink-green": local_variables.include?(:blink_green)) %>">
           <% Field.all_cached.each do |field| %>
             <%= render "editor/items/fields/#{field.column_type_sym}", { form: form, field: field, item: @item } %>
             <% if field.divider %>

@@ -38,14 +38,14 @@ module DataDisplay
     MultipleSelect.where(field: self).pluck(:title)
   end
 
-  def pikaday_date_format
+  def postgres_date_format
     return unless date_format.present?
 
     date_format.gsub("%Y", "YYYY").gsub("%m", "MM").gsub("%d", "DD")
   end
 
-  def postgres_date_format
-    pikaday_date_format
+  def bs5_date_format
+    postgres_date_format.downcase
   end
 
   def example_date_format

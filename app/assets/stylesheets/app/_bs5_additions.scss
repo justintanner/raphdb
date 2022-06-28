@@ -37,16 +37,12 @@
   cursor: move;
 }
 
-.btn-outline-body {
-  background-color: $white;
-  color: $body-color;
-  border-color: $body-color;
+.btn-light-orange {
+  @include button-variant($orange-100, $orange-100);
+}
 
-  &:hover, active {
-    background-color: $body-color;
-    color: $white;
-    border-color: $body-color;
-  }
+.btn-light-purple {
+  @include button-variant($purple-100, $purple-100);
 }
 
 .text-gray-600 {
@@ -65,6 +61,10 @@
   &:hover {
     color: $link-hover-color !important;
   }
+}
+
+.field_with_errors {
+  display: inline;
 }
 
 .fade-in {

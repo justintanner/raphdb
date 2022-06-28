@@ -1,0 +1,3 @@
+<%= turbo_frame_tag "filter_uuid_#{filter.uuid}" do %>
+  <%= render partial: "editor/filters/form", locals: {filter: filter, view: view} %>
+<% end %>

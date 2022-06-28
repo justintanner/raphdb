@@ -10,7 +10,7 @@ module Editor
       @item = Item.find(params[:id])
 
       if @item.update(item_params)
-        render :edit, locals: {flash_green: true}
+        render :edit, locals: {blink_green: true}
       else
         render :edit, status: :unprocessable_entity
       end

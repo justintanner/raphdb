@@ -1,0 +1,13 @@
+<%= turbo_frame_tag "filter_operations" do %>
+  <%= turbo_stream.append "filters" do %>
+    <%= turbo_frame_tag "filter_uuid_#{@filter.uuid}" do %>
+      <%= render "form", filter: @filter, view: @view %>
+    <% end %>
+  <% end %>
+
+  <%= turbo_stream.replace "empty_filters_message" do %>
+    <%= turbo_frame_tag "empty_filters_message" do %>
+      <%= render "editor/filters/empty_filters_message" %>
+    <% end %>
+  <% end %>
+<% end %>

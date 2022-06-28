@@ -1,5 +1,11 @@
 <div class="dropdown">
-  <button type="button" class="btn btn-link shadow-none dropdown-toggle" role="button" id="sort-dropdown-button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+  <button type="button"
+          class="btn btn-link shadow-none me-2 dropdown-toggle <%= class_names("btn-light-purple": @view.sorts.present?) %>"
+          role="button"
+          id="sort-dropdown-button"
+          data-bs-toggle="dropdown"
+          data-bs-auto-close="outside"
+          aria-expanded="false">
     <i class="bi bi-arrow-down-up me-2"></i><span class="d-none d-sm-inline">Sort</span>
   </button>
 
@@ -7,6 +13,7 @@
        aria-labelledby="sort-dropdown-button"
        data-controller="sorts"
        data-sorts-first-label-value="Sort by"
+       data-sorts-nth-label-value="then by"
        data-sorts-numeric-field-ids-value="[<%= Field.numeric.pluck(:id).join(',') %>]">
     <div class="py-2 px-3" style="min-width: 600px;">
       <div class="<%= class_names("text-muted", "d-none": @view.sorts.present?) %>" data-sorts-target="emptyMessage">
