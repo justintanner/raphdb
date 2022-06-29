@@ -65,8 +65,6 @@ export default class extends Controller {
       const resizer = document.createElement("div");
       resizer.classList.add("resizer");
 
-      resizer.style.height = `${table.offsetHeight}px`;
-
       colHeader.appendChild(resizer);
 
       that.createResizableColumn(colHeader, resizer);

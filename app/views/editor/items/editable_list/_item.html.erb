@@ -13,7 +13,7 @@
     <% end %>
   </td>
 
-  <% View.default.fields.each do |field| %>
+  <% Field.all.each do |field| %>
     <td class="<%= class_names("list-images-col": field.images?) %>">
       <% if field.images? %>
         <%= render "items/list/carousel", item: item %>

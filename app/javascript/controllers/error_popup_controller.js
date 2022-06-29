@@ -6,10 +6,18 @@ export default class extends Controller {
 
   show({detail: { message }}) {
     const title = "Sorry, something went wrong"
-    let defaultMessage = "Please reload the page"
+    let finalMessage = "Please reload the page"
+
+    if (message) {
+      finalMessage = message
+    }
+
+    if (finalMessage.length > 512) {
+      finalMessage = finalMessage.substring(0, 512) + "..."
+    }
 
     this.titleTarget.innerHTML = title
-    this.bodyTarget.innerHTML = message || defaultMessage
+    this.bodyTarget.innerHTML = finalMessage
 
     const toast = bootstrap.Toast.getOrCreateInstance(this.element)
     toast.show()

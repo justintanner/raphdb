@@ -7,7 +7,7 @@
         <tr>
           <th class="list-index-col"></th>
           <th class="list-edit-col"></th>
-          <% View.default.fields.each do |field| %>
+          <% Field.all.each do |field| %>
             <th data-list-target="colHeader" id="<%= dom_id(field) %>">
               <div class="list-col-title"><%= field.title %></div>
             </th>
