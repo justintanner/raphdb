@@ -23,7 +23,6 @@ Rails.application.routes.draw do
         get :search
         post :duplicate, as: :duplicate
         post :sorts, as: :sorts
-        # post :filters, as: :filters
       end
 
       resources :filters, except: [:index, :show, :destroy], shallow: true do

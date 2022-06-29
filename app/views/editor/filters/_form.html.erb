@@ -9,7 +9,7 @@
     </small>
   </div>
   <div class="col-11 d-flex">
-    <%= form_for filter, url: filter_form_path(filter, view), method: filter_form_method(filter), data: { filter_target: "form" }, html: { class: "w-100" } do |form| %>
+    <%= form_for filter_shallow_args(filter, view), data: { filter_target: "form" }, html: { class: "w-100" } do |form| %>
       <%= form.hidden_field :view_id, value: view.id %>
       <%= form.hidden_field :uuid %>
       <%= form.hidden_field :position %>

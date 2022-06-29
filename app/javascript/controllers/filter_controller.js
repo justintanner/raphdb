@@ -25,7 +25,6 @@ export default class extends DispatchController {
   }
 
   reload() {
-    console.log("filter_controller.js: reload()")
     this.formTarget.requestSubmit()
   }
 
