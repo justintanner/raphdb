@@ -60,7 +60,7 @@ class View < ApplicationRecord
   def associate_all_fields
     return if skip_associate_all_fields
 
-    self.fields = Field.all
+    self.fields = Field.all_cached
   end
 
   def only_one_default

@@ -88,11 +88,11 @@ class Field < ApplicationRecord
     end
   end
 
-  # TODO: Use rails caching?
+  # TODO: Delete this cache when *any* field is changed.
   def self.all_cached
-    return @all_cache if defined? @all_cache
-
-    @all_cache = all
+    Rails.cache.fetch("fields", expires_in: 12.hours) do
+      Field.all.to_a
+    end
   end
 
   def self.searchable_cached
