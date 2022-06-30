@@ -1,5 +1,0 @@
-<%= turbo_frame_tag "page_handler" do %>
-  <%= turbo_stream_action_tag("append", target: "editable_list", template: %(#{render partial: "editor/items/editable_list/items", locals: { items: items, pagy: pagy } })) %>
-  <%= turbo_stream_action_tag("replace", target: "load-more-button", template: %(#{render "items/list/load_more_button", pagy: pagy, tab: tab})) %>
-  <%= turbo_stream_action_tag("update", target: "list_spinner", template: %(#{render "items/list/spinner"})) %>
-<% end %>

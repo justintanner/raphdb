@@ -20,7 +20,7 @@
       </table>
     </div>
     <div data-maximize-height-target="footer" class="list-footer d-flex align-items-center no-border">
-      <%= turbo_frame_tag "page_handler" %>
+      <%= turbo_frame_tag "page_operations" %>
       <%= render "items/list/load_more_button", pagy: pagy, tab: "list" %>
       <%= turbo_frame_tag "list_spinner" do %>
         <%= render "items/list/spinner" %>

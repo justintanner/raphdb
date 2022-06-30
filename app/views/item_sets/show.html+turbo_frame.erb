@@ -1,1 +1,14 @@
-<%= render "items/page_handler", items: @items, pagy: @pagy, tab: @tab %>
+<%= turbo_frame_tag "page_operations" do %>
+  <%= turbo_stream.append "items_#{@tab}" do %>
+    <%= render partial: "items/#{@tab}/items", locals: { items: @items, pagy: @pagy } %>
+  <% end %>
+  <%= turbo_stream.replace "load-more-button" do %>
+    <%= render partial: "items/#{@tab}/load_more_button", locals: { pagy: @pagy, tab: @tab } %>
+  <% end %>
+
+  <% if @tab == "list" %>
+    <%= turbo_stream.update "list_spinner" do %>
+      <%= render partial: "items/list/spinner" %>
+    <% end %>
+  <% end %>
+<% end %>
