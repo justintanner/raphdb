@@ -8,7 +8,9 @@ export class DispatchController extends Controller {
 
       if (response.contentType === "application/json") {
         const json = await response.json
-        message = json.errors.join(", ");
+        if (Array.isArray(json.errors)) {
+          message = json.errors.join(", ")
+        }
       } else {
         message = await response.text
       }
