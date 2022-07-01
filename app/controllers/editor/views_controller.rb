@@ -6,7 +6,7 @@ module Editor
 
     def default
       @view = View.default
-      @pagy, @items = pagy(@view.search(params[:q]))
+      @pagy, @items = pagy(@view.search(params[:q]), items: per_page)
 
       render "show"
     end
@@ -14,7 +14,7 @@ module Editor
     def show
       @view = View.find(params[:id])
 
-      @pagy, @items = pagy(@view.search(params[:q]))
+      @pagy, @items = pagy(@view.search(params[:q]), items: per_page)
     end
 
     def update
@@ -72,6 +72,10 @@ module Editor
 
     def sorts_params
       params.require(:view).permit(sorts: [:field_id, :direction, :position])
+    end
+
+    def per_page
+      64
     end
   end
 end

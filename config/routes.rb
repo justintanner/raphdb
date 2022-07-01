@@ -20,7 +20,6 @@ Rails.application.routes.draw do
         get :default, as: :default
       end
       member do
-        get :search
         post :duplicate, as: :duplicate
         post :sorts, as: :sorts
       end

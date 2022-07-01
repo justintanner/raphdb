@@ -29,6 +29,9 @@ gem "stimulus-rails"
 # Pagination [https://github.com/ddnexus/pagy]
 gem "pagy"
 
+# UI Components [https://github.com/github/view_component]
+gem "view_component"
+
 # In memory job runner [https://github.com/brandonhilkert/sucker_punch]
 gem "sucker_punch"
 

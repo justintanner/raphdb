@@ -46,13 +46,7 @@ module ItemsHelper
     end
   end
 
-  def load_more_shim(item_iteration)
-    if (item_iteration.size > 30 && item_iteration.index == item_iteration.size - 30) || item_iteration.size <= 30 && item_iteration.last?
-      'data-controller="load-more"'.html_safe
-    end
-  end
-
   def insert_load_more_shim?(total, index)
-    (total > 30 && index == total - 30) || total <= 30 && (index == total - 1)
+    index == (total / 2).floor
   end
 end

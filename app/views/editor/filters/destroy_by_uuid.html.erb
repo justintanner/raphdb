@@ -2,8 +2,6 @@
   <%= turbo_stream.remove "filter_uuid_#{@uuid}" %>
 
   <%= turbo_stream.replace "empty_filters_message" do %>
-    <%= turbo_frame_tag "empty_filters_message" do %>
-      <%= render "editor/filters/empty_filters_message" %>
-    <% end %>
+    <%= render Filter::EmptyMessageComponent.new %>
   <% end %>
 <% end %>

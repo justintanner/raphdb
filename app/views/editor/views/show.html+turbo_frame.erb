@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "page_operations" do %>
   <%= turbo_stream.append "editable_list" do %>
-    <%= render partial: "editor/items/editable_list/items", locals: { items: @items, pagy: @pagy } %>
+    <%= render partial: "editor/items/editable_list/items", locals: { view: @view, items: @items, pagy: @pagy } %>
   <% end %>
   <%= turbo_stream.replace "load-more-button" do %>
     <%= render "items/list/load_more_button", pagy: @pagy, tab: @tab %>

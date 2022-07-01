@@ -3,7 +3,7 @@
 module Editor
   class FiltersController < EditorController
     before_action :set_view, only: [:new, :create, :destroy_by_uuid]
-    layout false, only: [:new, :create, :edit, :update, :destroy_by_uuid]
+    layout false
 
     def new
       @filter = Filter.new(view: @view)

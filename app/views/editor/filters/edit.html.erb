@@ -1,3 +1,1 @@
-<%= turbo_frame_tag "filter_uuid_#{@filter.uuid}" do %>
-  <%= render "form", filter: @filter, view: @filter.view %>
-<% end %>
+<%= render Filter::RowComponent.new(filter: @filter, view: @filter.view) %>

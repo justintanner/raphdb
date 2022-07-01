@@ -7,7 +7,7 @@
         <tr>
           <th class="list-index-col"></th>
           <th class="list-edit-col"></th>
-          <% Field.all_cached.each do |field| %>
+          <% view.fields.each do |field| %>
             <th data-list-target="colHeader" id="<%= dom_id(field) %>">
               <div class="list-col-title"><%= field.title %></div>
             </th>
@@ -15,7 +15,7 @@
         </tr>
         </thead>
         <tbody id="editable_list">
-        <%= render partial: "editor/items/editable_list/items", locals: { items: items, pagy: pagy } %>
+        <%= render partial: "editor/items/editable_list/items", locals: { view: view, items: items, pagy: pagy } %>
         </tbody>
       </table>
     </div>

@@ -1,0 +1,14 @@
+number_equals:
+  uuid: <%= SecureRandom.uuid %>
+  view: with_filters
+  field: number
+  operator: "="
+  value: 9293
+  position: 1
+item_title_contains:
+  uuid: <%= SecureRandom.uuid %>
+  view: with_filters
+  field: item_title
+  operator: "contains"
+  value: "SPORT"
+  position: 2

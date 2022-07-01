@@ -104,7 +104,7 @@ class ImagePositionableTest < ActiveSupport::TestCase
     assert_equal 2, one_second.position, "One second item image position is not 2"
 
     assert_equal 1, two_fourth.position, "Two fourth was not re-positioned to 1"
-    assert_equal 2, two_first.position, "Two first was not re-positioned to 2"
+    assert_equal 2, two_first.position, "Two first was not re-positioned to 2" # TODO: Often flaky!
     assert_equal 3, two_second.position, "Two second was not re-positioned to 3"
     assert_equal 4, two_third.position, "Two third was not re-positioned to 4"
   end
@@ -120,7 +120,7 @@ class ImagePositionableTest < ActiveSupport::TestCase
     [first_image, second_image, third_image].each(&:reload)
 
     assert_equal 1, first_image.position, "First image was not left alone"
-    assert_equal 3, second_image.position, "Second image was not re-positioned to 3"
+    assert_equal 3, second_image.position, "Second image was not re-positioned to 3" # TODO: Often flaky!
     assert_equal 2, third_image.position, "Third image was not re-positioned to 2"
   end
 
