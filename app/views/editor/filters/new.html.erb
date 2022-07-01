@@ -3,7 +3,7 @@
     <%= render Filter::RowComponent.new(filter: @filter, view: @view) %>
   <% end %>
 
-  <%= turbo_stream.replace "empty_filters_message" do %>
+  <%= turbo_stream.replace "filter_empty_message" do %>
     <%= render Filter::EmptyMessageComponent.new %>
   <% end %>
 <% end %>
