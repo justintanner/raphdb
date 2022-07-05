@@ -34,12 +34,4 @@ class Item::FieldsComponentTest < ViewComponent::TestCase
 
     assert_no_text("OILETTE")
   end
-
-  def test_component_removes_links_to_sets
-    item = items(:football)
-
-    render_inline(Item::FieldsComponent.new(item: item, link_to_sets: false))
-
-    assert_selector("a[href='/sets/#{item.item_set.slug}']", count: 0)
-  end
 end

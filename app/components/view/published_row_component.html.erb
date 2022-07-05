@@ -12,13 +12,11 @@
           <span class="badge rounded-pill bg-<%= MultipleSelect.color(text) %>-100 text-dark fw-normal fs-6"><%= text %></span>
         <% end %>
       <% elsif field.key == "item_title" %>
-        <%= link_to @item, class: "me-1" do %>
+        <%= link_to @item, class: "me-1", data: {turbo_frame: "_top"} do %>
           <i class="bi bi-box-arrow-up-left me-2"></i><%= @item.data[field.key] %>
         <% end %>
       <% elsif field.key == "set_title" && controller_name != "item_sets" %>
-        <%= link_to @item.item_set, class: "me-1" do %>
-          <i class="bi bi-collection me-2"></i><%= @item.data[field.key] %>
-        <% end %>
+        <%= render Set::LinkComponent.new(item_set: @item.item_set) %>
       <% else %>
         <%= @item.data[field.key] %>
       <% end %>

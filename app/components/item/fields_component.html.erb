@@ -1,7 +1,7 @@
 <% Field.published_with_data(@item).each.with_index(1) do |field, index| %>
   <% next if @except.include?(field.key) %>
 
-  <% if field.key == "set_title" && link_to_sets? %>
+  <% if field.key == "set_title" && controller_name != "item_sets" %>
     <label class="text-muted"><small><%= field.title %></small></label>
     <p><%= render Set::LinkComponent.new(item_set: @item.item_set) %></p>
   <% elsif field.short_label?(@item) %>

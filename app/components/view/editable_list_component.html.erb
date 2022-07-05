@@ -22,7 +22,7 @@
     <div data-maximize-height-target="footer" class="list-footer no-border">
       <div class="row pt-1 px-2">
         <div class="col-10">
-          <small class="font-monospace text-muted"><%= @total_count %> items</small>
+          <small class="font-monospace text-muted"><%= @pagy.count %> items</small>
         </div>
         <div class="col-2 text-end">
           <%= turbo_frame_tag "page_operations" %>
