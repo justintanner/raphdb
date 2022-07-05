@@ -15,11 +15,14 @@
         <%= render Filter::EmptyMessageComponent.new %>
         <%= render Filter::RowComponent.with_collection(@view.filters, view: @view) %>
       <% end %>
+
       <%= turbo_frame_tag "filter_operations" %>
 
       <div class="row mt-3">
         <div class="col-6">
-          <%= link_to "Add Filter", new_editor_view_filter_path(view_id: @view.id), data: { turbo_frame: "filter_operations" }, class: "btn btn-sm btn-light-orange shadow-none" %>
+          <%= link_to "Add Filter", new_editor_view_filter_path(view_id: @view.id),
+                      data: { turbo_frame: "filter_operations" },
+                      class: "btn btn-sm btn-light-orange shadow-none" %>
         </div>
         <div class="col-6 text-end">
           <%= link_to "Close", editor_view_path(@view), class: "btn btn-link text-muted" %>

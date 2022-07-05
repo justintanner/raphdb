@@ -65,7 +65,7 @@ class ImagePositionableTest < ActiveSupport::TestCase
     third_image.reload
 
     assert_equal 1, third_image.position, "Third item was not re-positioned to 1"
-    assert_equal 2, first_image.position, "First item was not re-positioned to 2"
+    assert_equal 2, first_image.position, "First item was not re-positioned to 2" # TODO: Flaky test.
     assert_equal 3, second_image.position, "Second item was not re-positioned to 3"
   end
 

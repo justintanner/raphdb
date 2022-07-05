@@ -1,0 +1,35 @@
+<%= turbo_frame_tag "editable_list" do %>
+  <div class="list" data-controller="list maximize-height" data-action="resize@window->maximize-height#style">
+    <%= turbo_frame_tag "refresh_list" %>
+    <div class="list-table-wrapper no-border" data-maximize-height-target="wrapper">
+      <table class="list-table">
+        <thead>
+        <tr>
+          <th class="list-index-col"></th>
+          <th class="list-edit-col"></th>
+          <% @view.fields.each do |field| %>
+            <th data-list-target="colHeader" id="<%= dom_id(field) %>">
+              <div class="list-col-title"><%= field.title %></div>
+            </th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody id="editable-list-tbody">
+        <%= render View::EditableRowComponent.with_collection(@items, view: @view, offset: @pagy.offset) %>
+        </tbody>
+      </table>
+    </div>
+    <div data-maximize-height-target="footer" class="list-footer no-border">
+      <div class="row pt-1 px-2">
+        <div class="col-10">
+          <small class="font-monospace text-muted"><%= @total_count %> items</small>
+        </div>
+        <div class="col-2 text-end">
+          <%= turbo_frame_tag "page_operations" %>
+          <%= render View::LoadMoreComponent.new(tab: "list", query: @query, next_page: @pagy.next) %>
+          <%= render View::SpinnerComponent.new %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

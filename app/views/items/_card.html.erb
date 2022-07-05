@@ -21,6 +21,6 @@
     </div>
   </div>
   <div class="card-body">
-    <%= render "items/fields_data", item: item %>
+    <%= render Item::FieldsComponent.new(item: item, divider: true) %>
   </div>
 </div>

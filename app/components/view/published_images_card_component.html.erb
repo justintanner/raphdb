@@ -1,0 +1,39 @@
+<div class="col-auto" id="<%= dom_id(@item) %>" <% if load_more? %>data-controller="load-more"<% end %>>
+  <div class="card card-medium mb-3">
+    <div class="card-header text-truncate">
+      <div class="row">
+        <div class="col text-truncate">
+          <%= link_to @item do %>
+            <i class="bi bi-box-arrow-up-left me-2"></i><%= @item.title %>
+          <% end %>
+        </div>
+        <div class="col-auto text-right">
+          <span class="p-0">
+            <% Field.identifiers.each do |field| %>
+              <%= @item.data[field.key] %>
+            <% end %>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-auto pe-0">
+          <% if featured_image.present? %>
+            <% if vertical? %>
+              <%= render Image::MediumVerticalComponent.new(featured_image: featured_image, item: @item) %>
+            <% else %>
+              <%= render Image::MediumHorizontalComponent.new(featured_image: featured_image, item: @item) %>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="col">
+          <div class="pb-5 overflow-hidden" style="height: 250px;">
+            <%= render Item::FieldsComponent.new(item: @item, except: %w(item_title prefix number in_set), limit: 3, truncate_values: 32) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

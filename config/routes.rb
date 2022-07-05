@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         get :default, as: :default
       end
       member do
+        post :refresh, as: :refresh
         post :duplicate, as: :duplicate
         post :sorts, as: :sorts
       end

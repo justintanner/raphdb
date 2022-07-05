@@ -3,6 +3,7 @@
 class View < ApplicationRecord
   include Undeletable
   include Search
+  include Broadcastable
 
   has_many :sorts, dependent: :destroy
   has_many :filters, dependent: :destroy
@@ -47,8 +48,11 @@ class View < ApplicationRecord
   end
 
   def broadcast_update
-    broadcast_replace_to("views_stream", target: self, partial: "editor/views/view", locals: {view: self})
-    broadcast_replace_to("view_actions_stream", target: "actions-dropdown", partial: "editor/views/actions", locals: {view: self})
+    # TODO: Convert these to Component methods.
+    broadcast_replace_to("editor_stream", target: self, partial: "editor/views/view", locals: {view: self})
+    broadcast_replace_to("editor_stream", target: "actions-dropdown", partial: "editor/views/actions", locals: {view: self})
+
+    editor_replace_to(target: "refresh_list", component: View::RefreshListComponent, locals: {view: self})
   end
 
   def self.default

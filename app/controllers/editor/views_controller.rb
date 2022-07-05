@@ -11,6 +11,12 @@ module Editor
       render "show"
     end
 
+    def refresh
+      @view = View.find(params[:id])
+
+      @pagy, @items = pagy(@view.search(params[:q]), items: per_page)
+    end
+
     def show
       @view = View.find(params[:id])
 

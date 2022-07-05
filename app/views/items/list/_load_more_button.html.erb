@@ -1,9 +1,0 @@
-<% if pagy.next %>
-  <%= link_to("", url_for(only_path: false, q: params[:q], page: pagy.next, tab: tab),
-              id: "load-more-button",
-              class: "d-none p-0 m-0",
-              data: {
-                action: "click->list#spinner",
-                turbo_frame: "page_operations"
-              }) %>
-<% end %>

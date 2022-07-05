@@ -3,6 +3,8 @@
 class Filter < ApplicationRecord
   include Positionable
   include FilterSql
+  include Broadcastable
+
   belongs_to :view
   belongs_to :field
 
@@ -14,6 +16,7 @@ class Filter < ApplicationRecord
   validates :operator, presence: true
 
   after_initialize :set_uuid
+  after_commit :broadcast_update
 
   def set_default_field
     self.field = Field.first if field.blank?
@@ -31,6 +34,10 @@ class Filter < ApplicationRecord
 
   def duplicate(replacement_view:)
     Filter.create(view: replacement_view, field: field, operator: operator, value: value)
+  end
+
+  def broadcast_update
+    editor_replace_to(target: "refresh_list", component: View::RefreshListComponent, locals: {view: view})
   end
 
   private

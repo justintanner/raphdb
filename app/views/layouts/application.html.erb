@@ -12,6 +12,8 @@
   </head>
 
   <body class="d-flex flex-column h-100">
+  <%= turbo_stream_from "published_stream" %>
+
   <%= render "layouts/header" %>
   <%= yield %>
   <%= render "layouts/footer" unless content_for?(:no_footer) %>

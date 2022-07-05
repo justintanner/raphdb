@@ -4,7 +4,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   connect() {
     if (document.getElementById("load-more-button")) {
-      this.createObserver();
+      this.createObserver()
     }
   }
 
@@ -18,20 +18,23 @@ export default class extends Controller {
         threshold: [0, 1.0],
       }
     )
-    that.observer.observe(that.element);
+    that.observer.observe(that.element)
   }
 
   handleIntersect(entries) {
     const that = this;
+    const loadMoreButton = document.getElementById("load-more-button");
 
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         /* Not using an stimulus target because this is outside the controller */
-        document.getElementById("load-more-button").click();
+        if (loadMoreButton) {
+          loadMoreButton.click()
+        }
 
         /* After the load-more shim controller has fetched a new page,
         we are disabling so that the next load more shim will be picked up. */
-        that.observer.disconnect();
+        that.observer.disconnect()
       }
     })
   }

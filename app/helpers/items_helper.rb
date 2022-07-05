@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: Removed un-used methods.
 module ItemsHelper
   def position
     return 1 unless params.key?(:picture_number)
@@ -34,19 +35,5 @@ module ItemsHelper
     else
       I18n.t("all_results")
     end
-  end
-
-  def search_count(count:, query: nil)
-    if query.present?
-      I18n.t("search_found", query: query.truncate(24), count: count)
-    elsif controller_name == "item_sets"
-      I18n.t("count_set_items", count: count)
-    else
-      I18n.t("count_all_items", count: count)
-    end
-  end
-
-  def insert_load_more_shim?(total, index)
-    index == (total / 2).floor
   end
 end

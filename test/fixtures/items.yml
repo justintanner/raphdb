@@ -5,12 +5,13 @@ single:
 football:
   item_set: early_days_of_sport
   data:
-    item_title: ANCIENT FOOTBALL IN THE 14TH CENTURY
     number: 9293
     in_reference_collection: true
     featured: true
     orientation: Horizontal
     estimated_value: $15.00
+    item_title: ANCIENT FOOTBALL IN THE 14TH CENTURY
+    set_title: EARLY DAYS OF SPORT
     set_comment: OILETTE, PRINTED IN ENGLAND, listed in 1908/1909 &1911/1912 & 1912/1913 POSTCARD Catalogues, come with various advertisements, opt. in green, on back
     sold_as: set of 6 cards
     where_sold: Great Britain

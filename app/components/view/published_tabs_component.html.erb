@@ -1,0 +1,42 @@
+<div class="container-<%= @tab %>">
+  <div class="row">
+    <div class="col">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <%= link_to url_for(only_path: false, q: @query, page: @pagy.page, tab: "images"), class: class_names("nav-link": true, "active": @tab == "images") do %>
+            <i class="bi bi-grid me-1"></i>Images
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to url_for(only_path: false, q: @query, page: @pagy.page, tab: "list"), class: class_names("nav-link": true, "active": @tab == "list") do %>
+            <i class="bi bi-list me-1"></i>List
+          <% end %>
+        </li>
+        <li class="nav-item pt-2 ms-auto">
+          <span class="text-muted"><%= tab_subtitle %></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<% if @items.empty? %>
+  <div class="container-<%= @tab %>">
+    <div class="row pt-3 gx-3">
+      <div class="col ms-3">
+        <h4 class="mb-3">Your search did not match any item</h4>
+        <p>Suggestions:</p>
+
+        <ul>
+          <li>Remove some words from your search</li>
+          <li>Try searching for any word that may appear on the card</li>
+          <li>Try searching for a number on the card</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<% elsif @tab == "list" %>
+  <%= render View::PublishedListComponent.new(view: @view, items: @items, query: @query, pagy: @pagy) %>
+<% else %>
+  <%= render View::PublishedImagesComponent.new(view: @view, items: @items, query: @query, pagy: @pagy) %>
+<% end %>

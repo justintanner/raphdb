@@ -1,0 +1,12 @@
+<%= turbo_frame_tag "refresh_list" do %>
+  <div class="refresh-list-overlay d-flex flex-column align-items-center justify-content-center">
+    <span class="spinner-border text-secondary" role="status" aria-hidden="true"></span>
+  </div>
+  <%= form_tag refresh_editor_view_path(@view),
+               method: :post,
+               data: {
+                 turbo_frame: "editable_list",
+                 controller: "auto-submit",
+               } do %>
+  <% end %>
+<% end %>

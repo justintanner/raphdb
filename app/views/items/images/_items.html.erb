@@ -1,6 +1,0 @@
-<% items.each.with_index(1) do |item, index| %>
-  <% if insert_load_more_shim?(items.length, index) %>
-    <div class="col-auto p-0 m-0" data-controller="load-more"></div>
-  <% end %>
-  <%= render partial: "items/images/item", locals: { item: item } %>
-<% end %>

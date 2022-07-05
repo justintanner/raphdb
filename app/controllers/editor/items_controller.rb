@@ -3,11 +3,11 @@
 module Editor
   class ItemsController < EditorController
     def edit
-      @item = Item.find(params[:id])
+      @item = Item.friendly.find(params[:id])
     end
 
     def update
-      @item = Item.find(params[:id])
+      @item = Item.friendly.find(params[:id])
 
       if @item.update(item_params)
         render :edit, locals: {blink_green: true}

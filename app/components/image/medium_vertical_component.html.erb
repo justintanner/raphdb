@@ -1,0 +1,31 @@
+<div class="d-flex align-items-start">
+  <ul class="list-group d-inline-block me-2">
+    <% @item.images.each.with_index(1) do |image, index| %>
+      <% if cutoff_preview_images? && index >= cutoff_at %>
+        <li class="list-group-item d-flex align-items-center justify-content-center p-0">
+          <span class="text-dark font-monospace my-2"><small>+<%= remaining_image_count %></small></span>
+        </li>
+        <% break %>
+      <% else %>
+      <li class="list-group-item d-flex align-items-center justify-content-center p-2" style="width: 46px;">
+        <%= link_to picture_item_path(@item, image.position) do %>
+          <%= image_tag url_for(image.file.variant(:micro)),
+                        srcset: srcset(image, :micro_retina, :micro),
+                        sizes: "#{image.width(:micro)}px",
+                        width: image.width(:micro),
+                        height: image.height(:micro),
+                        class: class_names("border": true, "border-dark": image == @featured_image) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </ul>
+
+  <%= link_to @item do %>
+    <%= image_tag url_for(@featured_image.file.variant(:medium)),
+                  srcset: srcset(@featured_image, :medium_retina, :medium),
+                  sizes: "#{@featured_image.width(:medium)}px",
+                  width: @featured_image.width(:medium),
+                  height: @featured_image.height(:medium),
+                  class: "border" %>
+  <% end %>
+</div>

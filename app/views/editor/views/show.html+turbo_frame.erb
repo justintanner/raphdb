@@ -1,11 +1,11 @@
 <%= turbo_frame_tag "page_operations" do %>
-  <%= turbo_stream.append "editable_list" do %>
-    <%= render partial: "editor/items/editable_list/items", locals: { view: @view, items: @items, pagy: @pagy } %>
+  <%= turbo_stream.append "editable-list-tbody" do %>
+    <%= render View::EditableRowComponent.with_collection(@items, view: @view, offset: @pagy.offset) %>
   <% end %>
   <%= turbo_stream.replace "load-more-button" do %>
-    <%= render "items/list/load_more_button", pagy: @pagy, tab: @tab %>
+    <%= render View::LoadMoreComponent.new(tab: "list", query: params[:q], next_page: @pagy.next) %>
   <% end %>
-  <%= turbo_stream.update "list_spinner" do %>
-    <%= render "items/list/spinner" %>
+  <%= turbo_stream.replace "list_spinner" do %>
+    <%= render View::SpinnerComponent.new %>
   <% end %>
 <% end %>

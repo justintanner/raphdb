@@ -1,3 +1,0 @@
-<% items.each.with_index(1) do |item, index| %>
-  <%= render partial: "items/list/item", locals: { item: item, number: pagy.offset + index, load_more: insert_load_more_shim?(items.length, index) } %>
-<% end %>

@@ -1,3 +1,7 @@
+<%= content_for :no_footer, true %>
+<%= content_for :title, search_title(query: params[:q]) %>
+<%= content_for :container_class, "container-#{@tab}" %>
+
 <div class="container-<%= @tab %>">
   <div class="row">
     <div class="col">
@@ -6,4 +10,4 @@
   </div>
 </div>
 
-<%= render "items/tabs", items: @items, pagy: @pagy, tab: @tab %>
+<%= render View::PublishedTabsComponent.new(view: View.default, items: @items, tab: @tab, pagy: @pagy, query: params[:q]) %>

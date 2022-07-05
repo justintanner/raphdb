@@ -6,6 +6,7 @@ class Item < ApplicationRecord
   include LogStats
   include Undeletable
   include FriendlyId
+  include Broadcastable
 
   belongs_to :item_set
 
@@ -40,12 +41,8 @@ class Item < ApplicationRecord
   end
 
   def broadcast_update
-    broadcast_replace_to("items_images_stream", target: self, partial: "items/images/item", locals: {item: self})
-    broadcast_replace_to("items_list_stream", target: self, partial: "items/list/item", locals: {item: self, number: "", load_more: false})
-
-    # TODO: Look for a better way to do this.
     View.all.each do |view|
-      broadcast_replace_to("editable_list_stream", target: self, partial: "editor/items/editable_list/item", locals: {view: view, item: self, number: "", load_more: false})
+      editor_replace_to(target: self, component: View::EditableRowComponent, locals: {item: self, view: view})
     end
   end
 

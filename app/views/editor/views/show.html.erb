@@ -3,5 +3,6 @@
   <i class="bi bi-file-spreadsheet"></i>
 <% end %>
 
-<%= render "editor/items/editable_list/container", view: @view, items: @items, pagy: @pagy %>
+<%= render View::EditableListComponent.new(view: @view, items: @items, query: params[:q], pagy: @pagy) %>
+
 <%= render "editor/items/form" %>

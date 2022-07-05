@@ -43,7 +43,7 @@ export default class extends Controller {
 
   spinner() {
     this.listSpinnerTarget.classList.remove("d-none");
-    this.listSpinnerTarget.classList.add("d-flex");
+    this.listSpinnerTarget.classList.add("d-block");
   }
 
   setColWidths() {

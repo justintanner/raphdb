@@ -1,14 +1,18 @@
 <%= turbo_frame_tag "page_operations" do %>
-  <%= turbo_stream.append "items_#{@tab}" do %>
-    <%= render partial: "items/#{@tab}/items", locals: { items: @items, pagy: @pagy } %>
-  <% end %>
-  <%= turbo_stream.replace "load-more-button" do %>
-    <%= render partial: "items/#{@tab}/load_more_button", locals: { pagy: @pagy, tab: @tab } %>
+  <% if @tab == "list" %>
+    <%= turbo_stream.append "published-list-tbody" do %>
+      <%= render View::PublishedRowComponent.with_collection(@items, view: @view, offset: @pagy.offset) %>
+    <% end %>
+    <%= turbo_stream.replace "list_spinner" do %>
+      <%= render View::SpinnerComponent.new %>
+    <% end %>
+  <% else %>
+    <%= turbo_stream.append "published-images" do %>
+      <%= render View::PublishedImagesCardComponent.with_collection(@items, view: @view, offset: @pagy.offset) %>
+    <% end %>
   <% end %>
 
-  <% if @tab == "list" %>
-    <%= turbo_stream.update "list_spinner" do %>
-      <%= render partial: "items/list/spinner" %>
-    <% end %>
+  <%= turbo_stream.replace "load-more-button" do %>
+    <%= render View::LoadMoreComponent.new(tab: @tab, query: @query, next_page: @pagy.next) %>
   <% end %>
 <% end %>

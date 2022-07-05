@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class ImagesHelperTest < ActionView::TestCase
+class SrcsetHelperTest < ActionView::TestCase
   def setup
     # Fake host to satisfy active storage in test.
     ActiveStorage::Current.url_options = {host: "localhost:9000"}

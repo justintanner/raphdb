@@ -1,0 +1,20 @@
+<% if @next_page %>
+  <% if @tab == "list" %>
+    <%= link_to "",
+                url_for(only_path: false, q: @query, page: @next_page, tab: @tab),
+                id: "load-more-button",
+                data: {
+                  action: "click->list#spinner",
+                  turbo_frame: "page_operations"
+                } %>
+  <% else %>
+      <%= link_to url_for(only_path: false, q: @query, page: @next_page, tab: @tab),
+                  id: "load-more-button",
+                  class: "btn btn-light d-inline-block my-5",
+                  data: {
+                    turbo_frame: "page_operations"
+                  } do %>
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,3 @@
+<%= turbo_frame_tag "editable_list" do %>
+  <%= render View::EditableListComponent.new(view: @view, items: @items, query: params[:q], pagy: @pagy) %>
+<% end %>

@@ -53,7 +53,8 @@ class Image < ApplicationRecord
   def broadcast_update
     # Skipping broadcasts in tests for now, because image_positionable_test is failing.
     if item.present? && !Rails.env.test?
-      broadcast_replace_to("edit_images_stream", target: "edit_carousel_for_#{item.id}", partial: "editor/items/carousel", locals: {item: item})
+      # TODO: Replace this with Broadcastable methods.
+      broadcast_replace_to("editor_stream", target: "edit_carousel_for_#{item.id}", partial: "editor/items/carousel", locals: {item: item})
       item.broadcast_update
     end
   end
