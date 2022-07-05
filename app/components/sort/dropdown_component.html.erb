@@ -19,9 +19,9 @@
       <div class="<%= class_names("text-muted", "d-none": @view.sorts.present?) %>" data-sorts-target="emptyMessage">
         This view is not sorted by any field.
       </div>
-      <%= form_for(view, url: sorts_editor_view_path(view), method: :post) do |form| %>
+      <%= form_for(@view, url: sorts_editor_view_path(@view), method: :post) do |form| %>
         <ul class="list-group" data-sorts-target="ul">
-          <%= render partial: "editor/views/sort", collection: @view.sorts, as: :sort, locals: { form: form } %>
+          <%= render Sort::RowComponent.with_collection(@view.sorts, form: form) %>
         </ul>
 
         <div class="row mt-3">
@@ -35,16 +35,15 @@
                            } %>
           </div>
           <div class="col text-end">
-            <%= link_to "Cancel", editor_view_path(view), class: "btn btn-link text-muted" %>
+            <%= link_to "Cancel", editor_view_path(@view), class: "btn btn-link text-muted" %>
             <%= form.submit "Apply", class: "btn btn-primary btm-sm" %>
           </div>
         </div>
       <% end %>
 
-      <%= form_for(view, url: sorts_editor_view_path(view), method: :post) do |form| %>
+      <%= form_for(@view, url: sorts_editor_view_path(@view), method: :post) do |form| %>
         <template data-sorts-target="newTemplate">
-          <%= render partial: "editor/views/sort",
-                     locals: { sort: Sort.new(field_id: Field.first.id, direction: "ASC"), form: form, position: "{{position}}" } %>
+          <%= render Sort::RowComponent.new(sort: Sort.new(field_id: Field.first.id, direction: "ASC"), form: form, position: "{{position}}") %>
         </template>
       <% end %>
     </div>

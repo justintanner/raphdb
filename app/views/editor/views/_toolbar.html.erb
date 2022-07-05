@@ -9,7 +9,7 @@
     </button>
 
     <%= render "editor/views/actions", view: @view %>
-    <%= render "editor/views/sorts", view: @view %>
+    <%= render Sort::DropdownComponent.new(view: @view) %>
     <%= render Filter::DropdownComponent.new(view: @view) %>
   </div>
 
