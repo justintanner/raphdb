@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "filter_uuid_#{@filter.uuid}" do %>
-  <div class="row mb-2 filter-row" data-controller="filter">
+  <div class="row mb-2 filter-row" data-controller="autosave">
     <div class="col-1 pt-1">
-      <small class="form-label" data-filter-target="label">
+      <small class="form-label">
         <% if @filter.position == 1 %>
           Where
         <% else %>
@@ -10,7 +10,7 @@
       </small>
     </div>
     <div class="col-11 d-flex">
-      <%= form_for form_for_args, data: { filter_target: "form" }, html: { class: "w-100" } do |form| %>
+      <%= form_for form_for_args, data: {autosave_target: "form"}, html: {class: "w-100"} do |form| %>
         <%= form.hidden_field :view_id, value: @view.id %>
         <%= form.hidden_field :uuid %>
         <%= form.hidden_field :position %>
@@ -23,14 +23,14 @@
                                          :title,
                                          {},
                                          {
-                                           data: { action: "filter#reload", },
+                                           data: { action: "autosave#submit", },
                                            class: "form-select form-select-sm"
                                          } %>
               <%= form.select :operator,
                               @filter.field.operators.collect { |op| [op, op] },
                               {},
                               {
-                                data: { action: "filter#reload", },
+                                data: { action: "autosave#submit", },
                                 class: "form-select form-select-sm"
                               } %>
             </div>
@@ -49,14 +49,14 @@
                                   data: {
                                     "controller": "datepicker",
                                     "datepicker-format-value": @filter.field.bs5_date_format,
-                                    "action": "input->filter#save"
+                                    "action": "input->autosave#submit",
                                   } %>
             <% elsif @filter.field.single_select? %>
               <%= form.select :value,
                               options_for_select(@filter.field.single_select_data, @filter.value),
                               {},
                               {
-                                data: { controller: "filter-single-select", action: "change->filter#save" },
+                                data: { controller: "filter-single-select", action: "change->autosave#submit" },
                                 class: "form-select form-select-sm"
                               } %>
             <% elsif @filter.field.multiple_select? %>
@@ -69,18 +69,18 @@
                                   data: { filter_multiple_select_target: "values" },
                                   class: "form-control form-control-sm"
                                 } %>
-                <%= form.hidden_field :value, data: { filter_multiple_select_target: "value", action: "change->filter#save" } %>
+                <%= form.hidden_field :value, data: { filter_multiple_select_target: "value", action: "change->autosave#submit" } %>
               </div>
             <% else %>
               <%= form.text_field :value,
                                   class: "form-control form-control-sm",
-                                  data: { action: "input->filter#save" },
+                                  data: { action: "input->autosave#submit" },
                                   placeholder: "Enter a value" %>
             <% end %>
           </div>
         </div>
       <% end %>
-      <%= button_to destroy_by_uuid_editor_view_filters_path(view_id: @view.id, uuid: @filter.uuid),
+      <%= button_to destroy_by_uuid_editor_view_filters_path(view_id: @view.id, fitler:{uuid: @filter.uuid}),
                     method: :delete,
                     class: "btn btn-sm btn-link muted-link shadow-none",
                     data: { turbo_frame: "filter_operations" } do %>

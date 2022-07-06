@@ -10,13 +10,19 @@ class Filter < ApplicationRecord
 
   position_within :view
 
-  validates :uuid, presence: true
+  validates :uuid, presence: true, uniqueness: true
   validates :view, presence: true
   validates :field, presence: true
   validates :operator, presence: true
 
   after_initialize :set_uuid
   after_commit :broadcast_update
+
+  def self.new_from_uuid(uuid)
+    return Filter.new if uuid.blank? || !Filter.exists?(uuid: uuid)
+
+    Filter.find_by(uuid: uuid)
+  end
 
   def set_default_field
     self.field = Field.first if field.blank?

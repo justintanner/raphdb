@@ -5,7 +5,7 @@ import TomSelect from "tom-select"
 export default class extends Controller {
   connect() {
     new TomSelect(this.element, {
-      plugins: ['dropdown_input'],
+      plugins: ["dropdown_input"],
       persist: false
     })
   }

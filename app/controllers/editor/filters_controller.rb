@@ -7,30 +7,22 @@ module Editor
 
     def new
       @filter = Filter.new(view: @view)
-
       assign_attributes_and_defaults
     end
 
     def create
-      @filter = Filter.find_or_initialize_by(uuid: filter_params[:uuid])
+      @filter = Filter.new_from_uuid(params[:filter][:uuid])
       assign_attributes_and_defaults
 
       if @filter.save
-        respond_to do |format|
-          format.json { render json: {filter: @filter}, status: :ok }
-          format.html { render :edit }
-        end
+        render :edit
       else
-        respond_to do |format|
-          format.json { render json: {errors: @filter.errors.full_messages}, status: :unprocessable_entity }
-          format.html { render :edit, status: :unprocessable_entity }
-        end
+        render :edit, status: :unprocessable_entity
       end
     end
 
     def edit
       @filter = Filter.find(params[:id])
-
       assign_attributes_and_defaults
     end
 
@@ -39,20 +31,14 @@ module Editor
       assign_attributes_and_defaults
 
       if @filter.save
-        respond_to do |format|
-          format.json { render json: {filter: @filter}, status: :ok }
-          format.html { render :edit }
-        end
+        render :edit
       else
-        respond_to do |format|
-          format.json { render json: {errors: @filter.errors.full_messages}, status: :unprocessable_entity }
-          format.html { render :edit, status: :unprocessable_entity }
-        end
+        render :edit, status: :unprocessable_entity
       end
     end
 
     def destroy_by_uuid
-      @uuid = params[:uuid]
+      @uuid = params[:filter][:uuid]
 
       filter = Filter.find_by(uuid: @uuid)
 

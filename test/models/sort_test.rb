@@ -13,6 +13,12 @@ class SortTest < ActiveSupport::TestCase
     assert_not sort.save, "Sort should not be saved without a field"
   end
 
+  test "should generate a uuid before saving" do
+    sort = Sort.new(view: views(:default), field: fields(:number), direction: "ASC")
+
+    assert_not_nil sort.uuid, "Sort has no uuid"
+  end
+
   test "should have a direction of asc or desc" do
     sort = Sort.new(view: views(:default), direction: "invalid")
 
@@ -21,9 +27,9 @@ class SortTest < ActiveSupport::TestCase
 
   test "should sort by position" do
     view = View.create!(title: "Sort by three fields")
-    first_sort = Sort.create!(view: view, field: fields(:prefix), position: 1)
-    second_sort = Sort.create!(view: view, field: fields(:number), position: 2)
-    third_sort = Sort.create!(view: view, field: fields(:in_set), position: 3)
+    first_sort = Sort.create!(view: view, field: fields(:prefix), direction: "ASC", position: 1)
+    second_sort = Sort.create!(view: view, field: fields(:number), direction: "ASC", position: 2)
+    third_sort = Sort.create!(view: view, field: fields(:in_set), direction: "DESC", position: 3)
 
     sorts = view.sorts
     assert_equal sorts.first, first_sort, "first_sort is not first"

@@ -1,7 +1,6 @@
 <%= turbo_frame_tag "filter_operations" do %>
-  <%= turbo_stream.remove "filter_uuid_#{@uuid}" %>
-
-  <%= turbo_stream.replace "filter_empty_message" do %>
+  <%= turbo_stream.update "filters" do %>
     <%= render Filter::EmptyMessageComponent.new %>
+    <%= render Filter::RowComponent.with_collection(@view.filters, view: @view) %>
   <% end %>
 <% end %>

@@ -1,24 +1,29 @@
 default_set_title_asc:
+  uuid: <%= SecureRandom.uuid %>
   view: default
   field: set_title
   direction: ASC
   position: 1
 default_prefix_asc:
+  uuid: <%= SecureRandom.uuid %>
   view: default
   field: prefix
   direction: ASC
   position: 2
 default_number_asc:
+  uuid: <%= SecureRandom.uuid %>
   view: default
   field: number
   direction: ASC
   position: 3
 default_in_set_asc:
+  uuid: <%= SecureRandom.uuid %>
   view: default
   field: in_set
   direction: ASC
   position: 4
 default_item_title_asc:
+  uuid: <%= SecureRandom.uuid %>
   view: default
   field: item_title
   direction: ASC

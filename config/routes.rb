@@ -22,11 +22,17 @@ Rails.application.routes.draw do
       member do
         post :refresh, as: :refresh
         post :duplicate, as: :duplicate
-        post :sorts, as: :sorts
       end
 
       resources :filters, except: [:index, :show, :destroy], shallow: true do
         collection do
+          delete :destroy_by_uuid, as: :destroy_by_uuid
+        end
+      end
+
+      resources :sorts, except: [:index, :show, :destroy], shallow: true do
+        collection do
+          patch :reorder_by_uuid, as: :reorder_by_uuid
           delete :destroy_by_uuid, as: :destroy_by_uuid
         end
       end

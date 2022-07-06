@@ -1,0 +1,6 @@
+<%= turbo_frame_tag "sort_operations" do %>
+  <%= turbo_stream.update "sorts" do %>
+    <%= render Sort::EmptyMessageComponent.new %>
+    <%= render Sort::RowComponent.with_collection(@view.sorts, view: @view) %>
+  <% end %>
+<% end %>

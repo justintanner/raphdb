@@ -1,66 +1,72 @@
-<% @form.fields_for :sorts, @sort do |sort_fields| %>
-  <li class="list-group-item border-0 text-nowrap">
-    <div class="row">
-      <%= sort_fields.hidden_field :position,
-                                   name: "view[sorts][#{position}][position]",
-                                   data: { sorts_target: "position" },
-                                   value: position %>
-      <div class="col-2 d-flex align-items-center">
-        <i class="bi bi-grip-vertical me-2 text-muted handle"></i>
-        <span data-sorts-target="label">
-        <% if position == 1 %>
+<%= turbo_frame_tag "sort_uuid_#{@sort.uuid}" do %>
+  <div class="row sort-row mb-2" data-controller="autosave">
+    <div class="col-2 d-flex align-items-center">
+      <i class="bi bi-grip-vertical me-2 text-muted handle"></i>
+      <small>
+        <% if @sort.position == 1 %>
           Sort by
         <% else %>
           then by
         <% end %>
-        </span>
-      </div>
-      <div class="col-4 d-flex align-items-center">
-        <%= sort_fields.select :field_id,
-                               Field.all_cached.collect { |field| [field.title, field.id] },
-                               {},
-                               {
-                                 data: { sorts_target: "fieldSelect", action: "sorts#changeField" },
-                                 class: "form-select form-select-sm",
-                                 name: "view[sorts][#{position}][field_id]",
-                                 id: "view_sorts_#{position}_field_id"
-                               } %>
-      </div>
-      <div class="col-1 d-flex align-items-center">from</div>
-      <div class="col-4 d-flex align-items-center">
-        <div class="form-check form-check-inline mb-0">
-          <%= sort_fields.radio_button :direction,
-                                       "ASC",
-                                       class: "form-check-input",
-                                       autocomplete: "off",
-                                       name: "view[sorts][#{position}][direction]",
-                                       id: "view_sorts_direction_#{position}_asc" %>
-          <%= label_tag :direction,
-                        class: "form-check-label font-monospace",
-                        value: "#{position}_asc",
-                        id: "label_#{position}_asc" do %>
-            A <i class="bi bi-arrow-right"></i> Z
-          <% end %>
-        </div>
-        <div class="form-check form-check-inline mb-0">
-          <%= sort_fields.radio_button :direction,
-                                       "DESC",
-                                       class: "form-check-input",
-                                       autocomplete: "off",
-                                       data: { sorts_target: "directionDesc" },
-                                       name: "view[sorts][#{position}][direction]",
-                                       id: "view_sorts_direction_#{position}_desc" %>
-          <%= label_tag :direction,
-                       class: "form-check-label font-monospace",
-                       value: "#{position}_desc",
-                       id: "label_#{position}_desc" do %>
-            Z <i class="bi bi-arrow-right"></i> A
-          <% end %>
-        </div>
-      </div>
-      <div class="col-1 d-flex align-items-center">
-        <a href="#" data-action="click->sorts#delete" class="muted-link ms-2" id="delete-sort"><i class="bi bi-trash"></i></a>
-      </div>
+      </small>
     </div>
-  </li>
+    <div class="col-10 d-flex align-items-center">
+      <%= form_for form_for_args, data: {autosave_target: "form"}, html: {class: "w-100"} do |form| %>
+        <%= form.hidden_field :view_id, value: @view.id %>
+        <%= form.hidden_field :uuid %>
+        <%= form.hidden_field :position %>
+
+        <div class="row">
+          <div class="col-4 d-flex align-items-center">
+            <%= form.select :field_id,
+                            Field.all_cached.collect { |field| [field.title, field.id] },
+                            {prompt: "Choose a field"},
+                            {
+                              data: {action: "autosave#submit"},
+                              class: "form-select form-select-sm",
+                            } %>
+          </div>
+          <div class="col-2 d-flex justify-content-center align-items-center">
+            <div><small>from</small></div>
+          </div>
+          <div class="col-6 d-flex align-items-center">
+            <div class="form-check form-check-inline mb-0">
+              <%= form.radio_button :direction,
+                                    "ASC",
+                                    class: "form-check-input",
+                                    data: {action: "autosave#submit"},
+                                    autocomplete: "off" %>
+              <%= label_tag :direction, class: "form-check-label font-monospace" do %>
+                <% if @sort.field.present? && @sort.field.numeric? %>
+                  1 <i class="bi bi-arrow-right"></i> 9
+                <% else %>
+                  A <i class="bi bi-arrow-right"></i> Z
+                <% end %>
+              <% end %>
+            </div>
+            <div class="form-check form-check-inline mb-0">
+              <%= form.radio_button :direction,
+                                    "DESC",
+                                    class: "form-check-input",
+                                    data: {action: "autosave#submit"},
+                                    autocomplete: "off" %>
+              <%= label_tag :direction, class: "form-check-label font-monospace" do %>
+                <% if @sort.field.present? && @sort.field.numeric? %>
+                  9 <i class="bi bi-arrow-right"></i> 1
+                <% else %>
+                  Z <i class="bi bi-arrow-right"></i> A
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <%= button_to destroy_by_uuid_editor_view_sorts_path(view_id: @view.id, sort: {uuid: @sort.uuid}),
+                    method: :delete,
+                    class: "btn btn-sm btn-link muted-link shadow-none",
+                    data: {turbo_frame: "sort_operations"} do %>
+        <i class="bi bi-trash"></i>
+      <% end %>
+    </div>
+  </div>
 <% end %>

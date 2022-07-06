@@ -41,4 +41,8 @@ module TypeHelpers
   def images?
     column_type_sym == :images
   end
+
+  def numeric?
+    number? || currency?
+  end
 end

@@ -1,0 +1,9 @@
+<%= turbo_frame_tag "sort_operations" do %>
+  <%= turbo_stream.append "sorts" do %>
+    <%= render Sort::RowComponent.new(sort: @sort, view: @view) %>
+  <% end %>
+
+  <%= turbo_stream.replace "sort_empty_message" do %>
+    <%= render Sort::EmptyMessageComponent.new %>
+  <% end %>
+<% end %>

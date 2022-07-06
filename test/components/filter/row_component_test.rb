@@ -6,7 +6,7 @@ class Filter::RowComponentTest < ViewComponent::TestCase
   def test_component_renders_the_first_filter_with_label
     render_inline(Filter::RowComponent.new(filter: filters(:number_equals), view: views(:with_filters)))
 
-    assert_selector("small[data-filter-target='label']", text: "Where")
+    assert_text("Where")
   end
 
   def test_component_renders_multiple_filters

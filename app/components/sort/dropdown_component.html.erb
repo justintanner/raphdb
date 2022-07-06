@@ -1,51 +1,49 @@
-<div class="dropdown">
-  <button type="button"
+<div class="dropdown"
+     data-controller="dropdown"
+     data-dropdown-button-active-class="btn-light-purple"
+     data-dropdown-type-value="sort">
+<button type="button"
           class="btn btn-link shadow-none me-2 dropdown-toggle <%= class_names("btn-light-purple": @view.sorts.present?) %>"
           role="button"
           id="sort-dropdown-button"
+          data-dropdown-target="button"
           data-bs-toggle="dropdown"
           data-bs-auto-close="outside"
           aria-expanded="false">
     <i class="bi bi-arrow-down-up me-2"></i><span class="d-none d-sm-inline">Sort</span>
   </button>
 
-  <div class="dropdown-menu"
-       aria-labelledby="sort-dropdown-button"
-       data-controller="sorts"
-       data-sorts-first-label-value="Sort by"
-       data-sorts-nth-label-value="then by"
-       data-sorts-numeric-field-ids-value="[<%= Field.numeric.pluck(:id).join(',') %>]">
-    <div class="py-2 px-3" style="min-width: 600px;">
-      <div class="<%= class_names("text-muted", "d-none": @view.sorts.present?) %>" data-sorts-target="emptyMessage">
-        This view is not sorted by any field.
+  <div class="dropdown-menu" aria-labelledby="sort-dropdown-button">
+    <div class="py-2 px-3" style="min-width: 600px;" data-controller="reorder-sorts">
+      <div id="sorts" data-reorder-sorts-target="container">
+        <%= render Sort::EmptyMessageComponent.new %>
+        <%= render Sort::RowComponent.with_collection(@view.sorts, view: @view) %>
       </div>
-      <%= form_for(@view, url: sorts_editor_view_path(@view), method: :post) do |form| %>
-        <ul class="list-group" data-sorts-target="ul">
-          <%= render Sort::RowComponent.with_collection(@view.sorts, form: form) %>
-        </ul>
 
-        <div class="row mt-3">
-          <div class="col">
-            <%= select_tag "pick_another_field",
-                           options_from_collection_for_select(Field.all, "id", "title"),
-                           {
-                             prompt: "Pick another field to sort by",
-                             data: { sorts_target: "fieldSelect", action: "sorts#addNew" },
-                             class: "form-select form-select-sm",
-                           } %>
-          </div>
-          <div class="col text-end">
-            <%= link_to "Cancel", editor_view_path(@view), class: "btn btn-link text-muted" %>
-            <%= form.submit "Apply", class: "btn btn-primary btm-sm" %>
-          </div>
+      <%= turbo_frame_tag "sort_operations" %>
+
+      <%= form_tag reorder_by_uuid_editor_view_sorts_path(view_id: @view.id),
+                   method: :patch,
+                   data: {
+                     turbo_frame: "sort_operations",
+                     reorder_sorts_target: "form"
+                   } do %>
+        <%= hidden_field_tag "sort[view_id]", @view.id %>
+        <%= hidden_field_tag "sort[uuid]", "", data: {reorder_sorts_target: "uuid"} %>
+        <%= hidden_field_tag "sort[position]", "", data: {reorder_sorts_target: "position"} %>
+      <% end %>
+
+      <div class="row mt-3">
+        <div class="col">
+          <%= link_to "Add Sort",
+                      new_editor_view_sort_path(view_id: @view.id),
+                      data: { turbo_frame: "sort_operations" },
+                      class: "btn btn-sm btn-light-purple shadow-none" %>
         </div>
-      <% end %>
-
-      <%= form_for(@view, url: sorts_editor_view_path(@view), method: :post) do |form| %>
-        <template data-sorts-target="newTemplate">
-          <%= render Sort::RowComponent.new(sort: Sort.new(field_id: Field.first.id, direction: "ASC"), form: form, position: "{{position}}") %>
-        </template>
-      <% end %>
+        <div class="col text-end">
+          <%= button_tag "Close", type: "button", class: "btn btn-link text-muted", data: {action: "dropdown#close"} %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

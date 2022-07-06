@@ -52,35 +52,4 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :redirect
   end
-
-  test "should replace all existing sorts on a view" do
-    view = views(:default)
-
-    params = {view: {sorts: {1 => {field_id: fields(:artist).id, direction: "ASC", position: 1}}}}
-    post sorts_editor_view_path(view), params: params
-    assert_response :redirect
-
-    view.reload
-
-    assert_equal 1, view.sorts.count, "View should have one sort"
-    assert_equal view.sorts.first.field, fields(:artist), "Sort not replaced"
-  end
-
-  test "sorts should save in order of position ignoring key order" do
-    view = views(:default)
-
-    sorts = {
-      8 => {field_id: fields(:artist).id, direction: "ASC", position: 2},
-      9 => {field_id: fields(:tags).id, direction: "DESC", position: 1}
-    }
-    params = {view: {sorts: sorts}}
-
-    post sorts_editor_view_path(view), params: params
-    assert_response :redirect
-
-    view.reload
-
-    assert_equal view.sorts.first.field, fields(:tags), "First sort not tags"
-    assert_equal view.sorts.second.field, fields(:artist), "Second sort not artist"
-  end
 end
