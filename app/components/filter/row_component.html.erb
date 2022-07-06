@@ -1,8 +1,12 @@
 <%= turbo_frame_tag "filter_uuid_#{@filter.uuid}" do %>
   <div class="row mb-2 filter-row" data-controller="autosave">
     <div class="col-1 pt-1">
-      <small class="form-label">
-        <% if @filter.position == 1 %>
+      <small class="form-label text-nowrap"
+             data-controller="label"
+             data-label-first-value="Sort by"
+             data-label-nth-value="then"
+             data-label-container-id-value="filters">
+        <% if first_filter? %>
           Where
         <% else %>
           and
@@ -80,7 +84,7 @@
           </div>
         </div>
       <% end %>
-      <%= button_to destroy_by_uuid_editor_view_filters_path(view_id: @view.id, fitler:{uuid: @filter.uuid}),
+      <%= button_to destroy_by_uuid_editor_view_filters_path(view_id: @view.id, filter:{uuid: @filter.uuid}),
                     method: :delete,
                     class: "btn btn-sm btn-link muted-link shadow-none",
                     data: { turbo_frame: "filter_operations" } do %>

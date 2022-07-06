@@ -40,9 +40,9 @@ module Editor
     def destroy_by_uuid
       @uuid = params[:filter][:uuid]
 
-      filter = Filter.find_by(uuid: @uuid)
+      @filter = Filter.find_by(uuid: @uuid)
 
-      filter.destroy if filter.present?
+      @filter.destroy if @filter.present?
     end
 
     private
@@ -52,6 +52,7 @@ module Editor
 
       @filter.set_default_field
       @filter.set_default_operator
+      @filter.set_position
     end
 
     def set_view

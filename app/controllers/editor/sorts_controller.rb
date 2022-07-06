@@ -38,9 +38,9 @@ module Editor
     def destroy_by_uuid
       @uuid = params[:sort][:uuid]
 
-      sort = Sort.find_by(uuid: @uuid)
+      @sort = Sort.find_by(uuid: @uuid)
 
-      sort.destroy if sort.present?
+      @sort.destroy if @sort.present?
     end
 
     def reorder_by_uuid

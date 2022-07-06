@@ -1,7 +1,9 @@
 <div class="dropdown"
      data-controller="dropdown"
      data-dropdown-button-active-class="btn-light-orange"
-     data-dropdown-type-value="filter">
+     data-dropdown-type-value="filter"
+     data-dropdown-first-label-value="Where"
+     data-dropdown-nth-label-value="and">
   <button type="button"
           class="btn btn-link shadow-none me-2 dropdown-toggle <%= class_names("btn-light-orange": @view.filters.present?) %>"
           role="button"

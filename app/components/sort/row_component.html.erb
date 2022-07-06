@@ -2,7 +2,11 @@
   <div class="row sort-row mb-2" data-controller="autosave">
     <div class="col-2 d-flex align-items-center">
       <i class="bi bi-grip-vertical me-2 text-muted handle"></i>
-      <small>
+      <small class="text-nowrap"
+             data-controller="label"
+             data-label-first-value="Sort by"
+             data-label-nth-value="then"
+             data-label-container-id-value="sorts">
         <% if @sort.position == 1 %>
           Sort by
         <% else %>

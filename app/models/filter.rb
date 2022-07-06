@@ -28,6 +28,10 @@ class Filter < ApplicationRecord
     self.field = Field.first if field.blank?
   end
 
+  def set_position
+    self.position = next_position if position.blank?
+  end
+
   def set_default_operator
     if field.present? && field_id_changed?
       self.operator = OPERATORS[field.column_type_sym].first
