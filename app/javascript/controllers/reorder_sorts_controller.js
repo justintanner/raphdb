@@ -6,7 +6,6 @@ export default class extends DispatchController {
   static targets = ["container", "form", "uuid", "position"]
 
   connect() {
-    console.log("connecting to reorder-sorts")
     const that = this
 
     that.sortable = Sortable.create(that.containerTarget, {

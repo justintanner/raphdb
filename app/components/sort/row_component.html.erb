@@ -21,7 +21,7 @@
         <%= form.hidden_field :position %>
 
         <div class="row">
-          <div class="col-4 d-flex align-items-center">
+          <div class="col-6 d-flex align-items-center">
             <%= form.select :field_id,
                             Field.all_cached.collect { |field| [field.title, field.id] },
                             {prompt: "Choose a field"},
@@ -30,31 +30,31 @@
                               class: "form-select form-select-sm",
                             } %>
           </div>
-          <div class="col-2 d-flex justify-content-center align-items-center">
+          <div class="col-1 d-flex justify-content-center align-items-center">
             <div><small>from</small></div>
           </div>
-          <div class="col-6 d-flex align-items-center">
-            <div class="form-check form-check-inline mb-0">
+          <div class="col-5 d-flex align-items-center">
+            <div class="btn-group w-100" role="group" aria-label="Choose a sort direction">
               <%= form.radio_button :direction,
                                     "ASC",
-                                    class: "form-check-input",
+                                    id: "sort_direction_asc_#{@sort.uuid}",
+                                    class: "btn-check",
                                     data: {action: "autosave#submit"},
                                     autocomplete: "off" %>
-              <%= label_tag :direction, class: "form-check-label font-monospace" do %>
+              <%= label_tag :direction, class: "btn btn-sm btn-outline-secondary text-monospace", for: "sort_direction_asc_#{@sort.uuid}" do %>
                 <% if @sort.field.present? && @sort.field.numeric? %>
                   1 <i class="bi bi-arrow-right"></i> 9
                 <% else %>
                   A <i class="bi bi-arrow-right"></i> Z
                 <% end %>
               <% end %>
-            </div>
-            <div class="form-check form-check-inline mb-0">
               <%= form.radio_button :direction,
                                     "DESC",
-                                    class: "form-check-input",
+                                    id: "sort_direction_desc_#{@sort.uuid}",
+                                    class: "btn-check",
                                     data: {action: "autosave#submit"},
                                     autocomplete: "off" %>
-              <%= label_tag :direction, class: "form-check-label font-monospace" do %>
+              <%= label_tag :direction, class: "btn btn-sm btn-outline-secondary text-monospace", for: "sort_direction_desc_#{@sort.uuid}" do %>
                 <% if @sort.field.present? && @sort.field.numeric? %>
                   9 <i class="bi bi-arrow-right"></i> 1
                 <% else %>
