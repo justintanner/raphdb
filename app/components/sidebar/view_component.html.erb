@@ -1,0 +1,9 @@
+<li class="nav-item">
+  <%= link_to editor_view_path(@view), class: class_names("nav-link", "active": active?), aria_current: "view" do %>
+    <i class="bi bi-file-spreadsheet me-2"></i><%= @view.title %>
+    <% if @view.published %><i class="bi bi-star"></i><% end %>
+    <% if active? %>
+      <span class="float-end"><i class="bi bi-check"></i></span>
+    <% end %>
+  <% end %>
+</li>

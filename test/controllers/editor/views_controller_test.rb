@@ -21,12 +21,11 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
     assert view.reload.title == "New Title"
   end
 
-  test "should return a json error when a blank title is given" do
+  test "should return an error when a blank title is given" do
     view = views(:published)
     patch "/editor/views/#{view.id}", params: {view: {title: ""}}
 
     assert_response :unprocessable_entity
-    assert_equal "Title can't be blank", response.parsed_body["errors"].first
   end
 
   test "should soft delete a view" do
@@ -38,7 +37,7 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
 
   test "should duplicate a view and redirect to it" do
     default_view = views(:published)
-    post "/editor/views/#{default_view.id}/duplicate"
+    get "/editor/views/#{default_view.id}/duplicate"
 
     assert_response :redirect
   end

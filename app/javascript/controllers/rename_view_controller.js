@@ -1,43 +1,19 @@
-import {DispatchController} from "./dispatch_controller"
-import { useClickOutside } from "stimulus-use"
-import { patch } from "@rails/request.js"
+import {Controller} from "@hotwired/stimulus"
+import {useClickOutside} from "stimulus-use"
 
 // Connects to data-controller="rename-view"
-export default class extends DispatchController {
-  static targets = ["dropdown", "container", "input"]
-  static values = { updatePath: String }
+export default class extends Controller {
+  static targets = ["input"]
 
-  show() {
-    this.dropdownTarget.classList.add("d-none")
-    this.containerTarget.classList.remove("d-none")
-
+  // TODO: Escape should also submit the form.
+  connect() {
     this.inputTarget.focus()
     this.inputTarget.setSelectionRange(0, this.inputTarget.value.length)
 
-    useClickOutside(this)
-  }
-
-  submit(event) {
-    event.preventDefault()
-
-    this.rename()
+    useClickOutside(this, {element: this.inputTarget})
   }
 
   clickOutside() {
-    this.rename()
-  }
-
-  rename() {
-    this.dropdownTarget.classList.remove("d-none")
-    this.containerTarget.classList.add("d-none")
-
-    this.updateView(this.inputTarget.value)
-  }
-
-  async updateView(title) {
-    const payload = { "view": { "title": title } }
-    const response = await patch(this.updatePathValue, { body: JSON.stringify(payload) })
-
-    this.dispatchError(response)
+    this.element.requestSubmit()
   }
 }

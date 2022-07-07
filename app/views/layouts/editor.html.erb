@@ -21,7 +21,7 @@
 
   <div class="row d-flex flex-fill justify-content-start">
     <div class="col-auto d-flex px-0">
-      <%= render "layouts/editor_sidebar" %>
+      <%= render SidebarComponent.new(current_user: current_user, current_view: @view, current_page: @page) %>
     </div>
     <div class="col d-flex flex-column p-0 overflow-hidden">
       <%= yield %>

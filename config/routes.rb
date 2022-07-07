@@ -15,13 +15,13 @@ Rails.application.routes.draw do
         get :edit
       end
     end
-    resources :views, only: [:show, :update, :destroy] do
+    resources :views, only: [:show, :edit, :update, :destroy] do
       collection do
         get :published, as: :published
       end
       member do
         post :refresh, as: :refresh
-        post :duplicate, as: :duplicate
+        get :duplicate, as: :duplicate
       end
 
       resources :filters, except: [:index, :show, :destroy], shallow: true do

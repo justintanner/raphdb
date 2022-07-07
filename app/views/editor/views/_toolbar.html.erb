@@ -8,7 +8,7 @@
       <i class="bi bi-layout-sidebar-inset-reverse me-2"></i>Sidebar
     </button>
 
-    <%= render "editor/views/actions", view: @view %>
+    <%= render View::DropdownComponent.new(view: @view) %>
     <%= render Sort::DropdownComponent.new(view: @view) %>
     <%= render Filter::DropdownComponent.new(view: @view) %>
   </div>

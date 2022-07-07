@@ -48,16 +48,16 @@ class View < ApplicationRecord
   end
 
   def broadcast_update
-    # TODO: Convert these to Component methods.
-    broadcast_replace_to("editor_stream", target: self, partial: "editor/views/view", locals: {view: self})
-    broadcast_replace_to("editor_stream", target: "actions-dropdown", partial: "editor/views/actions", locals: {view: self})
-
-    editor_replace_to(target: "refresh_list", component: View::RefreshListComponent, locals: {view: self})
+    editor_replace_to(target: "view_dropdown", component: View::DropdownComponent, locals: {view: self})
   end
 
   # TODO: Should this be cached?
   def self.published
     find_by(published: true)
+  end
+
+  def self.all_but_published
+    where(published: false)
   end
 
   private

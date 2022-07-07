@@ -3,10 +3,9 @@
 require "test_helper"
 
 class Set::LinkComponentTest < ViewComponent::TestCase
-  def test_component_renders_something_useful
-    # assert_equal(
-    #   %(<span>Hello, components!</span>),
-    #   render_inline(Set::LinkComponent.new(message: "Hello, components!")).css("span").to_html
-    # )
+  def test_component_renders_a_link_to_the_set
+    render_inline(Set::LinkComponent.new(item_set: item_sets(:orphan)))
+
+    assert_selector("a", text: "Orphan")
   end
 end

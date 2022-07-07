@@ -32,6 +32,10 @@ class User < ApplicationRecord
     settings["sidebar_open"]
   end
 
+  def sidebar_closed?
+    !sidebar_open?
+  end
+
   private
 
   def no_boolean_strings

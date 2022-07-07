@@ -15,6 +15,8 @@ module Editor
       @view = View.find(params[:id])
 
       @pagy, @items = pagy(@view.search(params[:q]), items: per_page)
+
+      render :refresh, layout: false
     end
 
     def show
@@ -23,13 +25,19 @@ module Editor
       @pagy, @items = pagy(@view.search(params[:q]), items: per_page)
     end
 
+    def edit
+      @view = View.find(params[:id])
+
+      render :edit, layout: false
+    end
+
     def update
       @view = View.find(params[:id])
 
       if @view.update(view_params)
-        render json: {view: @view}, status: :ok
+        render :update, layout: false
       else
-        render json: {errors: @view.errors.full_messages}, status: :unprocessable_entity
+        render :update, layout: false, status: :unprocessable_entity
       end
     end
 

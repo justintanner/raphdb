@@ -1,0 +1,16 @@
+<div id="sidebar"
+     data-sidebar-target="container"
+     class="<%= class_names("flex-column", "h-100", "border-end", "border-2", "p-3", "d-flex": @current_user.sidebar_open?, "d-none": @current_user.sidebar_closed?) %>">
+  <ul class="nav flex-column nav-pills mb-3">
+    <%= render Sidebar::ViewComponent.new(view: View.published, current_view: @current_view) %>
+    <%= render Sidebar::ViewComponent.with_collection(View.all_but_published, current_view: @current_view) %>
+  </ul>
+
+  <p class="text-muted mb-2">Pages</p>
+
+  <ul class="nav flex-column nav-pills mt-0">
+    <%= render Sidebar::PageComponent.with_collection(Page.all, current_page: @current_page) %>
+  </ul>
+</div>
+
+

@@ -1,0 +1,29 @@
+<%= turbo_frame_tag "view_dropdown" do %>
+  <div class="dropdown" data-rename-view-target="dropdown">
+    <button type="button" class="btn btn-link me-2 shadow-none d-flex align-items-center ms-1 dropdown-toggle" id="view-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-file-spreadsheet"></i><span class="ms-1"><%= @view.title %></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="view-dropdown-button">
+      <li>
+        <%= link_to duplicate_editor_view_path(@view), data: { turbo_frame: "_top" }, class: "dropdown-item" do %>
+          <i class="bi bi-layers-half me-2"></i>Duplicate View
+        <% end %>
+      </li>
+      <% unless @view.published %>
+        <li>
+          <%= link_to edit_editor_view_path(@view), class: "dropdown-item" do %>
+            <i class="bi bi-pencil me-2"></i>Rename View
+          <% end %>
+        </li>
+        <li>
+          <%= button_to editor_view_path(@view),
+                        form: { data: { turbo_confirm: "Are you sure?", turbo_frame: "_top" } },
+                        class: "btn btn-link text-danger dropdown-item",
+                        method: :delete do %>
+            <i class="bi bi-trash me-2"></i>Delete View
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

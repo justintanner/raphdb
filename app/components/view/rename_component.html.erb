@@ -1,0 +1,3 @@
+<%= form_for [:editor, @view], data: {controller: "rename-view"}, html: {class: "me-3"} do |form| %>
+  <%= form.text_field :title, class: "form-control form-control-sm", data: {rename_view_target: "input"} %>
+<% end %>
