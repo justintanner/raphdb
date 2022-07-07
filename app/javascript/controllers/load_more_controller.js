@@ -9,7 +9,7 @@ export default class extends Controller {
   }
 
   createObserver() {
-    const that = this;
+    const that = this
 
     that.observer = new IntersectionObserver(
       entries => that.handleIntersect(entries),
@@ -22,8 +22,8 @@ export default class extends Controller {
   }
 
   handleIntersect(entries) {
-    const that = this;
-    const loadMoreButton = document.getElementById("load-more-button");
+    const that = this
+    const loadMoreButton = document.getElementById("load-more-button")
 
     entries.forEach(entry => {
       if (entry.isIntersecting) {

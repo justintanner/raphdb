@@ -1,33 +1,29 @@
-import {Controller} from "@hotwired/stimulus";
-import Splide from "@splidejs/splide";
+import {Controller} from "@hotwired/stimulus"
+import Splide from "@splidejs/splide"
 
 // Connects to data-controller="carousel"
 export default class extends Controller {
-  static values = { maxWidth: Number, position: Number };
-  static targets = [ "thumb" ];
+  static values = { maxWidth: Number, position: Number }
+  static targets = [ "thumb" ]
 
   connect() {
-    const that = this;
-
     const splideInstance = new Splide('.splide', {
       autoWidth: true,
-      width: that.tightWidth() + 'px',
+      width: this.tightWidth() + 'px',
       gap: '8px',
       pagination: false,
       keyboard: false,
-      start: that.positionValue - 1,
-    });
+      start: this.positionValue - 1,
+    })
 
-    splideInstance.mount();
+    splideInstance.mount()
   }
 
   tightWidth() {
-    const that = this;
+    const thumbsWidth = this.thumbTargets.reduce((sum, thumb) => {
+      return sum + parseInt(thumb.getAttribute('width')) + 8
+    }, 88)
 
-    const thumbsWidth = that.thumbTargets.reduce((sum, thumb) => {
-      return sum + parseInt(thumb.getAttribute('width')) + 8;
-    }, 88);
-
-    return Math.min(thumbsWidth, that.maxWidthValue);
+    return Math.min(thumbsWidth, this.maxWidthValue)
   }
 }

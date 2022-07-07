@@ -1,59 +1,51 @@
 import {DispatchController} from "./dispatch_controller"
-import { post } from "@rails/request.js"
+import {post} from "@rails/request.js"
 
 // Connects to data-controller="sidebar"
 export default class extends DispatchController {
-  static targets = ["container", "showButton", "hideButton"];
+  static targets = ["container", "showButton", "hideButton"]
 
   toggle() {
-    const that = this;
-
-    if ((that.containerTarget.style.display === "none") || that.containerTarget.classList.contains("d-none")) {
-      that.open();
+    if ((this.containerTarget.style.display === "none") || this.containerTarget.classList.contains("d-none")) {
+      this.open()
     } else {
-      that.close();
+      this.close()
     }
   }
 
   open() {
-    const that = this;
+    this.containerTarget.classList.remove("d-none")
+    this.containerTarget.classList.remove("d-flex")
+    this.containerTarget.style.display = "flex"
 
-    that.containerTarget.classList.remove("d-none");
-    that.containerTarget.classList.remove("d-flex");
-    that.containerTarget.style.display = "flex";
+    this.showButtonTarget.classList.remove("d-block")
+    this.showButtonTarget.classList.add("d-none")
 
-    that.showButtonTarget.classList.remove("d-block");
-    that.showButtonTarget.classList.add("d-none");
+    this.hideButtonTarget.classList.add("d-block")
+    this.hideButtonTarget.classList.remove("d-none")
 
-    that.hideButtonTarget.classList.add("d-block");
-    that.hideButtonTarget.classList.remove("d-none");
-
-    that.saveSettingSidebarOpen("true");
+    this.saveSettingSidebarOpen("true")
   }
 
   close() {
-    const that = this;
-    
-    that.containerTarget.classList.remove("d-flex");
-    that.containerTarget.classList.remove("d-none");
-    that.containerTarget.style.setProperty("display", "none", "important");
+    this.containerTarget.classList.remove("d-flex")
+    this.containerTarget.classList.remove("d-none")
+    this.containerTarget.style.setProperty("display", "none", "important")
 
-    that.showButtonTarget.classList.remove("d-none");
-    that.showButtonTarget.classList.add("d-block");
+    this.showButtonTarget.classList.remove("d-none")
+    this.showButtonTarget.classList.add("d-block")
 
-    that.hideButtonTarget.classList.add("d-none");
-    that.hideButtonTarget.classList.remove("d-block");
+    this.hideButtonTarget.classList.add("d-none")
+    this.hideButtonTarget.classList.remove("d-block")
 
-    that.saveSettingSidebarOpen("false");
+    this.saveSettingSidebarOpen("false")
   }
 
   async saveSettingSidebarOpen(value) {
-    const that = this;
-
     const response = await post("/editor/settings", {
       body: JSON.stringify({ settings: { sidebar_open: value } })
-    });
+    })
 
-    that.dispatchError(response);
+    this.dispatchError(response)
   }
 }

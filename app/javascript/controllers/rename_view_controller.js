@@ -8,45 +8,36 @@ export default class extends DispatchController {
   static values = { updatePath: String }
 
   show() {
-    const that = this
+    this.dropdownTarget.classList.add("d-none")
+    this.containerTarget.classList.remove("d-none")
 
-    that.dropdownTarget.classList.add("d-none")
-    that.containerTarget.classList.remove("d-none")
+    this.inputTarget.focus()
+    this.inputTarget.setSelectionRange(0, this.inputTarget.value.length)
 
-    that.inputTarget.focus()
-    that.inputTarget.setSelectionRange(0, that.inputTarget.value.length)
-
-    useClickOutside(that)
+    useClickOutside(this)
   }
 
   submit(event) {
-    const that = this
+    event.preventDefault()
 
-    event.preventDefault();
-
-    that.rename()
+    this.rename()
   }
 
   clickOutside() {
-    const that = this
-
-    that.rename()
+    this.rename()
   }
 
   rename() {
-    const that = this
+    this.dropdownTarget.classList.remove("d-none")
+    this.containerTarget.classList.add("d-none")
 
-    that.dropdownTarget.classList.remove("d-none")
-    that.containerTarget.classList.add("d-none")
-
-    that.updateView(that.inputTarget.value)
+    this.updateView(this.inputTarget.value)
   }
 
   async updateView(title) {
-    const that = this;
-    const payload = { "view": { "title": title } };
-    const response = await patch(that.updatePathValue, { body: JSON.stringify(payload) });
+    const payload = { "view": { "title": title } }
+    const response = await patch(this.updatePathValue, { body: JSON.stringify(payload) })
 
-    that.dispatchError(response);
+    this.dispatchError(response)
   }
 }

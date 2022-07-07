@@ -2,44 +2,37 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="maximize-height"
 export default class extends Controller {
-  static values = { marginBottom: Number };
-  static targets = ["wrapper", "footer"];
+  static values = { marginBottom: Number }
+  static targets = ["wrapper", "footer"]
 
   connect() {
-    const that = this;
-
-    that.style();
+    this.style()
   }
 
   style() {
-    const that = this;
-    const newHeight = window.innerHeight - that.element.offsetTop - that.marginBottom() - that.footerHeight();
+    const newHeight = window.innerHeight - this.element.offsetTop - this.marginBottom() - this.footerHeight()
 
-    let target = that.element;
+    let target = this.element
 
-    if (that.hasWrapperTarget) {
-      target = that.wrapperTarget;
+    if (this.hasWrapperTarget) {
+      target = this.wrapperTarget
     }
 
-    target.style.setProperty("max-height", newHeight + "px", "important");
-    target.style.setProperty("height", newHeight + "px", "important");
+    target.style.setProperty("max-height", newHeight + "px", "important")
+    target.style.setProperty("height", newHeight + "px", "important")
   }
 
   marginBottom() {
-    const that = this;
-
-    if (that.hasMarginBottomValue) {
-      return that.marginBottomValue;
+    if (this.hasMarginBottomValue) {
+      return this.marginBottomValue
     }
-    return 0;
+    return 0
   }
 
   footerHeight() {
-    const that = this;
-
-    if (that.hasFooterTarget) {
-      return that.footerTarget.offsetHeight;
+    if (this.hasFooterTarget) {
+      return this.footerTarget.offsetHeight
     }
-    return 0;
+    return 0
   }
 }

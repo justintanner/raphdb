@@ -7,17 +7,15 @@ export default class extends DispatchController {
   static values = {fieldId: Number, createPath: String}
 
   connect() {
-    const that = this
-
     const onOptionAddCallback = (value, _data) => {
       const payload = {
-        "multiple_select": {"title": value, "field_id": that.fieldIdValue}
-      };
+        "multiple_select": {"title": value, "field_id": this.fieldIdValue}
+      }
 
-      that.createNew(payload)
+      this.createNew(payload)
     }
 
-    new TomSelect(that.element, {
+    new TomSelect(this.element, {
       plugins: {
         remove_button: {
           title: 'Remove this item',
@@ -28,11 +26,11 @@ export default class extends DispatchController {
       createOnBlur: true,
       render: {
         option_create: function (data, escape) {
-          return '<div class="create">Create a new option named <strong>' + escape(data.input) + '</strong></div>';
+          return '<div class="create">Create a new option named <strong>' + escape(data.input) + '</strong></div>'
         },
       },
       onOptionAdd: onOptionAddCallback,
-    });
+    })
   }
 
   async createNew(payload) {

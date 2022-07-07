@@ -4,7 +4,7 @@ import {Controller} from "@hotwired/stimulus"
 export class DispatchController extends Controller {
   async dispatchError(response) {
     if (!response.ok) {
-      let message;
+      let message
 
       if (response.contentType === "application/json") {
         const json = await response.json

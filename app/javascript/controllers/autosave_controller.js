@@ -1,7 +1,7 @@
 import {DispatchController} from "./dispatch_controller"
 import {useDebounce} from "stimulus-use"
 
-// Connects to data-controller="debounced-form"
+// Connects to data-controller="autosave-form"
 export default class extends DispatchController {
   static targets = ["form"]
   static debounces = ["save"]

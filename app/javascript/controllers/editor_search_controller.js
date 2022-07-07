@@ -23,9 +23,7 @@ export default class extends Controller {
   }
 
   clear() {
-    const that = this
-
-    that.inputTarget.value = ""
-    that.element.requestSubmit()
+    this.inputTarget.value = ""
+    this.element.requestSubmit()
   }
 }

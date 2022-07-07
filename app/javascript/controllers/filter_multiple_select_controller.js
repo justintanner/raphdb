@@ -17,6 +17,6 @@ export default class extends Controller {
         this.valueTarget.value = values.join(",")
         this.valueTarget.dispatchEvent(new Event("change"))
       }
-    });
+    })
   }
 }

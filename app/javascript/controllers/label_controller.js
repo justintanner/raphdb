@@ -9,7 +9,7 @@ export default class extends Controller {
     const labels = Array.from(container.querySelectorAll("[data-controller='label']"))
 
     if (!labels) {
-      return;
+      return
     }
 
     const index = labels.indexOf(this.element)
