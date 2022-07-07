@@ -6,7 +6,7 @@ class ItemSet < ApplicationRecord
   include Undeletable
   include FriendlyId
 
-  has_many :items, -> { order(Arel.sql(View.default.sql_sort_order)) }
+  has_many :items, -> { order(Arel.sql(View.published.sql_sort_order)) }
   has_many :images, -> { where.not(processed_at: nil) }
 
   attr_accessor :importing

@@ -9,30 +9,30 @@ class FilterTest < ActiveSupport::TestCase
   end
 
   test "should be associated with a field" do
-    filter = Filter.new(view: views(:default), operator: "is")
+    filter = Filter.new(view: views(:published), operator: "is")
     assert_not filter.save, "Filter should not be saved without a field"
   end
 
   test "should generate a uuid before saving" do
-    filter = Filter.new(view: views(:default), field: fields(:number))
+    filter = Filter.new(view: views(:published), field: fields(:number))
 
     assert_not_nil filter.uuid, "Filter has no uuid"
   end
 
   test "should have a valid operator" do
-    filter = Filter.new(view: views(:default), field: fields(:number), operator: "invalid")
+    filter = Filter.new(view: views(:published), field: fields(:number), operator: "invalid")
 
     assert_not filter.save, "Filter was saved with an invalid operator"
   end
 
   test "should have a value when for operators that need it" do
-    filter = Filter.new(view: views(:default), field: fields(:number), operator: "is", value: nil)
+    filter = Filter.new(view: views(:published), field: fields(:number), operator: "is", value: nil)
 
     assert_not filter.save, "Filter was saved with a blank value"
   end
 
   test "should allow blank values for some operators" do
-    filter = Filter.new(view: views(:default), field: fields(:set_title), operator: "is empty", value: nil)
+    filter = Filter.new(view: views(:published), field: fields(:set_title), operator: "is empty", value: nil)
 
     assert filter.save, "Filter was not saved with a blank value"
   end
@@ -50,7 +50,7 @@ class FilterTest < ActiveSupport::TestCase
   end
 
   test "should generate valid sql for is operator" do
-    filter = Filter.create(view: views(:default), field: fields(:set_title), operator: "is", value: "apple")
+    filter = Filter.create(view: views(:published), field: fields(:set_title), operator: "is", value: "apple")
 
     assert_equal "data->>'set_title' = 'apple'", filter.to_sql, "Filter was not exported to SQL"
   end

@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   devise_for :users, path: "editor"
 
   namespace :editor do
-    root to: "views#default"
+    root to: "views#published"
 
     resources :single_selects, only: [:create]
     resources :multiple_selects, only: [:create]
@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     end
     resources :views, only: [:show, :update, :destroy] do
       collection do
-        get :default, as: :default
+        get :published, as: :published
       end
       member do
         post :refresh, as: :refresh

@@ -12,5 +12,5 @@
   </div>
 </div>
 
-<%= render View::PublishedTabsComponent.new(view: View.default, items: @items, tab: @tab, pagy: @pagy, query: params[:q]) %>
+<%= render View::PublishedTabsComponent.new(view: View.published, items: @items, tab: @tab, pagy: @pagy, query: params[:q]) %>
 

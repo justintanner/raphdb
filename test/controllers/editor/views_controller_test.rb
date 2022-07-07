@@ -7,13 +7,13 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:bob))
   end
 
-  test "renders the default view" do
-    get "/editor/views/default"
+  test "renders the published view" do
+    get "/editor/views/published"
     assert_response :success
   end
 
   test "should rename a view" do
-    view = views(:default)
+    view = views(:published)
 
     patch "/editor/views/#{view.id}", params: {view: {title: "New Title"}}
 
@@ -21,18 +21,8 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
     assert view.reload.title == "New Title"
   end
 
-  test "should set a view to the be the default" do
-    default_view = views(:default)
-    view = View.create!(title: "New Default")
-    patch "/editor/views/#{view.id}", params: {view: {default: true}}
-
-    assert_response :success
-    assert view.reload.default, "View not set to default"
-    assert !default_view.reload.default, "Old default view is still default"
-  end
-
   test "should return a json error when a blank title is given" do
-    view = views(:default)
+    view = views(:published)
     patch "/editor/views/#{view.id}", params: {view: {title: ""}}
 
     assert_response :unprocessable_entity
@@ -47,7 +37,7 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should duplicate a view and redirect to it" do
-    default_view = views(:default)
+    default_view = views(:published)
     post "/editor/views/#{default_view.id}/duplicate"
 
     assert_response :redirect

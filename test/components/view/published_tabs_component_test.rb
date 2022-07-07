@@ -4,7 +4,7 @@ require "test_helper"
 
 class View::PublishedTabsComponentTest < ViewComponent::TestCase
   def test_component_renders_the_images_tab
-    view = View.default
+    view = View.published
 
     with_request_url "/editor/views/#{view.id}" do
       items = [item_create!(item_title: "Apple"), item_create!(item_title: "Banana")]
@@ -17,7 +17,7 @@ class View::PublishedTabsComponentTest < ViewComponent::TestCase
   end
 
   def test_component_renders_the_list_tab
-    view = View.default
+    view = View.published
 
     with_request_url "/editor/views/#{view.id}" do
       items = [item_create!(item_title: "Apple"), item_create!(item_title: "Banana")]

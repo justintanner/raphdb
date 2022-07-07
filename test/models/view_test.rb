@@ -22,30 +22,20 @@ class ViewTest < ActiveSupport::TestCase
       "View did not associate all fields"
   end
 
-  test "there can be only one default" do
-    default_view = views(:default)
-    reverse_view = View.create!(title: "Reverse", default: true)
+  test "there can be only one published view" do
+    _default_view = views(:published)
+    second_view = View.create(title: "Reverse", published: true)
 
-    default_view.reload
-
-    assert_not default_view.default, "Old default view is still default"
-    assert reverse_view.default, "Reversed is not the new default view"
-
-    # Resetting this view to default because it's a fixture
-    default_view.update(default: true)
-    reverse_view.reload
-
-    assert default_view.default, "Old default did not return to default"
-    assert_not reverse_view.default, "Reversed still has a default status of true"
+    assert_not second_view.valid?, "Created a second published view"
   end
 
   test "should be able to access the default view with a class method" do
-    default_view = View.default
-    assert_equal default_view, views(:default)
+    default_view = View.published
+    assert_equal default_view, views(:published)
   end
 
   test "should generate a sql compatible sort order" do
-    default_view = views(:default)
+    default_view = views(:published)
 
     expected_sql =
       "data->'set_title' ASC, data->'prefix' ASC, data->'number' ASC, data->'in_set' ASC, data->'item_title' ASC"
@@ -114,14 +104,14 @@ class ViewTest < ActiveSupport::TestCase
   end
 
   test "should duplicate the default view" do
-    default_view = views(:default)
+    default_view = views(:published)
     default_view.filters.create!(field: fields(:set_title), operator: "is", value: "Apple")
     default_view.filters.create!(field: fields(:number), operator: "=", value: "5")
 
     view = default_view.duplicate
 
     assert_equal "Copy of #{default_view.title}", view.title, "Title was not copied"
-    assert !view.default, "New view is default"
+    assert !view.published, "New view is default"
 
     assert_equal default_view.fields, view.fields, "Fields are not the same"
     assert_equal default_view.fields.first, view.fields.first, "First field doesn't match"
@@ -132,7 +122,7 @@ class ViewTest < ActiveSupport::TestCase
   end
 
   test "updating sorts destroys un-needed ones" do
-    view = views(:default)
+    view = views(:published)
 
     assert view.sorts.count > 0, "View has no sorts"
 

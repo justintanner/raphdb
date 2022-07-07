@@ -1,9 +1,9 @@
-default:
-  title: Postcards by set
-  default: true
+published:
+  title: Published
+  published: true
 with_filters:
   title: With some filters
-  default: false
+  published: false
 with_no_filters_or_sorts:
   title: With no filters or sorts
-  default: false
+  published: false

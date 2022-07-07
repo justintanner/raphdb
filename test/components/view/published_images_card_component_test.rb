@@ -7,7 +7,7 @@ class View::PublishedImagesCardComponentTest < ViewComponent::TestCase
     item = item_create!(item_title: "Apple")
     image_create!(filename: "vertical.jpg", item: item, process: true)
 
-    render_inline(View::PublishedImagesCardComponent.new(item: item, view: View.default))
+    render_inline(View::PublishedImagesCardComponent.new(item: item, view: View.published))
 
     assert_text("Apple")
   end
@@ -17,7 +17,7 @@ class View::PublishedImagesCardComponentTest < ViewComponent::TestCase
     second_item = item_create!(item_title: "Banana")
     items = [first_item, second_item]
 
-    render_inline(View::PublishedImagesCardComponent.with_collection(items, view: View.default))
+    render_inline(View::PublishedImagesCardComponent.with_collection(items, view: View.published))
 
     assert_text("Apple")
     assert_text("Banana")

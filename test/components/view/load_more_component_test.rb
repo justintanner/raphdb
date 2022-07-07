@@ -4,7 +4,7 @@ require "test_helper"
 
 class View::LoadMoreComponentTest < ViewComponent::TestCase
   def test_component_renders_a_load_more_link_for_lists
-    view = View.default
+    view = View.published
 
     with_request_url "/editor/views/#{view.id}" do
       render_inline(View::LoadMoreComponent.new(tab: "list", query: "Apples", next_page: 2))
@@ -15,7 +15,7 @@ class View::LoadMoreComponentTest < ViewComponent::TestCase
   end
 
   def test_component_renders_a_load_more_link_for_images
-    view = View.default
+    view = View.published
 
     with_request_url "/editor/views/#{view.id}" do
       render_inline(View::LoadMoreComponent.new(tab: "images", query: "Apples", next_page: 2))

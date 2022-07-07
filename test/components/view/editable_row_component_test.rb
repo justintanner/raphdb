@@ -4,7 +4,7 @@ require "test_helper"
 
 class View::EditableRowComponentTest < ViewComponent::TestCase
   def test_component_renders_a_single_row
-    view = views(:default)
+    view = views(:published)
     item = items(:football)
 
     render_inline(View::EditableRowComponent.new(item: item, view: view, offset: 0))
@@ -13,7 +13,7 @@ class View::EditableRowComponentTest < ViewComponent::TestCase
   end
 
   def test_component_renders_two_items
-    view = views(:default)
+    view = views(:published)
     items = [items(:football), items(:fox_hunting)]
 
     render_inline(View::EditableRowComponent.with_collection(items, view: view, offset: 0))

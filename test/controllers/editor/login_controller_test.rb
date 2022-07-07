@@ -8,7 +8,7 @@ class LoginControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
-  test "renders the default view when logged in" do
+  test "renders the published view when logged in" do
     sign_in(users(:bob))
 
     get "/editor"

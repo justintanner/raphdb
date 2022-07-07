@@ -4,8 +4,8 @@ module Editor
   class ViewsController < EditorController
     include Pagy::Backend
 
-    def default
-      @view = View.default
+    def published
+      @view = View.published
       @pagy, @items = pagy(@view.search(params[:q]), items: per_page)
 
       render "show"
@@ -40,7 +40,7 @@ module Editor
       if @view.errors.present?
         redirect_to error_path(message: @view.errors.full_messages.join(", "))
       else
-        redirect_to default_editor_views_path
+        redirect_to published_editor_views_path
       end
     end
 
@@ -58,7 +58,7 @@ module Editor
     private
 
     def view_params
-      params.require(:view).permit(:title, :default)
+      params.require(:view).permit(:title)
     end
 
     def sorts_params

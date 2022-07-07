@@ -4,7 +4,7 @@ require "test_helper"
 
 class View::PublishedListComponentTest < ViewComponent::TestCase
   def test_component_renders_two_items
-    view = View.default
+    view = View.published
 
     with_request_url "/editor/views/#{view.id}" do
       items = [item_create!(item_title: "Apple"), item_create!(item_title: "Banana")]

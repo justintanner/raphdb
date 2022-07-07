@@ -4,7 +4,7 @@ class ItemsController < ApplicationController
   include Pagy::Backend
 
   def index
-    @view = View.default
+    @view = View.published
     @pagy, @items = pagy(@view.search(params[:q]), items: per_page)
     @tab = tab
   end

@@ -71,7 +71,7 @@ namespace :bench do
   task item_search: :environment do
     return unless Rails.env.development?
 
-    measure_lambda = ->(n) { n.times.map { View.default.search("apple") } }
+    measure_lambda = ->(n) { n.times.map { View.published.search("apple") } }
 
     cleanup_lambda = ->(_n) { puts "Nothing to clean up" }
 

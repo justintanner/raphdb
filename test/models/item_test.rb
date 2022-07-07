@@ -119,7 +119,7 @@ class ItemTest < ActiveSupport::TestCase
   test "should save string date fields in a non-searchable format" do
     # See fields(:first_use) for details on the the Date field.
     item = item_create!(item_title: "Apple", first_use: "1904-01-30")
-    results = View.default.search("1904-")
+    results = View.published.search("1904-")
     assert_not_includes results, item, "Found item with date"
   end
 
@@ -127,10 +127,10 @@ class ItemTest < ActiveSupport::TestCase
     # See fields(:estimated_value) for details on the the Currency field.
     item = item_create!(item_title: "Apple", estimated_value: "125.67")
 
-    results = View.default.search("12567")
+    results = View.published.search("12567")
     assert_not_includes results, item, "Found item with currency"
 
-    results = View.default.search("125")
+    results = View.published.search("125")
     assert_not_includes results, item, "Found item with currency"
   end
 

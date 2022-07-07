@@ -11,12 +11,12 @@ class View < ApplicationRecord
   has_many :fields, -> { reorder("view_fields.position ASC") }, through: :view_fields, source: :field
 
   validates :title, presence: true
+  validate :only_one_published
 
   attr_accessor :skip_associate_all_fields
 
-  before_save :only_one_default
   before_create :associate_all_fields
-  before_destroy :cant_destroy_default, prepend: true do
+  before_destroy :cant_destroy_published, prepend: true do
     throw(:abort) if errors.present?
   end
 
@@ -37,7 +37,7 @@ class View < ApplicationRecord
   def duplicate
     new_view = View.new
     new_view.title = "Copy of #{title}"
-    new_view.default = false
+    new_view.published = false
     new_view.fields = fields
     new_view.save
 
@@ -55,8 +55,9 @@ class View < ApplicationRecord
     editor_replace_to(target: "refresh_list", component: View::RefreshListComponent, locals: {view: self})
   end
 
-  def self.default
-    find_by(default: true)
+  # TODO: Should this be cached?
+  def self.published
+    find_by(published: true)
   end
 
   private
@@ -67,13 +68,13 @@ class View < ApplicationRecord
     self.fields = Field.all_cached
   end
 
-  def only_one_default
-    return unless default_changed? && default == true
-
-    View.where.not(id: id).update_all(default: false)
+  def only_one_published
+    if published_changed? && published == true && View.where.not(id: id).where(published: true).exists?
+      errors.add(:base, "You can't have more than one published view")
+    end
   end
 
-  def cant_destroy_default
-    errors.add(:base, "You can't delete the default view") if default
+  def cant_destroy_published
+    errors.add(:base, "You can't delete the published view") if published
   end
 end

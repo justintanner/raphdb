@@ -9,18 +9,18 @@ class SortTest < ActiveSupport::TestCase
   end
 
   test "should be associated with a field" do
-    sort = Sort.new(view: views(:default))
+    sort = Sort.new(view: views(:published))
     assert_not sort.save, "Sort should not be saved without a field"
   end
 
   test "should generate a uuid before saving" do
-    sort = Sort.new(view: views(:default), field: fields(:number), direction: "ASC")
+    sort = Sort.new(view: views(:published), field: fields(:number), direction: "ASC")
 
     assert_not_nil sort.uuid, "Sort has no uuid"
   end
 
   test "should have a direction of asc or desc" do
-    sort = Sort.new(view: views(:default), direction: "invalid")
+    sort = Sort.new(view: views(:published), direction: "invalid")
 
     assert_not sort.save, "Sort was saved with an invalid direction"
   end
@@ -40,7 +40,7 @@ class SortTest < ActiveSupport::TestCase
   test "should be exportable to sql" do
     sort =
       Sort.create(
-        view: views(:default),
+        view: views(:published),
         field: fields(:number),
         direction: "ASC"
       )
@@ -49,7 +49,7 @@ class SortTest < ActiveSupport::TestCase
   end
 
   test "shouldn't be able to have two sorts on the same field in the same view" do
-    view = views(:default)
+    view = views(:published)
     Sort.create(view: view, field: fields(:number), direction: "ASC")
     sort = Sort.new(view: view, field: fields(:number), direction: "DESC")
 
