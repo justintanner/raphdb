@@ -12,15 +12,6 @@ class ViewsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should rename a view" do
-    view = views(:published)
-
-    patch "/editor/views/#{view.id}", params: {view: {title: "New Title"}}
-
-    assert_response :success
-    assert view.reload.title == "New Title"
-  end
-
   test "should return an error when a blank title is given" do
     view = views(:published)
     patch "/editor/views/#{view.id}", params: {view: {title: ""}}

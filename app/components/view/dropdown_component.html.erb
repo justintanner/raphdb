@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "view_dropdown" do %>
+<%= turbo_frame_tag "dropdown_view_#{@view.id}" do %>
   <div class="dropdown" data-rename-view-target="dropdown">
     <button type="button" class="btn btn-link me-2 shadow-none d-flex align-items-center ms-1 dropdown-toggle" id="view-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="bi bi-file-spreadsheet"></i><span class="ms-1"><%= @view.title %></span>

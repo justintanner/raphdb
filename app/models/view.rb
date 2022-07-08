@@ -48,7 +48,7 @@ class View < ApplicationRecord
   end
 
   def broadcast_update
-    editor_replace_to(target: "view_dropdown", component: View::DropdownComponent, locals: {view: self})
+    editor_replace_to(target: "dropdown_view_#{id}", component: View::DropdownComponent, locals: {view: self})
   end
 
   # TODO: Should this be cached?
@@ -57,7 +57,7 @@ class View < ApplicationRecord
   end
 
   def self.all_but_published
-    where(published: false)
+    where(published: false).order(title: :asc)
   end
 
   private

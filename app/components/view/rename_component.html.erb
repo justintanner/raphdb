@@ -1,3 +1,5 @@
-<%= form_for [:editor, @view], data: {controller: "rename-view"}, html: {class: "me-3"} do |form| %>
-  <%= form.text_field :title, class: "form-control form-control-sm", data: {rename_view_target: "input"} %>
+<%= turbo_frame_tag "dropdown_view_#{@view.id}" do %>
+  <%= form_for [:editor, @view], data: {controller: "rename-view"}, html: {class: "me-3"} do |form| %>
+    <%= form.text_field :title, class: "form-control form-control-sm", data: {rename_view_target: "input"} %>
+  <% end %>
 <% end %>
