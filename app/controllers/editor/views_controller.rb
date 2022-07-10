@@ -11,14 +11,6 @@ module Editor
       render "show"
     end
 
-    def refresh
-      @view = View.find(params[:id])
-
-      @pagy, @items = pagy(@view.search(params[:q]), items: per_page)
-
-      render :refresh, layout: false
-    end
-
     def show
       @view = View.find(params[:id])
 
@@ -63,14 +55,18 @@ module Editor
       end
     end
 
+    def refresh
+      @view = View.find(params[:id])
+
+      @pagy, @items = pagy(@view.search(params[:q]), items: per_page)
+
+      render :refresh, layout: false
+    end
+
     private
 
     def view_params
       params.require(:view).permit(:title)
-    end
-
-    def sorts_params
-      params.require(:view).permit(sorts: [:field_id, :direction, :position])
     end
 
     def per_page

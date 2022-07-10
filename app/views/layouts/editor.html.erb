@@ -9,6 +9,9 @@
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
   <%= yield :head %>
+  <style>
+    .turbo-progress-bar {background-color: white;}
+  </style>
 </head>
 
 <body class="h-100 overflow-hidden">

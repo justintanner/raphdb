@@ -5,15 +5,25 @@ import {useClickOutside} from "stimulus-use"
 export default class extends Controller {
   static targets = ["input"]
 
-  // TODO: Escape should also submit the form.
   connect() {
-    this.inputTarget.focus()
-    this.inputTarget.setSelectionRange(0, this.inputTarget.value.length)
+    const that = this
+    that.inputTarget.focus()
+    that.inputTarget.setSelectionRange(0, that.inputTarget.value.length)
 
-    useClickOutside(this, {element: this.inputTarget})
+    useClickOutside(that, {element: that.inputTarget})
+
+    that.inputTarget.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") {
+        that.submit();
+      }
+    }, true);
   }
 
   clickOutside() {
+    this.submit()
+  }
+
+  submit() {
     this.element.requestSubmit()
   }
 }
