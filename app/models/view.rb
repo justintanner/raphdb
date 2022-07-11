@@ -22,6 +22,10 @@ class View < ApplicationRecord
 
   after_commit :broadcast_update
 
+  def published?
+    published
+  end
+
   def move_field_to(field, position)
     view_fields.find_by(field: field).move_to(position)
   end

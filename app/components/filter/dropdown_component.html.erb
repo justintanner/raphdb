@@ -17,23 +17,32 @@
 
   <div class="dropdown-menu" aria-labelledby="filter-dropdown-button">
     <div class="py-2 px-3" style="min-width: 632px;">
-      <%= turbo_frame_tag "filters" do %>
-        <%= render Filter::EmptyMessageComponent.new %>
-        <%= render Filter::RowComponent.with_collection(@view.filters, view: @view) %>
+      <% if @view.published? %>
+        <div class="text-muted mb-3">
+          The published view cannot have filters, please duplicate this view to add filters.
+        </div>
+        <%= link_to duplicate_editor_view_path(@view), data: { turbo_frame: "_top" }, class: "btn btn-sm btn-outline-secondary shadow-none" do %>
+          <i class="bi bi-layers-half me-2"></i>Duplicate View
+        <% end %>
+      <% else %>
+        <%= turbo_frame_tag "filters" do %>
+          <%= render Filter::EmptyMessageComponent.new %>
+          <%= render Filter::RowComponent.with_collection(@view.filters, view: @view) %>
+        <% end %>
+
+        <%= turbo_frame_tag "filter_operations" %>
+
+        <div class="row mt-3">
+          <div class="col-6">
+            <%= link_to "Add Filter", new_editor_view_filter_path(view_id: @view.id),
+                        data: { turbo_frame: "filter_operations" },
+                        class: "btn btn-sm btn-light-orange shadow-none" %>
+          </div>
+          <div class="col-6 text-end">
+            <%= button_tag "Close", type: "button", class: "btn btn-link text-muted", data: { action: "dropdown#close" } %>
+          </div>
+        </div>
       <% end %>
-
-      <%= turbo_frame_tag "filter_operations" %>
-
-      <div class="row mt-3">
-        <div class="col-6">
-          <%= link_to "Add Filter", new_editor_view_filter_path(view_id: @view.id),
-                      data: { turbo_frame: "filter_operations" },
-                      class: "btn btn-sm btn-light-orange shadow-none" %>
-        </div>
-        <div class="col-6 text-end">
-          <%= button_tag "Close", type: "button", class: "btn btn-link text-muted", data: {action: "dropdown#close"} %>
-        </div>
-      </div>
     </div>
   </div>
 </div>
