@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "refresh_list" do %>
+<%= turbo_frame_tag "refresh_list_view_#{@view.id}" do %>
   <div class="refresh-list-overlay d-flex flex-column align-items-center justify-content-center">
     <span class="spinner-border text-secondary" role="status" aria-hidden="true"></span>
   </div>

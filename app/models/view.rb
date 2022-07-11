@@ -48,7 +48,8 @@ class View < ApplicationRecord
   end
 
   def broadcast_update
-    # editor_replace_to(target: "dropdown_view_#{id}", component: View::DropdownComponent, locals: {view: self})
+    editor_replace_to(target: "dropdown_view_#{id}", component: View::DropdownComponent, locals: {view: self})
+    editor_replace_to(target: "sidebar_view_#{id}", component: Sidebar::ViewComponent, locals: {view: self})
   end
 
   # TODO: Should this be cached?

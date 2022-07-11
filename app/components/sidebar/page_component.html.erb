@@ -1,4 +1,4 @@
-<li class="nav-item">
+<li class="nav-item" id="<%= "sidebar_page_#{@page.id}" %>">
   <%= link_to edit_editor_page_path(@page), class: class_names("nav-link": true, "active": active?), aria_current: "page" do %>
     <i class="bi bi-file-earmark-richtext me-2"></i><%= @page.title %>
     <% if active? %>

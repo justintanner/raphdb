@@ -47,7 +47,7 @@ class Filter < ApplicationRecord
   end
 
   def broadcast_update
-    editor_replace_to(target: "refresh_list", component: View::RefreshListComponent, locals: {view: view})
+    editor_replace_to(target: "refresh_list_view_#{view.id}", component: View::RefreshListComponent, locals: {view: view})
   end
 
   private

@@ -1,4 +1,4 @@
-<li class="nav-item">
+<li class="nav-item" id="<%= "sidebar_view_#{@view.id}" %>">
   <%= link_to editor_view_path(@view), class: class_names("nav-link", "active": active?), aria_current: "view" do %>
     <i class="bi bi-file-spreadsheet me-2"></i><%= @view.title %>
     <% if @view.published %>
