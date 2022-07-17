@@ -12,6 +12,8 @@ class ItemsController < ApplicationController
   def show
     @item = Item.friendly.find(params[:id])
     @featured_image = featured_image(@item)
+
+    render :show, layout: false if turbo_frame_request?
   end
 
   private

@@ -1,0 +1,8 @@
+<span class="badge rounded-pill <%= bg_color %> text-dark fw-normal fs-6 position-relative <%= class_names("border": @added || @removed, "border-success": @added, "border-danger": @removed, "me-3": @added || @removed) %>">
+  <%= @name %>
+  <% if @added %>
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-success">+</span>
+  <% elsif @removed %>
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger">-</span>
+  <% end %>
+</span>

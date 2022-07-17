@@ -9,7 +9,7 @@ class View::EditableRowComponentTest < ViewComponent::TestCase
 
     render_inline(View::EditableRowComponent.new(item: item, view: view, offset: 0))
 
-    assert_selector "tr#item_#{item.id}"
+    assert_selector "tr#tr_view_#{view.id}_item_#{item.id}"
   end
 
   def test_component_renders_two_items
@@ -18,6 +18,6 @@ class View::EditableRowComponentTest < ViewComponent::TestCase
 
     render_inline(View::EditableRowComponent.with_collection(items, view: view, offset: 0))
 
-    assert_selector "tr#item_#{items.first.id}"
+    assert_selector "tr#tr_view_#{view.id}_item_#{items.first.id}"
   end
 end

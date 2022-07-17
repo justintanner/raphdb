@@ -1,0 +1,17 @@
+<p>
+  <small class="text-uppercase text-muted"><%= title %></small>
+</p>
+<p>
+  <% if multiple_select? %>
+    <%= render MultipleSelectComponent.with_collection(removed, removed: true) %>
+    <%= render MultipleSelectComponent.with_collection(added, added: true) %>
+  <% else %>
+    <% if changes.first.present? %>
+      <s class="bg-danger p-2 bg-opacity-25 rounded"><%= changes.first %></s>
+    <% end %>
+    <% if changes.second.present? %>
+      <span class="bg-success p-2 bg-opacity-50 rounded"><%= changes.second %></span>
+    <% end %>
+  <% end %>
+</p>
+

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class Log < ApplicationRecord
-  has_one :user
+  belongs_to :user, optional: true
   belongs_to :model, polymorphic: true, optional: true
 
   # This relationship will not return soft deleted records (Undeletable),
-  # please use unscoped_associated for destroyed records.
+  # please use unscoped_associated to retrieve both deleted and undeleted records.
   belongs_to :associated, polymorphic: true, optional: true
 
   before_create :create_entry, :set_version_number
@@ -17,6 +17,12 @@ class Log < ApplicationRecord
 
   scope :newest_to_oldest, -> { order(version: :desc, created_at: :desc) }
   scope :oldest_to_newest, -> { order(version: :asc, created_at: :asc) }
+
+  def image
+    return unless associated_type == "Image"
+
+    unscoped_associated
+  end
 
   def unscoped_associated
     associated_type.constantize.unscoped { associated }

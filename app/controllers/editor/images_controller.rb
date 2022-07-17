@@ -48,6 +48,13 @@ module Editor
       render json: {image: @image}, status: :ok
     end
 
+    def restore
+      @image = Image.unscoped { Image.find(params[:id]) }
+      @image.restore
+
+      render json: {image: @image}, status: :ok
+    end
+
     private
 
     # Avoids nil.to_i returning 0

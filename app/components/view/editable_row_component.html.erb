@@ -1,4 +1,4 @@
-<tr id="<%= dom_id(@item) %>" data-list-target="tr" data-controller="<% if load_more? %>load-more<% end %>">
+<tr id="<%= "tr_view_#{@view.id}_item_#{@item.id}" %>" data-list-target="tr" data-controller="<% if load_more? %>load-more<% end %>">
   <td class="list-index-col"><small class="text-muted" data-list-target="number" data-list-id-value="<%= dom_id(@item) %>"><%= number %></small></td>
 
   <td class="list-edit-col">
@@ -7,7 +7,7 @@
                    data: {
                      controller: "edit-button",
                      action: "click->edit-button#open",
-                     edit_button_url_param: edit_editor_item_path(@item)
+                     edit_button_url_param: edit_editor_item_path(@item.id)
                    } do %>
       <i class="bi bi-pencil-square"></i>
     <% end %>

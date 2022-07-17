@@ -42,7 +42,7 @@ class Item < ApplicationRecord
 
   def broadcast_update
     View.all.each do |view|
-      editor_replace_to(target: self, component: View::EditableRowComponent, locals: {item: self, view: view})
+      editor_replace_to(target: "tr_view_#{view.id}_item_#{id}", component: View::EditableRowComponent, locals: {item: self, view: view})
     end
   end
 

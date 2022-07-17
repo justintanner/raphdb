@@ -5,6 +5,7 @@ class Image < ApplicationRecord
   include Loggable
   include Positionable
   include Adjustable
+  include Broadcastable
 
   belongs_to :item, optional: true
   belongs_to :item_set, optional: true
@@ -31,8 +32,8 @@ class Image < ApplicationRecord
 
   attr_accessor :importing
 
-  log_changes only: %i[deleted_at],
-    on: %i[create destroy],
+  log_changes only: %i[deleted_at restored_at],
+    on: %i[create update destroy],
     associated: :item_or_item_set,
     skip_when: ->(image) { image.importing }
   position_within :item, :item_set
@@ -50,11 +51,14 @@ class Image < ApplicationRecord
     broadcast_update
   end
 
+  def restore
+    update(deleted_at: nil, restored_at: Time.now)
+  end
+
   def broadcast_update
     # Skipping broadcasts in tests for now, because image_positionable_test is failing.
     if item.present? && !Rails.env.test?
-      # TODO: Replace this with Broadcastable methods.
-      broadcast_replace_to("editor_stream", target: "edit_carousel_for_#{item.id}", partial: "editor/items/carousel", locals: {item: item})
+      editor_replace_to(target: "edit_carousel_for_#{item.id}", component: Image::EditCarouselComponent, locals: {item: item})
       item.broadcast_update
     end
   end

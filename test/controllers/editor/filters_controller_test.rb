@@ -25,6 +25,18 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  test "creates a new filter with a json response" do
+    view = views(:published)
+    post "/editor/views/#{view.id}/filters.json", params: {filter: {field_id: fields(:artist).id, view_id: view.id, operator: "is", value: "Bob"}}
+    assert_response :success
+  end
+
+  test "returns unprocessable entity when creating with incomplete data when given a json request" do
+    view = views(:published)
+    post "/editor/views/#{view.id}/filters.json", params: {filter: {field_id: fields(:artist).id, view_id: view.id}}
+    assert_response :unprocessable_entity
+  end
+
   test "edits an existing filter" do
     view = views(:published)
     filter = Filter.create!(field_id: fields(:artist).id, view_id: view.id, operator: "is", value: "Bob")
@@ -38,6 +50,15 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
     filter = Filter.create!(field_id: fields(:artist).id, view_id: view.id, operator: "is", value: "Bob")
 
     patch "/editor/filters/#{filter.id}", params: {filter: {field_id: fields(:artist).id, view_id: view.id, operator: "is", value: "Alice"}}
+    assert_response :success
+    assert_equal "Alice", filter.reload.value, "Filter was not updated"
+  end
+
+  test "updates an existing filter via json" do
+    view = views(:published)
+    filter = Filter.create!(field_id: fields(:artist).id, view_id: view.id, operator: "is", value: "Bob")
+
+    patch "/editor/filters/#{filter.id}.json", params: {filter: {field_id: fields(:artist).id, view_id: view.id, operator: "is", value: "Alice"}}
     assert_response :success
     assert_equal "Alice", filter.reload.value, "Filter was not updated"
   end

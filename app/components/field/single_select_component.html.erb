@@ -1,0 +1,17 @@
+<div class="<%= @field.bootstrap_col %>">
+  <label class="form-label" for="item_data_<%= @field.key %>"><%= @field.title %></label>
+  <%= select_tag "item[data][#{@field.key}]",
+                 options_for_select(@field.single_select_data, @item.data[@field.key]),
+                 class: class_names("form-select": true, "is-invalid": @item.errors.include?(@field.form_error_sym)),
+                 data: {
+                   action: "change->autosave#submit",
+                   controller: "single-select",
+                   single_select_field_id_value: @field.id,
+                   single_select_create_path_value: editor_single_selects_path
+                 } %>
+  <% if @item.errors.include?(@field.form_error_sym) %>
+    <div class="invalid-feedback mb-1"><%= @item.errors[@field.key].first %></div>
+  <% else %>
+    <div class="mb-3"></div>
+  <% end %>
+</div>

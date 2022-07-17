@@ -2,7 +2,13 @@
 
 module Editor
   class ItemsController < EditorController
+    layout false
+
     def edit
+      @item = Item.friendly.find(params[:id])
+    end
+
+    def history
       @item = Item.friendly.find(params[:id])
     end
 
@@ -10,9 +16,15 @@ module Editor
       @item = Item.friendly.find(params[:id])
 
       if @item.update(item_params)
-        render :edit, locals: {blink_green: true}
+        respond_to do |format|
+          format.json { render json: {item: @item}, status: :ok }
+          format.html { render :edit }
+        end
       else
-        render :edit, status: :unprocessable_entity
+        respond_to do |format|
+          format.json { render json: {errors: @item.errors.full_messages, id: @item.id}, status: :unprocessable_entity }
+          format.html { render :edit, status: :unprocessable_entity }
+        end
       end
     end
 

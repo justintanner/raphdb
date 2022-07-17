@@ -1,0 +1,29 @@
+<p>
+  <small class="text-uppercase text-muted">
+    <% if deleted? %>
+      Deleted Image
+    <% elsif uploaded? %>
+      Uploaded Image
+    <% elsif restored? %>
+      Restored Image
+    <% end %>
+  </small>
+</p>
+<div>
+  <%= image_tag url_for(image.file.variant(:medium)),
+                srcset: srcset(image, :medium_retina, :medium),
+                sizes: "#{image.width(:medium)}px",
+                width: image.width(:medium),
+                height: image.height(:medium),
+                loading: "lazy",
+                class: class_names("border border-2", "border-success": uploaded? || restored?, "border-danger": deleted?) %>
+</div>
+<% if deleted? && was_not_restored? %>
+  <%= button_to restore_editor_image_path(image),
+                form: { data: { turbo_confirm: "Restore Image?" } },
+                class: "btn btn-sm btn-outline-secondary mt-3",
+                method: :patch do %>
+    <i class="bi bi-arrow-counterclockwise"></i> Restore Image
+  <% end %>
+<% end %>
+

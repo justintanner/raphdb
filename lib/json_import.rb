@@ -76,10 +76,10 @@ module JsonImport
       image.item_set = item_set if item_set.present?
       image.id = row[:id].to_i
 
-      image.save!
-
       file_path = download_file(row[:original_url])
       image.file.attach(io: File.open(file_path), filename: File.basename(file_path))
+
+      image.save!
     end
 
     if skipped_image_count.positive?
@@ -169,6 +169,8 @@ module JsonImport
     FileUtils.mkdir_p(File.dirname(local_path))
     Down.download(url, destination: local_path)
     local_path
+  rescue OpenURI::HTTPError
+    puts "Error downloading file: #{url}"
   end
 
   def self.each_row(filename, &block)

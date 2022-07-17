@@ -4,5 +4,4 @@
 <% end %>
 
 <%= render View::EditableListComponent.new(view: @view, items: @items, query: params[:q], pagy: @pagy) %>
-
-<%= render "editor/items/form" %>
+<%= render Item::EditOffCanvasComponent.new %>

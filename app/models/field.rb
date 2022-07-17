@@ -52,6 +52,10 @@ class Field < ApplicationRecord
     Field::TYPES.key(column_type)
   end
 
+  def component_class
+    "Field::#{column_type_sym.to_s.classify}Component".constantize
+  end
+
   def form_error_sym
     "data_#{key}".to_sym
   end
@@ -66,12 +70,8 @@ class Field < ApplicationRecord
     Filter::OPERATORS[column_type_sym]
   end
 
-  def self.field_id_operator_map
-    all_cached.map { |field| [field.id, field.operators] }.to_h
-  end
-
-  def self.field_id_column_type_map
-    all_cached.map { |field| [field.id, field.column_type_sym.to_s] }.to_h
+  def self.titles_map
+    all_cached.map { |field| [field.key, field.title] }.to_h
   end
 
   def self.keys

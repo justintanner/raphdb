@@ -1,0 +1,57 @@
+<%= turbo_frame_tag "edit_item_frame" do %>
+  <ul class="nav nav-tabs m-3">
+    <li class="nav-item">
+      <a class="nav-link fw-bold active" aria-current="page" href="#">Edit Item</a>
+    </li>
+    <li class="nav-item">
+      <%= button_tag class: "nav-link",
+                     title: "Item History",
+                     data: {
+                       controller: "edit-button",
+                       action: "click->edit-button#switchTabs",
+                       edit_button_url_param: history_editor_item_path(@item.id)
+                     } do %>
+        Revision History
+      <% end %>
+    </li>
+    <li class="nav-item mt-2 ms-auto">
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </li>
+  </ul>
+  <div class="row">
+    <div class="col-10" data-controller="autosave">
+      <%= form_for @item, url: editor_item_path(@item.id), data: {autosave_target: "form"} do %>
+        <div class="<%= class_names("row", "p-3", "blink-green": local_variables.include?(:blink_green)) %>">
+          <% Field.all_cached.each do |field| %>
+            <% next if field.images? %>
+            <%= render field.component_class.new(item: @item, field: field) %>
+            <% if field.divider %>
+              <div class="col-12">
+                <hr class="my-3">
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-2">
+      <div class="row p-3" data-controller="upload">
+        <div class="m-0 p-0">
+          <label class="form-label me-1">Images</label>
+          <%= form_for(Image.new, url: editor_images_path, method: :post, html: {class: "d-inline-block"}) do |form| %>
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <%= form.hidden_field :item_id, value: @item.id %>
+            <span class="upload-span">
+              <i class="bi bi-upload"></i>
+              <%= form.file_field :files, multiple: true, class: "upload-input", data: {action: "change->upload#submit"} %>
+              <%= form.submit "Upload", class: "d-none", data: {upload_target: "submit"} %>
+            </span>
+          <% end %>
+        </div>
+
+        <%= render Image::EditCarouselComponent.new(item: @item) %>
+      </div>
+    </div>
+  </div>
+<% end %>
+

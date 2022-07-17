@@ -15,9 +15,15 @@ module Editor
       assign_attributes_and_defaults
 
       if @filter.save
-        render :edit
+        respond_to do |format|
+          format.json { render json: {filter: @filter}, status: :ok }
+          format.html { render :edit }
+        end
       else
-        render :edit, status: :unprocessable_entity
+        respond_to do |format|
+          format.json { render json: {errors: @filter.errors.full_messages}, status: :unprocessable_entity }
+          format.html { render :edit, status: :unprocessable_entity }
+        end
       end
     end
 
@@ -31,9 +37,15 @@ module Editor
       assign_attributes_and_defaults
 
       if @filter.save
-        render :edit
+        respond_to do |format|
+          format.json { render json: {filter: @filter}, status: :ok }
+          format.html { render :edit }
+        end
       else
-        render :edit, status: :unprocessable_entity
+        respond_to do |format|
+          format.json { render json: {errors: @filter.errors.full_messages}, status: :unprocessable_entity }
+          format.html { render :edit, status: :unprocessable_entity }
+        end
       end
     end
 

@@ -15,6 +15,8 @@ module Editor
       @view = View.find(params[:id])
 
       @pagy, @items = pagy(@view.search(params[:q]), items: per_page)
+
+      render :show, layout: false if turbo_frame_request?
     end
 
     def edit

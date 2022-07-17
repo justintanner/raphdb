@@ -1,0 +1,21 @@
+<div class="row mx-1 mb-1">
+  <div class="col-6 text-muted">
+    <% if @log.user.present? %>
+      <%= @log.user.name %>
+    <% else %>
+      System
+    <% end %>
+  </div>
+  <div class="col-6 text-muted text-end"><%= time_ago_in_words(@log.updated_at || @log.created_at) %> ago</div>
+</div>
+<div class="card bg-light border-0 mb-3">
+  <div class="card-body">
+    <% if @log.image.present? %>
+      <%= render Item::HistoryImageComponent.new(log: @log) %>
+    <% else %>
+      <%= render Item::HistoryDiffComponent.with_collection(@log.entry.to_a) %>
+    <% end %>
+  </div>
+</div>
+
+

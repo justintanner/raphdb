@@ -1,0 +1,27 @@
+<%= turbo_frame_tag "edit_item_frame" do %>
+  <ul class="nav nav-tabs m-3">
+    <li class="nav-item">
+      <%= button_tag class: "nav-link",
+                     title: "Item History",
+                     data: {
+                       controller: "edit-button",
+                       action: "click->edit-button#switchTabs",
+                       edit_button_url_param: edit_editor_item_path(@item.id)
+                     } do %>
+        Edit Item
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link fw-bold active" aria-current="page" href="#">Revision History</a>
+    </li>
+    <li class="nav-item mt-2 ms-auto">
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </li>
+  </ul>
+
+  <div class="row">
+    <div class="col mx-3">
+      <%= render Item::HistoryCardComponent.with_collection(@item.logs) %>
+    </div>
+  </div>
+<% end %>
