@@ -21,6 +21,8 @@ class Item::HistoryDiffComponent < ViewComponent::Base
   def from
     if multiple_select?
       changes.first || []
+    elsif set_changed? && changes.first.present?
+      ItemSet.find(changes.first)
     else
       changes.first
     end
@@ -29,6 +31,8 @@ class Item::HistoryDiffComponent < ViewComponent::Base
   def to
     if multiple_select?
       changes.second || []
+    elsif set_changed? && changes.second.present?
+      ItemSet.find(changes.second)
     else
       changes.second
     end
@@ -60,6 +64,14 @@ class Item::HistoryDiffComponent < ViewComponent::Base
 
   def multiple_select?
     field.present? && field.multiple_select?
+  end
+
+  def checkbox?
+    field.present? && field.checkbox?
+  end
+
+  def set_changed?
+    key == "item_set_id"
   end
 
   def title

@@ -99,6 +99,14 @@ class ItemTest < ActiveSupport::TestCase
     assert_not item.destroyed?, "Item was hard deleted"
   end
 
+  test "when importing items have no log" do
+    item_set = ItemSet.create(title: "Importing Set", importing: true)
+    item = Item.create!(data: {item_title: "Importing Item"}, item_set: item_set, importing: true)
+
+    assert_empty item.logs, "Item had logs"
+    assert_empty item_set.logs, "ItemSet had logs"
+  end
+
   test "should set a deleted_at timestamp when soft deleting" do
     freeze_time do
       item = item_create!({item_title: "Delete me"})

@@ -148,6 +148,7 @@ module JsonImport
         entry: cleaned_entry,
         action: row[:action],
         version: row[:version],
+        updated_at: row[:created_at],
         created_at: row[:created_at],
         importing: true
       )

@@ -105,6 +105,7 @@ class Item < ApplicationRecord
       Item.where(item_set_id: item_set.id).where.not(id: id).each do |item|
         item.propagating = true
         fields.each { |field| item.data[field.key] = data[field.key] }
+        item.importing = importing
         item.save!
       end
     end

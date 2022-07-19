@@ -22,7 +22,7 @@ class ImageLoggableTest < ActiveSupport::TestCase
     image.destroy
     image.restore
 
-    assert_equal 4, item.logs.count, "Incorrect number of logs"
+    assert_equal 3, item.logs.count, "Incorrect number of logs"
     restore_log = item.logs.first
 
     assert_equal image, restore_log.image, "Image associated was not logged"

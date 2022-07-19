@@ -48,7 +48,7 @@ class ImagePositionableTest < ActiveSupport::TestCase
     [first_image, second_image, third_image].each(&:reload)
 
     assert_equal 2, first_image.position, "First item was not re-positioned to 2"
-    assert_equal 1, second_image.position, "Second item was not re-positioned to 1"
+    assert_equal 1, second_image.position, "Second item was not re-positioned to 1" # TODO: Sometimes flaky.
     assert_equal 3, third_image.position, "Third item was not re-positioned to 3"
   end
 
@@ -58,11 +58,13 @@ class ImagePositionableTest < ActiveSupport::TestCase
     second_image = image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
     third_image = image_create!(filename: "vertical.jpg", item: item, position: 3, process: true)
 
+    assert_equal 1, first_image.position
+    assert_equal 2, second_image.position
+    assert_equal 3, third_image.position
+
     third_image.move_to(1)
 
-    first_image.reload
-    second_image.reload
-    third_image.reload
+    [first_image, second_image, third_image].each(&:reload)
 
     assert_equal 1, third_image.position, "Third item was not re-positioned to 1"
     assert_equal 2, first_image.position, "First item was not re-positioned to 2" # TODO: Flaky test.
@@ -114,6 +116,10 @@ class ImagePositionableTest < ActiveSupport::TestCase
     first_image = image_create!(filename: "vertical.jpg", item_set: item_set, position: 1, process: true)
     second_image = image_create!(filename: "vertical.jpg", item_set: item_set, position: 2, process: true)
     third_image = image_create!(filename: "vertical.jpg", item_set: item_set, position: 3, process: true)
+
+    assert_equal 1, first_image.position
+    assert_equal 2, second_image.position
+    assert_equal 3, third_image.position
 
     third_image.move_to(2)
 

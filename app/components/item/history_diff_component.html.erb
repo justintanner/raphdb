@@ -5,12 +5,27 @@
   <% if multiple_select? %>
     <%= render MultipleSelectComponent.with_collection(removed, removed: true) %>
     <%= render MultipleSelectComponent.with_collection(added, added: true) %>
-  <% else %>
-    <% if changes.first.present? %>
-      <s class="bg-danger p-2 bg-opacity-25 rounded"><%= changes.first %></s>
+  <% elsif set_changed? %>
+    <span class="bg-light p-2 bg-opacity-50 rounded">
+      <%= link_to to, data:{turbo_frame: "_top"} do %>
+        <i class="bi bi-box-arrow-up-left"></i>
+        <%= to.title %>
+      <% end %>
+    </span>
+  <% elsif checkbox? %>
+    <span class="bg-success p-2 bg-opacity-50 rounded">
+    <% if to == true %>
+      <i class="bi bi-check-square"></i>
+    <% elsif to == false %>
+      <i class="bi bi-x-square"></i>
     <% end %>
-    <% if changes.second.present? %>
-      <span class="bg-success p-2 bg-opacity-50 rounded"><%= changes.second %></span>
+    </span>
+  <% else %>
+    <% if from.present? %>
+      <s class="bg-danger p-2 bg-opacity-25 rounded"><%= from %></s>
+    <% end %>
+    <% if to.present? %>
+      <span class="bg-success p-2 bg-opacity-50 rounded"><%= to %></span>
     <% end %>
   <% end %>
 </p>

@@ -30,12 +30,12 @@ class Image < ApplicationRecord
     end
   end
 
-  attr_accessor :importing
+  attr_accessor :importing, :processing
 
   log_changes only: %i[deleted_at restored_at],
     on: %i[create update destroy],
     associated: :item_or_item_set,
-    skip_when: ->(image) { image.importing }
+    skip_when: ->(image) { image.importing || image.processing }
   position_within :item, :item_set
 
   validate :item_or_set_present
@@ -113,7 +113,7 @@ class Image < ApplicationRecord
   # Enqueues several jobs to resize and analyze all the sizes of this image.
   def process!
     return unless file.attached?
-
+    self.processing = true
     file.analyze unless file.analyzed?
 
     SIZES.each do |name, _dimensions|
@@ -124,5 +124,6 @@ class Image < ApplicationRecord
     end
 
     update(processed_at: Time.now)
+    self.processing = false
   end
 end
