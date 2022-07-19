@@ -56,7 +56,7 @@ class Editor::SortsControllerTest < ActionDispatch::IntegrationTest
 
     patch "/editor/views/#{view.id}/sorts/reorder_by_uuid", params: {sort: {uuid: second_sort.uuid, position: 1}}
     assert_response :success
-    assert_equal 2, first_sort.reload.position, "First sort was not moved to position 1"
-    assert_equal 1, second_sort.reload.position, "Second sort was not moved to position 2"
+    assert_equal 2, first_sort.reload.position, "First sort was not moved to position 2"
+    assert_equal 1, second_sort.reload.position, "Second sort was not moved to position 1"
   end
 end

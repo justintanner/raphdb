@@ -78,7 +78,10 @@ module Positionable
     end
 
     self.skip_repositioning = true
-    update(position: new_position)
+    update_result = update(position: new_position)
+    self.skip_repositioning = false
+
+    update_result
   end
 
   private
