@@ -19,9 +19,9 @@
     </li>
   </ul>
   <div class="row">
-    <div class="col-10" data-controller="autosave">
+    <div class="col-10" data-controller="autosave keep-focus" data-autosave-dirty-value="<%= @item.errors.present? %>">
       <%= form_for @item, url: editor_item_path(@item.id), data: {autosave_target: "form"} do %>
-        <div class="<%= class_names("row", "p-3", "blink-green": local_variables.include?(:blink_green)) %>">
+        <div class="row p-3">
           <% Field.all_cached.each do |field| %>
             <% next if field.images? %>
             <%= render field.component_class.new(item: @item, field: field) %>

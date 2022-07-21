@@ -5,6 +5,7 @@ import {FetchRequest} from "@rails/request.js"
 // Connects to data-controller="autosave"
 export default class extends DispatchController {
   static targets = ["form"]
+  static values = {"dirty": Boolean}
   static debounces = ["submit"]
 
   connect() {
@@ -12,7 +13,11 @@ export default class extends DispatchController {
   }
 
   submit() {
-    this.submitFormWithJson()
+    if (this.hasDirtyValue && this.dirtyValue) {
+      this.formTarget.requestSubmit()
+    } else {
+      this.submitFormWithJson()
+    }
   }
 
   async submitFormWithJson() {
