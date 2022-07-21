@@ -5,5 +5,4 @@ class Field::CurrencyComponent < ViewComponent::Base
     @item = item
     @field = field
   end
-
 end

@@ -43,6 +43,10 @@ class ImagePositionableTest < ActiveSupport::TestCase
     second_image = image_create!(filename: "vertical.jpg", item: item, position: 2, process: true)
     third_image = image_create!(filename: "vertical.jpg", item: item, position: 3, process: true)
 
+    assert_equal 1, first_image.position
+    assert_equal 2, second_image.position
+    assert_equal 3, third_image.position
+
     first_image.move_to(2)
 
     [first_image, second_image, third_image].each(&:reload)

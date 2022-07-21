@@ -22,7 +22,7 @@ module Editor
         end
       else
         respond_to do |format|
-          format.json { render json: {errors: @item.errors.full_messages, id: @item.id}, status: :unprocessable_entity }
+          format.json { render json: {errors: errors_by_id(@item), id: @item.id}, status: :unprocessable_entity }
           format.html { render :edit, status: :unprocessable_entity }
         end
       end
@@ -32,6 +32,12 @@ module Editor
 
     def item_params
       params.require(:item).permit(data: Field.params)
+    end
+
+    def errors_by_id(item)
+      item.errors.map do |error|
+        {id: "item_#{error.attribute}", message: error.type}
+      end
     end
   end
 end

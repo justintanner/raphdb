@@ -12,6 +12,9 @@ module FilterSql
 
     validate :value_present_if_operator_requires_it
     validate :operator_is_allowable
+    validate :numeric_fields_have_numeric_values
+    validate :date_fields_have_date_values
+    validate :currency_fields_have_numeric_values
   end
 
   STRING_OPS = ["contains", "does not contain", "is", "is not", "is empty", "is not empty"].freeze
@@ -183,5 +186,23 @@ module FilterSql
     return if value_not_needed?
 
     errors.add(:value, "blank value for operator: '#{operator}'") if value.blank?
+  end
+
+  def currency_fields_have_numeric_values
+    return unless field.present? && !value_not_needed? && field.column_type_sym == :currency
+
+    errors.add(:value, "must be numeric") unless /^\d*\.?\d+$/.match?(value.to_s)
+  end
+
+  def numeric_fields_have_numeric_values
+    return unless field.present? && !value_not_needed? && field.column_type_sym == :number
+
+    errors.add(:value, "must be a number") unless /^\d+$/.match?(value.to_s)
+  end
+
+  def date_fields_have_date_values
+    return unless field.present? && !value_not_needed? && field.column_type_sym == :date
+
+    errors.add(:value, "must be formatted like #{field.date_format}") unless field.date_valid?(value)
   end
 end

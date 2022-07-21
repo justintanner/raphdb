@@ -21,7 +21,7 @@ module Editor
         end
       else
         respond_to do |format|
-          format.json { render json: {errors: @filter.errors.full_messages}, status: :unprocessable_entity }
+          format.json { render json: {errors: errors_by_id(@filter)}, status: :unprocessable_entity }
           format.html { render :edit, status: :unprocessable_entity }
         end
       end
@@ -43,7 +43,7 @@ module Editor
         end
       else
         respond_to do |format|
-          format.json { render json: {errors: @filter.errors.full_messages}, status: :unprocessable_entity }
+          format.json { render json: {errors: errors_by_id(@filter)}, status: :unprocessable_entity }
           format.html { render :edit, status: :unprocessable_entity }
         end
       end
@@ -73,6 +73,12 @@ module Editor
 
     def filter_params
       params.require(:filter).permit(:uuid, :view_id, :field_id, :position, :operator, :value, values: [])
+    end
+
+    def errors_by_id(filter)
+      filter.errors.map do |error|
+        {id: "filter_#{error.attribute}", message: error.type}
+      end
     end
   end
 end

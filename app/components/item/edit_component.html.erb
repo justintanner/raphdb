@@ -19,7 +19,7 @@
     </li>
   </ul>
   <div class="row">
-    <div class="col-10" data-controller="autosave keep-focus" data-autosave-dirty-value="<%= @item.errors.present? %>">
+    <div class="col-10" data-controller="autosave">
       <%= form_for @item, url: editor_item_path(@item.id), data: {autosave_target: "form"} do %>
         <div class="row p-3">
           <% Field.all_cached.each do |field| %>

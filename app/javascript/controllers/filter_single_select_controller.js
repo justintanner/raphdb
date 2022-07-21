@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import {Controller} from "@hotwired/stimulus"
 import TomSelect from "tom-select"
 
 // Connects to data-controller="filter-single-select"

@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "filter_uuid_#{@filter.uuid}" do %>
-  <div class="row mb-2 filter-row" data-controller="autosave keep-focus">
+  <div class="row mb-2 filter-row" data-controller="autosave">
     <div class="col-1 pt-1">
       <small class="form-label text-nowrap"
              data-controller="label"
@@ -80,6 +80,7 @@
                                   class: "form-control form-control-sm",
                                   data: { action: "input->autosave#submit" },
                                   placeholder: "Enter a value" %>
+              <div class="invalid-feedback" id="filter_value_feedback"></div>
             <% end %>
           </div>
         </div>

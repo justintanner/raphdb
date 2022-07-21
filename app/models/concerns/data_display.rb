@@ -48,6 +48,13 @@ module DataDisplay
     postgres_date_format.downcase
   end
 
+  def date_valid?(value)
+    DateTime.strptime(value, date_format)
+    true
+  rescue ArgumentError
+    false
+  end
+
   def example_date_format
     return unless date_format.present?
 
