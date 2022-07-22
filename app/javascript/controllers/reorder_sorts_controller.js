@@ -1,8 +1,8 @@
-import {DispatchController} from "./dispatch_controller"
+import {Controller} from "@hotwired/stimulus"
 import {Sortable} from "sortablejs"
 
 // Connects to data-controller="reorder-sorts"
-export default class extends DispatchController {
+export default class extends Controller {
   static targets = ["container", "form", "uuid", "position"]
 
   connect() {

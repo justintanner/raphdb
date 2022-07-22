@@ -102,6 +102,14 @@ class ImagePositionableTest < ActiveSupport::TestCase
     two_third = image_create!(filename: "vertical.jpg", item: two_item, position: 3, process: true)
     two_fourth = image_create!(filename: "horizontal.jpg", item: two_item, position: 4, process: true)
 
+    assert_equal 1, one_first.position
+    assert_equal 2, one_second.position
+
+    assert_equal 1, two_first.position
+    assert_equal 2, two_second.position
+    assert_equal 3, two_third.position
+    assert_equal 4, two_fourth.position
+
     two_fourth.move_to(1)
 
     [one_first, one_second, two_first, two_second, two_third, two_fourth].each(&:reload)

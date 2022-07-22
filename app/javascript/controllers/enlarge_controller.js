@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import {Controller} from "@hotwired/stimulus"
 import "fslightbox"
 
 // Connects to data-controller="enlarge"

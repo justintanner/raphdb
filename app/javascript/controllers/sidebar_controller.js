@@ -1,8 +1,8 @@
-import {DispatchController} from "./dispatch_controller"
+import {Controller} from "@hotwired/stimulus"
 import {post} from "@rails/request.js"
 
 // Connects to data-controller="sidebar"
-export default class extends DispatchController {
+export default class extends Controller {
   static targets = ["container", "showButton", "hideButton"]
 
   toggle() {
@@ -46,6 +46,6 @@ export default class extends DispatchController {
       body: JSON.stringify({ settings: { sidebar_open: value } })
     })
 
-    this.dispatchError(response)
+    toastError(this, response)
   }
 }

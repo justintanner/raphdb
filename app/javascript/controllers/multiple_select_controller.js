@@ -1,9 +1,10 @@
-import {DispatchController} from "./dispatch_controller"
+import {Controller} from "@hotwired/stimulus"
 import TomSelect from "tom-select"
 import {post} from "@rails/request.js"
+import toastError from "../toast_error"
 
 // Connects to data-controller="multiple-select"
-export default class extends DispatchController {
+export default class extends Controller {
   static values = {fieldId: Number, createPath: String}
 
   connect() {
@@ -36,6 +37,6 @@ export default class extends DispatchController {
   async createNew(payload) {
     const response = await post(this.createPathValue, { body: JSON.stringify(payload) })
 
-    this.dispatchError(response)
+    toastError(this, response)
   }
 }

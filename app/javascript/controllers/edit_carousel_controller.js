@@ -1,9 +1,10 @@
-import {DispatchController} from "./dispatch_controller"
+import {Controller} from "@hotwired/stimulus"
 import {Sortable} from "sortablejs"
 import {patch} from "@rails/request.js"
+import toastError from "../toast_error"
 
 // Connects to data-controller="edit-carousel"
-export default class extends DispatchController {
+export default class extends Controller {
   connect() {
     const that = this
 
@@ -22,6 +23,6 @@ export default class extends DispatchController {
       body: JSON.stringify({ position: position }),
     })
 
-    this.dispatchError(response)
+    toastError(this, response)
   }
 }

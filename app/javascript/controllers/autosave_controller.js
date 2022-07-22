@@ -1,9 +1,10 @@
-import {DispatchController} from "./dispatch_controller"
+import {Controller} from "@hotwired/stimulus"
 import {useDebounce} from "stimulus-use"
 import {FetchRequest} from "@rails/request.js"
+import toastError from "../toast_error"
 
 // Connects to data-controller="autosave"
-export default class extends DispatchController {
+export default class extends Controller {
   static targets = ["form"]
   static debounces = ["submit"]
 
@@ -33,7 +34,7 @@ export default class extends DispatchController {
       const json = await response.json
       this.displayErrors(json)
     } else if (response.statusCode !== 200) {
-      this.dispatchError(response)
+      toastError(this, response)
     }
   }
 

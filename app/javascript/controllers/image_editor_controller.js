@@ -1,9 +1,10 @@
-import {DispatchController} from "./dispatch_controller"
+import {Controller} from "@hotwired/stimulus"
 import {patch} from "@rails/request.js"
 import "cropperjs"
+import toastError from "../toast_error"
 
 // Connects to data-controller="image-editor"
-export default class extends DispatchController {
+export default class extends Controller {
   static targets = ["image", "cropButton", "clearCropButton"]
   static values = {
     "id": Number,
@@ -94,7 +95,7 @@ export default class extends DispatchController {
     }
     const response = await patch(`/editor/images/${this.idValue}`, { body: JSON.stringify(payload) })
 
-    this.dispatchError(response)
+    toastError(this, response)
   }
 
   somethingChanged(data) {

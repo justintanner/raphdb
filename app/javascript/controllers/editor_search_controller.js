@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import {Controller} from "@hotwired/stimulus"
 
 // Connects to data-controller="editor-search"
 export default class extends Controller {

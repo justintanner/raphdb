@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import {Controller} from "@hotwired/stimulus"
 import ClipboardJS from "clipboard"
 
 // Connects to data-controller="share"

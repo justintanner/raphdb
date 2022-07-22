@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import {Controller} from "@hotwired/stimulus"
 import Trix from "trix"
 
 // Connects to data-controller="page_editor_controller"
