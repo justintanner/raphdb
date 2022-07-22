@@ -1,7 +1,7 @@
 single:
-  item_set: empty_set
+  item_set: one_item
   data:
-    item_tile: Only item in this set, no images
+    item_title: Only item in this set, no images
 football:
   item_set: early_days_of_sport
   data:

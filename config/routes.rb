@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
     resources :single_selects, only: [:create]
     resources :multiple_selects, only: [:create]
-    resources :items, only: [:edit, :update] do
+    resources :items, only: [:new, :create, :edit, :update] do
       member do
         get :history
       end

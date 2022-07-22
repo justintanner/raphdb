@@ -26,6 +26,7 @@ class ItemTest < ActiveSupport::TestCase
 
   test "should never allow a field with a symbol for a key" do
     item = Item.new
+    item.item_set = item_sets(:empty_set)
     item.data = {}
     item.data[:item_title] = "Bad key"
     assert_not item.save, "Saved data with a symbol as a key"

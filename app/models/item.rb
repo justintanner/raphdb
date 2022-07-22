@@ -95,8 +95,7 @@ class Item < ApplicationRecord
   end
 
   def propagate_set_fields
-    return if propagating
-    return unless data_changed?
+    return if propagating || !data_changed?
 
     fields = fields_that_changed.find_all { |field| field.same_across_set }
 
@@ -106,7 +105,8 @@ class Item < ApplicationRecord
         item.propagating = true
         fields.each { |field| item.data[field.key] = data[field.key] }
         item.importing = importing
-        item.save!
+        item.save
+        item.propagating = false
       end
     end
   end
@@ -118,13 +118,13 @@ class Item < ApplicationRecord
   end
 
   def title_present
-    errors.add(:data_item_title, "cannot be blank") if data["item_title"].blank?
+    errors.add(:data, "item title cannot be blank") if data["item_title"].blank?
   end
 
   def no_symbols_in_data
     return unless data.present? && data.keys.any? { |key| key.instance_of?(Symbol) }
 
-    errors.add(:data, "No symbols allowed in data")
+    errors.add(:data, "no symbols allowed in data")
   end
 
   def data_values_valid

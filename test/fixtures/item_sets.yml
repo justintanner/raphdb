@@ -4,6 +4,9 @@ orphan:
 empty_set:
   title: Empty Set
   slug: empty-set
+one_item:
+  title: One Item
+  slug: one-item
 second_empty:
   title: SECOND EMPTY
   slug: second-empty
