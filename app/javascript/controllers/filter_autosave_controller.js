@@ -33,7 +33,8 @@ export default class extends Controller {
     const response = await request.perform()
 
     if (response.statusCode === 422) {
-      form.requestSubmit()
+      // Refetching the form from the backend to refresh dropwdown options.
+      this.submit()
     } else if (response.statusCode !== 200) {
       toastError(this, response)
     }

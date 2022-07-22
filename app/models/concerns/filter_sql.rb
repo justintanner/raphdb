@@ -185,7 +185,7 @@ module FilterSql
   def value_present_if_operator_requires_it
     return if value_not_needed?
 
-    errors.add(:value, "blank value for operator: '#{operator}'") if value.blank?
+    errors.add(:value, "please enter a value") if value.blank?
   end
 
   def currency_fields_have_numeric_values

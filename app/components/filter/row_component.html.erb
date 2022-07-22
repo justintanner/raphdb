@@ -48,7 +48,7 @@
                                   disabled: true %>
             <% elsif @filter.field.date? %>
               <%= form.text_field :value,
-                                  class: class_names("form-control", "form-control-sm", "is-invalid": @filter.errors.include?(:value)),
+                                  class: "form-control form-control-sm",
                                   placeholder: "Choose a date",
                                   data: {
                                     "controller": "datepicker",
@@ -61,7 +61,7 @@
                               {},
                               {
                                 data: { controller: "filter-single-select", action: "change->filter-autosave#xhr" },
-                                class: class_names("form-select", "form-select-sm", "is-invalid": @filter.errors.include?(:value)),
+                                class: "form-select form-select-sm",
                               } %>
             <% elsif @filter.field.multiple_select? %>
               <div data-controller="filter-multiple-select">
@@ -71,20 +71,15 @@
                                 {
                                   multiple: true,
                                   data: { filter_multiple_select_target: "values" },
-                                  class: class_names("form-control", "form-control-sm", "is-invalid": @filter.errors.include?(:value)),
+                                  class: "form-control form-control-sm",
                                 } %>
                 <%= form.hidden_field :value, data: { filter_multiple_select_target: "value", action: "change->filter-autosave#xhr" } %>
               </div>
             <% else %>
               <%= form.text_field :value,
-                                  class: class_names("form-control", "form-control-sm", "is-invalid": @filter.errors.include?(:value)),
+                                  class: "form-control form-control-sm",
                                   data: { action: "input->filter-autosave#xhr" },
                                   placeholder: "Enter a value" %>
-            <% end %>
-            <% if @filter.errors.include?(:value) %>
-              <div class="invalid-feedback" id="filter_value_feedback">
-                <%= @filter.errors.full_messages_for(:value).join(",") %>
-              </div>
             <% end %>
           </div>
         </div>
